@@ -68,9 +68,9 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 			Widget widget = builder.build(tagInfo.findParentRecursive(parentClass),
 					style == null ? SWT.NONE : style);
 			if (widget instanceof TabItem) {
-				return new TabItemNode(tagInfo, widget);
+				return new TabItemNode(tag, tagInfo, widget);
 			}
-			return new MagicTagNodeObjectProxy(tagInfo, widget);
+			return new MagicTagNodeObjectProxy(tag, tagInfo, widget);
 		} catch (Exception e) {
 			throw new TagLibraryException(tagInfo, e);
 		}

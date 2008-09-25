@@ -48,7 +48,10 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNod
 					+ Composite.class.getSimpleName() + ">");
 		}
 
-		return new MagicTagNodeObjectProxy(tagInformation, parent);
+		// TODO: null as tag is strange here, think about root nodes in context
+		// of
+		// metadata
+		return new MagicTagNodeObjectProxy(null, tagInformation, parent);
 	}
 
 	@Override
