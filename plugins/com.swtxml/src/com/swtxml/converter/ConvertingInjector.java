@@ -1,5 +1,7 @@
 package com.swtxml.converter;
 
+import java.util.Map;
+
 import com.swtxml.util.IReflectorProperty;
 import com.swtxml.util.ReflectorBean;
 import com.swtxml.util.ReflectorException;
@@ -32,6 +34,12 @@ public class ConvertingInjector {
 		} catch (Exception e) {
 			throw new ReflectorException("Invalid value for " + objClassName + "." + name + ": \""
 					+ value + "\" (" + e.getMessage() + ")", e);
+		}
+	}
+
+	public void setPropertyValues(Map<String, String> values) {
+		for (String name : values.keySet()) {
+			setPropertyValue(name, values.get(name));
 		}
 	}
 

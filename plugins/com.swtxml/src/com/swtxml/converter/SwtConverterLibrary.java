@@ -25,19 +25,20 @@ public class SwtConverterLibrary implements IConverterLibrary {
 	}
 
 	private SwtConverterLibrary() {
-		Class<?> ALL_CLASSES = null;
-		String ALL_NAMES = null;
+		Class<?> allClasses = null;
+		String allProperties = null;
 
 		matcher(new StyleConverter(), Widget.class, "style", Integer.TYPE);
 		matcher(new StyleConverter(), Layout.class, "type", Integer.TYPE);
 		matcher(new LayoutConverter(), Composite.class, "layout", Layout.class);
 
-		matcher(new ColorConverter(), ALL_CLASSES, ALL_NAMES, Color.class);
-		matcher(new BooleanConverter(), ALL_CLASSES, ALL_NAMES, Boolean.class, Boolean.TYPE);
-		matcher(new IntegerConverter(), ALL_CLASSES, ALL_NAMES, Integer.class, Integer.TYPE);
-		matcher(new FloatConverter(), ALL_CLASSES, ALL_NAMES, Float.class, Float.TYPE);
-		matcher(new CharacterConverter(), ALL_CLASSES, ALL_NAMES, Character.class, Character.TYPE);
-		matcher(new StringConverter(), ALL_CLASSES, ALL_NAMES, String.class);
+		matcher(new ColorConverter(), allClasses, allProperties, Color.class);
+		matcher(new BooleanConverter(), allClasses, allProperties, Boolean.class, Boolean.TYPE);
+		matcher(new IntegerConverter(), allClasses, allProperties, Integer.class, Integer.TYPE);
+		matcher(new FloatConverter(), allClasses, allProperties, Float.class, Float.TYPE);
+		matcher(new CharacterConverter(), allClasses, allProperties, Character.class,
+				Character.TYPE);
+		matcher(new StringConverter(), allClasses, allProperties, String.class);
 	}
 
 	private void matcher(IConverter<?> converter, Class<?> forClass, String propertyName,
