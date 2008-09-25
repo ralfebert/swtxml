@@ -4,13 +4,16 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.swt.widgets.Widget;
+
 import com.swtxml.util.Reflector;
 import com.swtxml.util.ReflectorProperty;
 
 public class SwtTag implements ITag {
 
 	private String className;
-	private Class<?> swtWidgetClass;
+	private Class<? extends Widget> swtWidgetClass;
+
 	private Map<String, ITagAttribute> attributes;
 
 	public SwtTag(String className) {
@@ -22,10 +25,11 @@ public class SwtTag implements ITag {
 		return swtWidgetClass.getSimpleName();
 	}
 
+	@SuppressWarnings("unchecked")
 	private void checkClass() {
 		if (this.swtWidgetClass == null) {
 			try {
-				this.swtWidgetClass = Class.forName(className);
+				this.swtWidgetClass = (Class<? extends Widget>) Class.forName(className);
 			} catch (ClassNotFoundException e) {
 				throw new MetaDataException(e);
 			}
@@ -64,4 +68,15 @@ public class SwtTag implements ITag {
 		return this.getName().compareTo(o.getName());
 	}
 
+	@SuppressWarnings("unchecked")
+	public <T> T adaptTo(Class<T> clazz) {
+		if (clazz.isAssignableFrom(SwtWidgetBuilder.class)) {
+			return (T) new SwtWidgetBuilder(this);
+		}
+		return null;
+	}
+
+	public Class<? extends Widget> getSwtWidgetClass() {
+		return swtWidgetClass;
+	}
 }

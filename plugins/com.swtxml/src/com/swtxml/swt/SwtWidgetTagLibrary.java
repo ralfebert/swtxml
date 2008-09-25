@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.swtxml.swt;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,8 +30,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.TabItem;
+import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.magic.MagicTagNodeObjectProxy;
+import com.swtxml.metadata.ITag;
+import com.swtxml.metadata.SwtTagRegistry;
+import com.swtxml.metadata.SwtWidgetBuilder;
 import com.swtxml.parser.IAttributeConverter;
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
@@ -47,50 +49,32 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 	private final static String SWT_WIDGET_CUSTOM_PACKAGE = CTabFolder.class.getPackage().getName();
 	private final static String SWT_LAYOUT_PACKAGE = RowLayout.class.getPackage().getName();
 
+	private SwtTagRegistry registry = new SwtTagRegistry();
+
 	public TagNode tag(TagInformation tagInfo) {
 
+		ITag tag = registry.getTag(tagInfo.getTagName());
+		if (tag == null) {
+			throw new TagLibraryException(tagInfo, "Unknown tag: " + tagInfo.getTagName());
+		}
+		SwtWidgetBuilder builder = tag.adaptTo(SwtWidgetBuilder.class);
+		if (builder == null) {
+			throw new TagLibraryException(tagInfo, "No builder known for " + tag);
+		}
+
 		try {
-			Class<? extends Control> widgetClass = getWidgetClass(tagInfo);
-			for (Constructor<?> constructor : widgetClass.getConstructors()) {
-				if (constructor.getParameterTypes().length == 2
-						&& constructor.getParameterTypes()[1] == Integer.TYPE) {
-					Class<?> parentClass = constructor.getParameterTypes()[0];
-					Integer style = tagInfo.getConvertedAttribute("style", Integer.TYPE);
-					Object widget = constructor.newInstance(new Object[] {
-							tagInfo.findParentRecursive(parentClass),
-							style == null ? SWT.NONE : style });
-					// TODO: ARGH! TabItem needs special attention for
-					// setControl
-					if (widget instanceof TabItem) {
-						return new TabItemNode(tagInfo, widget);
-					}
-					return new MagicTagNodeObjectProxy(tagInfo, widget);
-				}
+			Integer style = tagInfo.getConvertedAttribute("style", Integer.TYPE);
+			Class<?> parentClass = builder.getParentClass();
+			Widget widget = builder.build(tagInfo.findParentRecursive(parentClass),
+					style == null ? SWT.NONE : style);
+			if (widget instanceof TabItem) {
+				return new TabItemNode(tagInfo, widget);
 			}
-			throw new TagLibraryException(tagInfo, "No suitable constructor found for "
-					+ widgetClass);
-		} catch (InvocationTargetException e) {
-			throw new TagLibraryException(tagInfo, e.getTargetException());
-		} catch (TagLibraryException e) {
-			throw e;
+			return new MagicTagNodeObjectProxy(tagInfo, widget);
 		} catch (Exception e) {
 			throw new TagLibraryException(tagInfo, e);
 		}
 
-	}
-
-	@SuppressWarnings("unchecked")
-	private Class<? extends Control> getWidgetClass(TagInformation tagInfo) {
-		try {
-			return (Class<Control>) Class.forName(SWT_WIDGET_PACKAGE + "." + tagInfo.getTagName());
-		} catch (ClassNotFoundException e) {
-			try {
-				return (Class<Control>) Class.forName(SWT_WIDGET_CUSTOM_PACKAGE + "."
-						+ tagInfo.getTagName());
-			} catch (ClassNotFoundException e1) {
-				throw new TagLibraryException(tagInfo, e1);
-			}
-		}
 	}
 
 	public Object convert(TagInformation node, TagAttribute attr, Class<?> destClass) {

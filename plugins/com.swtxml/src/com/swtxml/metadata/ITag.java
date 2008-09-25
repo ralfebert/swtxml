@@ -10,4 +10,5 @@ public interface ITag extends Comparable<ITag> {
 
 	Collection<ITagAttribute> getAttributes();
 
+	<T> T adaptTo(Class<T> clazz);
 }
