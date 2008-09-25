@@ -15,7 +15,6 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -23,12 +22,12 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
 
+import com.swtxml.tag.Document;
 import com.swtxml.tag.TagNode;
 
 public class TagLibraryXmlParser {
 
-	private Map<String, TagNode> nodesById;
-	private TagNode rootNode;
+	private Document document;
 
 	protected <T> T parse(Class<?> clazz, Class<T> rootNodeClass) {
 		return parse(clazz, "xml", rootNodeClass);
@@ -51,14 +50,12 @@ public class TagLibraryXmlParser {
 
 		try {
 			SAXParser parser = parserFactory.newSAXParser();
-			TagLibrarySaxHandler saxHandler = new TagLibrarySaxHandler(this, filename);
-			parser.parse(inputStream, saxHandler);
+			TagLibrarySaxHandler s = new TagLibrarySaxHandler(this, filename);
+			parser.parse(inputStream, s);
 
-			List<TagNode> allNodes = saxHandler.getAllNodes();
-			rootNode = allNodes.get(0);
-			this.nodesById = saxHandler.getNodesById();
+			this.document = s.getDocument();
 
-			for (TagNode node : allNodes) {
+			for (TagNode node : document.getAllNodes()) {
 				// TODO: freeze children list after this
 				TagNode parent = node.getParent();
 				if (parent != null) {
@@ -66,11 +63,11 @@ public class TagLibraryXmlParser {
 				}
 			}
 
-			for (TagNode node : allNodes) {
+			for (TagNode node : document.getAllNodes()) {
 				node.process();
 			}
 
-			return rootNode.get(rootNodeClass);
+			return document.getRoot().get(rootNodeClass);
 		} catch (ParserConfigurationException e) {
 			throw new XmlParsingException(e);
 		} catch (SAXException e) {
@@ -95,7 +92,7 @@ public class TagLibraryXmlParser {
 	}
 
 	public <T> T getById(String id, Class<T> clazz) {
-		TagNode node = nodesById.get(id);
+		TagNode node = document.getNodeById(id);
 		if (node == null) {
 			return null;
 		}
@@ -126,10 +123,6 @@ public class TagLibraryXmlParser {
 
 	protected ClassLoader getClassLoader() {
 		return this.getClass().getClassLoader();
-	}
-
-	public TagNode getRootNode() {
-		return rootNode;
 	}
 
 }

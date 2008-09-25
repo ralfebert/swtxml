@@ -22,6 +22,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.swtxml.tag.Document;
 import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
@@ -32,15 +33,20 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 	private Locator locator;
 	private List<TagNode> allNodes = new ArrayList<TagNode>();
 	private final TagLibraryXmlParser parser;
+	private final Document document;
+
+	public Document getDocument() {
+		return document;
+	}
 
 	TagLibrarySaxHandler(TagLibraryXmlParser parser, String xmlFilename) {
 		this.parser = parser;
 		this.xmlFilename = xmlFilename;
+		this.document = new Document();
 	}
 
 	private static final String CLASS_SCHEME = "class://";
 	private Map<String, ITagLibrary> tagLibraries = new HashMap<String, ITagLibrary>();
-	private Map<String, TagNode> nodesById = new HashMap<String, TagNode>();
 	private Stack<TagNode> parsingStack = new Stack<TagNode>();
 
 	private ITagLibrary getTagLibrary(String namespaceUri) {
@@ -81,9 +87,9 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 			Attributes attributes) throws SAXException {
 		List<TagAttribute> attributeList = new ArrayList<TagAttribute>();
 		ITagLibrary tagLibrary = getTagLibrary(namespaceUri);
-		TagInformation tagInformation = new TagInformation(tagLibrary,
-				parsingStack.isEmpty() ? null : parsingStack.peek(), localName, getLocationInfo(),
-				parsingStack.size(), attributeList);
+		TagInformation tagInformation = new TagInformation(document, tagLibrary, parsingStack
+				.isEmpty() ? null : parsingStack.peek(), localName, getLocationInfo(), parsingStack
+				.size(), attributeList);
 		String id = null;
 		for (int i = 0; i < attributes.getLength(); i++) {
 			String uri = attributes.getURI(i);
@@ -108,14 +114,6 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		}
 
 		allNodes.add(tag);
-		if (id != null) {
-			TagNode otherNode = nodesById.get(id);
-			if (otherNode != null) {
-				throw new TagLibraryException(tag, "Id " + id + " not unique: "
-						+ otherNode.getLocationInfo());
-			}
-			nodesById.put(id, tag);
-		}
 		parsingStack.push(tag);
 	}
 
@@ -135,10 +133,6 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 
 	public List<TagNode> getAllNodes() {
 		return allNodes;
-	}
-
-	public Map<String, TagNode> getNodesById() {
-		return nodesById;
 	}
 
 }

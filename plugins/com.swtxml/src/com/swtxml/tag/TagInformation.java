@@ -18,6 +18,8 @@ import com.swtxml.parser.IAttributeConverter.NotConvertable;
 
 public class TagInformation {
 
+	private final Document document;
+
 	private final ITagLibrary tagLibrary;
 	private final TagNode parent;
 	private final String tagName;
@@ -25,8 +27,9 @@ public class TagInformation {
 	private final int level;
 	private final List<TagAttribute> attributes;
 
-	public TagInformation(ITagLibrary tagLibrary, TagNode parent, String tagName,
-			String locationInfo, int level, List<TagAttribute> attributes) {
+	public TagInformation(Document document, ITagLibrary tagLibrary, TagNode parent,
+			String tagName, String locationInfo, int level, List<TagAttribute> attributes) {
+		this.document = document;
 		this.tagLibrary = tagLibrary;
 		this.parent = parent;
 		this.tagName = tagName;
@@ -37,6 +40,7 @@ public class TagInformation {
 
 	public TagInformation(TagInformation tagInfo) {
 		super();
+		this.document = tagInfo.document;
 		this.tagLibrary = tagInfo.tagLibrary;
 		this.parent = tagInfo.parent;
 		this.tagName = tagInfo.tagName;
@@ -131,6 +135,10 @@ public class TagInformation {
 
 	public TagNode getParent() {
 		return parent;
+	}
+
+	public Document getDocument() {
+		return document;
 	}
 
 }

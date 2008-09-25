@@ -21,6 +21,7 @@ public abstract class TagNode extends TagInformation {
 
 	public TagNode(TagInformation tagInfo) {
 		super(tagInfo);
+		this.getDocument().register(this);
 	}
 
 	public void process() {
