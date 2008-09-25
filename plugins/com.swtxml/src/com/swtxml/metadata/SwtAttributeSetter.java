@@ -12,6 +12,10 @@ public class SwtAttributeSetter {
 
 	// TODO: boolean is for migration purposes
 	public boolean set(Widget widget, String value) {
+		if ("text".equals(attr.getName())) {
+			attr.getProperty().set(widget, value);
+			return true;
+		}
 		return false;
 	}
 

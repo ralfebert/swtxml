@@ -4,7 +4,7 @@ import com.swtxml.util.ReflectorProperty;
 
 public class SwtTagAttribute implements ITagAttribute {
 
-	private ReflectorProperty property;
+	private final ReflectorProperty property;
 
 	public SwtTagAttribute(ReflectorProperty property) {
 		this.property = property;
@@ -12,6 +12,10 @@ public class SwtTagAttribute implements ITagAttribute {
 
 	public String getName() {
 		return property.getName();
+	}
+
+	public ReflectorProperty getProperty() {
+		return property;
 	}
 
 	@Override

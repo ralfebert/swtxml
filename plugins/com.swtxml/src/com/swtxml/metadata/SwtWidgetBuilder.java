@@ -1,7 +1,6 @@
 package com.swtxml.metadata;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import org.eclipse.swt.widgets.Widget;
@@ -29,14 +28,8 @@ public class SwtWidgetBuilder {
 		Constructor widgetConstructor = getWidgetConstructor(widgetClass);
 		try {
 			return (Widget) widgetConstructor.newInstance(new Object[] { parent, style });
-		} catch (IllegalArgumentException e) {
+		} catch (Exception e) {
 			throw new ReflectorException(e);
-		} catch (InstantiationException e) {
-			throw new ReflectorException(e);
-		} catch (IllegalAccessException e) {
-			throw new ReflectorException(e);
-		} catch (InvocationTargetException e) {
-			throw new ReflectorException(e.getTargetException());
 		}
 	}
 

@@ -5,8 +5,8 @@ import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Widget;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,10 +37,22 @@ public class SwtTagRegistryTest {
 	@Test
 	public void testBuilder() {
 		Shell shell = new Shell();
-		SwtWidgetBuilder builder = buttonTag.adaptTo(SwtWidgetBuilder.class);
-		Widget btn = builder.build(shell, SWT.BORDER);
+		Button btn = fakeBuildButton(shell);
 		assertTrue(btn instanceof Button);
-		assertEquals(shell, ((Button) btn).getParent());
+		assertEquals(shell, btn.getParent());
+	}
+
+	private Button fakeBuildButton(Composite parent) {
+		SwtWidgetBuilder builder = buttonTag.adaptTo(SwtWidgetBuilder.class);
+		return (Button) builder.build(parent, SWT.BORDER);
+	}
+
+	@Test
+	public void testAttributeSetter() {
+		Button btn = fakeBuildButton(new Shell());
+		ITagAttribute textAttribute = buttonTag.getAttribute("text");
+		textAttribute.adaptTo(SwtAttributeSetter.class).set(btn, "Hallo");
+		assertEquals("Hallo", btn.getText());
 	}
 
 }

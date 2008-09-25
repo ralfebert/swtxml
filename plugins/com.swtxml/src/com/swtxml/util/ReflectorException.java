@@ -1,5 +1,7 @@
 package com.swtxml.util;
 
+import java.lang.reflect.InvocationTargetException;
+
 public class ReflectorException extends RuntimeException {
 
 	public ReflectorException() {
@@ -10,11 +12,14 @@ public class ReflectorException extends RuntimeException {
 	}
 
 	public ReflectorException(Throwable cause) {
-		super(cause);
+		super((cause instanceof InvocationTargetException) ? ((InvocationTargetException) cause)
+				.getTargetException() : cause);
 	}
 
 	public ReflectorException(String message, Throwable cause) {
-		super(message, cause);
+		super(message,
+				(cause instanceof InvocationTargetException) ? ((InvocationTargetException) cause)
+						.getTargetException() : cause);
 	}
 
 }

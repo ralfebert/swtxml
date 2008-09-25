@@ -46,6 +46,7 @@ public class MagicTagNodeObjectProxy extends TagNode {
 	}
 
 	@Override
+	// TODO: move processAttribute out
 	protected void processAttribute(TagAttribute attr) {
 		boolean set = false;
 		if (tag != null && obj instanceof Widget) {

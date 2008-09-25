@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.swtxml.util.ReflectorTest.TestVO;
 
 public class Reflector {
 
@@ -40,4 +41,14 @@ public class Reflector {
 		}
 		return properties;
 	}
+
+	public static ReflectorProperty findProperty(Class<? extends TestVO> clazz, String propertyName) {
+		for (ReflectorProperty property : findPublicProperties(clazz)) {
+			if (propertyName.equals(property.getName())) {
+				return property;
+			}
+		}
+		return null;
+	}
+
 }
