@@ -10,12 +10,24 @@
  *******************************************************************************/
 package com.swtxml.ide;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
+import com.swtxml.metadata.ITag;
+import com.swtxml.metadata.ITagAttribute;
+import com.swtxml.metadata.SwtTagRegistry;
+
 @SuppressWarnings("restriction")
 public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
+
+	private SwtTagRegistry registry = new SwtTagRegistry();
 
 	public SwtXmlContentAssistProcessor() {
 		super();
@@ -27,6 +39,28 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		contentAssistRequest.addProposal(new CompletionProposal("hallo/>", contentAssistRequest
 				.getReplacementBeginPosition(), contentAssistRequest.getReplacementLength(), 5));
 		super.addTagNameProposals(contentAssistRequest, childPosition);
+	}
+
+	@Override
+	protected void addAttributeNameProposals(final ContentAssistRequest contentAssistRequest) {
+		ITag tag = registry.getTag(contentAssistRequest.getNode().getNodeName());
+		if (tag != null) {
+			List<ITagAttribute> matchingAttributes = new ArrayList<ITagAttribute>(Collections2
+					.filter(tag.getAttributes(), new Predicate<ITagAttribute>() {
+
+						public boolean apply(ITagAttribute attr) {
+							return attr.getName().toLowerCase().startsWith(
+									contentAssistRequest.getMatchString().toLowerCase());
+						}
+
+					}));
+			Collections.sort(matchingAttributes);
+			for (ITagAttribute attr : matchingAttributes) {
+				contentAssistRequest.addProposal(new CompletionProposal(attr.getName() + "=\"\"",
+						contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
+								.getReplacementLength(), attr.getName().length() + 2));
+			}
+		}
 	}
 
 }
