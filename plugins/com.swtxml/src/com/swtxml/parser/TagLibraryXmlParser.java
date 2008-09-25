@@ -45,7 +45,7 @@ public class TagLibraryXmlParser {
 		return parse(fname, resource, rootNodeClass);
 	}
 
-	protected <T> T parse(String filename, InputStream inputStream, Class<T> rootNodeClass) {
+	public <T> T parse(String filename, InputStream inputStream, Class<T> rootNodeClass) {
 		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 		parserFactory.setNamespaceAware(true);
 

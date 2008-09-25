@@ -18,18 +18,16 @@ import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 
 public class SwtXmlStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
 	@Override
-	public IContentAssistProcessor[] getContentAssistProcessors(
-			ISourceViewer sourceViewer, String partitionType) {
+	public IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer,
+			String partitionType) {
 
 		IContentAssistProcessor[] processors;
 
 		if (partitionType == IStructuredPartitions.DEFAULT_PARTITION
 				|| partitionType == IXMLPartitions.XML_DEFAULT) {
 			processors = new IContentAssistProcessor[] { new SwtXmlContentAssistProcessor() };
-		}
-		else {
-			processors = super.getContentAssistProcessors(sourceViewer,
-					partitionType);
+		} else {
+			processors = super.getContentAssistProcessors(sourceViewer, partitionType);
 		}
 		return processors;
 	}

@@ -20,12 +20,13 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 	public SwtXmlContentAssistProcessor() {
 		super();
 	}
-	
+
 	@Override
 	protected void addTagNameProposals(ContentAssistRequest contentAssistRequest, int childPosition) {
 		System.out.println(contentAssistRequest);
-		contentAssistRequest.addProposal(new CompletionProposal("hallo/>", contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest.getReplacementLength(), 5));
+		contentAssistRequest.addProposal(new CompletionProposal("hallo/>", contentAssistRequest
+				.getReplacementBeginPosition(), contentAssistRequest.getReplacementLength(), 5));
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
-	
+
 }
