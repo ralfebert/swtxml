@@ -30,8 +30,7 @@ public class LayoutConverter implements IConverter<Object> {
 			throw new ReflectorException(e);
 		}
 
-		ConvertingInjector injector = new ConvertingInjector(layout, SwtConverterLibrary
-				.getInstance(), true);
+		IInjector injector = Injectors.getSwt().getInjector(layout, true);
 		injector.setPropertyValues(layoutConstraints);
 
 		return layout;

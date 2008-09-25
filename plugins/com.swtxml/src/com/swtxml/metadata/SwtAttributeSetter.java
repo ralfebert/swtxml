@@ -2,8 +2,7 @@ package com.swtxml.metadata;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.converter.ConvertingInjector;
-import com.swtxml.converter.SwtConverterLibrary;
+import com.swtxml.converter.Injectors;
 
 public class SwtAttributeSetter {
 
@@ -16,8 +15,7 @@ public class SwtAttributeSetter {
 	// TODO: boolean is for migration purposes
 	public boolean set(Widget widget, String value) {
 		try {
-			new ConvertingInjector(widget, SwtConverterLibrary.getInstance(), false)
-					.setPropertyValue(attr.getName(), value);
+			Injectors.getSwt().getInjector(widget, false).setPropertyValue(attr.getName(), value);
 			return true;
 		} catch (Exception e) {
 			System.out.println(e.getMessage());

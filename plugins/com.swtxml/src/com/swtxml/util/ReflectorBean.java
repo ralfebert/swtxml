@@ -6,12 +6,14 @@ import java.util.Collections;
 public class ReflectorBean {
 
 	private Collection<IReflectorProperty> properties;
+	private Class<?> clazz;
 
 	public ReflectorBean(Class<?> clazz) {
 		this(clazz, false);
 	}
 
 	public ReflectorBean(Class<?> clazz, boolean includePublicFields) {
+		this.clazz = clazz;
 		this.properties = Reflector.findPublicProperties(clazz, includePublicFields);
 	}
 
@@ -26,6 +28,15 @@ public class ReflectorBean {
 
 	public Collection<IReflectorProperty> getProperties() {
 		return Collections.unmodifiableCollection(properties);
+	}
+
+	@Override
+	public String toString() {
+		return "ReflectorBean[" + getName() + "]";
+	}
+
+	public String getName() {
+		return clazz.getSimpleName();
 	}
 
 }

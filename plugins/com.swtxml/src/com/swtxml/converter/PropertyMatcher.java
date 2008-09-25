@@ -1,30 +1,35 @@
 package com.swtxml.converter;
 
+import java.util.Arrays;
+
 import org.apache.commons.lang.ArrayUtils;
 
 public class PropertyMatcher {
 
-	private final IConverter<?> converter;
+	public static final Class<?> ALL_CLASSES = null;
+	public static final String ALL_PROPERTIES = null;
+
+	private final ISetter<?> setter;
 
 	private final Class<?> forClass;
 	private final String propertyName;
 	private final Class<?>[] targetTypes;
 
-	public PropertyMatcher(IConverter<?> converter, Class<?> forClass, String propertyName,
+	public PropertyMatcher(ISetter<?> setter, Class<?> forClass, String propertyName,
 			Class<?>... propertyTypes) {
 		super();
-		this.converter = converter;
+		this.setter = setter;
 		this.forClass = forClass;
 		this.propertyName = propertyName;
 		this.targetTypes = propertyTypes;
 	}
 
-	public IConverter<?> getConverter() {
-		return converter;
+	public ISetter<?> getSetter() {
+		return setter;
 	}
 
-	public boolean match(Object queryObj, String queryPropertyName, Class<?> queryTargetType) {
-		if (forClass != null && !forClass.isAssignableFrom(queryObj.getClass())) {
+	public boolean match(Class<?> queryClass, String queryPropertyName, Class<?> queryTargetType) {
+		if (forClass != null && !forClass.isAssignableFrom(queryClass)) {
 			return false;
 		}
 		if (propertyName != null && !propertyName.equals(queryPropertyName)) {
@@ -34,6 +39,14 @@ public class PropertyMatcher {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		String classLabel = forClass != null ? forClass.getSimpleName() : "*";
+		String propLabel = propertyName != null ? propertyName : "*";
+		String targetTypesLabel = targetTypes.length > 0 ? Arrays.toString(targetTypes) : "*";
+		return "PropertyMatcher[" + classLabel + "." + propLabel + " = " + targetTypesLabel + "]";
 	}
 
 }
