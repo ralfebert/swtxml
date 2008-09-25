@@ -20,6 +20,11 @@ public class ConvertersTest {
 		assertEquals(2, color.getGreen());
 		assertEquals(3, color.getBlue());
 
+		color = colorConverter.convert("#FFabCD");
+		assertEquals(255, color.getRed());
+		assertEquals(171, color.getGreen());
+		assertEquals(205, color.getBlue());
+
 		color = colorConverter.convert("black");
 		assertEquals(0, color.getRed());
 		assertEquals(0, color.getGreen());
