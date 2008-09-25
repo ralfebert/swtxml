@@ -33,4 +33,18 @@
 			class="com.swtxml.ide.SwtXmlStructuredTextViewerConfiguration"
 			target="com.swtxml.ide.swtxml" />
 	</extension>
+ <extension
+       point="org.eclipse.ui.views">
+    <view
+          category="com.swtxml.viewcategory"
+          class="com.swtxml.ide.PreviewViewPart"
+          id="com.swtxml.ide.PreviewViewPart"
+          name="SwtXml Preview"
+          restorable="true">
+    </view>
+    <category
+          id="com.swtxml.viewcategory"
+          name="SwtXml">
+    </category>
+ </extension>
 </plugin>
