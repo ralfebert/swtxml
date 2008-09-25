@@ -47,12 +47,4 @@ public class SwtTagRegistryTest {
 		return (Button) builder.build(parent, SWT.BORDER);
 	}
 
-	@Test
-	public void testAttributeSetter() {
-		Button btn = fakeBuildButton(new Shell());
-		ITagAttribute textAttribute = buttonTag.getAttribute("text");
-		textAttribute.adaptTo(SwtAttributeSetter.class).set(btn, "Hallo");
-		assertEquals("Hallo", btn.getText());
-	}
-
 }

@@ -1,5 +1,6 @@
 package com.swtxml.converter;
 
+import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 
 import org.eclipse.swt.SWT;
@@ -7,9 +8,18 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.junit.Before;
 import org.junit.Test;
 
 public class ConvertersTest {
+
+	private InjectorDefinition layoutInjector;
+
+	@Before
+	public void setup() {
+		IIdResolver idResolver = createMock(IIdResolver.class);
+		layoutInjector = Injectors.createLayoutInjector(idResolver);
+	}
 
 	@Test
 	public void testColor() {
@@ -33,7 +43,7 @@ public class ConvertersTest {
 
 	@Test
 	public void testGridLayout() {
-		LayoutConverter layoutConverter = new LayoutConverter();
+		LayoutConverter layoutConverter = new LayoutConverter(layoutInjector);
 		GridLayout layout = (GridLayout) layoutConverter
 				.convert("layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:11;");
 		assertEquals(2, layout.numColumns);
@@ -43,7 +53,7 @@ public class ConvertersTest {
 
 	@Test
 	public void testRowLayout() {
-		LayoutConverter layoutConverter = new LayoutConverter();
+		LayoutConverter layoutConverter = new LayoutConverter(layoutInjector);
 		RowLayout layout = (RowLayout) layoutConverter
 				.convert("layout:row;type:vertical;spacing:5;");
 		assertEquals(SWT.VERTICAL, layout.type);
@@ -53,8 +63,8 @@ public class ConvertersTest {
 
 	@Test
 	public void testLayoutDataSetter() {
-		GridData data = (GridData) new LayoutDataSetter().createLayoutData(new GridLayout(),
-				"widthHint:120");
+		GridData data = (GridData) new LayoutDataSetter(layoutInjector).createLayoutData(
+				new GridLayout(), "widthHint:120");
 		assertEquals(120, data.widthHint);
 	}
 }

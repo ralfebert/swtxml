@@ -92,12 +92,7 @@ public class TagLibraryXmlParser {
 	}
 
 	public <T> T getById(String id, Class<T> clazz) {
-		TagNode node = document.getNodeById(id);
-		if (node == null) {
-			return null;
-		}
-
-		return node.get(clazz);
+		return document.getById(id, clazz);
 	}
 
 	public void injectById(Object obj) {

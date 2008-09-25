@@ -18,6 +18,12 @@ import com.swtxml.util.ReflectorException;
 
 public class LayoutDataSetter implements ISetter {
 
+	private InjectorDefinition layoutInjector;
+
+	public LayoutDataSetter(InjectorDefinition layoutInjector) {
+		this.layoutInjector = layoutInjector;
+	}
+
 	public boolean apply(IReflectorProperty bean, Object obj, String name, String value) {
 		Control control = (Control) obj;
 		Layout layout = control.getParent().getLayout();
@@ -41,7 +47,7 @@ public class LayoutDataSetter implements ISetter {
 			throw new ReflectorException(e);
 		}
 
-		Injectors.getLayout().getInjector(layoutData, true).setPropertyValues(layoutConstraints);
+		layoutInjector.getInjector(layoutData, true).setPropertyValues(layoutConstraints);
 		return layoutData;
 	}
 

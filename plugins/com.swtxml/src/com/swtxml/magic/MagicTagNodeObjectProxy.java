@@ -12,10 +12,9 @@ package com.swtxml.magic;
 
 import org.eclipse.swt.widgets.Widget;
 
+import com.swtxml.converter.Injectors;
 import com.swtxml.metadata.ITag;
-import com.swtxml.metadata.ITagAttribute;
-import com.swtxml.metadata.SwtAttributeSetter;
-import com.swtxml.swt.SwtHelper;
+import com.swtxml.metadata.SwtTagAttribute;
 import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
@@ -48,17 +47,10 @@ public class MagicTagNodeObjectProxy extends TagNode {
 	@Override
 	// TODO: move processAttribute out
 	protected void processAttribute(TagAttribute attr) {
-		boolean set = false;
 		if (tag != null && obj instanceof Widget) {
-			ITagAttribute tagAttr = tag.getAttribute(attr.getName());
-			SwtAttributeSetter attributeSetter = tagAttr.adaptTo(SwtAttributeSetter.class);
-			if (attributeSetter != null) {
-				set = attributeSetter.set((Widget) obj, attr.getValue());
-			}
-			if (!set) {
-				System.out.println("Setting attribute the old way: " + attr);
-				SwtHelper.injectAttribute(this, obj, attr, false);
-			}
+			SwtTagAttribute tagAttr = (SwtTagAttribute) tag.getAttribute(attr.getName());
+			Injectors.createSwtInjector(getDocument()).getInjector(obj, false).setPropertyValue(
+					attr.getName(), attr.getValue());
 		}
 		attr.setProcessed();
 	}

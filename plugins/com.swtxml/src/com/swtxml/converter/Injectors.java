@@ -9,35 +9,27 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.swt.SwtConstants;
 
-public class Injectors extends InjectorDefinition {
+public class Injectors {
 
-	private final static InjectorDefinition SWT_INJECTOR = createSwtInjector();
-	private final static InjectorDefinition LAYOUT_INJECTOR = createLayoutInjector();
+	public static InjectorDefinition createSwtInjector(IIdResolver idResolver) {
+		InjectorDefinition layoutInjector = createLayoutInjector(idResolver);
 
-	public static InjectorDefinition getSwt() {
-		return SWT_INJECTOR;
-	}
-
-	public static InjectorDefinition getLayout() {
-		return LAYOUT_INJECTOR;
-	}
-
-	private static InjectorDefinition createSwtInjector() {
 		InjectorDefinition inj = new InjectorDefinition();
 
 		inj.addConverter(new PropertyMatcher(Widget.class, "style", Integer.TYPE),
 				new StyleConverter(SwtConstants.SWT));
 		inj.addConverter(new PropertyMatcher(Composite.class, "layout", Layout.class),
-				new LayoutConverter());
+				new LayoutConverter(layoutInjector));
 		inj.addConverter(new PropertyMatcher(Color.class), new ColorConverter());
-		inj.addSetter(new PropertyMatcher(Control.class, "layoutData"), new LayoutDataSetter());
+		inj.addSetter(new PropertyMatcher(Control.class, "layoutData"), new LayoutDataSetter(
+				layoutInjector));
 
 		SimpleTypeConverters.addSimpleTypes(inj);
 
 		return inj;
 	}
 
-	private static InjectorDefinition createLayoutInjector() {
+	public static InjectorDefinition createLayoutInjector(IIdResolver idResolver) {
 		InjectorDefinition inj = new InjectorDefinition();
 
 		inj.addConverter(new PropertyMatcher(Layout.class, "type", Integer.TYPE),

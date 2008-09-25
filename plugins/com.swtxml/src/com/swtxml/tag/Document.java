@@ -6,14 +6,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.swtxml.converter.IIdResolver;
 import com.swtxml.parser.XmlParsingException;
 
-public class Document {
+public class Document implements IIdResolver {
 
 	private Map<String, TagNode> nodesById = new HashMap<String, TagNode>();
 
-	public TagNode getNodeById(String id) {
-		return nodesById.get(id);
+	public <T> T getById(String id, Class<T> clazz) {
+		TagNode node = nodesById.get(id);
+		if (node == null) {
+			return null;
+		}
+
+		return node.get(clazz);
 	}
 
 	public TagNode getRoot() {

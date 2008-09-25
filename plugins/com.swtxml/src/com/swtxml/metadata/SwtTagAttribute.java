@@ -27,11 +27,7 @@ public class SwtTagAttribute implements ITagAttribute {
 		return getName().compareTo(o.getName());
 	}
 
-	@SuppressWarnings("unchecked")
 	public <T> T adaptTo(Class<T> clazz) {
-		if (clazz.isAssignableFrom(SwtAttributeSetter.class)) {
-			return (T) new SwtAttributeSetter(this);
-		}
 		return null;
 	}
 

@@ -13,6 +13,11 @@ import com.swtxml.util.ReflectorException;
 public class LayoutConverter implements IConverter<Object> {
 
 	private final static String SWT_LAYOUT_PACKAGE = RowLayout.class.getPackage().getName();
+	private InjectorDefinition layoutInjector;
+
+	public LayoutConverter(InjectorDefinition layoutInjector) {
+		this.layoutInjector = layoutInjector;
+	}
 
 	public Object convert(String value) {
 		Map<String, String> layoutConstraints = KeyValueString.parse(value);
@@ -30,7 +35,7 @@ public class LayoutConverter implements IConverter<Object> {
 			throw new ReflectorException(e);
 		}
 
-		IInjector injector = Injectors.getLayout().getInjector(layout, true);
+		IInjector injector = layoutInjector.getInjector(layout, true);
 		injector.setPropertyValues(layoutConstraints);
 
 		return layout;
