@@ -13,7 +13,6 @@ package com.swtxml;
 import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
 
 import com.swtxml.swt.ConstantConverter;
 import com.swtxml.swt.SwtHelper;
@@ -48,20 +47,6 @@ public class SwtHelperTest extends TestCase {
 		} catch (Exception e) {
 			assertTrue(e.getMessage().contains("BLABLA"));
 		}
-
-	}
-
-	public void testColors() {
-
-		Color color = SwtHelper.getColor("#010203");
-		assertEquals(1, color.getRed());
-		assertEquals(2, color.getGreen());
-		assertEquals(3, color.getBlue());
-
-		color = SwtHelper.getColor("black");
-		assertEquals(0, color.getRed());
-		assertEquals(0, color.getGreen());
-		assertEquals(0, color.getBlue());
 
 	}
 

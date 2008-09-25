@@ -21,23 +21,18 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 
 import com.swtxml.magic.Attribute;
 import com.swtxml.parser.TagLibraryException;
-import com.swtxml.parser.XmlParsingException;
 import com.swtxml.parser.IAttributeConverter.NotConvertable;
 import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 
 public class SwtHelper {
 
-	private final static HashMap<String, Integer> SWT_COLORS = new HashMap<String, Integer>();
 	private final static ConstantConverter swtConstantConverter = new ConstantConverter(SWT.class);
 
 	public static enum SWTAlign {
@@ -85,42 +80,8 @@ public class SwtHelper {
 		}
 	}
 
-	static {
-		try {
-			Field[] fields = SWT.class.getFields();
-			for (Field field : fields) {
-				if (field.getName().startsWith("COLOR_") && Modifier.isPublic(field.getModifiers())
-						&& Modifier.isStatic(field.getModifiers())
-						&& field.getType() == Integer.TYPE) {
-					SWT_COLORS.put(field.getName(), field.getInt(SWT.class));
-				}
-			}
-		} catch (Exception e) {
-			throw new XmlParsingException(e);
-		}
-	}
-
 	public static int convertStringToStyle(String value) {
 		return swtConstantConverter.getIntValue(value);
-	}
-
-	public static Color getColor(String value) {
-		if (!value.startsWith("#") || value.length() != 7) {
-			Integer constant = SWT_COLORS.get("COLOR_" + value.toUpperCase().trim());
-			if (constant != null) {
-				return Display.getDefault().getSystemColor(constant);
-			}
-
-			throw new XmlParsingException(
-					"Invalid color value: "
-							+ value
-							+ " (allowed are html colors like #ff00ff or constants like 'red' as defined in SWT.COLOR_RED)");
-		}
-
-		// TODO: use color registries
-		int i = Integer.parseInt(value.substring(1), 16);
-		return new Color(Display.getDefault(), new RGB((i & 0xff0000) >> 16, (i & 0xff00) >> 8,
-				i & 0xff));
 	}
 
 	public static final void injectAttribute(TagInformation tag, Object destObject,

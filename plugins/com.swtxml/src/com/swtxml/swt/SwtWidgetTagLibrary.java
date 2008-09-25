@@ -17,7 +17,6 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.CellEditor.LayoutData;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -80,9 +79,6 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 	public Object convert(TagInformation node, TagAttribute attr, Class<?> destClass) {
 		if (destClass == Integer.TYPE && attr.getName().equals("style")) {
 			return SwtHelper.convertStringToStyle(attr.getValue());
-		}
-		if (destClass == Color.class) {
-			return SwtHelper.getColor(attr.getValue());
 		}
 		if (destClass == Layout.class) {
 
