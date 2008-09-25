@@ -1,15 +1,17 @@
 package com.swtxml.converter;
 
-import org.eclipse.swt.SWT;
-
-import com.swtxml.swt.ConstantConverter;
+import com.swtxml.swt.SwtConstants;
 
 public class StyleConverter implements IConverter<Integer> {
 
-	private final static ConstantConverter swtConstantConverter = new ConstantConverter(SWT.class);
+	private SwtConstants constants;
+
+	public StyleConverter(SwtConstants constants) {
+		this.constants = constants;
+	}
 
 	public Integer convert(String value) {
-		return swtConstantConverter.getIntValue(value);
+		return constants.getIntValue(value);
 	}
 
 }

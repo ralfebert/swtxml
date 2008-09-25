@@ -31,28 +31,34 @@ package com.swtxml.swt;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
 
 import com.swtxml.parser.XmlParsingException;
+import com.swtxml.util.ReflectorException;
 
-public class ConstantConverter {
+public class SwtConstants {
 
-	private final Class<?>[] constantClasses;
-	private static Map<Class<?>, Map<String, Integer>> constantMap = new HashMap<Class<?>, Map<String, Integer>>();
+	private Map<String, Integer> constantMap = new HashMap<String, Integer>();
 
-	public ConstantConverter(Class<?>... constantClasses) {
-		this.constantClasses = constantClasses;
+	public final static SwtConstants SWT = new SwtConstants(SWT.class);
 
+	public SwtConstants(Class<?>... constantClasses) {
 		for (Class<?> cl : constantClasses) {
 			if (!constantMap.containsKey(cl)) {
-				constantMap.put(cl, extractConstants(cl));
+				constantMap.putAll(extractConstants(cl));
 			}
 		}
+	}
+
+	private SwtConstants(Map<String, Integer> constantMap) {
+		this.constantMap = constantMap;
 	}
 
 	private Map<String, Integer> extractConstants(Class<?> cl) {
@@ -63,18 +69,17 @@ public class ConstantConverter {
 				if (Modifier.isPublic(field.getModifiers())
 						&& Modifier.isStatic(field.getModifiers())
 						&& field.getType() == Integer.TYPE) {
-					constants.put(field.getName(), field.getInt(SWT.class));
+					constants.put(field.getName(), field.getInt(cl));
 				}
 			}
 		} catch (Exception e) {
-			throw new XmlParsingException(e);
+			throw new ReflectorException(e);
 		}
 		return constants;
 	}
 
 	public int getIntValue(String value) {
-
-		int style = SWT.NONE;
+		int style = 0;
 		if (value == null) {
 			return style;
 		}
@@ -83,16 +88,13 @@ public class ConstantConverter {
 			v = v.trim().toUpperCase();
 
 			Integer constant = null;
-			for (Class<?> constantClass : constantClasses) {
-				constant = constantMap.get(constantClass).get(v);
-				if (constant != null) {
-					break;
-				}
-			}
+			constant = constantMap.get(v);
 
 			if (constant == null) {
-				throw new XmlParsingException("Unknown style constant: " + v + " from classes "
-						+ ArrayUtils.toString(constantClasses));
+				List<String> constants = new ArrayList<String>(constantMap.keySet());
+				Collections.sort(constants);
+				throw new XmlParsingException("Unknown style constant: " + v + ", allowed are: "
+						+ StringUtils.join(constants, ", "));
 			}
 
 			style |= constant;
@@ -101,4 +103,23 @@ public class ConstantConverter {
 
 	}
 
+	public SwtConstants restricted(String value) {
+		String[] values = StringUtils.split(value, ";,|");
+		Map<String, Integer> matches = new HashMap<String, Integer>();
+		for (String v : values) {
+			v = v.trim().toUpperCase();
+			Integer constant = null;
+			constant = constantMap.get(v);
+			if (constant == null) {
+				List<String> constants = new ArrayList<String>(constantMap.keySet());
+				Collections.sort(constants);
+				throw new XmlParsingException("Unknown style constant: " + v + ", allowed are: "
+						+ StringUtils.join(constants, ", "));
+			}
+
+			matches.put(v, constant);
+		}
+		return new SwtConstants(matches);
+
+	}
 }

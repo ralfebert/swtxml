@@ -9,23 +9,19 @@ public class PropertyMatcher {
 	public static final Class<?> ALL_CLASSES = null;
 	public static final String ALL_PROPERTIES = null;
 
-	private final ISetter<?> setter;
-
 	private final Class<?> forClass;
 	private final String propertyName;
 	private final Class<?>[] targetTypes;
 
-	public PropertyMatcher(ISetter<?> setter, Class<?> forClass, String propertyName,
-			Class<?>... propertyTypes) {
+	public PropertyMatcher(Class<?>... propertyTypes) {
+		this(ALL_CLASSES, ALL_PROPERTIES, propertyTypes);
+	}
+
+	public PropertyMatcher(Class<?> forClass, String propertyName, Class<?>... propertyTypes) {
 		super();
-		this.setter = setter;
 		this.forClass = forClass;
 		this.propertyName = propertyName;
 		this.targetTypes = propertyTypes;
-	}
-
-	public ISetter<?> getSetter() {
-		return setter;
 	}
 
 	public boolean match(Class<?> queryClass, String queryPropertyName, Class<?> queryTargetType) {

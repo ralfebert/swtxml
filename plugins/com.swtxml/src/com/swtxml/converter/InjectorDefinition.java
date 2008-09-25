@@ -1,25 +1,21 @@
 package com.swtxml.converter;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.swtxml.util.IReflectorProperty;
 import com.swtxml.util.ReflectorBean;
-import com.swtxml.util.ReflectorException;
 
 public class InjectorDefinition {
 
-	private final List<PropertyMatcher> matchers = new ArrayList<PropertyMatcher>();
+	private final LinkedHashMap<PropertyMatcher, ISetter> setters = new LinkedHashMap<PropertyMatcher, ISetter>();
 
-	public <T> void addConverter(IConverter<T> converter, Class<?> forClass, String propertyName,
-			Class<?>... propertyTypes) {
-		addSetter(new ConvertingSetter<T>(converter), forClass, propertyName, propertyTypes);
+	public <T> void addConverter(PropertyMatcher matcher, IConverter<T> converter) {
+		addSetter(matcher, new ConvertingSetter(converter));
 	}
 
-	public void addSetter(ISetter<?> setter, Class<?> forClass, String propertyName,
-			Class<?>... propertyTypes) {
-		matchers.add(new PropertyMatcher(setter, forClass, propertyName, propertyTypes));
+	public void addSetter(PropertyMatcher matcher, ISetter setter) {
+		setters.put(matcher, setter);
 	}
 
 	public IInjector getInjector(final Object obj, boolean includePublicFields) {
@@ -27,17 +23,16 @@ public class InjectorDefinition {
 		return new IInjector() {
 
 			public void setPropertyValue(String name, String value) {
-				IReflectorProperty property = bean.getProperty(name);
-				if (property == null) {
-					throw new ReflectorException("Property " + name + " not found in "
-							+ bean.getName());
+				for (PropertyMatcher matcher : setters.keySet()) {
+					IReflectorProperty property = bean.getProperty(name);
+					Class<?> type = property != null ? property.getType() : null;
+					if (matcher.match(obj.getClass(), name, type)) {
+						if (setters.get(matcher).apply(property, obj, name, value)) {
+							return;
+						}
+					}
 				}
-				ISetter<?> setter = forProperty(obj.getClass(), name, property.getType());
-				if (setter == null) {
-					throw new ReflectorException("No setter found for property " + name + " in "
-							+ bean.getName());
-				}
-				setter.set(obj, property, value);
+
 			}
 
 			public void setPropertyValues(Map<String, String> values) {
@@ -47,15 +42,5 @@ public class InjectorDefinition {
 			}
 
 		};
-	}
-
-	@SuppressWarnings("unchecked")
-	private <T> ISetter<T> forProperty(Class<?> clazz, String propertyName, Class<T> targetType) {
-		for (PropertyMatcher matcher : matchers) {
-			if (matcher.match(clazz, propertyName, targetType)) {
-				return (ISetter<T>) matcher.getSetter();
-			}
-		}
-		return null;
 	}
 }

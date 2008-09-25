@@ -2,16 +2,17 @@ package com.swtxml.converter;
 
 import com.swtxml.util.IReflectorProperty;
 
-public class ConvertingSetter<T> implements ISetter<T> {
+public class ConvertingSetter implements ISetter {
 
-	private IConverter<T> converter;
+	private IConverter<?> converter;
 
-	public ConvertingSetter(IConverter<T> converter) {
+	public ConvertingSetter(IConverter<?> converter) {
 		this.converter = converter;
 	}
 
-	public void set(Object obj, IReflectorProperty property, String value) {
+	public boolean apply(IReflectorProperty property, Object obj, String name, String value) {
 		property.set(obj, converter.convert(value));
+		return true;
 	}
 
 }

@@ -2,8 +2,8 @@ package com.swtxml.converter;
 
 import com.swtxml.util.IReflectorProperty;
 
-public interface ISetter<T> {
+public interface ISetter {
 
-	void set(Object obj, IReflectorProperty property, String value);
+	boolean apply(IReflectorProperty property, Object obj, String name, String value);
 
 }

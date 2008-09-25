@@ -14,7 +14,7 @@ import junit.framework.TestCase;
 
 import org.eclipse.swt.SWT;
 
-import com.swtxml.swt.ConstantConverter;
+import com.swtxml.swt.SwtConstants;
 
 public class SwtHelperTest extends TestCase {
 
@@ -26,10 +26,10 @@ public class SwtHelperTest extends TestCase {
 
 	public void testConstantConverterConverter() {
 
-		ConstantConverter cc = new ConstantConverter(SWT.class);
+		SwtConstants cc = new SwtConstants(SWT.class);
 		assertEquals(SWT.READ_ONLY | SWT.BORDER, cc.getIntValue("READ_ONLY,BORDER"));
 
-		ConstantConverter cc2 = new ConstantConverter(TestConstants.class, SWT.class);
+		SwtConstants cc2 = new SwtConstants(TestConstants.class, SWT.class);
 		assertEquals(SWT.READ_ONLY | SWT.BORDER | TestConstants.BLA, cc2
 				.getIntValue("BLA,READ_ONLY,BORDER"));
 

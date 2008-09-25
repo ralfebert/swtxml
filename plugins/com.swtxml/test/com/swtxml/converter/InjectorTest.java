@@ -8,10 +8,6 @@ import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 
 import org.easymock.EasyMock;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
 import com.swtxml.util.IReflectorProperty;
@@ -27,29 +23,30 @@ public class InjectorTest {
 		InjectorDefinition injectorDefinition = new InjectorDefinition();
 
 		IConverter converter = createMock(IConverter.class);
-		ISetter setter = createMock(ISetter.class);
+		ISetter setter1 = createMock(ISetter.class);
+		ISetter setter2 = createMock(ISetter.class);
 
-		injectorDefinition.addConverter(converter, null, null, Integer.TYPE);
-		injectorDefinition.addSetter(setter, null, "baseText");
+		injectorDefinition.addConverter(new PropertyMatcher(Integer.TYPE), converter);
+		injectorDefinition.addSetter(new PropertyMatcher(), setter1);
+		injectorDefinition.addSetter(new PropertyMatcher(), setter2);
+		injectorDefinition.addSetter(new PropertyMatcher(), setter1);
 
 		expect(converter.convert("5")).andReturn(5);
-		setter.set(eq(test), EasyMock.<IReflectorProperty> anyObject(), eq("yaya"));
+		expect(
+				setter1.apply(EasyMock.<IReflectorProperty> anyObject(), eq(test), eq("baseText"),
+						eq("yaya"))).andReturn(false);
+		expect(
+				setter2.apply(EasyMock.<IReflectorProperty> anyObject(), eq(test), eq("baseText"),
+						eq("yaya"))).andReturn(true);
 
-		replay(converter, setter);
+		replay(converter, setter1, setter2);
 
 		IInjector injector = injectorDefinition.getInjector(test, true);
 		injector.setPropertyValue("counter", "5");
 		injector.setPropertyValue("baseText", "yaya");
 
-		verify(converter, setter);
+		verify(converter, setter1, setter2);
 		assertEquals(5, test.getCounter());
 	}
 
-	@Test
-	public void testSwtLayout() {
-		Composite composite = new Composite(new Shell(), SWT.NONE);
-		IInjector injector = Injectors.getSwt().getInjector(composite, false);
-		injector.setPropertyValue("layout", "layout:grid;numColumns:2;");
-		assertEquals(2, ((GridLayout) composite.getLayout()).numColumns);
-	}
 }

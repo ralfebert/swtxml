@@ -22,7 +22,6 @@ import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Control;
 
 import com.swtxml.magic.Attribute;
@@ -63,20 +62,6 @@ public class SwtHelper {
 		}
 
 	};
-
-	public static enum GridDataAlign {
-		BEGINNING(GridData.BEGINNING), CENTER(GridData.CENTER), END(GridData.END), FILL(
-				GridData.FILL);
-		private int swtConstant;
-
-		private GridDataAlign(int swtConstant) {
-			this.swtConstant = swtConstant;
-		}
-
-		public int getSwtConstant() {
-			return swtConstant;
-		}
-	}
 
 	public static final void injectAttribute(TagInformation tag, Object destObject,
 			TagAttribute attr, boolean requireAnnotations) {
