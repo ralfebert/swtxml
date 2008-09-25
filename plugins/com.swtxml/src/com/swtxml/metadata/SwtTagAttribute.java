@@ -1,12 +1,12 @@
 package com.swtxml.metadata;
 
-import com.swtxml.util.ReflectorProperty;
+import com.swtxml.util.IReflectorProperty;
 
 public class SwtTagAttribute implements ITagAttribute {
 
-	private final ReflectorProperty property;
+	private final IReflectorProperty property;
 
-	public SwtTagAttribute(ReflectorProperty property) {
+	public SwtTagAttribute(IReflectorProperty property) {
 		this.property = property;
 	}
 
@@ -14,7 +14,7 @@ public class SwtTagAttribute implements ITagAttribute {
 		return property.getName();
 	}
 
-	public ReflectorProperty getProperty() {
+	public IReflectorProperty getProperty() {
 		return property;
 	}
 

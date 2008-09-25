@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Widget;
 
+import com.swtxml.util.IReflectorProperty;
 import com.swtxml.util.Reflector;
-import com.swtxml.util.ReflectorProperty;
 
 public class SwtTag implements ITag {
 
@@ -39,10 +39,10 @@ public class SwtTag implements ITag {
 	private void checkAttributes() {
 		checkClass();
 		if (attributes == null) {
-			Collection<ReflectorProperty> properties = Reflector
+			Collection<IReflectorProperty> properties = Reflector
 					.findPublicProperties(swtWidgetClass);
 			attributes = new HashMap<String, ITagAttribute>();
-			for (ReflectorProperty prop : properties) {
+			for (IReflectorProperty prop : properties) {
 				SwtTagAttribute attribute = new SwtTagAttribute(prop);
 				attributes.put(attribute.getName(), attribute);
 			}

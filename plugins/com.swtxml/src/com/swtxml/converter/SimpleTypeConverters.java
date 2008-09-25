@@ -1,6 +1,18 @@
 package com.swtxml.converter;
 
+import com.swtxml.util.FormatException;
+
 public class SimpleTypeConverters {
+
+	public static class StringConverter implements IConverter<String> {
+		public String convert(String value) {
+			// TODO: i18n
+			if (value.startsWith("%")) {
+				throw new FormatException("i18n for string properties is currently unsupported");
+			}
+			return value;
+		}
+	}
 
 	public static class BooleanConverter implements IConverter<Boolean> {
 		public Boolean convert(String value) {

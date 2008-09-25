@@ -1,13 +1,14 @@
 package com.swtxml.util;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
-import com.swtxml.util.ReflectorTest.TestVO;
 
 public class Reflector {
 
@@ -21,8 +22,13 @@ public class Reflector {
 		});
 	}
 
-	public static Collection<ReflectorProperty> findPublicProperties(Class<?> cl) {
-		Collection<ReflectorProperty> properties = new ArrayList<ReflectorProperty>();
+	public static Collection<IReflectorProperty> findPublicProperties(Class<?> cl) {
+		return findPublicProperties(cl, false);
+	}
+
+	public static Collection<IReflectorProperty> findPublicProperties(Class<?> cl,
+			boolean includePublicFields) {
+		Collection<IReflectorProperty> properties = new ArrayList<IReflectorProperty>();
 		Collection<Method> setters = findPublicSetters(cl);
 		for (final Method setter : setters) {
 			Collection<Method> getters = Collections2.filter(Arrays.asList(cl.getMethods()),
@@ -39,16 +45,15 @@ public class Reflector {
 				properties.add(new ReflectorProperty(getters.iterator().next(), setter));
 			}
 		}
-		return properties;
-	}
 
-	public static ReflectorProperty findProperty(Class<? extends TestVO> clazz, String propertyName) {
-		for (ReflectorProperty property : findPublicProperties(clazz)) {
-			if (propertyName.equals(property.getName())) {
-				return property;
+		if (includePublicFields) {
+			List<Field> fields = Arrays.asList(cl.getFields());
+			for (Field f : fields) {
+				properties.add(new ReflectorField(f));
 			}
 		}
-		return null;
+
+		return properties;
 	}
 
 }

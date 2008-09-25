@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.swtxml.swt;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,7 +29,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.converter.SwtConverters;
+import com.swtxml.converter.SwtConverterLibrary;
 import com.swtxml.magic.MagicTagNodeObjectProxy;
 import com.swtxml.metadata.ITag;
 import com.swtxml.metadata.SwtTagRegistry;
@@ -41,10 +40,9 @@ import com.swtxml.parser.TagLibraryException;
 import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
+import com.swtxml.util.KeyValueString;
 
 public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
-
-	private final static String SWT_LAYOUT_PACKAGE = RowLayout.class.getPackage().getName();
 
 	private SwtTagRegistry registry = new SwtTagRegistry();
 
@@ -60,8 +58,8 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 		}
 
 		try {
-			Integer style = SwtConverters.forProperty("style", Integer.TYPE).convert(
-					tagInfo.getAttribute("style"));
+			Integer style = SwtConverterLibrary.getInstance().forProperty("style", Integer.TYPE)
+					.convert(tagInfo.getAttribute("style"));
 			tagInfo.processAttribute("style");
 			Class<?> parentClass = builder.getParentClass();
 			Widget widget = builder.build(tagInfo.findParentRecursive(parentClass),
@@ -77,40 +75,8 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 	}
 
 	public Object convert(TagInformation node, TagAttribute attr, Class<?> destClass) {
-		if (destClass == Layout.class) {
-
-			Map<String, String> layoutConstraints = parseCSSStyleAttribute(node, attr);
-
-			Composite composite = node.get(Composite.class);
-			String layoutName = layoutConstraints.remove("layout");
-			Layout layout;
-			if (layoutName == null) {
-				throw new TagLibraryException(node, "no layout specified");
-			}
-
-			try {
-				layout = (Layout) Class.forName(
-						SWT_LAYOUT_PACKAGE + "." + StringUtils.capitalize(layoutName) + "Layout")
-						.newInstance();
-			} catch (Exception e) {
-				throw new TagLibraryException(node, e);
-			}
-
-			for (String name : layoutConstraints.keySet()) {
-				String value = layoutConstraints.get(name);
-				// TODO: creating a TagAttribute just for injecting it is
-				// clearly a HACK - this (and conversion) needs to be refactored
-				// out of attributes
-				// because we also need it for these css style layout attributes
-				TagAttribute fakeAttr = new TagAttribute(attr.getParser(), attr.getTagLibrary(),
-						name, value, true);
-				SwtHelper.injectAttribute(node, layout, fakeAttr, false);
-			}
-
-			return layout;
-		}
 		if (attr.getName().equals("layoutData")) {
-			Map<String, String> layoutConstraints = parseCSSStyleAttribute(node, attr);
+			Map<String, String> layoutConstraints = KeyValueString.parse(attr.getValue());
 
 			Composite composite = node.findParentRecursive(Composite.class);
 			Layout layout = composite.getLayout();
@@ -147,11 +113,6 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 			return SwtHelper.requireEnumValue(node, attr.getValue(), SwtHelper.GridDataAlign.class)
 					.getSwtConstant();
 		}
-		if (destClass == Integer.TYPE && attr.getName().equals("type")) {
-			// TODO: fake, recheck if this is needed for actual widgets
-			// (layouts?)
-			return SwtConverters.forProperty("style", Integer.TYPE).convert(attr.getValue());
-		}
 		if (destClass == Point.class) {
 			String[] sizes = StringUtils.split(attr.getValue(), ",x");
 			return new Point(Integer.parseInt(sizes[0]), Integer.parseInt(sizes[1]));
@@ -185,21 +146,6 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 			return FormData.class;
 		}
 		return null;
-	}
-
-	private Map<String, String> parseCSSStyleAttribute(TagInformation node, TagAttribute attr) {
-		Map<String, String> layoutConstraints = new HashMap<String, String>();
-		for (String valuePair : attr.getValue().split(";")) {
-			if (StringUtils.isNotBlank(valuePair)) {
-				String[] keyValue = valuePair.split(":");
-				if (keyValue.length != 2) {
-					throw new TagLibraryException(node, "Invalid layout constraint: \"" + valuePair
-							+ "\" ");
-				}
-				layoutConstraints.put(keyValue[0].trim(), keyValue[1].trim());
-			}
-		}
-		return layoutConstraints;
 	}
 
 	public void foreignAttribute(TagNode node, TagAttribute attr) {

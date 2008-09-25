@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.NoSuchElementException;
 
-import org.eclipse.swt.widgets.Button;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -27,87 +26,96 @@ public class ReflectorTest {
 		};
 	}
 
-	private final static Predicate<ReflectorProperty> getReflectorPropertyNamePredicate(
+	private final static Predicate<IReflectorProperty> getReflectorPropertyNamePredicate(
 			final String name) {
-		return new Predicate<ReflectorProperty>() {
+		return new Predicate<IReflectorProperty>() {
 
-			public boolean apply(ReflectorProperty prop) {
+			public boolean apply(IReflectorProperty prop) {
 				return prop.getName().equals(name);
 			}
 
 		};
 	}
 
-	public static class TestVO {
-		private String text;
-		private int counter;
-
-		public String getText() {
-			return text;
-		}
-
-		public void setText(String text) {
-			this.text = text;
-		}
-
-		public int getCounter() {
-			return counter;
-		}
-
-		public void setCounter(int counter) {
-			this.counter = counter;
-		}
-
-	}
-
-	private Collection<Method> buttonMethods;
-	private Collection<ReflectorProperty> buttonProperties;
+	private Collection<Method> testVoSetters;
 
 	@Before
 	public void setup() {
-		buttonMethods = Reflector.findPublicSetters(Button.class);
-		buttonProperties = Reflector.findPublicProperties(Button.class);
+		testVoSetters = Reflector.findPublicSetters(TestVO.class);
 	}
 
 	@Test
 	public void testFindPublicSetters() {
-		assertTrue(Iterables.find(buttonMethods, getMethodNamePredicate("setText")) != null);
-		assertTrue("superclass setter", Iterables.find(buttonMethods,
-				getMethodNamePredicate("setSize")) != null);
+		assertTrue(Iterables.find(testVoSetters, getMethodNamePredicate("setText")) != null);
+		assertTrue("superclass setter", Iterables.find(testVoSetters,
+				getMethodNamePredicate("setBaseText")) != null);
 	}
 
 	@Test(expected = NoSuchElementException.class)
 	public void testFindPublicSettersContainNoProtectedSetters() {
-		Iterables.find(buttonMethods, getMethodNamePredicate("setRadioSelection"));
+		Iterables.find(testVoSetters, getMethodNamePredicate("setProtectedProperty"));
 	}
 
 	@Test
 	public void testFindPublicSettersContainNoMultiArgumentSetMethods() {
-		assertEquals(1, Collections2.filter(buttonMethods, getMethodNamePredicate("setBounds"))
-				.size());
+		assertTrue(Collections2.filter(testVoSetters, getMethodNamePredicate("setMulti")).isEmpty());
 	}
 
 	@Test
 	public void findPublicProperties() {
-		assertTrue(Iterables.find(buttonProperties, getReflectorPropertyNamePredicate("text")) != null);
-		assertTrue("superclass property", Iterables.find(buttonProperties,
-				getReflectorPropertyNamePredicate("size")) != null);
+		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class);
+		assertTrue(Iterables.find(properties, getReflectorPropertyNamePredicate("text")) != null);
+		assertTrue("superclass property", Iterables.find(properties,
+				getReflectorPropertyNamePredicate("baseText")) != null);
+		assertTrue("public fields not included", Collections2.filter(properties,
+				getReflectorPropertyNamePredicate("publicText")).isEmpty());
+		assertTrue("protected property not included", Collections2.filter(properties,
+				getReflectorPropertyNamePredicate("publicText")).isEmpty());
+		assertTrue("base protected field not included", Collections2.filter(properties,
+				getReflectorPropertyNamePredicate("protectedProperty")).isEmpty());
+	}
+
+	@Test
+	public void findPublicPropertiesIncludingPublicFields() {
+		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class,
+				true);
+		assertTrue(Iterables.find(properties, getReflectorPropertyNamePredicate("text")) != null);
+		assertTrue("superclass property", Iterables.find(properties,
+				getReflectorPropertyNamePredicate("baseText")) != null);
+		assertTrue("public field", Collections2.filter(properties,
+				getReflectorPropertyNamePredicate("publicText")) != null);
+		assertTrue("base public field", Collections2.filter(properties,
+				getReflectorPropertyNamePredicate("basePublicText")) != null);
+		assertTrue("protected field not included", Collections2.filter(properties,
+				getReflectorPropertyNamePredicate("protectedText")).isEmpty());
 	}
 
 	@Test
 	public void testPropertyGetSet() {
 		TestVO test = new TestVO();
-		ReflectorProperty text = Reflector.findProperty(test.getClass(), "text");
-		ReflectorProperty counter = Reflector.findProperty(test.getClass(), "counter");
+		ReflectorBean bean = new ReflectorBean(TestVO.class, true);
+		IReflectorProperty text = bean.getProperty("text");
+		IReflectorProperty counter = bean.getProperty("counter");
+		IReflectorProperty basePublicText = bean.getProperty("basePublicText");
+
 		assertEquals(String.class, text.getType());
 		assertEquals(Integer.TYPE, counter.getType());
+		assertEquals(String.class, basePublicText.getType());
+
 		assertTrue(text != null);
 		assertTrue(counter != null);
+		assertTrue(basePublicText != null);
+
 		assertEquals(null, text.get(test));
 		assertEquals(0, counter.get(test));
+		assertEquals(null, basePublicText.get(test));
+
 		text.set(test, "123");
 		counter.set(test, 5);
+		basePublicText.set(test, "456");
+
 		assertEquals("123", text.get(test));
 		assertEquals(5, counter.get(test));
+		assertEquals("456", basePublicText.get(test));
 	}
 }
