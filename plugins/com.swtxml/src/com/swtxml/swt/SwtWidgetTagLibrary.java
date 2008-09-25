@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.converter.SwtConverterLibrary;
+import com.swtxml.converter.StyleConverter;
 import com.swtxml.magic.MagicTagNodeObjectProxy;
 import com.swtxml.metadata.ITag;
 import com.swtxml.metadata.SwtTagRegistry;
@@ -58,9 +58,7 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 		}
 
 		try {
-			Integer style = SwtConverterLibrary.getInstance().forProperty("style", Integer.TYPE)
-					.convert(tagInfo.getAttribute("style"));
-			tagInfo.processAttribute("style");
+			Integer style = new StyleConverter().convert(tagInfo.processAttribute("style"));
 			Class<?> parentClass = builder.getParentClass();
 			Widget widget = builder.build(tagInfo.findParentRecursive(parentClass),
 					style == null ? SWT.NONE : style);

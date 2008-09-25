@@ -23,7 +23,7 @@ public class ConvertingInjector {
 		if (property == null) {
 			throw new ReflectorException("Unknown attribute: " + name + " for " + objClassName);
 		}
-		IConverter<?> converter = converterLibrary.forProperty(name, property.getType());
+		IConverter<?> converter = converterLibrary.forProperty(obj, name, property.getType());
 		if (converter == null) {
 			throw new ReflectorException("No suitable converter found for " + name);
 		}

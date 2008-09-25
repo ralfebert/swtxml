@@ -1,10 +1,12 @@
 package com.swtxml.converter;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.converter.SimpleTypeConverters.BooleanConverter;
 import com.swtxml.converter.SimpleTypeConverters.CharacterConverter;
@@ -14,8 +16,7 @@ import com.swtxml.converter.SimpleTypeConverters.StringConverter;
 
 public class SwtConverterLibrary implements IConverterLibrary {
 
-	private final Map<Class<?>, IConverter<?>> converters = new HashMap<Class<?>, IConverter<?>>();
-	private final Map<PropertyNameAndClass, IConverter<?>> propertyNameConverters = new HashMap<PropertyNameAndClass, IConverter<?>>();
+	private final List<PropertyMatcher> matchers = new ArrayList<PropertyMatcher>();
 
 	private final static IConverterLibrary INSTANCE = new SwtConverterLibrary();
 
@@ -24,38 +25,34 @@ public class SwtConverterLibrary implements IConverterLibrary {
 	}
 
 	private SwtConverterLibrary() {
-		converters.put(Color.class, new ColorConverter());
-		BooleanConverter booleanConverter = new BooleanConverter();
-		converters.put(Boolean.class, booleanConverter);
-		converters.put(Boolean.TYPE, booleanConverter);
-		IntegerConverter integerConverter = new IntegerConverter();
-		converters.put(Integer.class, integerConverter);
-		converters.put(Integer.TYPE, integerConverter);
-		FloatConverter floatConverter = new FloatConverter();
-		converters.put(Float.class, floatConverter);
-		converters.put(Float.TYPE, floatConverter);
-		CharacterConverter characterConverter = new CharacterConverter();
-		converters.put(Character.class, characterConverter);
-		converters.put(Character.TYPE, characterConverter);
-		converters.put(String.class, new StringConverter());
+		Class<?> ALL_CLASSES = null;
+		String ALL_NAMES = null;
 
-		propertyNameConverters.put(new PropertyNameAndClass("style", Integer.TYPE),
-				new StyleConverter());
-		// TODO: only for rowlayout
-		propertyNameConverters.put(new PropertyNameAndClass("type", Integer.TYPE),
-				new StyleConverter());
-		propertyNameConverters.put(new PropertyNameAndClass("layout", Layout.class),
-				new LayoutConverter());
+		matcher(new StyleConverter(), Widget.class, "style", Integer.TYPE);
+		matcher(new StyleConverter(), Layout.class, "type", Integer.TYPE);
+		matcher(new LayoutConverter(), Composite.class, "layout", Layout.class);
+
+		matcher(new ColorConverter(), ALL_CLASSES, ALL_NAMES, Color.class);
+		matcher(new BooleanConverter(), ALL_CLASSES, ALL_NAMES, Boolean.class, Boolean.TYPE);
+		matcher(new IntegerConverter(), ALL_CLASSES, ALL_NAMES, Integer.class, Integer.TYPE);
+		matcher(new FloatConverter(), ALL_CLASSES, ALL_NAMES, Float.class, Float.TYPE);
+		matcher(new CharacterConverter(), ALL_CLASSES, ALL_NAMES, Character.class, Character.TYPE);
+		matcher(new StringConverter(), ALL_CLASSES, ALL_NAMES, String.class);
+	}
+
+	private void matcher(IConverter<?> converter, Class<?> forClass, String propertyName,
+			Class<?>... propertyTypes) {
+		matchers.add(new PropertyMatcher(converter, forClass, propertyName, propertyTypes));
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> IConverter<T> forProperty(String name, Class<T> clazz) {
-		IConverter<T> converter = (IConverter<T>) propertyNameConverters
-				.get(new PropertyNameAndClass(name, clazz));
-		if (converter == null) {
-			converter = (IConverter<T>) converters.get(clazz);
+	public <T> IConverter<T> forProperty(Object obj, String propertyName, Class<T> targetType) {
+		for (PropertyMatcher matcher : matchers) {
+			if (matcher.match(obj, propertyName, targetType)) {
+				return (IConverter<T>) matcher.getConverter();
+			}
 		}
-		return converter;
+		return null;
 	}
 
 }
