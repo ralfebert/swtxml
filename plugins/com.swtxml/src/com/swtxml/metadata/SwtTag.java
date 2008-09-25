@@ -60,4 +60,8 @@ public class SwtTag implements ITag {
 		return "SwtTag[" + className + "]";
 	}
 
+	public int compareTo(ITag o) {
+		return this.getName().compareTo(o.getName());
+	}
+
 }

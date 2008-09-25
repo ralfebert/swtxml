@@ -11,6 +11,7 @@
 package com.swtxml.ide;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,10 +35,25 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	@Override
-	protected void addTagNameProposals(ContentAssistRequest contentAssistRequest, int childPosition) {
+	protected void addTagNameProposals(final ContentAssistRequest contentAssistRequest,
+			int childPosition) {
 		System.out.println(contentAssistRequest);
-		contentAssistRequest.addProposal(new CompletionProposal("hallo/>", contentAssistRequest
-				.getReplacementBeginPosition(), contentAssistRequest.getReplacementLength(), 5));
+		Collection<ITag> tags = registry.getTags();
+		List<ITag> matchingTags = new ArrayList<ITag>(Collections2.filter(tags,
+				new Predicate<ITag>() {
+
+					public boolean apply(ITag tag) {
+						return tag.getName().toLowerCase().startsWith(
+								contentAssistRequest.getMatchString().toLowerCase());
+					}
+
+				}));
+		Collections.sort(matchingTags);
+		for (ITag tag : matchingTags) {
+			contentAssistRequest.addProposal(new CompletionProposal(tag.getName() + "/>",
+					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
+							.getReplacementLength(), 5));
+		}
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
 

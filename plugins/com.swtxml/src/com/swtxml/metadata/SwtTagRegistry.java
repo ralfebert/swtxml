@@ -1,6 +1,7 @@
 package com.swtxml.metadata;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,10 @@ public class SwtTagRegistry {
 
 	public ITag getTag(String name) {
 		return tagsByName.get(name);
+	}
+
+	public Collection<ITag> getTags() {
+		return tagsByName.values();
 	}
 
 }

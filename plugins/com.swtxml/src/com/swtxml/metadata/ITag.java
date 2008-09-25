@@ -2,7 +2,7 @@ package com.swtxml.metadata;
 
 import java.util.Collection;
 
-public interface ITag {
+public interface ITag extends Comparable<ITag> {
 
 	String getName();
 
