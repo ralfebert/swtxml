@@ -33,8 +33,6 @@ import com.swtxml.tag.TagInformation;
 
 public class SwtHelper {
 
-	private final static ConstantConverter swtConstantConverter = new ConstantConverter(SWT.class);
-
 	public static enum SWTAlign {
 		TOP(SWT.TOP), BOTTOM(SWT.BOTTOM), LEFT(SWT.LEFT), RIGHT(SWT.RIGHT), CENTER(SWT.CENTER), DEFAULT(
 				SWT.DEFAULT);
@@ -78,10 +76,6 @@ public class SwtHelper {
 		public int getSwtConstant() {
 			return swtConstant;
 		}
-	}
-
-	public static int convertStringToStyle(String value) {
-		return swtConstantConverter.getIntValue(value);
 	}
 
 	public static final void injectAttribute(TagInformation tag, Object destObject,

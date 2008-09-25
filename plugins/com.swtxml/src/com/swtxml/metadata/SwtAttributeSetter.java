@@ -15,7 +15,11 @@ public class SwtAttributeSetter {
 
 	// TODO: boolean is for migration purposes
 	public boolean set(Widget widget, String value) {
-		IConverter<?> converter = SwtConverters.to(attr.getProperty().getType());
+		Class<?> destType = attr.getProperty().getType();
+		IConverter<?> converter = SwtConverters.to(destType);
+		if (converter == null) {
+			converter = SwtConverters.forProperty(attr.getName(), destType);
+		}
 		if (converter != null) {
 			attr.getProperty().set(widget, converter.convert(value));
 			return true;

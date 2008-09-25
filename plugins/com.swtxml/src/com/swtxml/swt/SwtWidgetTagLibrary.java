@@ -16,7 +16,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.viewers.CellEditor.LayoutData;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -31,6 +30,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
+import com.swtxml.converter.SwtConverters;
 import com.swtxml.magic.MagicTagNodeObjectProxy;
 import com.swtxml.metadata.ITag;
 import com.swtxml.metadata.SwtTagRegistry;
@@ -44,8 +44,6 @@ import com.swtxml.tag.TagNode;
 
 public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 
-	private final static String SWT_WIDGET_PACKAGE = Control.class.getPackage().getName();
-	private final static String SWT_WIDGET_CUSTOM_PACKAGE = CTabFolder.class.getPackage().getName();
 	private final static String SWT_LAYOUT_PACKAGE = RowLayout.class.getPackage().getName();
 
 	private SwtTagRegistry registry = new SwtTagRegistry();
@@ -62,7 +60,9 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 		}
 
 		try {
-			Integer style = tagInfo.getConvertedAttribute("style", Integer.TYPE);
+			Integer style = SwtConverters.forProperty("style", Integer.TYPE).convert(
+					tagInfo.getAttribute("style"));
+			tagInfo.processAttribute("style");
 			Class<?> parentClass = builder.getParentClass();
 			Widget widget = builder.build(tagInfo.findParentRecursive(parentClass),
 					style == null ? SWT.NONE : style);
@@ -77,9 +77,6 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 	}
 
 	public Object convert(TagInformation node, TagAttribute attr, Class<?> destClass) {
-		if (destClass == Integer.TYPE && attr.getName().equals("style")) {
-			return SwtHelper.convertStringToStyle(attr.getValue());
-		}
 		if (destClass == Layout.class) {
 
 			Map<String, String> layoutConstraints = parseCSSStyleAttribute(node, attr);
@@ -151,7 +148,9 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 					.getSwtConstant();
 		}
 		if (destClass == Integer.TYPE && attr.getName().equals("type")) {
-			return SwtHelper.convertStringToStyle(attr.getValue());
+			// TODO: fake, recheck if this is needed for actual widgets
+			// (layouts?)
+			return SwtConverters.forProperty("style", Integer.TYPE).convert(attr.getValue());
 		}
 		if (destClass == Point.class) {
 			String[] sizes = StringUtils.split(attr.getValue(), ",x");

@@ -15,7 +15,6 @@ import junit.framework.TestCase;
 import org.eclipse.swt.SWT;
 
 import com.swtxml.swt.ConstantConverter;
-import com.swtxml.swt.SwtHelper;
 
 public class SwtHelperTest extends TestCase {
 
@@ -33,20 +32,6 @@ public class SwtHelperTest extends TestCase {
 		ConstantConverter cc2 = new ConstantConverter(TestConstants.class, SWT.class);
 		assertEquals(SWT.READ_ONLY | SWT.BORDER | TestConstants.BLA, cc2
 				.getIntValue("BLA,READ_ONLY,BORDER"));
-
-	}
-
-	public void testConvertStringToStyle() {
-
-		assertEquals(SWT.READ_ONLY | SWT.BORDER, SwtHelper.convertStringToStyle("READ_ONLY,BORDER"));
-		assertEquals(SWT.READ_ONLY | SWT.BORDER, SwtHelper.convertStringToStyle("READ_ONLY|BORDER"));
-
-		try {
-			SwtHelper.convertStringToStyle("READ_ONLY|BLABLA");
-			fail("expected exception");
-		} catch (Exception e) {
-			assertTrue(e.getMessage().contains("BLABLA"));
-		}
 
 	}
 

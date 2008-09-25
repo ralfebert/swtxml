@@ -106,6 +106,8 @@ public class TagInformation {
 	public <T> T getConvertedAttribute(String name, Class<T> convertTo) {
 		for (TagAttribute tagAttribute : attributes) {
 			if (tagAttribute.isLocal() && tagAttribute.getName().equals(name)) {
+				// TODO: getting the converted attribute marks it as processed -
+				// this is awkward
 				tagAttribute.setProcessed();
 				T convertedValue = (T) tagAttribute.getConvertedValue(this, convertTo);
 				if (convertedValue instanceof NotConvertable) {
