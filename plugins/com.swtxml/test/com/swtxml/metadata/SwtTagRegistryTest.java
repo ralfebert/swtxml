@@ -3,31 +3,44 @@ package com.swtxml.metadata;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Widget;
 import org.junit.Before;
 import org.junit.Test;
 
 public class SwtTagRegistryTest {
 
 	private SwtTagRegistry swtTagRegistry;
+	private ITag buttonTag;
 
 	@Before
 	public void setUp() throws Exception {
 		swtTagRegistry = new SwtTagRegistry();
+		buttonTag = swtTagRegistry.getTag("Button");
 	}
 
 	@Test
 	public void testGetTagMetaData() {
-		ITag tag = swtTagRegistry.getTag("Button");
-		assertEquals("Button", tag.getName());
+		assertEquals("Button", buttonTag.getName());
 
 		assertEquals(null, swtTagRegistry.getTag("wegewg"));
-		assertEquals(null, tag.getAttribute("erherhe"));
+		assertEquals(null, buttonTag.getAttribute("erherhe"));
 
-		ITagAttribute textAttribute = tag.getAttribute("text");
+		ITagAttribute textAttribute = buttonTag.getAttribute("text");
 		assertEquals("text", textAttribute.getName());
 
-		System.out.println(tag.getAttributes());
-		assertTrue(tag.getAttributes().contains(textAttribute));
+		assertTrue(buttonTag.getAttributes().contains(textAttribute));
+	}
+
+	@Test
+	public void testBuilder() {
+		Shell shell = new Shell();
+		SwtWidgetBuilder builder = buttonTag.adaptTo(SwtWidgetBuilder.class);
+		Widget btn = builder.build(shell, SWT.BORDER);
+		assertTrue(btn instanceof Button);
+		assertEquals(shell, ((Button) btn).getParent());
 	}
 
 }
