@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.xml"
+            default-charset="UTF-8"
+            file-extensions="swtxml"
+            id="swtxml"
+            name="SwtXml Markup File"
+            priority="normal">
+         <describer
+               class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
+            <parameter
+                  name="element"
+                  value="swtxml">
+            </parameter>
+         </describer>
+      </content-type>
+   </extension>
+   <extension
+         point="org.eclipse.wst.sse.core.modelHandler">
+      <modelHandler
+            associatedContentTypeId="com.swtxml.ide.swtxml"
+            class="com.swtxml.ide.SwtXmlModelHandler"
+            default="false"
+            id="com.swtxml.ide.SwtXmlModelHandler">
+      </modelHandler>
+   </extension>
+	<extension point="org.eclipse.wst.sse.ui.editorConfiguration">
+		<sourceViewerConfiguration
+			class="com.swtxml.ide.SwtXmlStructuredTextViewerConfiguration"
+			target="com.swtxml.ide.swtxml" />
+	</extension>
+</plugin>

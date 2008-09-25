@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<Composite
+    xmlns="class://com.swtxml.swt.SwtWidgetTagLibrary"
+    xmlns:pt="class://com.swtxml.swt.PrototypeTagLibrary"
+    layout="layout:fill;">
+    
+    <TabFolder>
+        <TabItem text="RowLayout">
+            <Composite layout="layout:row;type:vertical;spacing:5;">
+                <Button text="Sauber" style="CHECK"/>
+                <Button text="Kühl" style="CHECK"/>
+                <Button text="Trocken" style="CHECK"/>
+            </Composite>
+        </TabItem>
+        
+        
+        <TabItem text="FillLayout">
+            <Composite layout="layout:fill;">
+                <Button text="Sauber"/>
+                <Button text="Kühl"/>
+            </Composite>
+        </TabItem>
+
+        
+        <TabItem text="GridLayout">
+            <Composite layout="layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:10;">
+
+                <Label text="Test:" layoutData="widthHint:120  ;  " toolTipText="test"/>
+                <Combo style="READ_ONLY" toolTipText="whatever">
+                    <pt:list values="Volvic|Vittel|Thüringer Waldquell|Höllensprudel|Apollinaris"/>
+                </Combo>
+                
+                
+                <Label text="horizontal span! horizontal span! horizontal span! horizontal span!" layoutData="horizontalSpan:2;"/>
+                
+                <Label text="Mineralien:" layoutData="verticalAlignment:beginning;"/>
+                <Table id="waterTable" headerVisible="true" layoutData="grabExcessHorizontalSpace:true;horizontalAlignment:fill;grabExcessVerticalSpace:true;verticalAlignment:fill;">
+                    <TableColumn text="Mineral" width="80"/>
+                    <TableColumn text="Mineralisierung (mg/l)" width="200"/>
+                    
+                    <pt:table>
+                        <pt:row values="Kalcium|10"/>
+                        <pt:row values="Natrium|0.001"/>
+                    </pt:table>
+                </Table>
+
+
+                <Label text="vertical span!" layoutData="verticalSpan:2;"/>
+                <Label text="2"/>
+                <Label text="3"/>
+
+                                
+            </Composite>
+        </TabItem>
+
+        <TabItem text="FormLayout">
+            <Composite layout="layout:form;spacing:3;">
+                
+                <Label id="test" text="Bla:" layoutData="top:10;left:10;"/>
+                <Text id="testText" style="BORDER" text="weg ewgew gweg" layoutData="top:test; left:test.left; right:100%-10; bottom:20%;"/>
+
+                <Label id="test2" text="Fetzt:" layoutData="top:testText+50; left:testText.left;"/>
+                <Text id="testText2" style="BORDER" text="wegewg ewgew gew" layoutData="top:test2; left:test2.left; right:50%-10; bottom:100%-10;"/>
+
+                <Label id="test3" text="Test:" layoutData="top:test2.top;left:testText2.right+10;"/>
+                <Text id="testText3" style="MULTI|BORDER" text="ewg egew gewg ew" layoutData="top:test3; left:test3.left; right:testText.right; bottom:testText2.bottom;"/>
+                
+            </Composite>
+        </TabItem>
+                
+        <TabItem text="Widget Fun">
+            <Composite layout="layout:row;type:vertical;spacing:7;marginBottom:10;">
+                
+                <Label text="Frische, die hilft" foreground="red"/>
+                <Label text="Hilfe, die erfrischt!" background="#0000ff" foreground="white"/>
+                <Composite style="BORDER" layout="layout:fill;type:vertical;">
+                    <Label text="Geeignet für natriumarme Ernährung."/>
+                    <Label text="456"/>
+                </Composite>
+                <Spinner/>
+                <Button text="Trink!"/>
+                <Button text="Sauber" style="CHECK"/>
+                <Button text="Kühl" style="CHECK"/>
+                <Button text="Trocken" style="RADIO"/>
+                <ProgressBar maximum="100" selection="70"/>
+                <Slider/>
+                <Text style="SINGLE,BORDER" text="Ohne Kohlensäure"/>
+                <Text style="V_SCROLL,BORDER" text="Neue Brunnen verbessern die Lebensbedingungen komplett" layoutData="width:200;height:200;"/>
+                
+                <Group text="Hallo" style="BORDER" layout="layout:row;">
+                    <Tree layoutData="width:150;height:200;"/>
+                    <List style="FULL_SELECTION" layoutData="width:150;height:200;">
+                        <pt:list values="Volvic|Vittel|Thüringer Waldquell|Höllensprudel|Apollinaris"/>
+                    </List>
+                </Group>
+                
+            </Composite>
+        </TabItem>
+        <TabItem text="SashForm">
+        	<SashForm style="VERTICAL" weights="20,30,50">
+        		<Composite background="red"/>
+        		<Composite background="green"/>
+        		<Composite background="blue"/>
+        	</SashForm>
+        </TabItem>
+    </TabFolder>
+    
+</Composite>
