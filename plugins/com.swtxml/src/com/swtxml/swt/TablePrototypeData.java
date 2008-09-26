@@ -15,7 +15,6 @@ import java.util.Vector;
 
 import org.eclipse.jface.viewers.TableViewer;
 
-import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
@@ -41,10 +40,6 @@ public class TablePrototypeData extends TagNode {
 	public void addRow(String[] values) {
 		rows.add(values);
 		viewer.refresh();
-	}
-
-	@Override
-	protected void processAttribute(TagAttribute attr) {
 	}
 
 	@Override

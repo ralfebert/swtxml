@@ -20,7 +20,6 @@ import java.util.Map;
 
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
-import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 import com.swtxml.tag.TagNodeEmpty;
@@ -183,7 +182,7 @@ public abstract class MagicTagLibrary implements ITagLibrary {
 		}
 	}
 
-	public void foreignAttribute(TagNode node, TagAttribute attr) {
+	public void foreignAttribute(TagNode node, String name, String value) {
 		// TODO: magic processing of foreign attributes
 	}
 

@@ -23,7 +23,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.swtxml.tag.Document;
-import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
@@ -85,7 +84,7 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 	@Override
 	public void startElement(String namespaceUri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		List<TagAttribute> attributeList = new ArrayList<TagAttribute>();
+		Map<String, String> attributeList = new HashMap<String, String>();
 		ITagLibrary tagLibrary = getTagLibrary(namespaceUri);
 		TagInformation tagInformation = new TagInformation(document, tagLibrary, parsingStack
 				.isEmpty() ? null : parsingStack.peek(), localName, getLocationInfo(), parsingStack
@@ -93,12 +92,12 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		for (int i = 0; i < attributes.getLength(); i++) {
 			String uri = attributes.getURI(i);
 			if (StringUtils.isEmpty(uri) || uri.equals(namespaceUri)) {
-				attributeList.add(new TagAttribute(parser, tagLibrary, attributes.getLocalName(i),
-						attributes.getValue(i), true));
-
+				attributeList.put(attributes.getLocalName(i), attributes.getValue(i));
 			} else {
-				attributeList.add(new TagAttribute(parser, getTagLibrary(uri), attributes
-						.getLocalName(i), attributes.getValue(i), false));
+				// TODO: reintroduce foreign attributes
+				// attributeList.add(new TagAttribute(parser,
+				// getTagLibrary(uri), attributes
+				// .getLocalName(i), attributes.getValue(i), false));
 			}
 		}
 

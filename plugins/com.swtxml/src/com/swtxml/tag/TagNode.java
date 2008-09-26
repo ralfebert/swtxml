@@ -13,8 +13,6 @@ package com.swtxml.tag;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.swtxml.parser.TagLibraryException;
-
 public abstract class TagNode extends TagInformation {
 
 	private List<TagNode> children = new ArrayList<TagNode>();
@@ -25,28 +23,6 @@ public abstract class TagNode extends TagInformation {
 	}
 
 	public void process() {
-		for (TagAttribute attr : getAttributes()) {
-			if (attr.isProcessed()) {
-				continue;
-			}
-			if (attr.isLocal()) {
-				processAttribute(attr);
-			} else {
-				attr.getTagLibrary().foreignAttribute(this, attr);
-			}
-
-		}
-		checkMissingAttributes();
-	}
-
-	protected abstract void processAttribute(TagAttribute attr);
-
-	private void checkMissingAttributes() {
-		for (TagAttribute attr : getAttributes()) {
-			if (!attr.isProcessed()) {
-				throw new TagLibraryException(this, "Unprocessed attribute: " + attr);
-			}
-		}
 	}
 
 	@Override

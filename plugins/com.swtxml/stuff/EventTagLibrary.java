@@ -21,13 +21,12 @@ import org.eclipse.swt.widgets.Button;
 import com.swtxml.magic.MagicTagLibrary;
 import com.swtxml.parser.IControllerObjectProvider;
 import com.swtxml.parser.TagLibraryException;
-import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagNode;
 
 public class EventTagLibrary extends MagicTagLibrary {
 
 	@Override
-	public void foreignAttribute(final TagNode node, TagAttribute attr) {
+	public void foreignAttribute(final TagNode node, String name, String value) {
 		Button btn = node.get(Button.class);
 		if (btn == null) {
 			throw new TagLibraryException(node, "onClick event handler only works for Button");

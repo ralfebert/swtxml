@@ -32,7 +32,7 @@ public class PrototypeTagLibrary extends MagicTagLibrary {
 
 	@Tag
 	public ComboViewer list(@Parent Combo combo, TagInformation tag) {
-		String[] valueList = StringUtils.split(tag.requireAttribute("values", String.class), '|');
+		String[] valueList = StringUtils.split(tag.requireAttribute("values"), '|');
 		ComboViewer viewer = new ComboViewer(combo);
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new LabelProvider());
@@ -42,7 +42,7 @@ public class PrototypeTagLibrary extends MagicTagLibrary {
 
 	@Tag
 	public ListViewer list(@Parent List list, TagInformation tag) {
-		String[] valueList = StringUtils.split(tag.requireAttribute("values", String.class), '|');
+		String[] valueList = StringUtils.split(tag.requireAttribute("values"), '|');
 		ListViewer viewer = new ListViewer(list);
 		viewer.setContentProvider(new ArrayContentProvider());
 		viewer.setLabelProvider(new LabelProvider());
@@ -88,7 +88,7 @@ public class PrototypeTagLibrary extends MagicTagLibrary {
 	@Tag
 	public void row(@Parent(recursive = true) Table table, @Parent TablePrototypeData data,
 			TagInformation tag) {
-		data.addRow(StringUtils.split(tag.requireAttribute("values", String.class), '|'));
+		data.addRow(StringUtils.split(tag.requireAttribute("values"), '|'));
 	}
 
 }

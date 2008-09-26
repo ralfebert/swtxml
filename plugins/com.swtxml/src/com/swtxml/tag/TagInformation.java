@@ -10,11 +10,10 @@
  *******************************************************************************/
 package com.swtxml.tag;
 
-import java.util.List;
+import java.util.Map;
 
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
-import com.swtxml.parser.IAttributeConverter.NotConvertable;
 
 public class TagInformation {
 
@@ -25,10 +24,10 @@ public class TagInformation {
 	private final String tagName;
 	private final String locationInfo;
 	private final int level;
-	private final List<TagAttribute> attributes;
+	protected final Map<String, String> attributes;
 
 	public TagInformation(Document document, ITagLibrary tagLibrary, TagNode parent,
-			String tagName, String locationInfo, int level, List<TagAttribute> attributes) {
+			String tagName, String locationInfo, int level, Map<String, String> attributes) {
 		this.document = document;
 		this.tagLibrary = tagLibrary;
 		this.parent = parent;
@@ -84,53 +83,20 @@ public class TagInformation {
 		return tagLibrary;
 	}
 
-	protected List<TagAttribute> getAttributes() {
-		return attributes;
+	public String peepAttribute(String name) {
+		return attributes.get(name);
 	}
 
 	public String getAttribute(String name) {
-		for (TagAttribute tagAttribute : attributes) {
-			if (tagAttribute.isLocal() && tagAttribute.getName().equals(name)) {
-				return tagAttribute.getValue();
-			}
-		}
-		return null;
+		return attributes.remove(name);
 	}
 
-	public String processAttribute(String name) {
-		for (TagAttribute tagAttribute : attributes) {
-			if (tagAttribute.isLocal() && tagAttribute.getName().equals(name)) {
-				tagAttribute.setProcessed();
-				return tagAttribute.getValue();
-			}
+	public String requireAttribute(String name) {
+		String attr = getAttribute(name);
+		if (attr == null) {
+			throw new TagLibraryException(this, "Required attribute " + name + " not found!");
 		}
-		return null;
-	}
-
-	public <T> T getConvertedAttribute(String name, Class<T> convertTo) {
-		for (TagAttribute tagAttribute : attributes) {
-			if (tagAttribute.isLocal() && tagAttribute.getName().equals(name)) {
-				// TODO: getting the converted attribute marks it as processed -
-				// this is awkward
-				tagAttribute.setProcessed();
-				T convertedValue = (T) tagAttribute.getConvertedValue(this, convertTo);
-				if (convertedValue instanceof NotConvertable) {
-					throw new TagLibraryException(this, "Attribute " + tagAttribute
-							+ " couldn't be converted to " + convertTo);
-				}
-				return convertedValue;
-			}
-		}
-		return null;
-	}
-
-	public <T> T requireAttribute(String name, Class<T> convertTo) {
-		T attr = getConvertedAttribute(name, convertTo);
-		if (attr != null) {
-			return attr;
-		}
-
-		throw new TagLibraryException(this, "Required attribute " + name + " not found!");
+		return attr;
 	}
 
 	public TagNode getParent() {

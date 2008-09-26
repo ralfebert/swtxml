@@ -14,8 +14,6 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.converter.Injectors;
 import com.swtxml.metadata.ITag;
-import com.swtxml.metadata.SwtTagAttribute;
-import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
@@ -45,14 +43,14 @@ public class MagicTagNodeObjectProxy extends TagNode {
 	}
 
 	@Override
-	// TODO: move processAttribute out
-	protected void processAttribute(TagAttribute attr) {
-		if (tag != null && obj instanceof Widget) {
-			SwtTagAttribute tagAttr = (SwtTagAttribute) tag.getAttribute(attr.getName());
-			Injectors.createSwtInjector(getDocument()).getInjector(obj, false).setPropertyValue(
-					attr.getName(), attr.getValue());
+	public void process() {
+		for (String name : attributes.keySet()) {
+			// TODO: widget vs general class
+			if (tag != null && obj instanceof Widget) {
+				Injectors.createSwtInjector(getDocument()).getInjector(obj, false)
+						.setPropertyValue(name, attributes.get(name));
+			}
 		}
-		attr.setProcessed();
 	}
 
 }

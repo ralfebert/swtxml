@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.swtxml.parser;
 
-import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
@@ -18,6 +17,6 @@ public interface ITagLibrary {
 
 	public TagNode tag(TagInformation tagInfo);
 
-	public void foreignAttribute(TagNode node, TagAttribute attr);
+	public void foreignAttribute(TagNode node, String name, String value);
 
 }

@@ -18,14 +18,12 @@ import com.swtxml.magic.MagicTagNodeObjectProxy;
 import com.swtxml.metadata.ITag;
 import com.swtxml.metadata.SwtTagRegistry;
 import com.swtxml.metadata.SwtWidgetBuilder;
-import com.swtxml.parser.IAttributeConverter;
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
-import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
-public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
+public class SwtWidgetTagLibrary implements ITagLibrary {
 
 	private SwtTagRegistry registry = new SwtTagRegistry();
 
@@ -41,7 +39,7 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 		}
 
 		try {
-			Integer style = SwtConstants.SWT.getIntValue(tagInfo.processAttribute("style"));
+			Integer style = SwtConstants.SWT.getIntValue(tagInfo.getAttribute("style"));
 			Class<?> parentClass = builder.getParentClass();
 			Widget widget = builder.build(tagInfo.findParentRecursive(parentClass),
 					style == null ? SWT.NONE : style);
@@ -55,11 +53,7 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 
 	}
 
-	public Object convert(TagInformation node, TagAttribute attr, Class<?> destClass) {
-		throw new RuntimeException("DENKSTE!");
-	}
-
-	public void foreignAttribute(TagNode node, TagAttribute attr) {
+	public void foreignAttribute(TagNode node, String name, String value) {
 		// nothing to do
 	}
 

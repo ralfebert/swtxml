@@ -16,9 +16,4 @@ public class TagNodeEmpty extends TagNode {
 		super(tagInfo);
 	}
 
-	@Override
-	protected void processAttribute(TagAttribute attr) {
-		// nothing to do
-	}
-
 }

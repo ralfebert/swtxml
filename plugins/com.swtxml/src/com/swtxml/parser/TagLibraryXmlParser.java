@@ -13,8 +13,6 @@ package com.swtxml.parser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -75,20 +73,6 @@ public class TagLibraryXmlParser {
 		} catch (IOException e) {
 			throw new XmlParsingException(e);
 		}
-	}
-
-	private List<IAttributeConverter> converters = null;
-
-	public final List<IAttributeConverter> getDefaultConverters() {
-		if (converters == null) {
-			converters = new ArrayList<IAttributeConverter>();
-			configureConverters(converters);
-		}
-		return converters;
-	}
-
-	protected void configureConverters(List<IAttributeConverter> converters) {
-		converters.add(new DefaultConverters());
 	}
 
 	public <T> T getById(String id, Class<T> clazz) {
