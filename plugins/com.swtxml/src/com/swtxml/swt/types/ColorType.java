@@ -1,5 +1,6 @@
 package com.swtxml.swt.types;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import org.eclipse.swt.graphics.Color;
@@ -8,9 +9,11 @@ import org.eclipse.swt.widgets.Display;
 
 import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.SwtHandling;
+import com.swtxml.util.parser.Splitter;
+import com.swtxml.util.types.IEnumeratedType;
 import com.swtxml.util.types.IType;
 
-public class ColorType implements IType<Color> {
+public class ColorType implements IType<Color>, IEnumeratedType {
 
 	private final static HashMap<String, Integer> SWT_COLORS = new HashMap<String, Integer>();
 
@@ -40,4 +43,11 @@ public class ColorType implements IType<Color> {
 				i & 0xff));
 	}
 
+	public Collection<String> getEnumValues() {
+		return SWT_COLORS.keySet();
+	}
+
+	public Splitter getSplitRule() {
+		return Splitter.none();
+	}
 }

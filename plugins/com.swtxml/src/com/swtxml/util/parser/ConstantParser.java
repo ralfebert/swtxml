@@ -46,6 +46,8 @@ public class ConstantParser {
 
 	private Map<String, Integer> constantMap = new HashMap<String, Integer>();
 
+	public static Splitter MULTIPLE = Splitter.allowMultiple(',', ";,|");
+
 	public ConstantParser(Class<?>... constantClasses) {
 		for (Class<?> cl : constantClasses) {
 			if (!constantMap.containsKey(cl)) {
@@ -80,7 +82,7 @@ public class ConstantParser {
 		if (value == null) {
 			return style;
 		}
-		String[] values = StringUtils.split(value, ";,|");
+		String[] values = MULTIPLE.split(value);
 		for (String v : values) {
 			v = v.trim().toUpperCase();
 
@@ -91,7 +93,7 @@ public class ConstantParser {
 				List<String> constants = new ArrayList<String>(constantMap.keySet());
 				Collections.sort(constants);
 				throw new ParseException("Unknown style constant: " + v + ", allowed are: "
-						+ StringUtils.join(constants, ", "));
+						+ MULTIPLE.join(constants));
 			}
 
 			style |= constant;
@@ -101,7 +103,7 @@ public class ConstantParser {
 	}
 
 	public ConstantParser filter(String value) {
-		String[] values = StringUtils.split(value, ";,|");
+		String[] values = MULTIPLE.split(value);
 		Map<String, Integer> matches = new HashMap<String, Integer>();
 		for (String v : values) {
 			v = v.trim().toUpperCase();

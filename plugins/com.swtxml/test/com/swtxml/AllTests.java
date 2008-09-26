@@ -10,16 +10,17 @@ import com.swtxml.swt.metadata.SwtNamespaceTest;
 import com.swtxml.swt.sample.SwtWidgetsTest;
 import com.swtxml.util.parser.ConstantParserTest;
 import com.swtxml.util.parser.KeyValueParserTest;
+import com.swtxml.util.parser.SplitterTest;
 import com.swtxml.util.properties.BaseConvertersTest;
 import com.swtxml.util.properties.PropertyMatcherTest;
 import com.swtxml.util.properties.PropertyRegistryTest;
 import com.swtxml.util.reflector.ReflectorTest;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { ReflectorTest.class, PropertyMatcherTest.class, BaseConvertersTest.class,
-		PropertyRegistryTest.class, ConstantParserTest.class, KeyValueParserTest.class,
-		FormAttachmentConverterTest.class, SwtConvertersTest.class, SwtInjectorTest.class,
-		SwtNamespaceTest.class, SwtWidgetsTest.class })
+@Suite.SuiteClasses( { SplitterTest.class, ReflectorTest.class, PropertyMatcherTest.class,
+		BaseConvertersTest.class, PropertyRegistryTest.class, ConstantParserTest.class,
+		KeyValueParserTest.class, FormAttachmentConverterTest.class, SwtConvertersTest.class,
+		SwtInjectorTest.class, SwtNamespaceTest.class, SwtWidgetsTest.class })
 public class AllTests {
 
 }

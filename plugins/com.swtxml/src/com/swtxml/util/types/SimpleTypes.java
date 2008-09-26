@@ -1,8 +1,12 @@
 package com.swtxml.util.types;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.swtxml.util.parser.ParseException;
+import com.swtxml.util.parser.Splitter;
 import com.swtxml.util.properties.PropertyMatcher;
 import com.swtxml.util.properties.PropertyRegistry;
 
@@ -12,8 +16,7 @@ public class SimpleTypes {
 		inj.add(new PropertyMatcher(Boolean.class, Boolean.TYPE), new BooleanConverter());
 		inj.add(new PropertyMatcher(Integer.class, Integer.TYPE), new IntegerConverter());
 		inj.add(new PropertyMatcher(Float.class, Float.TYPE), new FloatConverter());
-		inj.add(new PropertyMatcher(Character.class, Character.TYPE),
-				new CharacterConverter());
+		inj.add(new PropertyMatcher(Character.class, Character.TYPE), new CharacterConverter());
 		inj.add(new PropertyMatcher(String.class), new StringConverter());
 		inj.add(new PropertyMatcher(int[].class), new IntArrayConverter());
 	}
@@ -28,9 +31,17 @@ public class SimpleTypes {
 		}
 	}
 
-	public static class BooleanConverter implements IType<Boolean> {
+	public static class BooleanConverter implements IType<Boolean>, IEnumeratedType {
 		public Boolean convert(Object obj, String value) {
 			return Boolean.parseBoolean(value);
+		}
+
+		public Collection<String> getEnumValues() {
+			return Arrays.asList(String.valueOf(true), String.valueOf(false));
+		}
+
+		public Splitter getSplitRule() {
+			return Splitter.none();
 		}
 	}
 

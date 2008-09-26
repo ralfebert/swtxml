@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
@@ -30,6 +31,8 @@ import com.swtxml.metadata.IAttribute;
 import com.swtxml.metadata.INamespace;
 import com.swtxml.metadata.ITag;
 import com.swtxml.swt.metadata.SwtNamespace;
+import com.swtxml.util.types.IEnumeratedType;
+import com.swtxml.util.types.IType;
 
 @SuppressWarnings("restriction")
 public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
@@ -90,7 +93,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 	}
 
 	@Override
-	protected void addAttributeValueProposals(ContentAssistRequest contentAssistRequest) {
+	protected void addAttributeValueProposals(final ContentAssistRequest contentAssistRequest) {
 		ITag tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
 		if (tag == null) {
 			return;
@@ -121,18 +124,31 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
 		String attributeName = open.getText(nameRegion);
 		IAttribute attribute = tag.getAttributes().get(attributeName);
-		if (attribute == null || !(attribute instanceof IAttributeContentAssist)) {
+		if (attribute == null) {
 			return;
 		}
 
-		IAttributeContentAssist contentAssist = (IAttributeContentAssist) attribute;
-		System.out.println("===");
+		IType<?> type = attribute.getType();
+		if (type instanceof IEnumeratedType) {
+			List<String> proposals = new ArrayList<String>(((IEnumeratedType) type).getEnumValues());
+			Collections.sort(proposals);
 
-		System.out.println(attribute);
-		System.out.println(contentAssistRequest.getMatchString());
-		System.out.println(contentAssistRequest.getText());
-		contentAssistRequest.addProposal(new CompletionProposal("\"yoyo\"", contentAssistRequest
-				.getReplacementBeginPosition(), contentAssistRequest.getReplacementLength(), 0));
+			final String match = StringUtils.strip(contentAssistRequest.getMatchString()
+					.toLowerCase(), "\"'");
+			List<String> matchingProposals = new ArrayList<String>(Collections2.filter(proposals,
+					new Predicate<String>() {
 
+						public boolean apply(String proposal) {
+							return proposal.toLowerCase().startsWith(match);
+						}
+
+					}));
+
+			for (String proposal : matchingProposals) {
+				contentAssistRequest.addProposal(new CompletionProposal(proposal,
+						contentAssistRequest.getReplacementBeginPosition() + 1,
+						contentAssistRequest.getReplacementLength() - 2, proposal.length() + 1));
+			}
+		}
 	}
 }
