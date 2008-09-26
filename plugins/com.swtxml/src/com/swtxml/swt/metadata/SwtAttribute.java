@@ -1,12 +1,13 @@
-package com.swtxml.metadata;
+package com.swtxml.swt.metadata;
 
+import com.swtxml.metadata.IAttribute;
 import com.swtxml.util.reflector.IReflectorProperty;
 
-public class SwtTagAttribute implements ITagAttribute {
+public class SwtAttribute implements IAttribute {
 
 	private final IReflectorProperty property;
 
-	public SwtTagAttribute(IReflectorProperty property) {
+	public SwtAttribute(IReflectorProperty property) {
 		this.property = property;
 	}
 
@@ -23,7 +24,7 @@ public class SwtTagAttribute implements ITagAttribute {
 		return "SwtTagAttribute[" + property.getName() + "]";
 	}
 
-	public int compareTo(ITagAttribute o) {
+	public int compareTo(IAttribute o) {
 		return getName().compareTo(o.getName());
 	}
 

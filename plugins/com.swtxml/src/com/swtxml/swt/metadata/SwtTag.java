@@ -1,4 +1,4 @@
-package com.swtxml.metadata;
+package com.swtxml.swt.metadata;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,6 +6,9 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Widget;
 
+import com.swtxml.metadata.IAttribute;
+import com.swtxml.metadata.ITag;
+import com.swtxml.metadata.MetaDataException;
 import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.Reflector;
 
@@ -14,7 +17,7 @@ public class SwtTag implements ITag {
 	private String className;
 	private Class<? extends Widget> swtWidgetClass;
 
-	private Map<String, ITagAttribute> attributes;
+	private Map<String, SwtAttribute> attributes;
 
 	public SwtTag(String className) {
 		this.className = className;
@@ -41,31 +44,27 @@ public class SwtTag implements ITag {
 		if (attributes == null) {
 			Collection<IReflectorProperty> properties = Reflector
 					.findPublicProperties(swtWidgetClass);
-			attributes = new HashMap<String, ITagAttribute>();
+			attributes = new HashMap<String, SwtAttribute>();
 			for (IReflectorProperty prop : properties) {
-				SwtTagAttribute attribute = new SwtTagAttribute(prop);
+				SwtAttribute attribute = new SwtAttribute(prop);
 				attributes.put(attribute.getName(), attribute);
 			}
 		}
 	}
 
-	public ITagAttribute getAttribute(String name) {
+	public IAttribute getAttribute(String name) {
 		checkAttributes();
 		return attributes.get(name);
 	}
 
-	public Collection<ITagAttribute> getAttributes() {
+	public Map<String, SwtAttribute> getAttributes() {
 		checkAttributes();
-		return attributes.values();
+		return attributes;
 	}
 
 	@Override
 	public String toString() {
 		return "SwtTag[" + className + "]";
-	}
-
-	public int compareTo(ITag o) {
-		return this.getName().compareTo(o.getName());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -78,5 +77,9 @@ public class SwtTag implements ITag {
 
 	public Class<? extends Widget> getSwtWidgetClass() {
 		return swtWidgetClass;
+	}
+
+	public int compareTo(ITag o) {
+		return this.getName().compareTo(o.getName());
 	}
 }

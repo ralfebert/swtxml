@@ -1,4 +1,4 @@
-package com.swtxml.metadata;
+package com.swtxml.swt.metadata;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,28 +10,28 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SwtTagRegistryTest {
+import com.swtxml.metadata.IAttribute;
 
-	private SwtTagRegistry swtTagRegistry;
-	private ITag buttonTag;
+public class SwtNamespaceTest {
+
+	private SwtNamespace swtTagRegistry;
+	private SwtTag buttonTag;
 
 	@Before
 	public void setUp() throws Exception {
-		swtTagRegistry = new SwtTagRegistry();
-		buttonTag = swtTagRegistry.getTag("Button");
+		swtTagRegistry = new SwtNamespace();
+		buttonTag = swtTagRegistry.getTags().get("Button");
 	}
 
 	@Test
 	public void testGetTagMetaData() {
 		assertEquals("Button", buttonTag.getName());
 
-		assertEquals(null, swtTagRegistry.getTag("wegewg"));
-		assertEquals(null, buttonTag.getAttribute("erherhe"));
+		assertTrue(swtTagRegistry.getTags().size() > 0);
+		assertTrue(buttonTag.getAttributes().size() > 0);
 
-		ITagAttribute textAttribute = buttonTag.getAttribute("text");
+		IAttribute textAttribute = buttonTag.getAttributes().get("text");
 		assertEquals("text", textAttribute.getName());
-
-		assertTrue(buttonTag.getAttributes().contains(textAttribute));
 	}
 
 	@Test

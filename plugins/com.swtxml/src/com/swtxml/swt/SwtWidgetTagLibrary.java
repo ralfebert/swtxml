@@ -15,21 +15,21 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.magic.MagicTagNodeObjectProxy;
-import com.swtxml.metadata.ITag;
-import com.swtxml.metadata.SwtTagRegistry;
-import com.swtxml.metadata.SwtWidgetBuilder;
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
+import com.swtxml.swt.metadata.SwtNamespace;
+import com.swtxml.swt.metadata.SwtTag;
+import com.swtxml.swt.metadata.SwtWidgetBuilder;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
 public class SwtWidgetTagLibrary implements ITagLibrary {
 
-	private SwtTagRegistry registry = new SwtTagRegistry();
+	private SwtNamespace registry = new SwtNamespace();
 
 	public TagNode tag(TagInformation tagInfo) {
 
-		ITag tag = registry.getTag(tagInfo.getTagName());
+		SwtTag tag = registry.getTags().get(tagInfo.getTagName());
 		if (tag == null) {
 			throw new TagLibraryException(tagInfo, "Unknown tag: " + tagInfo.getTagName());
 		}

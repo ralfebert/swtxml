@@ -1,4 +1,4 @@
-package com.swtxml.metadata;
+package com.swtxml.swt.metadata;
 
 import java.lang.reflect.Constructor;
 import java.util.Arrays;

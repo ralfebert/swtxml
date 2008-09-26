@@ -1,24 +1,26 @@
-package com.swtxml.metadata;
+package com.swtxml.swt.metadata;
 
 import java.io.IOException;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 
-public class SwtTagRegistry {
+import com.swtxml.metadata.INamespace;
+import com.swtxml.metadata.MetaDataException;
 
-	private Map<String, ITag> tagsByName = new HashMap<String, ITag>();
+public class SwtNamespace implements INamespace {
 
-	public SwtTagRegistry() {
+	private Map<String, SwtTag> tagsByName = new HashMap<String, SwtTag>();
+
+	public SwtNamespace() {
 		try {
-			String widgetClasses = IOUtils.toString(SwtTagRegistry.class
+			String widgetClasses = IOUtils.toString(SwtNamespace.class
 					.getResourceAsStream("widgets.txt"));
 			for (String className : StringUtils.split(widgetClasses)) {
-				ITag tag = new SwtTag(className);
-				ITag existingTag = tagsByName.get(tag.getName());
+				SwtTag tag = new SwtTag(className);
+				SwtTag existingTag = tagsByName.get(tag.getName());
 				if (existingTag != null) {
 					throw new MetaDataException("Tag naming conflict between " + tag + " and "
 							+ existingTag + "!");
@@ -30,12 +32,8 @@ public class SwtTagRegistry {
 		}
 	}
 
-	public ITag getTag(String name) {
-		return tagsByName.get(name);
-	}
-
-	public Collection<ITag> getTags() {
-		return tagsByName.values();
+	public Map<String, SwtTag> getTags() {
+		return tagsByName;
 	}
 
 }

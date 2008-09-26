@@ -1,6 +1,6 @@
 package com.swtxml.metadata;
 
-public interface ITagAttribute extends Comparable<ITagAttribute> {
+public interface IAttribute extends Comparable<IAttribute> {
 
 	String getName();
 

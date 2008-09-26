@@ -1,14 +1,12 @@
 package com.swtxml.metadata;
 
-import java.util.Collection;
+import java.util.Map;
 
 public interface ITag extends Comparable<ITag> {
 
 	String getName();
 
-	ITagAttribute getAttribute(String name);
-
-	Collection<ITagAttribute> getAttributes();
+	Map<String, ? extends IAttribute> getAttributes();
 
 	<T> T adaptTo(Class<T> clazz);
 }
