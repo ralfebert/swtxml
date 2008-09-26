@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
-import com.swtxml.util.ReflectorException;
+import com.swtxml.util.reflector.ReflectorException;
 
 public class SwtWidgetBuilder {
 

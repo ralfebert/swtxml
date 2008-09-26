@@ -6,8 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.swtxml.converter.IIdResolver;
 import com.swtxml.parser.XmlParsingException;
+import com.swtxml.swt.injector.IIdResolver;
 
 public class Document implements IIdResolver {
 

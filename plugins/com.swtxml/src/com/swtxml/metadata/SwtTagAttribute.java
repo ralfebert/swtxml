@@ -1,6 +1,6 @@
 package com.swtxml.metadata;
 
-import com.swtxml.util.IReflectorProperty;
+import com.swtxml.util.reflector.IReflectorProperty;
 
 public class SwtTagAttribute implements ITagAttribute {
 

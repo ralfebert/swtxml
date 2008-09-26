@@ -6,8 +6,8 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.util.IReflectorProperty;
-import com.swtxml.util.Reflector;
+import com.swtxml.util.reflector.IReflectorProperty;
+import com.swtxml.util.reflector.Reflector;
 
 public class SwtTag implements ITag {
 

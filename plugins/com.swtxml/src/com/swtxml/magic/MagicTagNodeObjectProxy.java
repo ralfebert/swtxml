@@ -12,8 +12,8 @@ package com.swtxml.magic;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.converter.Injectors;
 import com.swtxml.metadata.ITag;
+import com.swtxml.swt.injector.SwtInjectors;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
@@ -47,7 +47,7 @@ public class MagicTagNodeObjectProxy extends TagNode {
 		for (String name : attributes.keySet()) {
 			// TODO: widget vs general class
 			if (tag != null && obj instanceof Widget) {
-				Injectors.createSwtInjector(getDocument()).getInjector(obj, false)
+				SwtInjectors.createSwtInjector(getDocument()).getInjector(obj, false)
 						.setPropertyValue(name, attributes.get(name));
 			}
 		}
