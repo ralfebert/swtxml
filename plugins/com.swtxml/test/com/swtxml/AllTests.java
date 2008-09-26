@@ -15,9 +15,8 @@ import com.swtxml.util.ReflectorTest;
 
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { KeyValueStringTest.class, PropertyMatcherTest.class, InjectorTest.class,
-		SwtInjectorTest.class, SwtHelperTest.class, SwtConstantsTest.class,
-		FormAttachmentConverterTest.class, ReflectorTest.class, ConvertersTest.class,
-		SwtTagRegistryTest.class, SwtWidgetsTest.class })
+		SwtInjectorTest.class, SwtConstantsTest.class, FormAttachmentConverterTest.class,
+		ReflectorTest.class, ConvertersTest.class, SwtTagRegistryTest.class, SwtWidgetsTest.class })
 public class AllTests {
 
 }

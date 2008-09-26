@@ -9,6 +9,12 @@ import org.junit.Test;
 
 public class SwtConstantsTest {
 
+	public static class TestConstants {
+
+		public static int BLA = 1 << 17;
+
+	}
+
 	@Test
 	public void testGetIntValue() {
 		SwtConstants constants = SwtConstants.SWT;
@@ -45,4 +51,17 @@ public class SwtConstantsTest {
 			assertTrue(e.getMessage().contains("LEFT") && e.getMessage().contains("BEGINNING"));
 		}
 	}
+
+	@Test
+	public void testConstantConverterConverter() {
+
+		SwtConstants cc = new SwtConstants(SWT.class);
+		assertEquals(SWT.READ_ONLY | SWT.BORDER, cc.getIntValue("READ_ONLY,BORDER"));
+
+		SwtConstants cc2 = new SwtConstants(TestConstants.class, SWT.class);
+		assertEquals(SWT.READ_ONLY | SWT.BORDER | TestConstants.BLA, cc2
+				.getIntValue("BLA,READ_ONLY,BORDER"));
+
+	}
+
 }
