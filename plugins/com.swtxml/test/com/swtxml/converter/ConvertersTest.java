@@ -2,9 +2,13 @@ package com.swtxml.converter;
 
 import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -19,6 +23,12 @@ public class ConvertersTest {
 	public void setup() {
 		IIdResolver idResolver = createMock(IIdResolver.class);
 		layoutInjector = Injectors.createLayoutInjector(idResolver);
+	}
+
+	@Test
+	public void testSimpleTypeConverters() {
+		assertTrue(Arrays.equals(new int[] { 1, 2, 3 },
+				new SimpleTypeConverters.IntArrayConverter().convert("1,2,3")));
 	}
 
 	@Test
@@ -66,5 +76,10 @@ public class ConvertersTest {
 		GridData data = (GridData) new LayoutDataSetter(layoutInjector).createLayoutData(
 				new GridLayout(), "widthHint:120");
 		assertEquals(120, data.widthHint);
+	}
+
+	@Test
+	public void testPointConverter() {
+		assertEquals(new Point(12, 141), new PointConverter().convert("12x141"));
 	}
 }

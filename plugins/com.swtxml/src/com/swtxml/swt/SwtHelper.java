@@ -21,8 +21,6 @@ import java.util.Map;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.widgets.Control;
 
 import com.swtxml.magic.Attribute;
 import com.swtxml.parser.TagLibraryException;
@@ -31,22 +29,6 @@ import com.swtxml.tag.TagAttribute;
 import com.swtxml.tag.TagInformation;
 
 public class SwtHelper {
-
-	public static enum SWTAlign {
-		TOP(SWT.TOP), BOTTOM(SWT.BOTTOM), LEFT(SWT.LEFT), RIGHT(SWT.RIGHT), CENTER(SWT.CENTER), DEFAULT(
-				SWT.DEFAULT);
-
-		private int swtConstant;
-
-		private SWTAlign(int swtConstant) {
-			this.swtConstant = swtConstant;
-		}
-
-		public int getSwtConstant() {
-			return swtConstant;
-		}
-
-	};
 
 	public static enum SWTTableAlign {
 		LEFT(SWT.LEFT), RIGHT(SWT.RIGHT), CENTER(SWT.CENTER);
@@ -135,55 +117,6 @@ public class SwtHelper {
 					+ destObject.getClass().getCanonicalName() + " " + triedConverterTypes);
 		}
 
-	}
-
-	// TODO: parser - abstract "get by id" out
-	public static FormAttachment parseFormAttachment(TagInformation node, TagAttribute attr) {
-		FormAttachment attachment = new FormAttachment();
-		List<String> parts = new ArrayList<String>();
-		int start = 0;
-		String value = attr.getValue();
-		for (int i = 0; i < value.length(); i++) {
-			char charAt = value.charAt(i);
-			if (charAt == '-' || charAt == '+') {
-				parts.add(value.substring(start, i).trim());
-				start = i;
-			}
-		}
-		parts.add(value.substring(start, value.length()).trim());
-
-		for (String part : parts) {
-			if (part.endsWith("%")) {
-				if (part.startsWith("+")) {
-					part = part.substring(1);
-				}
-				attachment.numerator = Integer.parseInt(part.substring(0, part.length() - 1));
-			} else {
-				try {
-					if (part.startsWith("+")) {
-						part = part.substring(1);
-					}
-					attachment.offset = Integer.parseInt(part);
-				} catch (NumberFormatException e) {
-					String[] controlString = StringUtils.split(part, ".");
-					if (controlString.length >= 1) {
-						String id = controlString[0].trim();
-						Control control = attr.getParser().getById(id, Control.class);
-						if (control == null) {
-							throw new TagLibraryException(node, "Control with id " + id
-									+ " not found");
-						}
-						attachment.control = control;
-					}
-					if (controlString.length >= 2) {
-						String align = controlString[1].trim();
-						attachment.alignment = requireEnumValue(node, align, SWTAlign.class)
-								.getSwtConstant();
-					}
-				}
-			}
-		}
-		return attachment;
 	}
 
 	public static <T extends Enum> T requireEnumValue(TagInformation node, String value,

@@ -1,6 +1,8 @@
 package com.swtxml.converter;
 
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -18,9 +20,14 @@ public class Injectors {
 
 		inj.addConverter(new PropertyMatcher(Widget.class, "style", Integer.TYPE),
 				new StyleConverter(SwtConstants.SWT));
+
 		inj.addConverter(new PropertyMatcher(Composite.class, "layout", Layout.class),
 				new LayoutConverter(layoutInjector));
+
 		inj.addConverter(new PropertyMatcher(Color.class), new ColorConverter());
+
+		inj.addConverter(new PropertyMatcher(Point.class), new PointConverter());
+
 		inj.addSetter(new PropertyMatcher(Control.class, "layoutData"), new LayoutDataSetter(
 				layoutInjector));
 
@@ -42,6 +49,9 @@ public class Injectors {
 		inj.addConverter(new PropertyMatcher(GridData.class, "horizontalAlignment", Integer.TYPE),
 				new StyleConverter(SwtConstants.SWT
 						.restricted("BEGINNING|CENTER|END|FILL|LEFT|RIGHT")));
+
+		inj.addConverter(new PropertyMatcher(FormAttachment.class), new FormAttachmentConverter(
+				idResolver));
 
 		SimpleTypeConverters.addSimpleTypes(inj);
 

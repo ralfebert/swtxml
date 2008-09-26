@@ -36,7 +36,10 @@ public class Document implements IIdResolver {
 			}
 			this.root = node;
 		}
-		nodesById.put(node.processAttribute("id"), node);
+		String id = node.processAttribute("id");
+		if (id != null) {
+			nodesById.put(id, node);
+		}
 		this.allNodes.add(node);
 	}
 

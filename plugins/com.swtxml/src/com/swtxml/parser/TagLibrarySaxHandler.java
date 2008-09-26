@@ -90,16 +90,12 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		TagInformation tagInformation = new TagInformation(document, tagLibrary, parsingStack
 				.isEmpty() ? null : parsingStack.peek(), localName, getLocationInfo(), parsingStack
 				.size(), attributeList);
-		String id = null;
 		for (int i = 0; i < attributes.getLength(); i++) {
 			String uri = attributes.getURI(i);
 			if (StringUtils.isEmpty(uri) || uri.equals(namespaceUri)) {
-				if (attributes.getLocalName(i).equals("id")) {
-					id = attributes.getValue(i);
-				} else {
-					attributeList.add(new TagAttribute(parser, tagLibrary, attributes
-							.getLocalName(i), attributes.getValue(i), true));
-				}
+				attributeList.add(new TagAttribute(parser, tagLibrary, attributes.getLocalName(i),
+						attributes.getValue(i), true));
+
 			} else {
 				attributeList.add(new TagAttribute(parser, getTagLibrary(uri), attributes
 						.getLocalName(i), attributes.getValue(i), false));

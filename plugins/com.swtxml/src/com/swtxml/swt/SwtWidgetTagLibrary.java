@@ -10,10 +10,7 @@
  *******************************************************************************/
 package com.swtxml.swt;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
@@ -59,23 +56,7 @@ public class SwtWidgetTagLibrary implements ITagLibrary, IAttributeConverter {
 	}
 
 	public Object convert(TagInformation node, TagAttribute attr, Class<?> destClass) {
-		if (destClass == Point.class) {
-			String[] sizes = StringUtils.split(attr.getValue(), ",x");
-			return new Point(Integer.parseInt(sizes[0]), Integer.parseInt(sizes[1]));
-		}
-		if (destClass == FormAttachment.class) {
-			return SwtHelper.parseFormAttachment(node, attr);
-		}
-		if (destClass == int[].class) {
-			String[] intStrings = StringUtils.split(attr.getValue(), ',');
-			int[] ints = new int[intStrings.length];
-			for (int i = 0; i < ints.length; i++) {
-				ints[i] = Integer.parseInt(intStrings[i]);
-			}
-			return ints;
-		}
-
-		return IAttributeConverter.NOT_CONVERTABLE;
+		throw new RuntimeException("DENKSTE!");
 	}
 
 	public void foreignAttribute(TagNode node, TagAttribute attr) {
