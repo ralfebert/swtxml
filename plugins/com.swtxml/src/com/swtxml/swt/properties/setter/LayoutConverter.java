@@ -1,4 +1,4 @@
-package com.swtxml.swt.injector.setter;
+package com.swtxml.swt.properties.setter;
 
 import java.util.Map;
 
@@ -6,11 +6,11 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Layout;
 
-import com.swtxml.util.injector.IConverter;
-import com.swtxml.util.injector.IInjector;
-import com.swtxml.util.injector.PropertyRegistry;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
+import com.swtxml.util.properties.IConverter;
+import com.swtxml.util.properties.IInjector;
+import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.reflector.ReflectorException;
 
 public class LayoutConverter implements IConverter<Object> {

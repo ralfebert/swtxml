@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 import org.junit.Test;
 
+import com.swtxml.util.properties.SimpleTypeConverters;
+
 public class BaseConvertersTest {
 
 	@Test

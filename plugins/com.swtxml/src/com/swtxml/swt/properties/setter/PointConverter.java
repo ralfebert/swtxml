@@ -1,9 +1,9 @@
-package com.swtxml.swt.injector.setter;
+package com.swtxml.swt.properties.setter;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.graphics.Point;
 
-import com.swtxml.util.injector.IConverter;
+import com.swtxml.util.properties.IConverter;
 
 public class PointConverter implements IConverter<Point> {
 

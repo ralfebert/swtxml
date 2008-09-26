@@ -10,17 +10,17 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.swt.injector.IIdResolver;
-import com.swtxml.swt.injector.setter.ColorConverter;
-import com.swtxml.swt.injector.setter.FormAttachmentConverter;
-import com.swtxml.swt.injector.setter.LayoutConverter;
-import com.swtxml.swt.injector.setter.LayoutDataSetter;
-import com.swtxml.swt.injector.setter.PointConverter;
-import com.swtxml.swt.injector.setter.StyleConverter;
-import com.swtxml.util.injector.PropertyRegistry;
-import com.swtxml.util.injector.PropertyMatcher;
-import com.swtxml.util.injector.SimpleTypeConverters;
+import com.swtxml.swt.properties.IIdResolver;
+import com.swtxml.swt.properties.setter.ColorConverter;
+import com.swtxml.swt.properties.setter.FormAttachmentConverter;
+import com.swtxml.swt.properties.setter.LayoutConverter;
+import com.swtxml.swt.properties.setter.LayoutDataSetter;
+import com.swtxml.swt.properties.setter.PointConverter;
+import com.swtxml.swt.properties.setter.StyleConverter;
 import com.swtxml.util.parser.ConstantParser;
+import com.swtxml.util.properties.PropertyMatcher;
+import com.swtxml.util.properties.PropertyRegistry;
+import com.swtxml.util.properties.SimpleTypeConverters;
 
 public class SwtHandling {
 

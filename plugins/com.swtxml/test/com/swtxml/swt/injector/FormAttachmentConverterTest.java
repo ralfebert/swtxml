@@ -13,8 +13,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.swtxml.swt.injector.IIdResolver;
-import com.swtxml.swt.injector.setter.FormAttachmentConverter;
+import com.swtxml.swt.properties.IIdResolver;
+import com.swtxml.swt.properties.setter.FormAttachmentConverter;
 
 public class FormAttachmentConverterTest {
 

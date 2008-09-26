@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Layout;
 import org.junit.Test;
 
-import com.swtxml.util.injector.PropertyMatcher;
+import com.swtxml.util.properties.PropertyMatcher;
 import com.swtxml.util.reflector.BaseTestVO;
 import com.swtxml.util.reflector.TestVO;
 

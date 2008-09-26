@@ -13,12 +13,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.swt.injector.setter.ColorConverter;
-import com.swtxml.swt.injector.setter.LayoutConverter;
-import com.swtxml.swt.injector.setter.LayoutDataSetter;
-import com.swtxml.swt.injector.setter.PointConverter;
-import com.swtxml.util.injector.IConverter;
-import com.swtxml.util.injector.PropertyRegistry;
+import com.swtxml.swt.properties.IIdResolver;
+import com.swtxml.swt.properties.setter.ColorConverter;
+import com.swtxml.swt.properties.setter.LayoutConverter;
+import com.swtxml.swt.properties.setter.LayoutDataSetter;
+import com.swtxml.swt.properties.setter.PointConverter;
+import com.swtxml.util.properties.IConverter;
+import com.swtxml.util.properties.PropertyRegistry;
 
 public class SwtConvertersTest {
 

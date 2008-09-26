@@ -11,7 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.util.injector.IInjector;
+import com.swtxml.swt.properties.IIdResolver;
+import com.swtxml.util.properties.IInjector;
 
 public class SwtInjectorTest {
 	private IIdResolver idResolver;

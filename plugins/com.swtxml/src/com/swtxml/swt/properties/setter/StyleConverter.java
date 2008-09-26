@@ -1,7 +1,7 @@
-package com.swtxml.swt.injector.setter;
+package com.swtxml.swt.properties.setter;
 
-import com.swtxml.util.injector.IConverter;
 import com.swtxml.util.parser.ConstantParser;
+import com.swtxml.util.properties.IConverter;
 
 public class StyleConverter implements IConverter<Integer> {
 

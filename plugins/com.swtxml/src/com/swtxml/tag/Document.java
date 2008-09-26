@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.swtxml.parser.XmlParsingException;
-import com.swtxml.swt.injector.IIdResolver;
+import com.swtxml.swt.properties.IIdResolver;
 
 public class Document implements IIdResolver {
 

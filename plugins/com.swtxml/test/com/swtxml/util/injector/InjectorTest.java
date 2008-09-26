@@ -10,6 +10,11 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
+import com.swtxml.util.properties.IConverter;
+import com.swtxml.util.properties.IInjector;
+import com.swtxml.util.properties.ISetter;
+import com.swtxml.util.properties.PropertyMatcher;
+import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.TestVO;
 

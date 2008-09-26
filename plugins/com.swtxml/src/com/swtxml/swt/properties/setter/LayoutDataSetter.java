@@ -1,4 +1,4 @@
-package com.swtxml.swt.injector.setter;
+package com.swtxml.swt.properties.setter;
 
 import java.util.Map;
 
@@ -11,10 +11,10 @@ import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 
-import com.swtxml.util.injector.ISetter;
-import com.swtxml.util.injector.PropertyRegistry;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
+import com.swtxml.util.properties.ISetter;
+import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.ReflectorException;
 

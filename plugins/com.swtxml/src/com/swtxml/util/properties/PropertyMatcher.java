@@ -1,4 +1,4 @@
-package com.swtxml.util.injector;
+package com.swtxml.util.properties;
 
 import java.util.Arrays;
 

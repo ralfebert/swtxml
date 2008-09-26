@@ -1,4 +1,4 @@
-package com.swtxml.swt.injector.setter;
+package com.swtxml.swt.properties.setter;
 
 import java.util.HashMap;
 
@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Display;
 
 import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.util.injector.IConverter;
+import com.swtxml.util.properties.IConverter;
 
 public class ColorConverter implements IConverter<Color> {
 

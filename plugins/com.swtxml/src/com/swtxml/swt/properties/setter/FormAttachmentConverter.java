@@ -1,4 +1,4 @@
-package com.swtxml.swt.injector.setter;
+package com.swtxml.swt.properties.setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,10 +8,10 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Control;
 
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.swt.injector.IIdResolver;
-import com.swtxml.util.injector.IConverter;
+import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.util.parser.ConstantParser;
 import com.swtxml.util.parser.ParseException;
+import com.swtxml.util.properties.IConverter;
 
 public class FormAttachmentConverter implements IConverter<FormAttachment> {
 
