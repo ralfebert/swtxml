@@ -40,15 +40,15 @@ public class Injectors {
 		InjectorDefinition inj = new InjectorDefinition();
 
 		inj.addConverter(new PropertyMatcher(Layout.class, "type", Integer.TYPE),
-				new StyleConverter(SwtConstants.SWT.restricted("HORIZONTAL|VERTICAL")));
+				new StyleConverter(SwtConstants.SWT.filter("HORIZONTAL|VERTICAL")));
 
 		inj.addConverter(new PropertyMatcher(GridData.class, "verticalAlignment", Integer.TYPE),
 				new StyleConverter(SwtConstants.SWT
-						.restricted("BEGINNING|CENTER|END|FILL|TOP|BOTTOM")));
+						.filter("BEGINNING|CENTER|END|FILL|TOP|BOTTOM")));
 
 		inj.addConverter(new PropertyMatcher(GridData.class, "horizontalAlignment", Integer.TYPE),
 				new StyleConverter(SwtConstants.SWT
-						.restricted("BEGINNING|CENTER|END|FILL|LEFT|RIGHT")));
+						.filter("BEGINNING|CENTER|END|FILL|LEFT|RIGHT")));
 
 		inj.addConverter(new PropertyMatcher(FormAttachment.class), new FormAttachmentConverter(
 				idResolver));

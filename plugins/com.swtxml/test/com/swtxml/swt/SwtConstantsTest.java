@@ -30,20 +30,20 @@ public class SwtConstantsTest {
 	}
 
 	@Test
-	public void testRestricted() {
-		SwtConstants s = SwtConstants.SWT.restricted("BEGINNING|CENTER");
+	public void testFilter() {
+		SwtConstants s = SwtConstants.SWT.filter("BEGINNING|CENTER");
 		assertEquals(SWT.BEGINNING | SWT.CENTER, s.getIntValue("BEGINNING|CENTER"));
 	}
 
 	@Test(expected = Exception.class)
-	public void testInvalidRestrictedStyle() {
-		SwtConstants s = SwtConstants.SWT.restricted("BEGINNING|XXX");
+	public void testInvalidFilter() {
+		SwtConstants s = SwtConstants.SWT.filter("BEGINNING|XXX");
 		assertEquals(SWT.BEGINNING | SWT.CENTER, s.getIntValue("BEGINNING|CENTER"));
 	}
 
 	@Test
-	public void testInvalidRestrictionStyle() {
-		SwtConstants s = SwtConstants.SWT.restricted("BEGINNING|CENTER");
+	public void testInvalidFiltered() {
+		SwtConstants s = SwtConstants.SWT.filter("BEGINNING|CENTER");
 		try {
 			s.getIntValue("BEGINNING|LEFT");
 			fail("expected exception");

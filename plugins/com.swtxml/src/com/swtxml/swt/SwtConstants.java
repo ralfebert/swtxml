@@ -104,7 +104,7 @@ public class SwtConstants {
 
 	}
 
-	public SwtConstants restricted(String value) {
+	public SwtConstants filter(String value) {
 		String[] values = StringUtils.split(value, ";,|");
 		Map<String, Integer> matches = new HashMap<String, Integer>();
 		for (String v : values) {

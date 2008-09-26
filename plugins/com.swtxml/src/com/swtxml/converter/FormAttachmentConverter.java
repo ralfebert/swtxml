@@ -14,7 +14,7 @@ public class FormAttachmentConverter implements IConverter<FormAttachment> {
 
 	private IIdResolver idResolver;
 	private final static SwtConstants CONSTANTS_ALIGN = SwtConstants.SWT
-			.restricted("TOP|BOTTOM|LEFT|RIGHT|CENTER|DEFAULT");
+			.filter("TOP|BOTTOM|LEFT|RIGHT|CENTER|DEFAULT");
 
 	public FormAttachmentConverter(IIdResolver idResolver) {
 		this.idResolver = idResolver;

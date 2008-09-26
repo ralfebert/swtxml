@@ -83,10 +83,6 @@ public class TagInformation {
 		return tagLibrary;
 	}
 
-	public String peepAttribute(String name) {
-		return attributes.get(name);
-	}
-
 	public String getAttribute(String name) {
 		return attributes.remove(name);
 	}
