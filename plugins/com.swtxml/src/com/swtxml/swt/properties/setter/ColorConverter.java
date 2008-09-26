@@ -8,9 +8,9 @@ import org.eclipse.swt.widgets.Display;
 
 import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.util.properties.IConverter;
+import com.swtxml.util.properties.IType;
 
-public class ColorConverter implements IConverter<Color> {
+public class ColorConverter implements IType<Color> {
 
 	private final static HashMap<String, Integer> SWT_COLORS = new HashMap<String, Integer>();
 

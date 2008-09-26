@@ -13,7 +13,7 @@ public class PropertyRegistry {
 		this.includePublicFields = includePublicFields;
 	}
 
-	public <T> void add(PropertyMatcher matcher, IConverter<T> converter) {
+	public <T> void add(PropertyMatcher matcher, IType<T> converter) {
 		add(matcher, new ConvertingSetter(converter));
 	}
 

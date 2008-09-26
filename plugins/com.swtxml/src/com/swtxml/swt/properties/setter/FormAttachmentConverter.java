@@ -11,9 +11,9 @@ import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.util.parser.ConstantParser;
 import com.swtxml.util.parser.ParseException;
-import com.swtxml.util.properties.IConverter;
+import com.swtxml.util.properties.IType;
 
-public class FormAttachmentConverter implements IConverter<FormAttachment> {
+public class FormAttachmentConverter implements IType<FormAttachment> {
 
 	private IIdResolver idResolver;
 	private final static ConstantParser CONSTANTS_ALIGN = SwtHandling.SWT

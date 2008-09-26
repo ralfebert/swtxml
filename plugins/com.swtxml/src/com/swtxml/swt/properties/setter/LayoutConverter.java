@@ -8,12 +8,12 @@ import org.eclipse.swt.widgets.Layout;
 
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
-import com.swtxml.util.properties.IConverter;
+import com.swtxml.util.properties.IType;
 import com.swtxml.util.properties.IInjector;
 import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.reflector.ReflectorException;
 
-public class LayoutConverter implements IConverter<Object> {
+public class LayoutConverter implements IType<Object> {
 
 	private final static String SWT_LAYOUT_PACKAGE = RowLayout.class.getPackage().getName();
 	private PropertyRegistry layoutProperties;

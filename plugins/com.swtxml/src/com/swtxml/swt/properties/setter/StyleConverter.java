@@ -1,9 +1,9 @@
 package com.swtxml.swt.properties.setter;
 
 import com.swtxml.util.parser.ConstantParser;
-import com.swtxml.util.properties.IConverter;
+import com.swtxml.util.properties.IType;
 
-public class StyleConverter implements IConverter<Integer> {
+public class StyleConverter implements IType<Integer> {
 
 	private ConstantParser constants;
 

@@ -18,7 +18,7 @@ import com.swtxml.swt.properties.setter.ColorConverter;
 import com.swtxml.swt.properties.setter.LayoutConverter;
 import com.swtxml.swt.properties.setter.LayoutDataSetter;
 import com.swtxml.swt.properties.setter.PointConverter;
-import com.swtxml.util.properties.IConverter;
+import com.swtxml.util.properties.IType;
 import com.swtxml.util.properties.PropertyRegistry;
 
 public class SwtConvertersTest {
@@ -33,7 +33,7 @@ public class SwtConvertersTest {
 
 	@Test
 	public void testColor() {
-		IConverter<Color> colorConverter = new ColorConverter();
+		IType<Color> colorConverter = new ColorConverter();
 
 		Color color = colorConverter.convert(null, "#010203");
 		assertEquals(1, color.getRed());

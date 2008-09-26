@@ -4,9 +4,9 @@ import com.swtxml.util.reflector.IReflectorProperty;
 
 public class ConvertingSetter implements ISetter {
 
-	private IConverter<?> converter;
+	private IType<?> converter;
 
-	public ConvertingSetter(IConverter<?> converter) {
+	public ConvertingSetter(IType<?> converter) {
 		this.converter = converter;
 	}
 

@@ -16,7 +16,7 @@ public class SimpleTypeConverters {
 		inj.add(new PropertyMatcher(int[].class), new IntArrayConverter());
 	}
 
-	public static class StringConverter implements IConverter<String> {
+	public static class StringConverter implements IType<String> {
 		public String convert(Object obj, String value) {
 			// TODO: i18n
 			if (value.startsWith("%")) {
@@ -26,31 +26,31 @@ public class SimpleTypeConverters {
 		}
 	}
 
-	public static class BooleanConverter implements IConverter<Boolean> {
+	public static class BooleanConverter implements IType<Boolean> {
 		public Boolean convert(Object obj, String value) {
 			return Boolean.parseBoolean(value);
 		}
 	}
 
-	public static class IntegerConverter implements IConverter<Integer> {
+	public static class IntegerConverter implements IType<Integer> {
 		public Integer convert(Object obj, String value) {
 			return Integer.parseInt(value);
 		}
 	}
 
-	public static class FloatConverter implements IConverter<Float> {
+	public static class FloatConverter implements IType<Float> {
 		public Float convert(Object obj, String value) {
 			return Float.parseFloat(value);
 		}
 	}
 
-	public static class CharacterConverter implements IConverter<Character> {
+	public static class CharacterConverter implements IType<Character> {
 		public Character convert(Object obj, String value) {
 			return value.charAt(0);
 		}
 	}
 
-	public static class IntArrayConverter implements IConverter<int[]> {
+	public static class IntArrayConverter implements IType<int[]> {
 
 		public int[] convert(Object obj, String value) {
 			String[] intStrings = StringUtils.split(value, ',');
