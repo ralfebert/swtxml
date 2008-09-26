@@ -1,4 +1,4 @@
-package com.swtxml.swt.properties.setter;
+package com.swtxml.swt.types;
 
 import java.util.Map;
 
@@ -13,15 +13,15 @@ import org.eclipse.swt.widgets.Layout;
 
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
-import com.swtxml.util.properties.IType;
 import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.reflector.ReflectorException;
+import com.swtxml.util.types.IType;
 
-public class LayoutDataSetter implements IType<Object> {
+public class LayoutDataType implements IType<Object> {
 
 	private PropertyRegistry layoutProperties;
 
-	public LayoutDataSetter(PropertyRegistry layoutProperties) {
+	public LayoutDataType(PropertyRegistry layoutProperties) {
 		this.layoutProperties = layoutProperties;
 	}
 

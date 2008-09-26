@@ -1,10 +1,12 @@
-package com.swtxml.util.properties;
+package com.swtxml.util.types;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.swtxml.util.parser.ParseException;
+import com.swtxml.util.properties.PropertyMatcher;
+import com.swtxml.util.properties.PropertyRegistry;
 
-public class SimpleTypeConverters {
+public class SimpleTypes {
 
 	public static void addSimpleTypes(PropertyRegistry inj) {
 		inj.add(new PropertyMatcher(Boolean.class, Boolean.TYPE), new BooleanConverter());

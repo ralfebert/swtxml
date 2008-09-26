@@ -14,12 +14,12 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.swtxml.swt.properties.IIdResolver;
-import com.swtxml.swt.properties.setter.FormAttachmentConverter;
+import com.swtxml.swt.types.FormAttachmentType;
 
 public class FormAttachmentConverterTest {
 
 	private IIdResolver idResolver;
-	private FormAttachmentConverter converter;
+	private FormAttachmentType converter;
 	private Button test;
 
 	@Before
@@ -27,7 +27,7 @@ public class FormAttachmentConverterTest {
 		idResolver = createMock(IIdResolver.class);
 		test = new Button(new Shell(), SWT.NONE);
 		expect(idResolver.getById("test", Control.class)).andReturn(test);
-		converter = new FormAttachmentConverter(idResolver);
+		converter = new FormAttachmentType(idResolver);
 		replay(idResolver);
 	}
 

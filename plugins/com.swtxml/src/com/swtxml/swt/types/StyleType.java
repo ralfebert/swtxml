@@ -1,13 +1,13 @@
-package com.swtxml.swt.properties.setter;
+package com.swtxml.swt.types;
 
 import com.swtxml.util.parser.ConstantParser;
-import com.swtxml.util.properties.IType;
+import com.swtxml.util.types.IType;
 
-public class StyleConverter implements IType<Integer> {
+public class StyleType implements IType<Integer> {
 
 	private ConstantParser constants;
 
-	public StyleConverter(ConstantParser constants) {
+	public StyleType(ConstantParser constants) {
 		this.constants = constants;
 	}
 

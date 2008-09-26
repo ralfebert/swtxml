@@ -2,6 +2,7 @@ package com.swtxml.swt.metadata;
 
 import com.swtxml.metadata.IAttribute;
 import com.swtxml.util.properties.Property;
+import com.swtxml.util.types.IType;
 
 public class SwtAttribute implements IAttribute {
 
@@ -22,6 +23,10 @@ public class SwtAttribute implements IAttribute {
 
 	public int compareTo(IAttribute o) {
 		return getName().compareTo(o.getName());
+	}
+
+	public IType<?> getType() {
+		return property.getType();
 	}
 
 }

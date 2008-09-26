@@ -1,4 +1,4 @@
-package com.swtxml.swt.properties.setter;
+package com.swtxml.swt.types;
 
 import java.util.HashMap;
 
@@ -8,9 +8,9 @@ import org.eclipse.swt.widgets.Display;
 
 import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.util.properties.IType;
+import com.swtxml.util.types.IType;
 
-public class ColorConverter implements IType<Color> {
+public class ColorType implements IType<Color> {
 
 	private final static HashMap<String, Integer> SWT_COLORS = new HashMap<String, Integer>();
 

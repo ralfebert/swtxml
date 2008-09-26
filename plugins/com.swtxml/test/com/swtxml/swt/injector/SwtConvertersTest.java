@@ -14,12 +14,12 @@ import org.junit.Test;
 
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.properties.IIdResolver;
-import com.swtxml.swt.properties.setter.ColorConverter;
-import com.swtxml.swt.properties.setter.LayoutConverter;
-import com.swtxml.swt.properties.setter.LayoutDataSetter;
-import com.swtxml.swt.properties.setter.PointConverter;
-import com.swtxml.util.properties.IType;
+import com.swtxml.swt.types.ColorType;
+import com.swtxml.swt.types.LayoutDataType;
+import com.swtxml.swt.types.LayoutType;
+import com.swtxml.swt.types.PointType;
 import com.swtxml.util.properties.PropertyRegistry;
+import com.swtxml.util.types.IType;
 
 public class SwtConvertersTest {
 
@@ -33,7 +33,7 @@ public class SwtConvertersTest {
 
 	@Test
 	public void testColor() {
-		IType<Color> colorConverter = new ColorConverter();
+		IType<Color> colorConverter = new ColorType();
 
 		Color color = colorConverter.convert(null, "#010203");
 		assertEquals(1, color.getRed());
@@ -53,7 +53,7 @@ public class SwtConvertersTest {
 
 	@Test
 	public void testGridLayout() {
-		LayoutConverter layoutConverter = new LayoutConverter(layoutInjector);
+		LayoutType layoutConverter = new LayoutType(layoutInjector);
 		GridLayout layout = (GridLayout) layoutConverter.convert(null,
 				"layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:11;");
 		assertEquals(2, layout.numColumns);
@@ -63,7 +63,7 @@ public class SwtConvertersTest {
 
 	@Test
 	public void testRowLayout() {
-		LayoutConverter layoutConverter = new LayoutConverter(layoutInjector);
+		LayoutType layoutConverter = new LayoutType(layoutInjector);
 		RowLayout layout = (RowLayout) layoutConverter.convert(null,
 				"layout:row;type:vertical;spacing:5;");
 		assertEquals(SWT.VERTICAL, layout.type);
@@ -73,13 +73,13 @@ public class SwtConvertersTest {
 
 	@Test
 	public void testLayoutDataSetter() {
-		GridData data = (GridData) new LayoutDataSetter(layoutInjector).createLayoutData(
+		GridData data = (GridData) new LayoutDataType(layoutInjector).createLayoutData(
 				new GridLayout(), "widthHint:120");
 		assertEquals(120, data.widthHint);
 	}
 
 	@Test
 	public void testPointConverter() {
-		assertEquals(new Point(12, 141), new PointConverter().convert(null, "12x141"));
+		assertEquals(new Point(12, 141), new PointType().convert(null, "12x141"));
 	}
 }

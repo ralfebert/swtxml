@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.ReflectorBean;
+import com.swtxml.util.types.IType;
 
 public class ClassProperties<A> {
 
@@ -25,7 +26,8 @@ public class ClassProperties<A> {
 			if (property != null) {
 				properties.put(property.getName(), property);
 			} else {
-				System.out.println("No type found for: " + prop + ", ignored");
+				// System.out.println("No type found for: " + prop +
+				// ", ignored");
 			}
 		}
 	}

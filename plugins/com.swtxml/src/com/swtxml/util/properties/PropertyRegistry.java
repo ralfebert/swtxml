@@ -3,6 +3,7 @@ package com.swtxml.util.properties;
 import java.util.LinkedHashMap;
 
 import com.swtxml.util.reflector.ReflectorBean;
+import com.swtxml.util.types.IType;
 
 public class PropertyRegistry {
 

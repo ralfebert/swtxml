@@ -1,4 +1,4 @@
-package com.swtxml.swt.properties.setter;
+package com.swtxml.swt.types;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,15 +11,15 @@ import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.util.parser.ConstantParser;
 import com.swtxml.util.parser.ParseException;
-import com.swtxml.util.properties.IType;
+import com.swtxml.util.types.IType;
 
-public class FormAttachmentConverter implements IType<FormAttachment> {
+public class FormAttachmentType implements IType<FormAttachment> {
 
 	private IIdResolver idResolver;
 	private final static ConstantParser CONSTANTS_ALIGN = SwtHandling.SWT
 			.filter("TOP|BOTTOM|LEFT|RIGHT|CENTER|DEFAULT");
 
-	public FormAttachmentConverter(IIdResolver idResolver) {
+	public FormAttachmentType(IIdResolver idResolver) {
 		this.idResolver = idResolver;
 	}
 

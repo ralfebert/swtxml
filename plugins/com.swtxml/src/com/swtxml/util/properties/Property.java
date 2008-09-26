@@ -1,11 +1,16 @@
 package com.swtxml.util.properties;
 
 import com.swtxml.util.reflector.IReflectorProperty;
+import com.swtxml.util.types.IType;
 
 public class Property {
 
 	private IReflectorProperty property;
 	private IType<?> type;
+
+	public IType<?> getType() {
+		return type;
+	}
 
 	public Property(IReflectorProperty property, IType<?> type) {
 		this.property = property;

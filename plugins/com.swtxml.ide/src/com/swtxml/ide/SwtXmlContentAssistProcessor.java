@@ -16,6 +16,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.text.contentassist.CompletionProposal;
+import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
+import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
+import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegionList;
+import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
+import org.eclipse.wst.xml.core.internal.regions.DOMRegionContext;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 
@@ -62,23 +67,72 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 	@Override
 	protected void addAttributeNameProposals(final ContentAssistRequest contentAssistRequest) {
 		ITag tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
-		if (tag != null) {
-			List<IAttribute> matchingAttributes = new ArrayList<IAttribute>(Collections2.filter(tag
-					.getAttributes().values(), new Predicate<IAttribute>() {
-
-				public boolean apply(IAttribute attr) {
-					return attr.getName().toLowerCase().startsWith(
-							contentAssistRequest.getMatchString().toLowerCase());
-				}
-
-			}));
-			Collections.sort(matchingAttributes);
-			for (IAttribute attr : matchingAttributes) {
-				contentAssistRequest.addProposal(new CompletionProposal(attr.getName() + "=\"\"",
-						contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
-								.getReplacementLength(), attr.getName().length() + 2));
-			}
+		if (tag == null) {
+			return;
 		}
+
+		List<IAttribute> matchingAttributes = new ArrayList<IAttribute>(Collections2.filter(tag
+				.getAttributes().values(), new Predicate<IAttribute>() {
+
+			public boolean apply(IAttribute attr) {
+				return attr.getName().toLowerCase().startsWith(
+						contentAssistRequest.getMatchString().toLowerCase());
+			}
+
+		}));
+		Collections.sort(matchingAttributes);
+		for (IAttribute attr : matchingAttributes) {
+			contentAssistRequest.addProposal(new CompletionProposal(attr.getName() + "=\"\"",
+					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
+							.getReplacementLength(), attr.getName().length() + 2));
+		}
+
 	}
 
+	@Override
+	protected void addAttributeValueProposals(ContentAssistRequest contentAssistRequest) {
+		ITag tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
+		if (tag == null) {
+			return;
+		}
+
+		IDOMNode node = (IDOMNode) contentAssistRequest.getNode();
+
+		// Find the attribute region and name for which this position should
+		// have a value proposed
+		IStructuredDocumentRegion open = node.getFirstStructuredDocumentRegion();
+		ITextRegionList openRegions = open.getRegions();
+		int i = openRegions.indexOf(contentAssistRequest.getRegion());
+		if (i < 0) {
+			return;
+		}
+		ITextRegion nameRegion = null;
+		while (i >= 0) {
+			nameRegion = openRegions.get(i--);
+			if (nameRegion.getType() == DOMRegionContext.XML_TAG_ATTRIBUTE_NAME) {
+				break;
+			}
+		}
+
+		// the name region is REQUIRED to do anything useful
+		if (nameRegion == null) {
+			return;
+		}
+
+		String attributeName = open.getText(nameRegion);
+		IAttribute attribute = tag.getAttributes().get(attributeName);
+		if (attribute == null || !(attribute instanceof IAttributeContentAssist)) {
+			return;
+		}
+
+		IAttributeContentAssist contentAssist = (IAttributeContentAssist) attribute;
+		System.out.println("===");
+
+		System.out.println(attribute);
+		System.out.println(contentAssistRequest.getMatchString());
+		System.out.println(contentAssistRequest.getText());
+		contentAssistRequest.addProposal(new CompletionProposal("\"yoyo\"", contentAssistRequest
+				.getReplacementBeginPosition(), contentAssistRequest.getReplacementLength(), 0));
+
+	}
 }

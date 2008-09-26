@@ -5,7 +5,6 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,12 +12,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.swtxml.util.properties.ClassProperties;
-import com.swtxml.util.properties.IInjector;
-import com.swtxml.util.properties.IType;
-import com.swtxml.util.properties.PropertyMatcher;
-import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.reflector.TestVO;
+import com.swtxml.util.types.IType;
 
 public class PropertyRegistryTest {
 
@@ -48,9 +43,7 @@ public class PropertyRegistryTest {
 
 		List<String> propNames = new ArrayList<String>(properties.getProperties().keySet());
 		Collections.sort(propNames);
-		System.out.println(propNames);
-		assertTrue(propNames.contains("counter"));
-		assertTrue(propNames.contains("baseText"));
+		assertEquals("[basePublicText, baseText, counter, publicText, text]", propNames.toString());
 
 		IInjector injector = properties.getInjector(test);
 		injector.setPropertyValue("counter", "5");

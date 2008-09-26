@@ -1,11 +1,11 @@
-package com.swtxml.swt.properties.setter;
+package com.swtxml.swt.types;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.graphics.Point;
 
-import com.swtxml.util.properties.IType;
+import com.swtxml.util.types.IType;
 
-public class PointConverter implements IType<Point> {
+public class PointType implements IType<Point> {
 
 	public Point convert(Object obj, String value) {
 		String[] sizes = StringUtils.split(value, ",x");
