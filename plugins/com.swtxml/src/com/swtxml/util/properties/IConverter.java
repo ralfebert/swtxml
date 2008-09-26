@@ -4,5 +4,5 @@
 package com.swtxml.util.properties;
 
 public interface IConverter<T> {
-	T convert(String value);
+	T convert(Object obj, String value);
 }

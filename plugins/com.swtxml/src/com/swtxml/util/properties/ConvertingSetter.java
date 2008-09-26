@@ -11,7 +11,7 @@ public class ConvertingSetter implements ISetter {
 	}
 
 	public void apply(IReflectorProperty property, Object obj, String name, String value) {
-		property.set(obj, converter.convert(value));
+		property.set(obj, converter.convert(obj, value));
 	}
 
 }

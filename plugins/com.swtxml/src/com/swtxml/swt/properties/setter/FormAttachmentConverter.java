@@ -23,7 +23,7 @@ public class FormAttachmentConverter implements IConverter<FormAttachment> {
 		this.idResolver = idResolver;
 	}
 
-	public FormAttachment convert(String value) {
+	public FormAttachment convert(Object obj, String value) {
 		FormAttachment attachment = new FormAttachment();
 		List<String> parts = new ArrayList<String>();
 		int start = 0;

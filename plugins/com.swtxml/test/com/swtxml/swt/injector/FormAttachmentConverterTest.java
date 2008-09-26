@@ -33,21 +33,21 @@ public class FormAttachmentConverterTest {
 
 	@Test
 	public void testSimple() {
-		FormAttachment attachment = converter.convert("10");
+		FormAttachment attachment = converter.convert(test, "10");
 		assertEquals(10, attachment.offset);
 		assertEquals(0, attachment.numerator);
 	}
 
 	@Test
 	public void testPercentage() {
-		FormAttachment attachment = converter.convert("90%-10");
+		FormAttachment attachment = converter.convert(test, "90%-10");
 		assertEquals(-10, attachment.offset);
 		assertEquals(90, attachment.numerator);
 	}
 
 	@Test
 	public void testReferControl() {
-		FormAttachment attachment = converter.convert("test-10");
+		FormAttachment attachment = converter.convert(test, "test-10");
 		assertEquals(test, attachment.control);
 		assertEquals(-10, attachment.offset);
 		assertEquals(0, attachment.numerator);

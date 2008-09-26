@@ -22,7 +22,7 @@ public class LayoutConverter implements IConverter<Object> {
 		this.layoutProperties = layoutProperties;
 	}
 
-	public Object convert(String value) {
+	public Object convert(Object obj, String value) {
 		Map<String, String> layoutConstraints = KeyValueParser.parse(value);
 
 		String layoutName = layoutConstraints.remove("layout");

@@ -35,17 +35,17 @@ public class SwtConvertersTest {
 	public void testColor() {
 		IConverter<Color> colorConverter = new ColorConverter();
 
-		Color color = colorConverter.convert("#010203");
+		Color color = colorConverter.convert(null, "#010203");
 		assertEquals(1, color.getRed());
 		assertEquals(2, color.getGreen());
 		assertEquals(3, color.getBlue());
 
-		color = colorConverter.convert("#FFabCD");
+		color = colorConverter.convert(null, "#FFabCD");
 		assertEquals(255, color.getRed());
 		assertEquals(171, color.getGreen());
 		assertEquals(205, color.getBlue());
 
-		color = colorConverter.convert("black");
+		color = colorConverter.convert(null, "black");
 		assertEquals(0, color.getRed());
 		assertEquals(0, color.getGreen());
 		assertEquals(0, color.getBlue());
@@ -54,8 +54,8 @@ public class SwtConvertersTest {
 	@Test
 	public void testGridLayout() {
 		LayoutConverter layoutConverter = new LayoutConverter(layoutInjector);
-		GridLayout layout = (GridLayout) layoutConverter
-				.convert("layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:11;");
+		GridLayout layout = (GridLayout) layoutConverter.convert(null,
+				"layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:11;");
 		assertEquals(2, layout.numColumns);
 		assertEquals(10, layout.horizontalSpacing);
 		assertEquals(11, layout.verticalSpacing);
@@ -64,8 +64,8 @@ public class SwtConvertersTest {
 	@Test
 	public void testRowLayout() {
 		LayoutConverter layoutConverter = new LayoutConverter(layoutInjector);
-		RowLayout layout = (RowLayout) layoutConverter
-				.convert("layout:row;type:vertical;spacing:5;");
+		RowLayout layout = (RowLayout) layoutConverter.convert(null,
+				"layout:row;type:vertical;spacing:5;");
 		assertEquals(SWT.VERTICAL, layout.type);
 		assertEquals(5, layout.spacing);
 
@@ -80,6 +80,6 @@ public class SwtConvertersTest {
 
 	@Test
 	public void testPointConverter() {
-		assertEquals(new Point(12, 141), new PointConverter().convert("12x141"));
+		assertEquals(new Point(12, 141), new PointConverter().convert(null, "12x141"));
 	}
 }

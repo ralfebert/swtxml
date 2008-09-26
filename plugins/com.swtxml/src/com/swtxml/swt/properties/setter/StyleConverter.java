@@ -11,7 +11,7 @@ public class StyleConverter implements IConverter<Integer> {
 		this.constants = constants;
 	}
 
-	public Integer convert(String value) {
+	public Integer convert(Object obj, String value) {
 		return constants.getIntValue(value);
 	}
 

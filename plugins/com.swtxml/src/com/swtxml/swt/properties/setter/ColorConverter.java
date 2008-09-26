@@ -22,7 +22,7 @@ public class ColorConverter implements IConverter<Color> {
 		}
 	}
 
-	public Color convert(String value) {
+	public Color convert(Object obj, String value) {
 		if (!value.startsWith("#") || value.length() != 7) {
 			Integer constant = SWT_COLORS.get(value.toUpperCase().trim());
 			if (constant != null) {

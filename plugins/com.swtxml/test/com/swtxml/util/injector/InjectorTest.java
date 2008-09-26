@@ -39,7 +39,7 @@ public class InjectorTest {
 		propertyRegistry.add(new PropertyMatcher(TestVO.class), setter1);
 		propertyRegistry.add(new PropertyMatcher(), setter2);
 
-		expect(converter.convert("5")).andReturn(5);
+		expect(converter.convert(test, "5")).andReturn(5);
 		setter2.apply(EasyMock.<IReflectorProperty> anyObject(), eq(test), eq("baseText"),
 				eq("yaya"));
 

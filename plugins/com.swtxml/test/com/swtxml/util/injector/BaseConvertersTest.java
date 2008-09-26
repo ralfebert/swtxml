@@ -13,6 +13,6 @@ public class BaseConvertersTest {
 	@Test
 	public void testSimpleTypeConverters() {
 		assertTrue(Arrays.equals(new int[] { 1, 2, 3 },
-				new SimpleTypeConverters.IntArrayConverter().convert("1,2,3")));
+				new SimpleTypeConverters.IntArrayConverter().convert(null, "1,2,3")));
 	}
 }

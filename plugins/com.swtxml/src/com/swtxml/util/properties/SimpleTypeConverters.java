@@ -17,7 +17,7 @@ public class SimpleTypeConverters {
 	}
 
 	public static class StringConverter implements IConverter<String> {
-		public String convert(String value) {
+		public String convert(Object obj, String value) {
 			// TODO: i18n
 			if (value.startsWith("%")) {
 				throw new ParseException("i18n for string properties is currently unsupported");
@@ -27,32 +27,32 @@ public class SimpleTypeConverters {
 	}
 
 	public static class BooleanConverter implements IConverter<Boolean> {
-		public Boolean convert(String value) {
+		public Boolean convert(Object obj, String value) {
 			return Boolean.parseBoolean(value);
 		}
 	}
 
 	public static class IntegerConverter implements IConverter<Integer> {
-		public Integer convert(String value) {
+		public Integer convert(Object obj, String value) {
 			return Integer.parseInt(value);
 		}
 	}
 
 	public static class FloatConverter implements IConverter<Float> {
-		public Float convert(String value) {
+		public Float convert(Object obj, String value) {
 			return Float.parseFloat(value);
 		}
 	}
 
 	public static class CharacterConverter implements IConverter<Character> {
-		public Character convert(String value) {
+		public Character convert(Object obj, String value) {
 			return value.charAt(0);
 		}
 	}
 
 	public static class IntArrayConverter implements IConverter<int[]> {
 
-		public int[] convert(String value) {
+		public int[] convert(Object obj, String value) {
 			String[] intStrings = StringUtils.split(value, ',');
 			int[] ints = new int[intStrings.length];
 			for (int i = 0; i < ints.length; i++) {
