@@ -10,8 +10,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.swtxml.swt.injector.IIdResolver;
-import com.swtxml.swt.injector.SwtInjectors;
+import com.swtxml.swt.SwtHandling;
 import com.swtxml.util.injector.IInjector;
 
 public class SwtInjectorTest {
@@ -25,7 +24,7 @@ public class SwtInjectorTest {
 	@Test
 	public void testSwtLayout() {
 		Composite composite = new Composite(new Shell(), SWT.NONE);
-		IInjector injector = SwtInjectors.createSwtInjector(idResolver).getInjector(composite, false);
+		IInjector injector = SwtHandling.createSwtProperties(idResolver).getInjector(composite);
 		injector.setPropertyValue("layout", "layout:grid;numColumns:2;");
 		assertEquals(2, ((GridLayout) composite.getLayout()).numColumns);
 	}

@@ -7,7 +7,7 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 import com.swtxml.parser.XmlParsingException;
-import com.swtxml.swt.SwtConstants;
+import com.swtxml.swt.SwtHandling;
 import com.swtxml.util.injector.IConverter;
 
 public class ColorConverter implements IConverter<Color> {
@@ -15,9 +15,9 @@ public class ColorConverter implements IConverter<Color> {
 	private final static HashMap<String, Integer> SWT_COLORS = new HashMap<String, Integer>();
 
 	static {
-		for (String constant : SwtConstants.SWT.getConstants()) {
+		for (String constant : SwtHandling.SWT.getConstants()) {
 			if (constant.startsWith("COLOR_")) {
-				SWT_COLORS.put(constant.substring(6), SwtConstants.SWT.getIntValue(constant));
+				SWT_COLORS.put(constant.substring(6), SwtHandling.SWT.getIntValue(constant));
 			}
 		}
 	}

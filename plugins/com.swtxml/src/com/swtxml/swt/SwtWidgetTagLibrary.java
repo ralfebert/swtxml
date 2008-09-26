@@ -36,7 +36,7 @@ public class SwtWidgetTagLibrary implements ITagLibrary {
 		SwtWidgetBuilder builder = new SwtWidgetBuilder(tag);
 
 		try {
-			Integer style = SwtConstants.SWT.getIntValue(tagInfo.getAttribute("style"));
+			Integer style = SwtHandling.SWT.getIntValue(tagInfo.getAttribute("style"));
 			Class<?> parentClass = builder.getParentClass();
 			Widget widget = builder.build(tagInfo.findParentRecursive(parentClass),
 					style == null ? SWT.NONE : style);

@@ -1,5 +1,6 @@
-package com.swtxml.swt.injector;
+package com.swtxml.swt;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
@@ -9,26 +10,28 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.swt.SwtConstants;
+import com.swtxml.swt.injector.IIdResolver;
 import com.swtxml.swt.injector.setter.ColorConverter;
 import com.swtxml.swt.injector.setter.FormAttachmentConverter;
 import com.swtxml.swt.injector.setter.LayoutConverter;
 import com.swtxml.swt.injector.setter.LayoutDataSetter;
 import com.swtxml.swt.injector.setter.PointConverter;
 import com.swtxml.swt.injector.setter.StyleConverter;
-import com.swtxml.util.injector.InjectorDefinition;
+import com.swtxml.util.injector.PropertyRegistry;
 import com.swtxml.util.injector.PropertyMatcher;
 import com.swtxml.util.injector.SimpleTypeConverters;
+import com.swtxml.util.parser.ConstantParser;
 
-public class SwtInjectors {
+public class SwtHandling {
 
-	public static InjectorDefinition createSwtInjector(IIdResolver idResolver) {
-		InjectorDefinition layoutInjector = createLayoutInjector(idResolver);
+	public final static ConstantParser SWT = new ConstantParser(SWT.class);
 
-		InjectorDefinition inj = new InjectorDefinition();
+	public static PropertyRegistry createSwtProperties(IIdResolver idResolver) {
+		PropertyRegistry layoutInjector = createLayoutProperties(idResolver);
 
-		inj.add(new PropertyMatcher(Widget.class, "style", Integer.TYPE), new StyleConverter(
-				SwtConstants.SWT));
+		PropertyRegistry inj = new PropertyRegistry(false);
+
+		inj.add(new PropertyMatcher(Widget.class, "style", Integer.TYPE), new StyleConverter(SWT));
 
 		inj.add(new PropertyMatcher(Composite.class, "layout", Layout.class), new LayoutConverter(
 				layoutInjector));
@@ -45,21 +48,17 @@ public class SwtInjectors {
 		return inj;
 	}
 
-	public static InjectorDefinition createLayoutInjector(IIdResolver idResolver) {
-		InjectorDefinition inj = new InjectorDefinition();
+	public static PropertyRegistry createLayoutProperties(IIdResolver idResolver) {
+		PropertyRegistry inj = new PropertyRegistry(true);
 
-		inj.add(new PropertyMatcher(Layout.class, "type", Integer.TYPE), new StyleConverter(
-				SwtConstants.SWT.filter("HORIZONTAL|VERTICAL")));
+		inj.add(new PropertyMatcher(Layout.class, "type", Integer.TYPE), new StyleConverter(SWT
+				.filter("HORIZONTAL|VERTICAL")));
 
-		inj
-				.add(new PropertyMatcher(GridData.class, "verticalAlignment", Integer.TYPE),
-						new StyleConverter(SwtConstants.SWT
-								.filter("BEGINNING|CENTER|END|FILL|TOP|BOTTOM")));
+		inj.add(new PropertyMatcher(GridData.class, "verticalAlignment", Integer.TYPE),
+				new StyleConverter(SWT.filter("BEGINNING|CENTER|END|FILL|TOP|BOTTOM")));
 
-		inj
-				.add(new PropertyMatcher(GridData.class, "horizontalAlignment", Integer.TYPE),
-						new StyleConverter(SwtConstants.SWT
-								.filter("BEGINNING|CENTER|END|FILL|LEFT|RIGHT")));
+		inj.add(new PropertyMatcher(GridData.class, "horizontalAlignment", Integer.TYPE),
+				new StyleConverter(SWT.filter("BEGINNING|CENTER|END|FILL|LEFT|RIGHT")));
 
 		inj.add(new PropertyMatcher(FormAttachment.class), new FormAttachmentConverter(idResolver));
 

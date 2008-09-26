@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Control;
 
-import com.swtxml.swt.SwtConstants;
+import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.injector.IIdResolver;
 import com.swtxml.util.injector.IConverter;
 import com.swtxml.util.parser.ConstantParser;
@@ -16,7 +16,7 @@ import com.swtxml.util.parser.ParseException;
 public class FormAttachmentConverter implements IConverter<FormAttachment> {
 
 	private IIdResolver idResolver;
-	private final static ConstantParser CONSTANTS_ALIGN = SwtConstants.SWT
+	private final static ConstantParser CONSTANTS_ALIGN = SwtHandling.SWT
 			.filter("TOP|BOTTOM|LEFT|RIGHT|CENTER|DEFAULT");
 
 	public FormAttachmentConverter(IIdResolver idResolver) {

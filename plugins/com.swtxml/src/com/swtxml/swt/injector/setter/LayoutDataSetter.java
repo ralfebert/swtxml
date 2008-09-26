@@ -12,7 +12,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 
 import com.swtxml.util.injector.ISetter;
-import com.swtxml.util.injector.InjectorDefinition;
+import com.swtxml.util.injector.PropertyRegistry;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.reflector.IReflectorProperty;
@@ -20,9 +20,9 @@ import com.swtxml.util.reflector.ReflectorException;
 
 public class LayoutDataSetter implements ISetter {
 
-	private InjectorDefinition layoutInjector;
+	private PropertyRegistry layoutInjector;
 
-	public LayoutDataSetter(InjectorDefinition layoutInjector) {
+	public LayoutDataSetter(PropertyRegistry layoutInjector) {
 		this.layoutInjector = layoutInjector;
 	}
 
@@ -49,7 +49,7 @@ public class LayoutDataSetter implements ISetter {
 			throw new ReflectorException(e);
 		}
 
-		layoutInjector.getInjector(layoutData, true).setPropertyValues(layoutConstraints);
+		layoutInjector.getInjector(layoutData).setPropertyValues(layoutConstraints);
 		return layoutData;
 	}
 

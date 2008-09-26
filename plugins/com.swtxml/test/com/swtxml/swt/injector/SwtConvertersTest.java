@@ -12,21 +12,22 @@ import org.eclipse.swt.layout.RowLayout;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.injector.setter.ColorConverter;
 import com.swtxml.swt.injector.setter.LayoutConverter;
 import com.swtxml.swt.injector.setter.LayoutDataSetter;
 import com.swtxml.swt.injector.setter.PointConverter;
 import com.swtxml.util.injector.IConverter;
-import com.swtxml.util.injector.InjectorDefinition;
+import com.swtxml.util.injector.PropertyRegistry;
 
 public class SwtConvertersTest {
 
-	private InjectorDefinition layoutInjector;
+	private PropertyRegistry layoutInjector;
 
 	@Before
 	public void setup() {
 		IIdResolver idResolver = createMock(IIdResolver.class);
-		layoutInjector = SwtInjectors.createLayoutInjector(idResolver);
+		layoutInjector = SwtHandling.createLayoutProperties(idResolver);
 	}
 
 	@Test

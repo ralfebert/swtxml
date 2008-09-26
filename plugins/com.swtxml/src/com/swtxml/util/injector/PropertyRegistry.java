@@ -6,9 +6,14 @@ import java.util.Map;
 import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.ReflectorBean;
 
-public class InjectorDefinition {
+public class PropertyRegistry {
 
 	private final LinkedHashMap<PropertyMatcher, ISetter> setters = new LinkedHashMap<PropertyMatcher, ISetter>();
+	private boolean includePublicFields;
+
+	public PropertyRegistry(boolean includePublicFields) {
+		this.includePublicFields = includePublicFields;
+	}
 
 	public <T> void add(PropertyMatcher matcher, IConverter<T> converter) {
 		add(matcher, new ConvertingSetter(converter));
@@ -18,7 +23,7 @@ public class InjectorDefinition {
 		setters.put(matcher, setter);
 	}
 
-	public IInjector getInjector(final Object obj, boolean includePublicFields) {
+	public IInjector getInjector(final Object obj) {
 		final ReflectorBean bean = new ReflectorBean(obj.getClass(), includePublicFields);
 		return new IInjector() {
 

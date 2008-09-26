@@ -10,11 +10,6 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
-import com.swtxml.util.injector.IConverter;
-import com.swtxml.util.injector.IInjector;
-import com.swtxml.util.injector.ISetter;
-import com.swtxml.util.injector.InjectorDefinition;
-import com.swtxml.util.injector.PropertyMatcher;
 import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.TestVO;
 
@@ -25,16 +20,16 @@ public class InjectorTest {
 	public void testInjectorDefinition() {
 		TestVO test = new TestVO();
 
-		InjectorDefinition injectorDefinition = new InjectorDefinition();
+		PropertyRegistry propertyRegistry = new PropertyRegistry(true);
 
 		IConverter converter = createMock(IConverter.class);
 		ISetter setter1 = createMock(ISetter.class);
 		ISetter setter2 = createMock(ISetter.class);
 
-		injectorDefinition.add(new PropertyMatcher(Integer.TYPE), converter);
-		injectorDefinition.add(new PropertyMatcher(), setter1);
-		injectorDefinition.add(new PropertyMatcher(), setter2);
-		injectorDefinition.add(new PropertyMatcher(), setter1);
+		propertyRegistry.add(new PropertyMatcher(Integer.TYPE), converter);
+		propertyRegistry.add(new PropertyMatcher(), setter1);
+		propertyRegistry.add(new PropertyMatcher(), setter2);
+		propertyRegistry.add(new PropertyMatcher(), setter1);
 
 		expect(converter.convert("5")).andReturn(5);
 		expect(
@@ -46,7 +41,7 @@ public class InjectorTest {
 
 		replay(converter, setter1, setter2);
 
-		IInjector injector = injectorDefinition.getInjector(test, true);
+		IInjector injector = propertyRegistry.getInjector(test);
 		injector.setPropertyValue("counter", "5");
 		injector.setPropertyValue("baseText", "yaya");
 

@@ -6,7 +6,7 @@ import com.swtxml.util.parser.ParseException;
 
 public class SimpleTypeConverters {
 
-	public static void addSimpleTypes(InjectorDefinition inj) {
+	public static void addSimpleTypes(PropertyRegistry inj) {
 		inj.add(new PropertyMatcher(Boolean.class, Boolean.TYPE), new BooleanConverter());
 		inj.add(new PropertyMatcher(Integer.class, Integer.TYPE), new IntegerConverter());
 		inj.add(new PropertyMatcher(Float.class, Float.TYPE), new FloatConverter());
