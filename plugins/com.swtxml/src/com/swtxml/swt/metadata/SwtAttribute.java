@@ -28,8 +28,4 @@ public class SwtAttribute implements IAttribute {
 		return getName().compareTo(o.getName());
 	}
 
-	public <T> T adaptTo(Class<T> clazz) {
-		return null;
-	}
-
 }

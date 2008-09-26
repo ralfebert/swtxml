@@ -33,10 +33,7 @@ public class SwtWidgetTagLibrary implements ITagLibrary {
 		if (tag == null) {
 			throw new TagLibraryException(tagInfo, "Unknown tag: " + tagInfo.getTagName());
 		}
-		SwtWidgetBuilder builder = tag.adaptTo(SwtWidgetBuilder.class);
-		if (builder == null) {
-			throw new TagLibraryException(tagInfo, "No builder known for " + tag);
-		}
+		SwtWidgetBuilder builder = new SwtWidgetBuilder(tag);
 
 		try {
 			Integer style = SwtConstants.SWT.getIntValue(tagInfo.getAttribute("style"));

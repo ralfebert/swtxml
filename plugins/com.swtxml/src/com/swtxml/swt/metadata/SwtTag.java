@@ -67,14 +67,6 @@ public class SwtTag implements ITag {
 		return "SwtTag[" + className + "]";
 	}
 
-	@SuppressWarnings("unchecked")
-	public <T> T adaptTo(Class<T> clazz) {
-		if (clazz.isAssignableFrom(SwtWidgetBuilder.class)) {
-			return (T) new SwtWidgetBuilder(this);
-		}
-		return null;
-	}
-
 	public Class<? extends Widget> getSwtWidgetClass() {
 		return swtWidgetClass;
 	}

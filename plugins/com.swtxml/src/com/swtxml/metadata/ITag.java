@@ -8,5 +8,4 @@ public interface ITag extends Comparable<ITag> {
 
 	Map<String, ? extends IAttribute> getAttributes();
 
-	<T> T adaptTo(Class<T> clazz);
 }

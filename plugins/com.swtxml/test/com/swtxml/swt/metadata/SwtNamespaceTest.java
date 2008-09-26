@@ -43,8 +43,7 @@ public class SwtNamespaceTest {
 	}
 
 	private Button fakeBuildButton(Composite parent) {
-		SwtWidgetBuilder builder = buttonTag.adaptTo(SwtWidgetBuilder.class);
-		return (Button) builder.build(parent, SWT.BORDER);
+		return (Button) new SwtWidgetBuilder(buttonTag).build(parent, SWT.BORDER);
 	}
 
 }
