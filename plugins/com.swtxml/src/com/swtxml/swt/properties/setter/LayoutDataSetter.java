@@ -20,17 +20,16 @@ import com.swtxml.util.reflector.ReflectorException;
 
 public class LayoutDataSetter implements ISetter {
 
-	private PropertyRegistry layoutInjector;
+	private PropertyRegistry layoutProperties;
 
-	public LayoutDataSetter(PropertyRegistry layoutInjector) {
-		this.layoutInjector = layoutInjector;
+	public LayoutDataSetter(PropertyRegistry layoutProperties) {
+		this.layoutProperties = layoutProperties;
 	}
 
-	public boolean apply(IReflectorProperty bean, Object obj, String name, String value) {
+	public void apply(IReflectorProperty bean, Object obj, String name, String value) {
 		Control control = (Control) obj;
 		Layout layout = control.getParent().getLayout();
 		control.setLayoutData(createLayoutData(layout, value));
-		return true;
 	}
 
 	public Object createLayoutData(Layout parentLayout, String value) {
@@ -48,8 +47,10 @@ public class LayoutDataSetter implements ISetter {
 		} catch (Exception e) {
 			throw new ReflectorException(e);
 		}
-
-		layoutInjector.getInjector(layoutData).setPropertyValues(layoutConstraints);
+		// TODO: straighten out this "LayoutData" needs to see its parent thing
+		// and is a setter for that reason
+		layoutProperties.getProperties(layoutData.getClass()).getInjector(layoutData)
+				.setPropertyValues(layoutConstraints);
 		return layoutData;
 	}
 

@@ -25,7 +25,7 @@ public class SwtInjectorTest {
 	@Test
 	public void testSwtLayout() {
 		Composite composite = new Composite(new Shell(), SWT.NONE);
-		IInjector injector = SwtHandling.createSwtProperties(idResolver).getInjector(composite);
+		IInjector injector = SwtHandling.createSwtProperties(idResolver).getProperties(composite.getClass()).getInjector(composite);
 		injector.setPropertyValue("layout", "layout:grid;numColumns:2;");
 		assertEquals(2, ((GridLayout) composite.getLayout()).numColumns);
 	}

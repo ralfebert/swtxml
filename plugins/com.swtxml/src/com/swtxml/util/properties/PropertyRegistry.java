@@ -1,14 +1,12 @@
 package com.swtxml.util.properties;
 
 import java.util.LinkedHashMap;
-import java.util.Map;
 
-import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.ReflectorBean;
 
 public class PropertyRegistry {
 
-	private final LinkedHashMap<PropertyMatcher, ISetter> setters = new LinkedHashMap<PropertyMatcher, ISetter>();
+	private LinkedHashMap<PropertyMatcher, ISetter> setters = new LinkedHashMap<PropertyMatcher, ISetter>();
 	private boolean includePublicFields;
 
 	public PropertyRegistry(boolean includePublicFields) {
@@ -23,29 +21,7 @@ public class PropertyRegistry {
 		setters.put(matcher, setter);
 	}
 
-	public IInjector getInjector(final Object obj) {
-		final ReflectorBean bean = new ReflectorBean(obj.getClass(), includePublicFields);
-		return new IInjector() {
-
-			public void setPropertyValue(String name, String value) {
-				for (PropertyMatcher matcher : setters.keySet()) {
-					IReflectorProperty property = bean.getProperty(name);
-					Class<?> type = property != null ? property.getType() : null;
-					if (matcher.match(obj.getClass(), name, type)) {
-						if (setters.get(matcher).apply(property, obj, name, value)) {
-							return;
-						}
-					}
-				}
-
-			}
-
-			public void setPropertyValues(Map<String, String> values) {
-				for (String name : values.keySet()) {
-					setPropertyValue(name, values.get(name));
-				}
-			}
-
-		};
+	public <A> ClassProperties<A> getProperties(Class<A> clazz) {
+		return new ClassProperties<A>(new ReflectorBean(clazz, includePublicFields), setters);
 	}
 }

@@ -10,9 +10,8 @@ public class ConvertingSetter implements ISetter {
 		this.converter = converter;
 	}
 
-	public boolean apply(IReflectorProperty property, Object obj, String name, String value) {
+	public void apply(IReflectorProperty property, Object obj, String name, String value) {
 		property.set(obj, converter.convert(value));
-		return true;
 	}
 
 }

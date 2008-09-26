@@ -6,10 +6,14 @@ import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.Collection;
 
 import org.easymock.EasyMock;
 import org.junit.Test;
 
+import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.IConverter;
 import com.swtxml.util.properties.IInjector;
 import com.swtxml.util.properties.ISetter;
@@ -32,21 +36,23 @@ public class InjectorTest {
 		ISetter setter2 = createMock(ISetter.class);
 
 		propertyRegistry.add(new PropertyMatcher(Integer.TYPE), converter);
-		propertyRegistry.add(new PropertyMatcher(), setter1);
+		propertyRegistry.add(new PropertyMatcher(TestVO.class), setter1);
 		propertyRegistry.add(new PropertyMatcher(), setter2);
-		propertyRegistry.add(new PropertyMatcher(), setter1);
 
 		expect(converter.convert("5")).andReturn(5);
-		expect(
-				setter1.apply(EasyMock.<IReflectorProperty> anyObject(), eq(test), eq("baseText"),
-						eq("yaya"))).andReturn(false);
-		expect(
-				setter2.apply(EasyMock.<IReflectorProperty> anyObject(), eq(test), eq("baseText"),
-						eq("yaya"))).andReturn(true);
+		setter2.apply(EasyMock.<IReflectorProperty> anyObject(), eq(test), eq("baseText"),
+				eq("yaya"));
 
 		replay(converter, setter1, setter2);
 
-		IInjector injector = propertyRegistry.getInjector(test);
+		ClassProperties<? extends TestVO> properties = propertyRegistry.getProperties(test
+				.getClass());
+
+		Collection<String> propNames = properties.getProperties().keySet();
+		assertTrue(propNames.contains("counter"));
+		assertTrue(propNames.contains("baseText"));
+
+		IInjector injector = properties.getInjector(test);
 		injector.setPropertyValue("counter", "5");
 		injector.setPropertyValue("baseText", "yaya");
 

@@ -16,10 +16,10 @@ import com.swtxml.util.reflector.ReflectorException;
 public class LayoutConverter implements IConverter<Object> {
 
 	private final static String SWT_LAYOUT_PACKAGE = RowLayout.class.getPackage().getName();
-	private PropertyRegistry layoutInjector;
+	private PropertyRegistry layoutProperties;
 
-	public LayoutConverter(PropertyRegistry layoutInjector) {
-		this.layoutInjector = layoutInjector;
+	public LayoutConverter(PropertyRegistry layoutProperties) {
+		this.layoutProperties = layoutProperties;
 	}
 
 	public Object convert(String value) {
@@ -38,7 +38,7 @@ public class LayoutConverter implements IConverter<Object> {
 			throw new ReflectorException(e);
 		}
 
-		IInjector injector = layoutInjector.getInjector(layout);
+		IInjector injector = layoutProperties.getProperties(layout.getClass()).getInjector(layout);
 		injector.setPropertyValues(layoutConstraints);
 
 		return layout;

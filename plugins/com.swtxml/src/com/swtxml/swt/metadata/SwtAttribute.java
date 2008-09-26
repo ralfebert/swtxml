@@ -1,22 +1,18 @@
 package com.swtxml.swt.metadata;
 
 import com.swtxml.metadata.IAttribute;
-import com.swtxml.util.reflector.IReflectorProperty;
+import com.swtxml.util.properties.Property;
 
 public class SwtAttribute implements IAttribute {
 
-	private final IReflectorProperty property;
+	private Property property;
 
-	public SwtAttribute(IReflectorProperty property) {
+	public SwtAttribute(Property property) {
 		this.property = property;
 	}
 
 	public String getName() {
 		return property.getName();
-	}
-
-	public IReflectorProperty getProperty() {
-		return property;
 	}
 
 	@Override
