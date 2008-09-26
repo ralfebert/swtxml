@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.metadata.IAttribute;
 import com.swtxml.metadata.ITag;
 import com.swtxml.metadata.MetaDataException;
 import com.swtxml.util.reflector.IReflectorProperty;
@@ -24,41 +23,19 @@ public class SwtTag implements ITag {
 	}
 
 	public String getName() {
-		checkClass();
-		return swtWidgetClass.getSimpleName();
+		return getSwtWidgetClass().getSimpleName();
 	}
 
-	@SuppressWarnings("unchecked")
-	private void checkClass() {
-		if (this.swtWidgetClass == null) {
-			try {
-				this.swtWidgetClass = (Class<? extends Widget>) Class.forName(className);
-			} catch (ClassNotFoundException e) {
-				throw new MetaDataException(e);
-			}
-		}
-	}
-
-	private void checkAttributes() {
-		checkClass();
+	public Map<String, SwtAttribute> getAttributes() {
 		if (attributes == null) {
 			Collection<IReflectorProperty> properties = Reflector
-					.findPublicProperties(swtWidgetClass);
+					.findPublicProperties(getSwtWidgetClass());
 			attributes = new HashMap<String, SwtAttribute>();
 			for (IReflectorProperty prop : properties) {
 				SwtAttribute attribute = new SwtAttribute(prop);
 				attributes.put(attribute.getName(), attribute);
 			}
 		}
-	}
-
-	public IAttribute getAttribute(String name) {
-		checkAttributes();
-		return attributes.get(name);
-	}
-
-	public Map<String, SwtAttribute> getAttributes() {
-		checkAttributes();
 		return attributes;
 	}
 
@@ -67,7 +44,15 @@ public class SwtTag implements ITag {
 		return "SwtTag[" + className + "]";
 	}
 
+	@SuppressWarnings("unchecked")
 	public Class<? extends Widget> getSwtWidgetClass() {
+		if (this.swtWidgetClass == null) {
+			try {
+				this.swtWidgetClass = (Class<? extends Widget>) Class.forName(className);
+			} catch (ClassNotFoundException e) {
+				throw new MetaDataException(e);
+			}
+		}
 		return swtWidgetClass;
 	}
 
