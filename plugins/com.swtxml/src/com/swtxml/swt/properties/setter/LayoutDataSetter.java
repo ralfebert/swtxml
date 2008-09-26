@@ -13,12 +13,11 @@ import org.eclipse.swt.widgets.Layout;
 
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
-import com.swtxml.util.properties.ISetter;
+import com.swtxml.util.properties.IType;
 import com.swtxml.util.properties.PropertyRegistry;
-import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.ReflectorException;
 
-public class LayoutDataSetter implements ISetter {
+public class LayoutDataSetter implements IType<Object> {
 
 	private PropertyRegistry layoutProperties;
 
@@ -26,10 +25,10 @@ public class LayoutDataSetter implements ISetter {
 		this.layoutProperties = layoutProperties;
 	}
 
-	public void apply(IReflectorProperty bean, Object obj, String name, String value) {
+	public Object convert(Object obj, String value) {
 		Control control = (Control) obj;
 		Layout layout = control.getParent().getLayout();
-		control.setLayoutData(createLayoutData(layout, value));
+		return createLayoutData(layout, value);
 	}
 
 	public Object createLayoutData(Layout parentLayout, String value) {

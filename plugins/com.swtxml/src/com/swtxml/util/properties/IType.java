@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.swtxml.util.properties;
 
 public interface IType<T> {

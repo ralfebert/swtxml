@@ -1,54 +1,54 @@
-package com.swtxml.util.injector;
+package com.swtxml.util.properties;
 
 import static org.easymock.EasyMock.createMock;
-import static org.easymock.EasyMock.eq;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
-import org.easymock.EasyMock;
 import org.junit.Test;
 
 import com.swtxml.util.properties.ClassProperties;
-import com.swtxml.util.properties.IType;
 import com.swtxml.util.properties.IInjector;
-import com.swtxml.util.properties.ISetter;
+import com.swtxml.util.properties.IType;
 import com.swtxml.util.properties.PropertyMatcher;
 import com.swtxml.util.properties.PropertyRegistry;
-import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.TestVO;
 
-public class InjectorTest {
+public class PropertyRegistryTest {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	public void testInjectorDefinition() {
+	public void testPropertyRegistry() {
 		TestVO test = new TestVO();
 
 		PropertyRegistry propertyRegistry = new PropertyRegistry(true);
 
-		IType converter = createMock(IType.class);
-		ISetter setter1 = createMock(ISetter.class);
-		ISetter setter2 = createMock(ISetter.class);
+		IType intType = createMock(IType.class);
+		IType typeForTestVO = createMock(IType.class);
+		IType neverUsedType = createMock(IType.class);
 
-		propertyRegistry.add(new PropertyMatcher(Integer.TYPE), converter);
-		propertyRegistry.add(new PropertyMatcher(TestVO.class), setter1);
-		propertyRegistry.add(new PropertyMatcher(), setter2);
+		propertyRegistry.add(new PropertyMatcher(Integer.TYPE), intType);
+		propertyRegistry.add(new PropertyMatcher(TestVO.class, PropertyMatcher.ALL_PROPERTIES),
+				typeForTestVO);
+		propertyRegistry.add(new PropertyMatcher(), neverUsedType);
 
-		expect(converter.convert(test, "5")).andReturn(5);
-		setter2.apply(EasyMock.<IReflectorProperty> anyObject(), eq(test), eq("baseText"),
-				eq("yaya"));
+		expect(intType.convert(test, "5")).andReturn(5);
+		expect(typeForTestVO.convert(test, "yaya")).andReturn("yaya2");
 
-		replay(converter, setter1, setter2);
+		replay(intType, typeForTestVO, neverUsedType);
 
 		ClassProperties<? extends TestVO> properties = propertyRegistry.getProperties(test
 				.getClass());
 
-		Collection<String> propNames = properties.getProperties().keySet();
+		List<String> propNames = new ArrayList<String>(properties.getProperties().keySet());
+		Collections.sort(propNames);
+		System.out.println(propNames);
 		assertTrue(propNames.contains("counter"));
 		assertTrue(propNames.contains("baseText"));
 
@@ -56,8 +56,9 @@ public class InjectorTest {
 		injector.setPropertyValue("counter", "5");
 		injector.setPropertyValue("baseText", "yaya");
 
-		verify(converter, setter1, setter2);
+		verify(intType, typeForTestVO, neverUsedType);
 		assertEquals(5, test.getCounter());
+		assertEquals("yaya2", test.getBaseText());
 	}
 
 }

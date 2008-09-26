@@ -47,7 +47,7 @@ public class ReflectorProperty implements IReflectorProperty {
 
 	@Override
 	public String toString() {
-		return "ReflectorProperty[" + getName() + "]";
+		return "ReflectorProperty[" + getType() + " " + getName() + "]";
 	}
 
 }

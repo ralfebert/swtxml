@@ -10,13 +10,22 @@ public class ClassProperties<A> {
 
 	private Map<String, Property> properties = new HashMap<String, Property>();
 
-	ClassProperties(ReflectorBean bean, Map<PropertyMatcher, ISetter> setters) {
+	ClassProperties(ReflectorBean bean, Map<PropertyMatcher, IType<?>> propertyTypes) {
 		for (IReflectorProperty prop : bean.getProperties()) {
-			for (PropertyMatcher matcher : setters.keySet()) {
+			// System.out.println("\n\n\n======== " + prop.getName());
+			Property property = null;
+			for (PropertyMatcher matcher : propertyTypes.keySet()) {
 				if (matcher.match(bean.getType(), prop.getName(), prop.getType())) {
-					properties.put(prop.getName(), new Property(prop, setters.get(matcher)));
+					property = new Property(prop, propertyTypes.get(matcher));
+					// System.out.println("  > " + matcher);
 					break;
 				}
+				// System.out.println("    " + matcher);
+			}
+			if (property != null) {
+				properties.put(property.getName(), property);
+			} else {
+				System.out.println("No type found for: " + prop + ", ignored");
 			}
 		}
 	}

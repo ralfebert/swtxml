@@ -22,6 +22,11 @@ public class PropertyMatcher {
 		this.forClass = forClass;
 		this.propertyName = propertyName;
 		this.targetTypes = propertyTypes;
+		for (Class<?> type : propertyTypes) {
+			if (type == null) {
+				throw new PropertiesException("propertyTypes may not be null");
+			}
+		}
 	}
 
 	public boolean match(Class<?> queryClass, String queryPropertyName, Class<?> queryTargetType) {

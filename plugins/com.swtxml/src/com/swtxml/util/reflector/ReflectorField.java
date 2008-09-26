@@ -36,7 +36,7 @@ public class ReflectorField implements IReflectorProperty {
 
 	@Override
 	public String toString() {
-		return "ReflectorField[" + getName() + "]";
+		return "ReflectorField[" + getType() + " " + getName() + "]";
 	}
 
 }

@@ -1,4 +1,4 @@
-package com.swtxml.util.injector;
+package com.swtxml.util.properties;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -24,6 +24,9 @@ public class PropertyMatcherTest {
 		assertFalse(m1.match(TestVO.class, "test", String.class));
 		PropertyMatcher m2 = new PropertyMatcher();
 		assertTrue(m2.match(TestVO.class, "test", String.class));
+
+		assertTrue(new PropertyMatcher(TestVO.class, PropertyMatcher.ALL_PROPERTIES).match(
+				TestVO.class, "xxx", String.class));
 
 		new PropertyMatcher(Composite.class, "layout", Layout.class).match(Composite.class,
 				"layout", Layout.class);

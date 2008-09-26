@@ -5,15 +5,15 @@ import com.swtxml.util.reflector.IReflectorProperty;
 public class Property {
 
 	private IReflectorProperty property;
-	private ISetter setter;
+	private IType<?> type;
 
-	public Property(IReflectorProperty property, ISetter setter) {
+	public Property(IReflectorProperty property, IType<?> type) {
 		this.property = property;
-		this.setter = setter;
+		this.type = type;
 	}
 
 	public void set(Object obj, String value) {
-		setter.apply(property, obj, property.getName(), value);
+		property.set(obj, type.convert(obj, value));
 	}
 
 	public String getName() {
