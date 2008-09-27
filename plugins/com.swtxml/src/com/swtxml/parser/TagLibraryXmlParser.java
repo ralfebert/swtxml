@@ -22,6 +22,7 @@ import org.xml.sax.SAXException;
 
 import com.swtxml.tag.Document;
 import com.swtxml.tag.TagNode;
+import com.swtxml.util.context.Context;
 
 public class TagLibraryXmlParser {
 
@@ -62,7 +63,9 @@ public class TagLibraryXmlParser {
 			}
 
 			for (TagNode node : document.getAllNodes()) {
+				Context.addAdapter(node);
 				node.process();
+				Context.clear();
 			}
 
 			return document.getRoot().get(rootNodeClass);

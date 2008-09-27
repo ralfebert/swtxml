@@ -8,9 +8,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 
+import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.properties.PropertyRegistry;
@@ -26,8 +26,10 @@ public class LayoutDataType implements IType<Object> {
 	}
 
 	public Object convert(Object obj, String value) {
-		Control control = (Control) obj;
-		Layout layout = control.getParent().getLayout();
+		Layout layout = Context.adaptTo(Layout.class);
+		if (layout == null) {
+			throw new ParseException("LayoutData can only be used in a Layout context");
+		}
 		return createLayoutData(layout, value);
 	}
 

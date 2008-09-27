@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.swtxml.magic;
 
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.metadata.ITag;
@@ -37,6 +39,13 @@ public class MagicTagNodeObjectProxy extends TagNode {
 	public <T> T get(Class<T> type) {
 		if (TagNode.class.isAssignableFrom(type)) {
 			return (T) this;
+			// TODO: again: this is not for object proxies, but for swt widgets
+			// only
+		} else if (type.isAssignableFrom(Layout.class)) {
+			if (!(obj instanceof Control)) {
+				return null;
+			}
+			return (T) ((Control) obj).getParent().getLayout();
 		} else {
 			return (T) ((type.isAssignableFrom(obj.getClass())) ? obj : null);
 		}
@@ -47,8 +56,8 @@ public class MagicTagNodeObjectProxy extends TagNode {
 		for (String name : attributes.keySet()) {
 			// TODO: widget vs general class
 			if (tag != null && obj instanceof Widget) {
-				SwtHandling.createSwtProperties(getDocument()).getProperties(obj.getClass()).getInjector(obj).setPropertyValue(
-						name, attributes.get(name));
+				SwtHandling.createSwtProperties(getDocument()).getProperties(obj.getClass())
+						.getInjector(obj).setPropertyValue(name, attributes.get(name));
 			}
 		}
 	}
