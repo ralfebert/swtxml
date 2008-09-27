@@ -23,20 +23,16 @@ public class Tag implements IAdaptable {
 
 	private ITagDefinition tagDefinition;
 	private final Tag parent;
-	private final String tagName;
 	private final String locationInfo;
-	private final int level;
 	protected final Map<String, String> attributes;
 	private final List<Tag> children = new ArrayList<Tag>();
 	private final List<Object> adapterObjects;
 
-	public Tag(ITagDefinition tagDefinition, Tag parent, String tagName, String locationInfo,
-			int level, Map<String, String> attributes) {
+	public Tag(ITagDefinition tagDefinition, Tag parent, String locationInfo,
+			Map<String, String> attributes) {
 		this.tagDefinition = tagDefinition;
 		this.parent = parent;
-		this.tagName = tagName;
 		this.locationInfo = locationInfo;
-		this.level = level;
 		this.attributes = attributes;
 		this.adapterObjects = new ArrayList<Object>();
 		if (this.parent != null) {
@@ -49,11 +45,7 @@ public class Tag implements IAdaptable {
 	}
 
 	public String getTagName() {
-		return tagName;
-	}
-
-	public int getLevel() {
-		return level;
+		return tagDefinition.getName();
 	}
 
 	@SuppressWarnings("unchecked")

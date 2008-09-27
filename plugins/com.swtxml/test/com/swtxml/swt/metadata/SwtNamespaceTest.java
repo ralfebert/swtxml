@@ -3,10 +3,6 @@ package com.swtxml.swt.metadata;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -32,18 +28,6 @@ public class SwtNamespaceTest {
 
 		IAttributeDefinition textAttribute = buttonTag.getAttribute("text");
 		assertEquals("text", textAttribute.getName());
-	}
-
-	@Test
-	public void testBuilder() {
-		Shell shell = new Shell();
-		Button btn = fakeBuildButton(shell);
-		assertTrue(btn instanceof Button);
-		assertEquals(shell, btn.getParent());
-	}
-
-	private Button fakeBuildButton(Composite parent) {
-		return (Button) new WidgetBuilder(buttonTag).build(parent, SWT.BORDER);
 	}
 
 }

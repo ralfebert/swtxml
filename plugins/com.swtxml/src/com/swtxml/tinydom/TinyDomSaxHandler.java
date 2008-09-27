@@ -53,7 +53,7 @@ public class TinyDomSaxHandler extends DefaultHandler {
 		Map<String, String> attributeList = processAttributes(namespaceUri, attributes,
 				tagDefinition);
 		Tag tag = new Tag(tagDefinition, parserStack.isEmpty() ? null : parserStack.peek(),
-				localName, getLocationInfo(), parserStack.size(), attributeList);
+				getLocationInfo(), attributeList);
 
 		if (root == null) {
 			this.root = tag;
