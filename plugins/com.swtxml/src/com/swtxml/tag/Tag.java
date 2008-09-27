@@ -16,6 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.swtxml.definition.ITagDefinition;
+import com.swtxml.parser.ITagProcessor;
+import com.swtxml.parser.XmlParsingException;
 import com.swtxml.util.adapter.IAdaptable;
 import com.swtxml.util.parser.ParseException;
 
@@ -33,8 +35,8 @@ public class Tag implements IAdaptable {
 	private final List<Tag> children = new ArrayList<Tag>();
 	private final List<Object> adapterObjects;
 
-	public Tag(Document document, ITagDefinition tagDefinition, Tag parent,
-			String tagName, String locationInfo, int level, Map<String, String> attributes) {
+	public Tag(Document document, ITagDefinition tagDefinition, Tag parent, String tagName,
+			String locationInfo, int level, Map<String, String> attributes) {
 		this.document = document;
 		this.tagDefinition = tagDefinition;
 		this.parent = parent;
@@ -134,6 +136,18 @@ public class Tag implements IAdaptable {
 			contents.addAll(tag.depthFirst());
 		}
 		return contents;
+	}
+
+	public void depthFirst(ITagProcessor... processors) {
+		for (Tag tag : depthFirst()) {
+			for (ITagProcessor processor : processors) {
+				try {
+					processor.process(tag);
+				} catch (Exception e) {
+					throw new XmlParsingException(tag.getLocationInfo() + e.getMessage(), e);
+				}
+			}
+		}
 	}
 
 }
