@@ -7,10 +7,10 @@ import java.util.Set;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.definition.AttributeDefinition;
 import com.swtxml.definition.DefinitionException;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.ITagDefinition;
+import com.swtxml.definition.impl.AttributeDefinition;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.types.StyleType;
 import com.swtxml.util.properties.ClassProperties;

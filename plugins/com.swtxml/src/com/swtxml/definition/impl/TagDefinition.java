@@ -1,10 +1,12 @@
-package com.swtxml.definition;
+package com.swtxml.definition.impl;
 
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.swtxml.definition.IAttributeDefinition;
+import com.swtxml.definition.ITagDefinition;
 import com.swtxml.util.types.IType;
 
 public class TagDefinition implements ITagDefinition {

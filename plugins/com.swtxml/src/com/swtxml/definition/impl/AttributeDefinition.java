@@ -1,5 +1,6 @@
-package com.swtxml.definition;
+package com.swtxml.definition.impl;
 
+import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.util.types.IType;
 
 public class AttributeDefinition implements IAttributeDefinition {
