@@ -46,13 +46,13 @@ public class XmlParserTest {
 	}
 
 	@Test
-	public void testDepthFirstProcessorByProcessorOrder() {
+	public void testDepthFirstTagProcessing() {
 		INamespaceResolver namespaceResolver = sampleNamespace();
 		CollectNumbers collectNumbers = new CollectNumbers();
-		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver, collectNumbers,
-				collectNumbers);
-		parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
-		assertEquals("123456123456", collectNumbers.getNumbers());
+		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver);
+		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml")).getRoot();
+		root.depthFirst(collectNumbers, collectNumbers);
+		assertEquals("112233445566", collectNumbers.getNumbers());
 	}
 
 	@Test
@@ -91,9 +91,10 @@ public class XmlParserTest {
 		replay(tagProcessor);
 
 		INamespaceResolver namespaceResolver = sampleNamespace();
-		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver, tagProcessor);
+		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver);
+		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml")).getRoot();
 		try {
-			parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
+			root.depthFirst(tagProcessor);
 			fail("expected");
 		} catch (XmlParsingException e) {
 			assertTrue(e.getMessage().contains("line 2"));

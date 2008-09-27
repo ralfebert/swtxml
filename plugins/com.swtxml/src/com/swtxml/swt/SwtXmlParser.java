@@ -17,22 +17,25 @@ import org.eclipse.swt.widgets.Composite;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceResolver;
 import com.swtxml.parser.ById;
+import com.swtxml.parser.ITagProcessor;
 import com.swtxml.parser.TagLibraryXmlParser;
 import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.processors.BuildWidgets;
-import com.swtxml.swt.processors.CollectIds;
 import com.swtxml.swt.processors.SetAttributes;
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.tag.Document;
+import com.swtxml.tag.Tag;
+import com.swtxml.util.context.Context;
 
 public class SwtXmlParser extends TagLibraryXmlParser {
 
 	private Object controller;
+	private Composite parent;
 
 	public SwtXmlParser(Composite parent, Object controller) {
-		super(createSwtNamespaceResolver(), new CollectIds(), new BuildWidgets(parent),
-				new SetAttributes());
+		super(createSwtNamespaceResolver());
+		this.parent = parent;
 		this.controller = controller;
 	}
 
@@ -43,7 +46,27 @@ public class SwtXmlParser extends TagLibraryXmlParser {
 	}
 
 	public void parse() {
-		Document document = super.parse(controller.getClass(), "swtxml");
+		final Document document = super.parse(controller.getClass(), "swtxml");
+
+		ITagProcessor[] processors = new ITagProcessor[] { new BuildWidgets(parent),
+				new SetAttributes() };
+
+		for (final ITagProcessor processor : processors) {
+			for (final Tag tag : document.getRoot().depthFirst()) {
+				Context.runWith(new Runnable() {
+					public void run() {
+						Context.addAdapter(tag);
+						Context.addAdapter(document);
+						try {
+							processor.process(tag);
+						} catch (Exception e) {
+							throw new XmlParsingException(tag.getLocationInfo() + e.getMessage(), e);
+						}
+					}
+				});
+			}
+		}
+
 		injectById(document);
 	}
 

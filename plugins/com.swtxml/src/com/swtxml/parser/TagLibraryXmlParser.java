@@ -20,18 +20,14 @@ import org.xml.sax.SAXException;
 
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.tag.Document;
-import com.swtxml.tag.Tag;
-import com.swtxml.util.context.Context;
 
 public class TagLibraryXmlParser {
 
-	private ITagProcessor[] processors;
 	private INamespaceResolver namespaceResolver;
 
-	public TagLibraryXmlParser(INamespaceResolver namespaceResolver, ITagProcessor... processors) {
+	public TagLibraryXmlParser(INamespaceResolver namespaceResolver) {
 		super();
 		this.namespaceResolver = namespaceResolver;
-		this.processors = processors;
 	}
 
 	protected Document parse(Class<?> clazz) {
@@ -61,22 +57,6 @@ public class TagLibraryXmlParser {
 			parser.parse(inputStream, s);
 		} catch (Exception e) {
 			throw new XmlParsingException(s.getLocationInfo() + e.getMessage(), e);
-		}
-
-		for (final ITagProcessor processor : processors) {
-			for (final Tag tag : document.getRoot().depthFirst()) {
-				Context.runWith(new Runnable() {
-					public void run() {
-						Context.addAdapter(tag);
-						Context.addAdapter(document);
-						try {
-							processor.process(tag);
-						} catch (Exception e) {
-							throw new XmlParsingException(tag.getLocationInfo() + e.getMessage(), e);
-						}
-					}
-				});
-			}
 		}
 
 		return document;
