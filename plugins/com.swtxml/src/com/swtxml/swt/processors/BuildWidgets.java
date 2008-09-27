@@ -8,7 +8,7 @@ import com.swtxml.parser.ITagProcessor;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.metadata.WidgetBuilder;
 import com.swtxml.swt.metadata.WidgetTag;
-import com.swtxml.tag.TagInformation;
+import com.swtxml.tag.Tag;
 import com.swtxml.util.parser.ParseException;
 
 public class BuildWidgets implements ITagProcessor {
@@ -19,7 +19,7 @@ public class BuildWidgets implements ITagProcessor {
 		this.parent = parent;
 	}
 
-	public void process(TagInformation tag) {
+	public void process(Tag tag) {
 		if (!(tag.getTagDefinition() instanceof WidgetTag)) {
 			return;
 		}

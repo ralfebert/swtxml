@@ -1,9 +1,9 @@
 package com.swtxml.parser;
 
-import com.swtxml.tag.TagInformation;
+import com.swtxml.tag.Tag;
 
 public interface ITagProcessor {
 
-	void process(TagInformation tag);
+	void process(Tag tag);
 
 }

@@ -9,10 +9,10 @@ import com.swtxml.util.adapter.IAdaptable;
 
 public class Document implements IIdResolver, IAdaptable {
 
-	private Map<String, TagInformation> nodesById = new HashMap<String, TagInformation>();
+	private Map<String, Tag> nodesById = new HashMap<String, Tag>();
 
 	public <T> T getById(String id, Class<T> clazz) {
-		TagInformation node = nodesById.get(id);
+		Tag node = nodesById.get(id);
 		if (node == null) {
 			return null;
 		}
@@ -20,13 +20,13 @@ public class Document implements IIdResolver, IAdaptable {
 		return node.adaptTo(clazz);
 	}
 
-	public TagInformation getRoot() {
+	public Tag getRoot() {
 		return root;
 	}
 
-	private TagInformation root;
+	private Tag root;
 
-	void register(TagInformation node) {
+	void register(Tag node) {
 		if (node.getParent() == null) {
 			if (root != null) {
 				throw new XmlParsingException("Root node already set!");

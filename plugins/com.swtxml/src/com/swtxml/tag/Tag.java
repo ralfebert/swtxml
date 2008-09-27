@@ -19,21 +19,21 @@ import com.swtxml.definition.ITagDefinition;
 import com.swtxml.util.adapter.IAdaptable;
 import com.swtxml.util.parser.ParseException;
 
-public class TagInformation implements IAdaptable {
+public class Tag implements IAdaptable {
 
 	private final Document document;
 
 	private ITagDefinition tagDefinition;
 
-	private final TagInformation parent;
+	private final Tag parent;
 	private final String tagName;
 	private final String locationInfo;
 	private final int level;
 	protected final Map<String, String> attributes;
-	private final List<TagInformation> children = new ArrayList<TagInformation>();
+	private final List<Tag> children = new ArrayList<Tag>();
 	private final List<Object> adapterObjects;
 
-	public TagInformation(Document document, ITagDefinition tagDefinition, TagInformation parent,
+	public Tag(Document document, ITagDefinition tagDefinition, Tag parent,
 			String tagName, String locationInfo, int level, Map<String, String> attributes) {
 		this.document = document;
 		this.tagDefinition = tagDefinition;
@@ -110,7 +110,7 @@ public class TagInformation implements IAdaptable {
 		return attributes;
 	}
 
-	public TagInformation getParent() {
+	public Tag getParent() {
 		return parent;
 	}
 
@@ -118,7 +118,7 @@ public class TagInformation implements IAdaptable {
 		return document;
 	}
 
-	public List<TagInformation> getChildren() {
+	public List<Tag> getChildren() {
 		return children;
 	}
 
@@ -126,11 +126,11 @@ public class TagInformation implements IAdaptable {
 		return getParent() == null;
 	}
 
-	public Collection<TagInformation> depthFirst() {
+	public Collection<Tag> depthFirst() {
 		// TODO: iteration without creating lists?
-		List<TagInformation> contents = new ArrayList<TagInformation>();
+		List<Tag> contents = new ArrayList<Tag>();
 		contents.add(this);
-		for (TagInformation tag : children) {
+		for (Tag tag : children) {
 			contents.addAll(tag.depthFirst());
 		}
 		return contents;

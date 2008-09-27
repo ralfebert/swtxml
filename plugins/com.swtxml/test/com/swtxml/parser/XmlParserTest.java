@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.definition.impl.TagDefinition;
-import com.swtxml.tag.TagInformation;
+import com.swtxml.tag.Tag;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.types.SimpleTypes;
 
@@ -28,7 +28,7 @@ public class XmlParserTest {
 			return numbers;
 		}
 
-		public void process(TagInformation tag) {
+		public void process(Tag tag) {
 			numbers += tag.getAttribute("no");
 		}
 	}
@@ -86,7 +86,7 @@ public class XmlParserTest {
 	@Test
 	public void testProcessingError() {
 		ITagProcessor tagProcessor = createMock(ITagProcessor.class);
-		tagProcessor.process((TagInformation) anyObject());
+		tagProcessor.process((Tag) anyObject());
 		expectLastCall().andThrow(new ParseException("NO"));
 		replay(tagProcessor);
 

@@ -7,12 +7,12 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.parser.ITagProcessor;
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.tag.TagInformation;
+import com.swtxml.tag.Tag;
 import com.swtxml.util.parser.ParseException;
 
 public class SetAttributes implements ITagProcessor {
 
-	public void process(TagInformation tag) {
+	public void process(Tag tag) {
 		Widget widget = tag.adaptTo(Widget.class);
 		if (widget == null) {
 			return;
@@ -28,7 +28,7 @@ public class SetAttributes implements ITagProcessor {
 
 		if (widget instanceof TabItem) {
 			Control control = null;
-			for (TagInformation children : tag.getChildren()) {
+			for (Tag children : tag.getChildren()) {
 				Control childNodeControl = children.adaptTo(Control.class);
 				if (childNodeControl != null) {
 					if (control != null) {

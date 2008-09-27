@@ -25,7 +25,7 @@ import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.ITagDefinition;
 import com.swtxml.tag.Document;
-import com.swtxml.tag.TagInformation;
+import com.swtxml.tag.Tag;
 import com.swtxml.util.parser.ParseException;
 
 public class TagLibrarySaxHandler extends DefaultHandler {
@@ -42,7 +42,7 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		this.xmlFilename = xmlFilename;
 	}
 
-	private Stack<TagInformation> parserStack = new Stack<TagInformation>();
+	private Stack<Tag> parserStack = new Stack<Tag>();
 
 	@Override
 	public void startElement(String namespaceUri, String localName, String qName,
@@ -55,11 +55,10 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		}
 		Map<String, String> attributeList = processAttributes(namespaceUri, attributes,
 				tagDefinition);
-		TagInformation tagInformation = new TagInformation(document, tagDefinition, parserStack
-				.isEmpty() ? null : parserStack.peek(), localName, getLocationInfo(), parserStack
-				.size(), attributeList);
+		Tag tag = new Tag(document, tagDefinition, parserStack.isEmpty() ? null : parserStack
+				.peek(), localName, getLocationInfo(), parserStack.size(), attributeList);
 
-		parserStack.push(tagInformation);
+		parserStack.push(tag);
 	}
 
 	private Map<String, String> processAttributes(String namespaceUri, Attributes attributes,

@@ -21,7 +21,7 @@ import org.xml.sax.SAXException;
 
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.tag.Document;
-import com.swtxml.tag.TagInformation;
+import com.swtxml.tag.Tag;
 import com.swtxml.util.context.Context;
 
 public class TagLibraryXmlParser {
@@ -67,13 +67,13 @@ public class TagLibraryXmlParser {
 		}
 
 		for (ITagProcessor processor : processors) {
-			for (TagInformation node : document.getRoot().depthFirst()) {
-				Context.addAdapter(node);
+			for (Tag tag : document.getRoot().depthFirst()) {
+				Context.addAdapter(tag);
 				Context.addAdapter(document);
 				try {
-					processor.process(node);
+					processor.process(tag);
 				} catch (Exception e) {
-					throw new XmlParsingException(node.getLocationInfo() + e.getMessage(), e);
+					throw new XmlParsingException(tag.getLocationInfo() + e.getMessage(), e);
 				}
 				Context.clear();
 			}
