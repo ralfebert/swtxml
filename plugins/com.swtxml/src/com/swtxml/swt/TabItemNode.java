@@ -10,12 +10,8 @@
  *******************************************************************************/
 package com.swtxml.swt;
 
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.TabItem;
-
 import com.swtxml.definition.ITagDefinition;
 import com.swtxml.magic.MagicTagNodeObjectProxy;
-import com.swtxml.parser.TagLibraryException;
 import com.swtxml.tag.TagInformation;
 
 public class TabItemNode extends MagicTagNodeObjectProxy {
@@ -27,20 +23,5 @@ public class TabItemNode extends MagicTagNodeObjectProxy {
 	@Override
 	public void process() {
 		super.process();
-		Control control = null;
-		for (TagInformation children : getChildren()) {
-			Control childNodeControl = children.adaptTo(Control.class);
-			if (childNodeControl != null) {
-				if (control != null) {
-					throw new TagLibraryException(this,
-							"TabItems may have only one control inside!");
-				} else {
-					control = childNodeControl;
-				}
-			}
-		}
-		if (control != null) {
-			adaptTo(TabItem.class).setControl(control);
-		}
 	}
 }
