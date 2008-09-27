@@ -134,7 +134,7 @@ public class Match {
 				break;
 			}
 		}
-		for (int i = cursorPos; i <= end; i++) {
+		for (int i = cursorPos; i < end; i++) {
 			if (splitter.isSeparator(text.charAt(i))) {
 				end = i;
 				break;
