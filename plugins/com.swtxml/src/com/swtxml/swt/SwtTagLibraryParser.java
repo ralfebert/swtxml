@@ -10,17 +10,22 @@
  *******************************************************************************/
 package com.swtxml.swt;
 
+import java.lang.reflect.Field;
+
 import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceResolver;
-import com.swtxml.parser.IControllerObjectProvider;
+import com.swtxml.parser.ById;
 import com.swtxml.parser.TagLibraryXmlParser;
+import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.processors.BuildWidgets;
 import com.swtxml.swt.processors.SetAttributes;
+import com.swtxml.swt.properties.IIdResolver;
+import com.swtxml.tag.Document;
 
-public class SwtTagLibraryParser extends TagLibraryXmlParser implements IControllerObjectProvider {
+public class SwtTagLibraryParser extends TagLibraryXmlParser {
 
 	private Object controller;
 
@@ -36,12 +41,29 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IControl
 	}
 
 	public void parse() {
-		super.parse(controller.getClass(), "swtxml");
-		super.injectById(controller);
+		Document document = super.parse(controller.getClass(), "swtxml");
+		injectById(document);
 	}
 
-	public Object getController() {
-		return controller;
+	public void injectById(IIdResolver ids) {
+		// TODO: consider superclass methods
+		for (Field field : controller.getClass().getDeclaredFields()) {
+			if (field.isAnnotationPresent(ById.class)) {
+				try {
+					Object value = ids.getById(field.getName(), field.getType());
+					if (value == null) {
+						throw new XmlParsingException("No element with id " + field.getName()
+								+ " found for injecting @ById");
+					}
+					boolean oldAccess = field.isAccessible();
+					field.setAccessible(true);
+					field.set(controller, value);
+					field.setAccessible(oldAccess);
+				} catch (Exception e) {
+					throw new XmlParsingException(e);
+				}
+			}
+		}
 	}
 
 }

@@ -7,6 +7,7 @@ import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.util.adapter.IAdaptable;
 
+//TODO: remove document
 public class Document implements IIdResolver, IAdaptable {
 
 	private Map<String, Tag> nodesById = new HashMap<String, Tag>();

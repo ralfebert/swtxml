@@ -11,7 +11,6 @@
 package com.swtxml.parser;
 
 import java.io.InputStream;
-import java.lang.reflect.Field;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -26,7 +25,6 @@ import com.swtxml.util.context.Context;
 
 public class TagLibraryXmlParser {
 
-	private Document document;
 	private ITagProcessor[] processors;
 	private INamespaceResolver namespaceResolver;
 
@@ -56,8 +54,7 @@ public class TagLibraryXmlParser {
 		parserFactory.setNamespaceAware(true);
 
 		SAXParser parser = createSaxParser(parserFactory);
-		// TODO: don't keep document
-		this.document = new Document();
+		Document document = new Document();
 
 		TagLibrarySaxHandler s = new TagLibrarySaxHandler(document, namespaceResolver, filename);
 		try {
@@ -78,8 +75,8 @@ public class TagLibraryXmlParser {
 				Context.clear();
 			}
 		}
-		return document;
 
+		return document;
 	}
 
 	private SAXParser createSaxParser(SAXParserFactory parserFactory) {
@@ -89,31 +86,6 @@ public class TagLibraryXmlParser {
 			throw new XmlParsingException(e);
 		} catch (SAXException e) {
 			throw new XmlParsingException(e);
-		}
-	}
-
-	public <T> T getById(String id, Class<T> clazz) {
-		return document.getById(id, clazz);
-	}
-
-	public void injectById(Object obj) {
-		// TODO: consider superclass methods
-		for (Field field : obj.getClass().getDeclaredFields()) {
-			if (field.isAnnotationPresent(ById.class)) {
-				try {
-					Object value = getById(field.getName(), field.getType());
-					if (value == null) {
-						throw new XmlParsingException("No element with id " + field.getName()
-								+ " found for injecting @ById");
-					}
-					boolean oldAccess = field.isAccessible();
-					field.setAccessible(true);
-					field.set(obj, value);
-					field.setAccessible(oldAccess);
-				} catch (Exception e) {
-					throw new XmlParsingException(e);
-				}
-			}
 		}
 	}
 

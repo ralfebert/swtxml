@@ -10,12 +10,17 @@
  *******************************************************************************/
 package com.swtxml.swt.sample;
 
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
+import com.swtxml.parser.ById;
 import com.swtxml.rcp.SwtXmlWindow;
 
 public class SwtWidgetsExamplesWindow extends SwtXmlWindow {
+
+	@ById
+	private Button testButton;
 
 	public SwtWidgetsExamplesWindow(Shell parentShell) {
 		super(parentShell);
@@ -31,6 +36,10 @@ public class SwtWidgetsExamplesWindow extends SwtXmlWindow {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+	}
+
+	public Button getTestButton() {
+		return testButton;
 	}
 
 }
