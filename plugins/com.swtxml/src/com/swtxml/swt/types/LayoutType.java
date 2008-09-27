@@ -1,26 +1,16 @@
 package com.swtxml.swt.types;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Layout;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
-import com.swtxml.util.parser.Splitter;
 import com.swtxml.util.parser.Strictness;
-import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.IInjector;
-import com.swtxml.util.properties.Property;
 import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.reflector.ReflectorException;
@@ -47,10 +37,14 @@ public class LayoutType implements IType<Layout>, IContentAssistable {
 
 		String layoutName = layoutConstraints.remove(LAYOUT_KEY);
 		if (layoutName == null) {
-			throw new ParseException("no layout specified");
+			if (strictness == Strictness.STRICT) {
+				throw new ParseException("no layout specified");
+			} else {
+				return null;
+			}
 		}
 
-		Layout layout = getLayoutClass(layoutName);
+		Layout layout = createLayout(layoutName, Strictness.STRICT);
 
 		IInjector injector = layoutProperties.getProperties(layout.getClass()).getInjector(layout);
 		injector.setPropertyValues(layoutConstraints);
@@ -58,69 +52,40 @@ public class LayoutType implements IType<Layout>, IContentAssistable {
 		return layout;
 	}
 
-	private Layout getLayoutClass(String layoutName) {
+	private Layout createLayout(String layoutName, Strictness strictness) {
+		try {
+			return getLayoutClass(layoutName, strictness).newInstance();
+		} catch (Exception e) {
+			if (strictness == Strictness.STRICT) {
+				throw new ReflectorException(e);
+			}
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private Class<? extends Layout> getLayoutClass(String layoutName, Strictness strictness) {
 		String className = SWT_LAYOUT_PACKAGE + "." + StringUtils.capitalize(layoutName) + "Layout";
 		try {
-			return (Layout) Class.forName(className).newInstance();
+			return (Class<? extends Layout>) Class.forName(className);
 		} catch (Exception e) {
-			throw new ReflectorException(e);
+			if (strictness == Strictness.STRICT) {
+				throw new ReflectorException(e);
+			}
+			return null;
 		}
 	}
 
 	public List<Match> getProposals(Match match) {
+		PropertiesContentAssist assist = new PropertiesContentAssist(match);
+		String layoutName = assist.getPropertyValues().get("layout");
 
-		String text = match.getText();
-		int cursor = match.getCursorPos();
+		Class<? extends Layout> layoutClass = getLayoutClass(layoutName, Strictness.LAX);
 
-		if (cursor >= text.length() || match.getText().charAt(match.getCursorPos()) != ';') {
-			match = match.insert(";", cursor);
-			match.moveCursor(-1);
+		if (layoutClass == null) {
+			return assist.getKeyValueMatch().propose(LAYOUT_KEY + ":");
 		}
 
-		Map<String, String> layoutConstraints = KeyValueParser.parse(match.getText(),
-				Strictness.LAX);
-		String layoutName = layoutConstraints.get("layout");
-		match = match.restrict(KeyValueParser.VALUE_SPLITTER);
-
-		text = match.getText();
-		cursor = match.getCursorPos();
-
-		if (layoutName == null) {
-			return match.propose(LAYOUT_KEY + ":");
-		} else {
-			ClassProperties<? extends Layout> properties = layoutProperties
-					.getProperties(getLayoutClass(layoutName).getClass());
-
-			Splitter colon = KeyValueParser.KEY_VALUE_SPLITTER;
-			int colonPos = text.indexOf(colon.getPreferredSeparator());
-
-			if (colonPos < 0 || colonPos >= cursor) {
-				Set<String> propertyNames = new HashSet<String>(properties.getProperties().keySet());
-				propertyNames.removeAll(layoutConstraints.keySet());
-				Collection<String> propertyProposals = Collections2.forIterable(Iterables
-						.transform(propertyNames, new Function<String, String>() {
-							public String apply(String s) {
-								return s + ":";
-							}
-						}));
-				return match.propose(propertyProposals);
-			} else {
-				String[] keyValue = colon.split(text);
-				Property property = properties.getProperties().get(keyValue[0]);
-				if (property != null) {
-					IType<?> type = property.getType();
-					if (type instanceof IContentAssistable) {
-						List<Match> proposals = ((IContentAssistable) type).getProposals(match
-								.restrict(colon));
-						for (Match proposal : proposals) {
-							// move cursor behind semicolon
-							proposal.moveCursor(1);
-						}
-						return proposals;
-					}
-				}
-			}
-		}
-		return Collections.emptyList();
+		return assist.getProposals(layoutProperties.getProperties(layoutClass));
 	}
 }

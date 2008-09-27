@@ -134,6 +134,9 @@ public class SwtTypesTest {
 		Context.addAdapter(new MockAdapter(new GridLayout()));
 		LayoutDataType type = new LayoutDataType(layoutInjector);
 		assertEquals("widthHint:§;", type.getProposals(new Match("wi§")).get(0).toString());
+		assertEquals("verticalAlignment:CENTER;§", type.getProposals(
+				new Match("verticalAlignment:c§")).get(0).toString());
+
 	}
 
 	@Test

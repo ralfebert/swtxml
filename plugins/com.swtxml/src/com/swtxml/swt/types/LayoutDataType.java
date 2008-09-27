@@ -40,7 +40,7 @@ public class LayoutDataType implements IType<Object>, IContentAssistable {
 	public Object createLayoutData(Layout parentLayout, String value) {
 		Map<String, String> layoutConstraints = KeyValueParser.parse(value);
 
-		Class<?> layoutDataClass = getLayoutClass(parentLayout);
+		Class<?> layoutDataClass = getLayoutDataClass(parentLayout);
 		if (layoutDataClass == null) {
 			throw new ParseException("Layout " + layoutDataClass.getSimpleName()
 					+ " doesn't allow layout data!");
@@ -59,7 +59,7 @@ public class LayoutDataType implements IType<Object>, IContentAssistable {
 		return layoutData;
 	}
 
-	private Class<?> getLayoutClass(Layout layout) {
+	private Class<?> getLayoutDataClass(Layout layout) {
 		if (layout == null) {
 			return null;
 		}
@@ -77,9 +77,10 @@ public class LayoutDataType implements IType<Object>, IContentAssistable {
 
 	public List<Match> getProposals(Match match) {
 		Layout layout = Context.adaptTo(Layout.class);
-		// if (layout==null)
-		// return
-		return Collections.emptyList();
+		if (layout == null) {
+			return Collections.emptyList();
+		}
+		PropertiesContentAssist assist = new PropertiesContentAssist(match);
+		return assist.getProposals(layoutProperties.getProperties(getLayoutDataClass(layout)));
 	}
-
 }

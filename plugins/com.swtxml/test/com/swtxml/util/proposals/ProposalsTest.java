@@ -111,4 +111,5 @@ public class ProposalsTest {
 		assertEquals("\"test§\"", new Match("\"§\"").handleQuotes().replace("test").toString());
 		assertEquals("\"test§\"", new Match("\"t§\"").handleQuotes().replace("test").toString());
 	}
+
 }
