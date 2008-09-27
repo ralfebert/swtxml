@@ -20,6 +20,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.ITagDefinition;
@@ -46,17 +47,36 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 	@Override
 	public void startElement(String namespaceUri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		Map<String, String> attributeList = new HashMap<String, String>();
 		INamespaceDefinition namespace = getNamespace(namespaceUri);
 		ITagDefinition tagDefinition = namespace.getTag(localName);
 		if (tagDefinition == null) {
 			throw new ParseException("Unknown tag \"" + localName + "\" for namespace "
 					+ namespaceUri);
 		}
+		Map<String, String> attributeList = processAttributes(namespaceUri, attributes,
+				tagDefinition);
+		TagInformation tagInformation = new TagInformation(document, tagDefinition, parserStack
+				.isEmpty() ? null : parserStack.peek(), localName, getLocationInfo(), parserStack
+				.size(), attributeList);
+
+		parserStack.push(tagInformation);
+	}
+
+	private Map<String, String> processAttributes(String namespaceUri, Attributes attributes,
+			ITagDefinition tagDefinition) {
+		Map<String, String> attributeList = new HashMap<String, String>();
 		for (int i = 0; i < attributes.getLength(); i++) {
 			String uri = attributes.getURI(i);
 			if (StringUtils.isEmpty(uri) || uri.equals(namespaceUri)) {
-				attributeList.put(attributes.getLocalName(i), attributes.getValue(i));
+				String name = attributes.getLocalName(i);
+				String value = attributes.getValue(i);
+				IAttributeDefinition attributeDefinition = tagDefinition.getAttribute(name);
+				if (attributeDefinition == null) {
+					throw new ParseException("Unknown attribute \"" + name + "\" for tag "
+							+ tagDefinition.getName());
+				}
+				attributeList.put(name, value);
+
 			} else {
 				// TODO: reintroduce foreign attributes
 				// attributeList.add(new TagAttribute(parser,
@@ -64,11 +84,7 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 				// .getLocalName(i), attributes.getValue(i), false));
 			}
 		}
-		TagInformation tagInformation = new TagInformation(document, tagDefinition, parserStack
-				.isEmpty() ? null : parserStack.peek(), localName, getLocationInfo(), parserStack
-				.size(), attributeList);
-
-		parserStack.push(tagInformation);
+		return attributeList;
 	}
 
 	private INamespaceDefinition getNamespace(String namespaceUri) {
@@ -83,7 +99,7 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		return namespace;
 	}
 
-	private String getLocationInfo() {
+	public String getLocationInfo() {
 		return xmlFilename + " [line " + locator.getLineNumber() + "] ";
 	}
 

@@ -15,6 +15,7 @@ import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.types.StyleType;
 import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.Property;
+import com.swtxml.util.types.SimpleTypes;
 
 public class WidgetTag implements ITagDefinition {
 
@@ -33,6 +34,7 @@ public class WidgetTag implements ITagDefinition {
 			WidgetAttribute attribute = new WidgetAttribute(property);
 			attributes.put(attribute.getName(), attribute);
 		}
+		attributes.put("id", new AttributeDefinition("id", new SimpleTypes.StringType()));
 		attributes.put("style", new AttributeDefinition("style", new StyleType(SwtHandling.SWT)));
 	}
 

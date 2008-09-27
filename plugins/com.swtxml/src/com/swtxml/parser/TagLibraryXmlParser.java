@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.swtxml.parser;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 
@@ -56,28 +55,35 @@ public class TagLibraryXmlParser {
 		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 		parserFactory.setNamespaceAware(true);
 
+		SAXParser parser = createSaxParser(parserFactory);
+		// TODO: don't keep document
+		this.document = new Document();
+
+		TagLibrarySaxHandler s = new TagLibrarySaxHandler(document, namespaceResolver, filename);
 		try {
-			SAXParser parser = parserFactory.newSAXParser();
-			// TODO: don't keep document
-			this.document = new Document();
-
-			TagLibrarySaxHandler s = new TagLibrarySaxHandler(document, namespaceResolver, filename);
 			parser.parse(inputStream, s);
+		} catch (Exception e) {
+			throw new XmlParsingException(s.getLocationInfo() + e.getMessage(), e);
+		}
 
-			for (ITagProcessor processor : processors) {
-				for (TagInformation node : document.getRoot().depthFirst()) {
-					Context.addAdapter(node);
-					Context.addAdapter(document);
-					processor.process(node);
-					Context.clear();
-				}
+		for (ITagProcessor processor : processors) {
+			for (TagInformation node : document.getRoot().depthFirst()) {
+				Context.addAdapter(node);
+				Context.addAdapter(document);
+				processor.process(node);
+				Context.clear();
 			}
-			return document;
+		}
+		return document;
+
+	}
+
+	private SAXParser createSaxParser(SAXParserFactory parserFactory) {
+		try {
+			return parserFactory.newSAXParser();
 		} catch (ParserConfigurationException e) {
 			throw new XmlParsingException(e);
 		} catch (SAXException e) {
-			throw new XmlParsingException(e);
-		} catch (IOException e) {
 			throw new XmlParsingException(e);
 		}
 	}
