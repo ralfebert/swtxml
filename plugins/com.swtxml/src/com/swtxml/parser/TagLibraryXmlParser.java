@@ -47,8 +47,6 @@ public class TagLibraryXmlParser {
 			public void process(TagInformation tag) {
 				if ((TagLibraryXmlParser.this instanceof IRootNodeAware) && tag.getParent() == null) {
 					((IRootNodeAware) TagLibraryXmlParser.this).rootTag(tag);
-				} else {
-					tag.getTagLibrary().tag(tag);
 				}
 			}
 		});

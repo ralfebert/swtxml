@@ -10,33 +10,13 @@
  *******************************************************************************/
 package com.swtxml.swt;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Widget;
-
 import com.swtxml.parser.ITagLibrary;
-import com.swtxml.parser.TagLibraryException;
-import com.swtxml.swt.metadata.WidgetBuilder;
-import com.swtxml.swt.metadata.WidgetTag;
 import com.swtxml.tag.TagInformation;
 
 public class SwtWidgetTagLibrary implements ITagLibrary {
 
-	public TagInformation tag(TagInformation tagInfo) {
-
-		WidgetTag tag = (WidgetTag) tagInfo.getTagDefinition();
-		WidgetBuilder builder = new WidgetBuilder(tag);
-
-		try {
-			Integer style = SwtHandling.SWT.getIntValue(tagInfo.getAttribute("style"));
-			Composite parent = (Composite) tagInfo.parentRecursiveAdaptTo(builder.getParentClass());
-			Widget widget = builder.build(parent, style == null ? SWT.NONE : style);
-			tagInfo.makeAdaptable(widget);
-			return tagInfo;
-		} catch (Exception e) {
-			throw new TagLibraryException(tagInfo, e);
-		}
-
+	public TagInformation tag(TagInformation tag) {
+		return tag;
 	}
 
 }
