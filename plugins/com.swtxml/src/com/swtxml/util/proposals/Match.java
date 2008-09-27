@@ -1,27 +1,38 @@
 package com.swtxml.util.proposals;
 
+import java.util.Collection;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
+import com.swtxml.util.parser.Splitter;
+
 public class Match {
 
 	private int cursorPos;
 	private String text;
-	private int startOffset;
-	private int endOffset;
+	private int start;
+	private int end;
 
 	public Match(String text, int cursorPos) {
 		this.text = text;
 		this.cursorPos = cursorPos;
+		this.start = 0;
+		this.end = text.length();
 	}
 
 	public Match(String str) {
 		this.cursorPos = str.indexOf('§');
 		this.text = str.substring(0, cursorPos) + str.substring(cursorPos + 1);
+		this.start = 0;
+		this.end = text.length();
 	}
 
 	public Match(Match m) {
 		this.cursorPos = m.cursorPos;
 		this.text = m.text;
-		this.startOffset = m.startOffset;
-		this.endOffset = m.endOffset;
+		this.start = m.start;
+		this.end = m.end;
 	}
 
 	public int getCursorPos() {
@@ -33,7 +44,7 @@ public class Match {
 	}
 
 	public String getText() {
-		return text.substring(startOffset, text.length() + endOffset);
+		return text.substring(start, end);
 	}
 
 	public void setText(String text) {
@@ -52,9 +63,8 @@ public class Match {
 		if (!text.endsWith("\"")) {
 			insertR("\"", text.length());
 		}
-
-		startOffset = 1;
-		endOffset = -1;
+		this.start++;
+		this.end--;
 	}
 
 	public Match stripQuotes() {
@@ -69,9 +79,21 @@ public class Match {
 		return m;
 	}
 
+	public Match replace(String str) {
+		Match m = new Match(this);
+		m.replaceR(str, 0, getText().length());
+		return m;
+	}
+
 	public Match replace(String str, int i, int length) {
 		Match m = new Match(this);
 		m.replaceR(str, i, length);
+		return m;
+	}
+
+	public Match restrict(Splitter splitter) {
+		Match m = new Match(this);
+		m.restrictR(splitter);
 		return m;
 	}
 
@@ -80,10 +102,14 @@ public class Match {
 	}
 
 	private void replaceR(String str, int i, int length) {
-		i += startOffset;
+		i += start;
 		if (i + length < cursorPos) {
 			cursorPos -= (length - str.length());
 		}
+		if (i <= cursorPos && cursorPos <= i + length) {
+			cursorPos = i + str.length();
+		}
+		end -= (length - str.length());
 		text = text.substring(0, i) + str + text.substring(i + length);
 	}
 
@@ -91,4 +117,36 @@ public class Match {
 		return text;
 	}
 
+	public List<Match> propose(String... proposals) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private void restrictR(Splitter splitter) {
+		splitter.getSeparators();
+		for (int i = cursorPos; i >= start; i--) {
+			if (splitter.isSeparator(text.charAt(i))) {
+				start = i + 1;
+				break;
+			}
+		}
+		for (int i = cursorPos; i <= end; i++) {
+			if (splitter.isSeparator(text.charAt(i))) {
+				end = i;
+				break;
+			}
+		}
+	}
+
+	public List<Match> propose(Collection<String> constants) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public void dump() {
+		System.out.println(text);
+		System.out.println(StringUtils.leftPad("[", start + 1)
+				+ StringUtils.leftPad("]", end - start));
+		System.out.println(StringUtils.leftPad("C", cursorPos + 1));
+	}
 }

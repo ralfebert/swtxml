@@ -31,7 +31,7 @@ import com.swtxml.metadata.INamespace;
 import com.swtxml.metadata.ITag;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.util.proposals.Match;
-import com.swtxml.util.types.IEnumeratedType;
+import com.swtxml.util.types.IContentAssistable;
 import com.swtxml.util.types.IType;
 
 @SuppressWarnings("restriction")
@@ -129,30 +129,19 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		}
 
 		IType<?> type = attribute.getType();
-
-		if (type instanceof IEnumeratedType) {
-			List<String> proposals = new ArrayList<String>(((IEnumeratedType) type).getEnumValues());
-			Collections.sort(proposals);
+		if (type instanceof IContentAssistable) {
 
 			Match match = new Match(contentAssistRequest.getText(), contentAssistRequest
-					.getMatchString().length());
+					.getMatchString().length()).stripQuotes();
+			List<Match> proposals = ((IContentAssistable) type).getProposals(match);
 
-			// List<String> matchingProposals = new
-			// ArrayList<String>(Collections2.filter(proposals,
-			// new Predicate<String>() {
-			//
-			// public boolean apply(String proposal) {
-			// return proposal.toLowerCase().startsWith(match);
-			// }
-			//
-			// }));
-
-			// for (String proposal : match) {
-			System.out.println(match);
-			contentAssistRequest.addProposal(new CompletionProposal(match.getText(),
-					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
-							.getReplacementLength(), match.getCursorPos()));
-			// }
+			for (Match proposal : proposals) {
+				CompletionProposal newProposal = new CompletionProposal(proposal
+						.getReplacementText(), contentAssistRequest.getReplacementBeginPosition(),
+						contentAssistRequest.getReplacementLength(), match.getCursorPos(), null,
+						match.getText(), null, null);
+				contentAssistRequest.addProposal(newProposal);
+			}
 		}
 	}
 }

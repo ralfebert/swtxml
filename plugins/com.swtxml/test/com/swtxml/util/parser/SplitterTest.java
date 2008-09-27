@@ -8,17 +8,13 @@ import org.junit.Test;
 public class SplitterTest {
 
 	@Test
-	public void testNone() {
-		Splitter rule = Splitter.allowMultiple('.', ".,");
-		assertArrayEquals(new String[] { "1", "2", "3", "4" }, rule.split("1.2,3.4"));
-		assertEquals("1.2.3.4", rule.join(rule.split("1.2,3.4")));
-	}
-
-	@Test
-	public void testAllowMultiple() {
-		Splitter rule = Splitter.none();
-		assertArrayEquals(new String[] { "1.2,3.4" }, rule.split("1.2,3.4"));
-		assertEquals("1.2,3.4", rule.join(rule.split("1.2,3.4")));
+	public void testSplitter() {
+		Splitter s = new Splitter(".,");
+		assertArrayEquals(new String[] { "1", "2", "3", "4" }, s.split("1.2,3.4"));
+		assertEquals("1.2.3.4", s.join(s.split("1.2,3.4")));
+		assertEquals(true, s.isSeparator('.'));
+		assertEquals(true, s.isSeparator(','));
+		assertEquals(false, s.isSeparator('x'));
 	}
 
 }

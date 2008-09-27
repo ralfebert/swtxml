@@ -1,7 +1,7 @@
 package com.swtxml.swt.types;
 
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
@@ -9,11 +9,11 @@ import org.eclipse.swt.widgets.Display;
 
 import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.util.parser.Splitter;
-import com.swtxml.util.types.IEnumeratedType;
+import com.swtxml.util.proposals.Match;
+import com.swtxml.util.types.IContentAssistable;
 import com.swtxml.util.types.IType;
 
-public class ColorType implements IType<Color>, IEnumeratedType {
+public class ColorType implements IType<Color>, IContentAssistable {
 
 	private final static HashMap<String, Integer> SWT_COLORS = new HashMap<String, Integer>();
 
@@ -43,11 +43,8 @@ public class ColorType implements IType<Color>, IEnumeratedType {
 				i & 0xff));
 	}
 
-	public Collection<String> getEnumValues() {
-		return SWT_COLORS.keySet();
+	public List<Match> getProposals(Match match) {
+		return match.propose(SWT_COLORS.keySet());
 	}
 
-	public Splitter getSplitRule() {
-		return Splitter.none();
-	}
 }

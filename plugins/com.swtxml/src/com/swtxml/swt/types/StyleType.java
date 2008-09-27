@@ -1,13 +1,13 @@
 package com.swtxml.swt.types;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.swtxml.util.parser.ConstantParser;
-import com.swtxml.util.parser.Splitter;
-import com.swtxml.util.types.IEnumeratedType;
+import com.swtxml.util.proposals.Match;
+import com.swtxml.util.types.IContentAssistable;
 import com.swtxml.util.types.IType;
 
-public class StyleType implements IType<Integer>, IEnumeratedType {
+public class StyleType implements IType<Integer>, IContentAssistable {
 
 	private ConstantParser constants;
 
@@ -19,12 +19,8 @@ public class StyleType implements IType<Integer>, IEnumeratedType {
 		return constants.getIntValue(value);
 	}
 
-	public Collection<String> getEnumValues() {
-		return constants.getConstants();
-	}
-
-	public Splitter getSplitRule() {
-		return ConstantParser.MULTIPLE;
+	public List<Match> getProposals(Match match) {
+		return match.restrict(ConstantParser.SPLITTER).propose(constants.getConstants());
 	}
 
 }

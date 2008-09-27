@@ -5,6 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.swtxml.util.parser.Splitter;
+
 public class ProposalsTest {
 
 	private Match m;
@@ -55,5 +57,15 @@ public class ProposalsTest {
 	@Test
 	public void insertWorksWithOffsets() {
 		assertEquals("\"12xxx3§456\"", m2.stripQuotes().insert("xxx", 2).toString());
+	}
+
+	@Test
+	public void restrict() {
+		m = new Match("123,456.7§89,012");
+		m = m.restrict(new Splitter(",."));
+		assertEquals("789", m.getText());
+		m = m.replace("xxx");
+		assertEquals("xxx", m.getText());
+		assertEquals("123,456.xxx§,012", m.toString());
 	}
 }

@@ -1,14 +1,13 @@
 package com.swtxml.util.types;
 
-import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.swtxml.util.parser.ParseException;
-import com.swtxml.util.parser.Splitter;
 import com.swtxml.util.properties.PropertyMatcher;
 import com.swtxml.util.properties.PropertyRegistry;
+import com.swtxml.util.proposals.Match;
 
 public class SimpleTypes {
 
@@ -31,17 +30,13 @@ public class SimpleTypes {
 		}
 	}
 
-	public static class BooleanConverter implements IType<Boolean>, IEnumeratedType {
+	public static class BooleanConverter implements IType<Boolean>, IContentAssistable {
 		public Boolean convert(Object obj, String value) {
 			return Boolean.parseBoolean(value);
 		}
 
-		public Collection<String> getEnumValues() {
-			return Arrays.asList(String.valueOf(true), String.valueOf(false));
-		}
-
-		public Splitter getSplitRule() {
-			return Splitter.none();
+		public List<Match> getProposals(Match match) {
+			return match.propose(String.valueOf(true), String.valueOf(false));
 		}
 	}
 
