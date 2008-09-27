@@ -61,12 +61,12 @@ public class Match {
 		return text.substring(0, cursorPos) + "§" + text.substring(cursorPos);
 	}
 
-	private void stripQuotesR() {
+	private void _stripQuotes() {
 		if (!text.startsWith("\"")) {
-			insertR("\"", 0);
+			_insert("\"", 0);
 		}
 		if (!text.endsWith("\"")) {
-			insertR("\"", text.length());
+			_insert("\"", text.length());
 		}
 		this.start++;
 		this.end--;
@@ -74,39 +74,39 @@ public class Match {
 
 	public Match handleQuotes() {
 		Match m = new Match(this);
-		m.stripQuotesR();
+		m._stripQuotes();
 		return m;
 	}
 
 	public Match insert(String str, int i) {
 		Match m = new Match(this);
-		m.insertR(str, i);
+		m._insert(str, i);
 		return m;
 	}
 
 	public Match replace(String str) {
 		Match m = new Match(this);
-		m.replaceR(str, 0, getText().length());
+		m._replace(str, 0, getText().length());
 		return m;
 	}
 
 	public Match replace(String str, int i, int length) {
 		Match m = new Match(this);
-		m.replaceR(str, i, length);
+		m._replace(str, i, length);
 		return m;
 	}
 
 	public Match restrict(Splitter splitter) {
 		Match m = new Match(this);
-		m.restrictR(splitter);
+		m._restrict(splitter);
 		return m;
 	}
 
-	private void insertR(String str, int i) {
-		replaceR(str, i, 0);
+	private void _insert(String str, int i) {
+		_replace(str, i, 0);
 	}
 
-	private void replaceR(String str, int i, int length) {
+	private void _replace(String str, int i, int length) {
 		i += start;
 		if (i + length < cursorPos) {
 			cursorPos -= (length - str.length());
@@ -126,7 +126,7 @@ public class Match {
 		return propose(Arrays.asList(values));
 	}
 
-	private void restrictR(Splitter splitter) {
+	private void _restrict(Splitter splitter) {
 		splitter.getSeparators();
 		for (int i = cursorPos - 1; i >= start; i--) {
 			if (splitter.isSeparator(text.charAt(i))) {

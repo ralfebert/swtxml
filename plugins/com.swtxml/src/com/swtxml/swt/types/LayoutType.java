@@ -75,7 +75,7 @@ public class LayoutType implements IType<Layout>, IContentAssistable {
 		PropertiesContentAssist assist = new PropertiesContentAssist(match);
 		String layoutName = assist.getPropertyValues().get("layout");
 
-		Class<? extends Layout> layoutClass = getLayoutClass(layoutName, Strictness.LAX);
+		Class<? extends Layout> layoutClass = getLayoutClass(layoutName, Strictness.NICE);
 
 		if (layoutClass == null) {
 			return assist.getKeyValueMatch().propose(LAYOUT_KEY + ":");

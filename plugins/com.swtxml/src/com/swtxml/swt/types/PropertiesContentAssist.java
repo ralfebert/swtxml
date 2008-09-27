@@ -33,7 +33,7 @@ public class PropertiesContentAssist {
 			match.moveCursor(-1);
 		}
 		this.fullMatch = match;
-		this.propertyValues = KeyValueParser.parse(match.getText(), Strictness.LAX);
+		this.propertyValues = KeyValueParser.parse(match.getText(), Strictness.NICE);
 		this.keyValueMatch = match.restrict(KeyValueParser.VALUE_SPLITTER);
 	}
 

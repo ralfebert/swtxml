@@ -30,11 +30,11 @@ public class SwtXmlParser extends TagLibraryXmlParser {
 	private Object controller;
 
 	public SwtXmlParser(Composite parent, Object controller) {
-		super(getSwtNamespaceResolver(), new BuildWidgets(parent), new SetAttributes());
+		super(createSwtNamespaceResolver(), new BuildWidgets(parent), new SetAttributes());
 		this.controller = controller;
 	}
 
-	private static INamespaceResolver getSwtNamespaceResolver() {
+	private static INamespaceResolver createSwtNamespaceResolver() {
 		NamespaceResolver resolver = new NamespaceResolver();
 		resolver.addNamespace("swt", new SwtNamespace());
 		return resolver;

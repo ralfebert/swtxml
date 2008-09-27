@@ -144,7 +144,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 								.getAttributes().getNamedItem("layout");
 						if (layoutNode != null) {
 							return (A) new LayoutType().convert(layoutNode.getNodeValue(),
-									Strictness.LAX);
+									Strictness.NICE);
 						}
 					}
 					return null;
