@@ -7,13 +7,26 @@ import org.apache.commons.lang.StringUtils;
 
 public class KeyValueParser {
 
+	public final static Splitter VALUE_SPLITTER = new Splitter(";");
+	public final static Splitter KEY_VALUE_SPLITTER = new Splitter(":");
+
 	public static Map<String, String> parse(String value) {
+		return parse(value, true);
+	}
+
+	public static Map<String, String> parse(String value, boolean strict) {
 		Map<String, String> values = new HashMap<String, String>();
-		for (String valuePair : value.split(";")) {
+		for (String valuePair : VALUE_SPLITTER.split(value)) {
 			if (StringUtils.isNotBlank(valuePair)) {
-				String[] keyValue = valuePair.split(":");
+				String[] keyValue = KEY_VALUE_SPLITTER.split(valuePair);
 				if (keyValue.length != 2) {
-					throw new ParseException("Invalid format: \"" + valuePair + "\" ");
+					if (strict) {
+						throw new ParseException("Invalid format: \"" + valuePair + "\" ");
+					} else {
+						if (keyValue.length == 1) {
+							keyValue = new String[] { keyValue[0], "" };
+						}
+					}
 				}
 				values.put(keyValue[0].trim(), keyValue[1].trim());
 			}

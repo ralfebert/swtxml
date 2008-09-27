@@ -56,4 +56,9 @@ public class ClassProperties<A> {
 		return properties;
 	}
 
+	@Override
+	public String toString() {
+		return "ClassProperties[" + properties + "]";
+	}
+
 }

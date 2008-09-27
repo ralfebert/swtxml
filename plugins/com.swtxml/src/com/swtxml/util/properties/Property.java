@@ -25,4 +25,9 @@ public class Property {
 		return property.getName();
 	}
 
+	@Override
+	public String toString() {
+		return "Property[" + getName() + " " + getType() + "]";
+	}
+
 }

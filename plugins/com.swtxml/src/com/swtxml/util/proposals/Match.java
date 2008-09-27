@@ -10,6 +10,7 @@ import org.apache.commons.lang.StringUtils;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
+import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.parser.Splitter;
 
 public class Match {
@@ -28,6 +29,9 @@ public class Match {
 
 	public Match(String str) {
 		this.cursorPos = str.indexOf('§');
+		if (this.cursorPos < 0) {
+			throw new ParseException("No cursor char § given");
+		}
 		this.text = str.substring(0, cursorPos) + str.substring(cursorPos + 1);
 		this.start = 0;
 		this.end = text.length();
@@ -40,20 +44,16 @@ public class Match {
 		this.end = m.end;
 	}
 
-	public int getCursorPos() {
+	public int getReplacementCursorPos() {
 		return cursorPos;
 	}
 
-	public void setCursorPos(int cursorPos) {
-		this.cursorPos = cursorPos;
+	public int getCursorPos() {
+		return cursorPos - start;
 	}
 
 	public String getText() {
 		return text.substring(start, end);
-	}
-
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class Match {
 
 	private void restrictR(Splitter splitter) {
 		splitter.getSeparators();
-		for (int i = cursorPos; i >= start; i--) {
+		for (int i = cursorPos - 1; i >= start; i--) {
 			if (splitter.isSeparator(text.charAt(i))) {
 				start = i + 1;
 				break;
@@ -143,12 +143,12 @@ public class Match {
 	}
 
 	public List<Match> propose(Collection<String> values) {
-		final String textBeforeCursor = getTextBeforeCursor();
+		final String textBeforeCursor = getTextBeforeCursor().toLowerCase().trim();
 		List<String> filteredValues = new ArrayList<String>(Collections2.filter(values,
 				new Predicate<String>() {
 
 					public boolean apply(String value) {
-						return value.toLowerCase().startsWith(textBeforeCursor.toLowerCase());
+						return value.toLowerCase().startsWith(textBeforeCursor);
 					}
 
 				}));
@@ -172,5 +172,9 @@ public class Match {
 		System.out.println(StringUtils.leftPad("[", start + 1)
 				+ StringUtils.leftPad("]", end - start));
 		System.out.println(StringUtils.leftPad("C", cursorPos + 1));
+	}
+
+	public void moveCursor(int i) {
+		cursorPos += i;
 	}
 }

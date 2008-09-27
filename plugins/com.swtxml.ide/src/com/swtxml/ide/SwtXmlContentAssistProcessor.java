@@ -138,7 +138,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			for (Match proposal : proposals) {
 				CompletionProposal newProposal = new CompletionProposal(proposal
 						.getReplacementText(), contentAssistRequest.getReplacementBeginPosition(),
-						contentAssistRequest.getReplacementLength(), proposal.getCursorPos(), null,
+						contentAssistRequest.getReplacementLength(), proposal.getReplacementCursorPos(), null,
 						proposal.getText(), null, null);
 				contentAssistRequest.addProposal(newProposal);
 			}
