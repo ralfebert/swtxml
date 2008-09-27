@@ -12,7 +12,6 @@ package com.swtxml.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.magic.MagicTagNodeObjectProxy;
@@ -35,14 +34,6 @@ public class SwtWidgetTagLibrary implements ITagLibrary {
 			Composite parent = (Composite) tagInfo.parentRecursiveAdaptTo(builder.getParentClass());
 			Widget widget = builder.build(parent, style == null ? SWT.NONE : style);
 			tagInfo.makeAdaptable(widget);
-			// TODO: do not store an extra reference to the layout - can be
-			// resolved via widget
-			// if (parent.getLayout() != null) {
-			// tagInfo.makeAdaptable(parent.getLayout());
-			// }
-			if (widget instanceof TabItem) {
-				return new TabItemNode(tag, tagInfo, widget);
-			}
 			return new MagicTagNodeObjectProxy(tag, tagInfo, widget);
 		} catch (Exception e) {
 			throw new TagLibraryException(tagInfo, e);
