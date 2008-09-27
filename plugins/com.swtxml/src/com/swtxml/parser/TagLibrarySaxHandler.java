@@ -10,9 +10,8 @@
  *******************************************************************************/
 package com.swtxml.parser;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 
@@ -32,8 +31,6 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 
 	private final String xmlFilename;
 	private Locator locator;
-	@Deprecated
-	private List<TagInformation> allNodes = new ArrayList<TagInformation>();
 	@Deprecated
 	private final TagLibraryXmlParser parser;
 	private final Document document;
@@ -126,7 +123,6 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 			tagLibrary.tag(tagInformation);
 		}
 
-		allNodes.add(tagInformation);
 		parserStack.push(tagInformation);
 	}
 
@@ -144,8 +140,8 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		this.locator = locator;
 	}
 
-	public List<TagInformation> getAllNodes() {
-		return allNodes;
+	public Collection<TagInformation> getAllNodes() {
+		return document.getAllNodes();
 	}
 
 }
