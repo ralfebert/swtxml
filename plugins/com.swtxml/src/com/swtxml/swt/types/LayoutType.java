@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Layout;
 
-import com.swtxml.swt.SwtHandling;
+import com.swtxml.swt.SwtInfo;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.parser.Strictness;
@@ -40,7 +40,7 @@ public class LayoutType implements IType<Layout>, IContentAssistable {
 
 		Layout layout = createLayout(layoutName, Strictness.STRICT);
 
-		IInjector injector = SwtHandling.LAYOUT_PROPERTIES.getProperties(layout.getClass())
+		IInjector injector = SwtInfo.LAYOUT_PROPERTIES.getProperties(layout.getClass())
 				.getInjector(layout);
 		injector.setPropertyValues(layoutConstraints);
 
@@ -81,6 +81,6 @@ public class LayoutType implements IType<Layout>, IContentAssistable {
 			return assist.getKeyValueMatch().propose(LAYOUT_KEY + ":");
 		}
 
-		return assist.getProposals(SwtHandling.LAYOUT_PROPERTIES.getProperties(layoutClass));
+		return assist.getProposals(SwtInfo.LAYOUT_PROPERTIES.getProperties(layoutClass));
 	}
 }

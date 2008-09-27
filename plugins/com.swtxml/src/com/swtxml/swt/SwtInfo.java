@@ -21,7 +21,7 @@ import com.swtxml.util.properties.PropertyMatcher;
 import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.types.SimpleTypes;
 
-public class SwtHandling {
+public class SwtInfo {
 
 	public final static ConstantParser SWT = new ConstantParser(SWT.class);
 

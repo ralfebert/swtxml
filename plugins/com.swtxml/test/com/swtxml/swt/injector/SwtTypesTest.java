@@ -15,7 +15,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.junit.After;
 import org.junit.Test;
 
-import com.swtxml.swt.SwtHandling;
+import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.LayoutDataType;
 import com.swtxml.swt.types.LayoutType;
@@ -135,7 +135,7 @@ public class SwtTypesTest {
 
 	@Test
 	public void testStyleType() {
-		StyleType type = new StyleType(SwtHandling.SWT);
+		StyleType type = new StyleType(SwtInfo.SWT);
 		assertEquals(SWT.BORDER | SWT.COLOR_RED, type.convert("border|color_red"));
 		assertEquals("border|BORDER_DASH§", type.getProposals(new Match("border|border_da§xxxx"))
 				.get(0).toString());

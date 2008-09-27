@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
-import com.swtxml.swt.SwtHandling;
+import com.swtxml.swt.SwtInfo;
 import com.swtxml.util.properties.IInjector;
 
 public class SwtInjectorTest {
@@ -16,7 +16,7 @@ public class SwtInjectorTest {
 	@Test
 	public void testSwtLayout() {
 		Composite composite = new Composite(new Shell(), SWT.NONE);
-		IInjector injector = SwtHandling.WIDGET_PROPERTIES.getProperties(composite.getClass())
+		IInjector injector = SwtInfo.WIDGET_PROPERTIES.getProperties(composite.getClass())
 				.getInjector(composite);
 		injector.setPropertyValue("layout", "layout:grid;numColumns:2;");
 		assertEquals(2, ((GridLayout) composite.getLayout()).numColumns);

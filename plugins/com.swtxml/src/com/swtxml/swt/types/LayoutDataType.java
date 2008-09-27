@@ -12,7 +12,7 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Layout;
 
-import com.swtxml.swt.SwtHandling;
+import com.swtxml.swt.SwtInfo;
 import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
@@ -46,7 +46,7 @@ public class LayoutDataType implements IType<Object>, IContentAssistable {
 		} catch (Exception e) {
 			throw new ReflectorException(e);
 		}
-		SwtHandling.LAYOUT_PROPERTIES.getProperties(layoutData.getClass()).getInjector(layoutData)
+		SwtInfo.LAYOUT_PROPERTIES.getProperties(layoutData.getClass()).getInjector(layoutData)
 				.setPropertyValues(layoutConstraints);
 		return layoutData;
 	}
@@ -73,7 +73,7 @@ public class LayoutDataType implements IType<Object>, IContentAssistable {
 			return Collections.emptyList();
 		}
 		PropertiesContentAssist assist = new PropertiesContentAssist(match);
-		return assist.getProposals(SwtHandling.LAYOUT_PROPERTIES
+		return assist.getProposals(SwtInfo.LAYOUT_PROPERTIES
 				.getProperties(getLayoutDataClass(layout)));
 	}
 }

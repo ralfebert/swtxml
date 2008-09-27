@@ -11,7 +11,7 @@ import com.swtxml.definition.DefinitionException;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.ITagDefinition;
 import com.swtxml.definition.impl.AttributeDefinition;
-import com.swtxml.swt.SwtHandling;
+import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.StyleType;
 import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.Property;
@@ -27,7 +27,7 @@ public class WidgetTag implements ITagDefinition {
 	public WidgetTag(String className) {
 		this.className = className;
 
-		ClassProperties<? extends Widget> properties = SwtHandling.WIDGET_PROPERTIES
+		ClassProperties<? extends Widget> properties = SwtInfo.WIDGET_PROPERTIES
 				.getProperties(getSwtWidgetClass());
 		attributes = new HashMap<String, IAttributeDefinition>();
 		for (Property property : properties.getProperties().values()) {
@@ -35,7 +35,7 @@ public class WidgetTag implements ITagDefinition {
 			attributes.put(attribute.getName(), attribute);
 		}
 		attributes.put("id", new AttributeDefinition("id", new SimpleTypes.StringType()));
-		attributes.put("style", new AttributeDefinition("style", new StyleType(SwtHandling.SWT)));
+		attributes.put("style", new AttributeDefinition("style", new StyleType(SwtInfo.SWT)));
 	}
 
 	public String getName() {

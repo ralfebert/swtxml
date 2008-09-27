@@ -19,6 +19,7 @@ import com.swtxml.definition.impl.NamespaceResolver;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.processors.BuildWidgets;
 import com.swtxml.swt.processors.CollectIds;
+import com.swtxml.swt.processors.TagContextProcessor;
 import com.swtxml.swt.processors.SetAttributes;
 import com.swtxml.tinydom.ITagProcessor;
 import com.swtxml.tinydom.Tag;
@@ -46,29 +47,21 @@ public class SwtXmlParser extends TinyDomParser {
 	public void parse() {
 		final Tag root = super.parse(controller.getClass(), "swtxml");
 
-		ITagProcessor[] processors = new ITagProcessor[] { new BuildWidgets(parent),
-				new SetAttributes() };
+		final CollectIds ids = new CollectIds();
+		final ITagProcessor buildWidgets = new TagContextProcessor(new BuildWidgets(parent));
+		final ITagProcessor setAttributes = new TagContextProcessor(new SetAttributes());
 
-		final CollectIds collectIds = new CollectIds();
-		root.depthFirst(collectIds);
+		root.depthFirst(ids);
 
-		for (final ITagProcessor processor : processors) {
-			for (final Tag tag : root.depthFirst()) {
-				Context.runWith(new Runnable() {
-					public void run() {
-						Context.addAdapter(tag);
-						Context.addAdapter(collectIds);
-						try {
-							processor.process(tag);
-						} catch (Exception e) {
-							throw new ParseException(tag.getLocationInfo() + e.getMessage(), e);
-						}
-					}
-				});
+		Context.runWith(new Runnable() {
+			public void run() {
+				Context.addAdapter(ids);
+				root.depthFirst(buildWidgets);
+				root.depthFirst(setAttributes);
 			}
-		}
+		});
 
-		injectById(collectIds);
+		injectById(ids);
 	}
 
 	public void injectById(IIdResolver ids) {

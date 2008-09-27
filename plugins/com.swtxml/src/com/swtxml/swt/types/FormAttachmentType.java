@@ -8,7 +8,7 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Control;
 
 import com.swtxml.swt.IIdResolver;
-import com.swtxml.swt.SwtHandling;
+import com.swtxml.swt.SwtInfo;
 import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.ConstantParser;
 import com.swtxml.util.parser.ParseException;
@@ -16,7 +16,7 @@ import com.swtxml.util.types.IType;
 
 public class FormAttachmentType implements IType<FormAttachment> {
 
-	private final static ConstantParser CONSTANTS_ALIGN = SwtHandling.SWT
+	private final static ConstantParser CONSTANTS_ALIGN = SwtInfo.SWT
 			.filter("TOP|BOTTOM|LEFT|RIGHT|CENTER|DEFAULT");
 
 	public FormAttachmentType() {

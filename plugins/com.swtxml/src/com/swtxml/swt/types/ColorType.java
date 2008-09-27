@@ -7,7 +7,7 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-import com.swtxml.swt.SwtHandling;
+import com.swtxml.swt.SwtInfo;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IContentAssistable;
@@ -18,9 +18,9 @@ public class ColorType implements IType<Color>, IContentAssistable {
 	private final static HashMap<String, Integer> SWT_COLORS = new HashMap<String, Integer>();
 
 	static {
-		for (String constant : SwtHandling.SWT.getConstants()) {
+		for (String constant : SwtInfo.SWT.getConstants()) {
 			if (constant.startsWith("COLOR_")) {
-				SWT_COLORS.put(constant.substring(6), SwtHandling.SWT.getIntValue(constant));
+				SWT_COLORS.put(constant.substring(6), SwtInfo.SWT.getIntValue(constant));
 			}
 		}
 	}
