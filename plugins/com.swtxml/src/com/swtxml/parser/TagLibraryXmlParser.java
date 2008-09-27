@@ -27,6 +27,12 @@ import com.swtxml.util.context.Context;
 public class TagLibraryXmlParser {
 
 	private Document document;
+	private INamespaceResolver namespaceResolver;
+
+	public TagLibraryXmlParser(INamespaceResolver namespaceResolver) {
+		super();
+		this.namespaceResolver = namespaceResolver;
+	}
 
 	protected <T> T parse(Class<?> clazz, Class<T> rootNodeClass) {
 		return parse(clazz, "xml", rootNodeClass);
@@ -49,7 +55,7 @@ public class TagLibraryXmlParser {
 
 		try {
 			SAXParser parser = parserFactory.newSAXParser();
-			TagLibrarySaxHandler s = new TagLibrarySaxHandler(this, filename);
+			TagLibrarySaxHandler s = new TagLibrarySaxHandler(this, namespaceResolver, filename);
 			parser.parse(inputStream, s);
 
 			this.document = s.getDocument();

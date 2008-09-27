@@ -27,7 +27,7 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNod
 	private Object controller;
 
 	public SwtTagLibraryParser(Composite parent, Object controller) {
-		super();
+		super(new CompatibilityNamespaceResolver());
 		this.parent = parent;
 		this.controller = controller;
 	}

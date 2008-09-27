@@ -13,6 +13,7 @@ package com.swtxml.parser;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
+@Deprecated
 public interface ITagLibrary {
 
 	public TagNode tag(TagInformation tagInfo);

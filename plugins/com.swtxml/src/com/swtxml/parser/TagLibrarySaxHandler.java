@@ -22,6 +22,7 @@ import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.tag.Document;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
@@ -30,24 +31,31 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 
 	private final String xmlFilename;
 	private Locator locator;
+	@Deprecated
 	private List<TagNode> allNodes = new ArrayList<TagNode>();
+	@Deprecated
 	private final TagLibraryXmlParser parser;
 	private final Document document;
+	private final INamespaceResolver namespaceResolver;
 
 	public Document getDocument() {
 		return document;
 	}
 
-	TagLibrarySaxHandler(TagLibraryXmlParser parser, String xmlFilename) {
+	TagLibrarySaxHandler(TagLibraryXmlParser parser, INamespaceResolver namespaceResolver,
+			String xmlFilename) {
 		this.parser = parser;
 		this.xmlFilename = xmlFilename;
+		this.namespaceResolver = namespaceResolver;
 		this.document = new Document();
 	}
 
+	@Deprecated
 	private static final String CLASS_SCHEME = "class://";
 	private Map<String, ITagLibrary> tagLibraries = new HashMap<String, ITagLibrary>();
-	private Stack<TagNode> parsingStack = new Stack<TagNode>();
+	private Stack<TagNode> parserStack = new Stack<TagNode>();
 
+	@Deprecated
 	private ITagLibrary getTagLibrary(String namespaceUri) {
 
 		ITagLibrary tagLibrary = tagLibraries.get(namespaceUri);
@@ -86,8 +94,9 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 			Attributes attributes) throws SAXException {
 		Map<String, String> attributeList = new HashMap<String, String>();
 		ITagLibrary tagLibrary = getTagLibrary(namespaceUri);
-		TagInformation tagInformation = new TagInformation(document, tagLibrary, parsingStack
-				.isEmpty() ? null : parsingStack.peek(), localName, getLocationInfo(), parsingStack
+		INamespaceDefinition namespace = namespaceResolver.resolveNamespace(namespaceUri);
+		TagInformation tagInformation = new TagInformation(document, tagLibrary, parserStack
+				.isEmpty() ? null : parserStack.peek(), localName, getLocationInfo(), parserStack
 				.size(), attributeList);
 		for (int i = 0; i < attributes.getLength(); i++) {
 			String uri = attributes.getURI(i);
@@ -102,14 +111,14 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		}
 
 		TagNode tag = null;
-		if (parser instanceof IRootNodeAware && parsingStack.isEmpty()) {
+		if (parser instanceof IRootNodeAware && parserStack.isEmpty()) {
 			tag = ((IRootNodeAware) parser).rootTag(tagInformation);
 		} else {
 			tag = tagLibrary.tag(tagInformation);
 		}
 
 		allNodes.add(tag);
-		parsingStack.push(tag);
+		parserStack.push(tag);
 	}
 
 	private String getLocationInfo() {
@@ -118,7 +127,7 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 
 	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException {
-		parsingStack.pop();
+		parserStack.pop();
 	}
 
 	@Override
