@@ -65,7 +65,7 @@ public class TagLibraryXmlParser {
 			parser.parse(inputStream, s);
 
 			for (ITagProcessor processor : processors) {
-				for (TagInformation node : document.getAllNodes()) {
+				for (TagInformation node : document.getRoot().depthFirst()) {
 					Context.addAdapter(node);
 					Context.addAdapter(document);
 					processor.process(node);

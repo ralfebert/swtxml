@@ -11,6 +11,7 @@
 package com.swtxml.tag;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
@@ -132,6 +133,16 @@ public class TagInformation implements IAdaptable {
 
 	public boolean isRoot() {
 		return getParent() == null;
+	}
+
+	public Collection<TagInformation> depthFirst() {
+		// TODO: iteration without creating lists?
+		List<TagInformation> contents = new ArrayList<TagInformation>();
+		contents.add(this);
+		for (TagInformation tag : children) {
+			contents.addAll(tag.depthFirst());
+		}
+		return contents;
 	}
 
 }
