@@ -38,11 +38,6 @@ public class TagLibraryXmlParser {
 		this.namespaceResolver = namespaceResolver;
 		this.processors = new ArrayList<ITagProcessor>(Arrays.asList(processors));
 		// TODO: remove
-		this.processors.add(0, new ITagProcessor() {
-			public void process(TagInformation tag) {
-				tag.process();
-			}
-		});
 		this.processors.add(1, new ITagProcessor() {
 			public void process(TagInformation tag) {
 				if ((TagLibraryXmlParser.this instanceof IRootNodeAware) && tag.getParent() == null) {

@@ -126,8 +126,4 @@ public class TagInformation implements IAdaptable {
 		return children;
 	}
 
-	@Deprecated
-	public void process() {
-	}
-
 }

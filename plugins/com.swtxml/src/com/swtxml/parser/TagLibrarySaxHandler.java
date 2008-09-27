@@ -10,7 +10,6 @@
  *******************************************************************************/
 package com.swtxml.parser;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -31,8 +30,6 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 
 	private final String xmlFilename;
 	private Locator locator;
-	@Deprecated
-	private final TagLibraryXmlParser parser;
 	private final Document document;
 	private final INamespaceResolver namespaceResolver;
 
@@ -42,7 +39,6 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 
 	TagLibrarySaxHandler(TagLibraryXmlParser parser, INamespaceResolver namespaceResolver,
 			String xmlFilename) {
-		this.parser = parser;
 		this.xmlFilename = xmlFilename;
 		this.namespaceResolver = namespaceResolver;
 		this.document = new Document();
@@ -93,10 +89,6 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 	@Override
 	public void setDocumentLocator(Locator locator) {
 		this.locator = locator;
-	}
-
-	public Collection<TagInformation> getAllNodes() {
-		return document.getAllNodes();
 	}
 
 }
