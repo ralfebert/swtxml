@@ -15,7 +15,7 @@ import com.swtxml.metadata.IAttribute;
 public class SwtNamespaceTest {
 
 	private SwtNamespace swtTagRegistry;
-	private SwtTag buttonTag;
+	private WidgetTag buttonTag;
 
 	@Before
 	public void setUp() throws Exception {
@@ -43,7 +43,7 @@ public class SwtNamespaceTest {
 	}
 
 	private Button fakeBuildButton(Composite parent) {
-		return (Button) new SwtWidgetBuilder(buttonTag).build(parent, SWT.BORDER);
+		return (Button) new WidgetBuilder(buttonTag).build(parent, SWT.BORDER);
 	}
 
 }

@@ -12,15 +12,15 @@ import com.swtxml.metadata.MetaDataException;
 
 public class SwtNamespace implements INamespace {
 
-	private Map<String, SwtTag> tagsByName = new HashMap<String, SwtTag>();
+	private Map<String, WidgetTag> tagsByName = new HashMap<String, WidgetTag>();
 
 	public SwtNamespace() {
 		try {
 			String widgetClasses = IOUtils.toString(SwtNamespace.class
 					.getResourceAsStream("widgets.txt"));
 			for (String className : StringUtils.split(widgetClasses)) {
-				SwtTag tag = new SwtTag(className);
-				SwtTag existingTag = tagsByName.get(tag.getName());
+				WidgetTag tag = new WidgetTag(className);
+				WidgetTag existingTag = tagsByName.get(tag.getName());
 				if (existingTag != null) {
 					throw new MetaDataException("Tag naming conflict between " + tag + " and "
 							+ existingTag + "!");
@@ -32,7 +32,7 @@ public class SwtNamespace implements INamespace {
 		}
 	}
 
-	public Map<String, SwtTag> getTags() {
+	public Map<String, WidgetTag> getTags() {
 		return tagsByName;
 	}
 

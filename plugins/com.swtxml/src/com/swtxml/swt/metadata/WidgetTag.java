@@ -13,14 +13,14 @@ import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.Property;
 import com.swtxml.util.properties.PropertyRegistry;
 
-public class SwtTag implements ITag {
+public class WidgetTag implements ITag {
 
 	private String className;
 	private Class<? extends Widget> swtWidgetClass;
 
-	private Map<String, SwtAttribute> attributes;
+	private Map<String, WidgetAttribute> attributes;
 
-	public SwtTag(String className) {
+	public WidgetTag(String className) {
 		this.className = className;
 	}
 
@@ -28,7 +28,7 @@ public class SwtTag implements ITag {
 		return getSwtWidgetClass().getSimpleName();
 	}
 
-	public Map<String, SwtAttribute> getAttributes() {
+	public Map<String, WidgetAttribute> getAttributes() {
 		if (attributes == null) {
 			// TODO: id resolving
 			PropertyRegistry propertyRegistry = SwtHandling.createSwtProperties(new IIdResolver() {
@@ -39,9 +39,9 @@ public class SwtTag implements ITag {
 
 			ClassProperties<? extends Widget> properties = propertyRegistry
 					.getProperties(getSwtWidgetClass());
-			attributes = new HashMap<String, SwtAttribute>();
+			attributes = new HashMap<String, WidgetAttribute>();
 			for (Property property : properties.getProperties().values()) {
-				SwtAttribute attribute = new SwtAttribute(property);
+				WidgetAttribute attribute = new WidgetAttribute(property);
 				attributes.put(attribute.getName(), attribute);
 			}
 		}

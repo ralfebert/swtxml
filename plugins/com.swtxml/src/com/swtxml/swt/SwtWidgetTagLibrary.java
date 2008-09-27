@@ -18,8 +18,8 @@ import com.swtxml.magic.MagicTagNodeObjectProxy;
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
 import com.swtxml.swt.metadata.SwtNamespace;
-import com.swtxml.swt.metadata.SwtTag;
-import com.swtxml.swt.metadata.SwtWidgetBuilder;
+import com.swtxml.swt.metadata.WidgetTag;
+import com.swtxml.swt.metadata.WidgetBuilder;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
@@ -29,11 +29,11 @@ public class SwtWidgetTagLibrary implements ITagLibrary {
 
 	public TagNode tag(TagInformation tagInfo) {
 
-		SwtTag tag = registry.getTags().get(tagInfo.getTagName());
+		WidgetTag tag = registry.getTags().get(tagInfo.getTagName());
 		if (tag == null) {
 			throw new TagLibraryException(tagInfo, "Unknown tag: " + tagInfo.getTagName());
 		}
-		SwtWidgetBuilder builder = new SwtWidgetBuilder(tag);
+		WidgetBuilder builder = new WidgetBuilder(tag);
 
 		try {
 			Integer style = SwtHandling.SWT.getIntValue(tagInfo.getAttribute("style"));

@@ -9,11 +9,11 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import com.swtxml.util.reflector.ReflectorException;
 
-public class SwtWidgetBuilder {
+public class WidgetBuilder {
 
-	private SwtTag tag;
+	private WidgetTag tag;
 
-	public SwtWidgetBuilder(SwtTag tag) {
+	public WidgetBuilder(WidgetTag tag) {
 		this.tag = tag;
 	}
 

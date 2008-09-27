@@ -4,11 +4,11 @@ import com.swtxml.metadata.IAttribute;
 import com.swtxml.util.properties.Property;
 import com.swtxml.util.types.IType;
 
-public class SwtAttribute implements IAttribute {
+public class WidgetAttribute implements IAttribute {
 
 	private Property property;
 
-	public SwtAttribute(Property property) {
+	public WidgetAttribute(Property property) {
 		this.property = property;
 	}
 
