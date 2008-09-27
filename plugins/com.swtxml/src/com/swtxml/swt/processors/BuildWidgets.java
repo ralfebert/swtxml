@@ -36,7 +36,7 @@ public class BuildWidgets implements ITagProcessor {
 		WidgetTag widgetTag = (WidgetTag) tag.getTagDefinition();
 		WidgetBuilder builder = new WidgetBuilder(widgetTag);
 
-		Integer style = SwtHandling.SWT.getIntValue(tag.getAttribute("style"));
+		Integer style = SwtHandling.SWT.getIntValue(tag.slurpAttribute("style"));
 		Composite parent = (Composite) tag.parentRecursiveAdaptTo(builder.getParentClass());
 		Widget widget = builder.build(parent, style == null ? SWT.NONE : style);
 		tag.makeAdaptable(widget);

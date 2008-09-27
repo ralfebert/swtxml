@@ -37,7 +37,9 @@ public class Document implements IIdResolver, IAdaptable {
 			}
 			this.root = node;
 		}
-		String id = node.getAttribute("id");
+		// TODO: refactor out into processor, maybe recursive processors for
+		// setting context?
+		String id = node.slurpAttribute("id");
 		if (id != null) {
 			nodesById.put(id, node);
 		}

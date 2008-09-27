@@ -29,7 +29,7 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IControl
 	}
 
 	public void parse() {
-		super.parse(controller.getClass(), "swtxml", parent.getClass());
+		super.parse(controller.getClass(), "swtxml");
 		super.injectById(controller);
 	}
 

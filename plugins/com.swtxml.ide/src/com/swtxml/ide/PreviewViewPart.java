@@ -58,7 +58,7 @@ public class PreviewViewPart extends ViewPart implements ISelectionListener {
 				System.out.println("refreshing preview");
 				lastDocumentHash = hash;
 				new SwtTagLibraryParser(parent, this).parse("xxx", new ByteArrayInputStream(
-						documentBytes), Composite.class);
+						documentBytes));
 				for (Control c : children) {
 					c.dispose();
 				}

@@ -99,6 +99,10 @@ public class TagInformation implements IAdaptable {
 	}
 
 	public String getAttribute(String name) {
+		return attributes.get(name);
+	}
+
+	public String slurpAttribute(String name) {
 		return attributes.remove(name);
 	}
 

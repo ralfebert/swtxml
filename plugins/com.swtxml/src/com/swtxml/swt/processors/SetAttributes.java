@@ -45,8 +45,10 @@ public class SetAttributes implements ITagProcessor {
 
 		}
 
-		SwtHandling.WIDGET_PROPERTIES.getProperties(widget.getClass()).getInjector(widget)
-				.setPropertyValues(tag.getAttributes());
+		for (String name : tag.getAttributes().keySet()) {
+			SwtHandling.WIDGET_PROPERTIES.getProperties(widget.getClass()).getInjector(widget)
+					.setPropertyValue(name, tag.getAttribute(name));
+		}
 	}
 
 }

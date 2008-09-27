@@ -3,6 +3,7 @@ package com.swtxml;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import com.swtxml.parser.XmlParserTest;
 import com.swtxml.swt.injector.FormAttachmentTypeTest;
 import com.swtxml.swt.injector.SwtInjectorTest;
 import com.swtxml.swt.injector.SwtTypesTest;
@@ -24,7 +25,7 @@ import com.swtxml.util.reflector.ReflectorTest;
 		ReflectorTest.class, PropertyMatcherTest.class, BaseConvertersTest.class,
 		PropertyRegistryTest.class, ConstantParserTest.class, KeyValueParserTest.class,
 		FormAttachmentTypeTest.class, ContextTest.class, SwtTypesTest.class, SwtInjectorTest.class,
-		SwtNamespaceTest.class, SwtWidgetsTest.class })
+		SwtNamespaceTest.class, XmlParserTest.class, SwtWidgetsTest.class })
 public class AllTests {
 
 }

@@ -32,16 +32,12 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 	private Locator locator;
 	private final Document document;
 	private final INamespaceResolver namespaceResolver;
+	private final Map<String, INamespaceDefinition> namespaces = new HashMap<String, INamespaceDefinition>();
 
-	public Document getDocument() {
-		return document;
-	}
-
-	TagLibrarySaxHandler(TagLibraryXmlParser parser, INamespaceResolver namespaceResolver,
-			String xmlFilename) {
-		this.xmlFilename = xmlFilename;
+	TagLibrarySaxHandler(Document document, INamespaceResolver namespaceResolver, String xmlFilename) {
+		this.document = document;
 		this.namespaceResolver = namespaceResolver;
-		this.document = new Document();
+		this.xmlFilename = xmlFilename;
 	}
 
 	private Stack<TagInformation> parserStack = new Stack<TagInformation>();
@@ -50,10 +46,7 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 	public void startElement(String namespaceUri, String localName, String qName,
 			Attributes attributes) throws SAXException {
 		Map<String, String> attributeList = new HashMap<String, String>();
-		INamespaceDefinition namespace = namespaceResolver.resolveNamespace(namespaceUri);
-		if (namespace == null) {
-			throw new ParseException("Unknown namespace: " + namespaceUri);
-		}
+		INamespaceDefinition namespace = getNamespace(namespaceUri);
 		ITagDefinition tagDefinition = namespace.getTag(localName);
 		if (tagDefinition == null) {
 			throw new ParseException("Unknown tag \"" + localName + "\" for namespace "
@@ -75,6 +68,18 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 				.size(), attributeList);
 
 		parserStack.push(tagInformation);
+	}
+
+	private INamespaceDefinition getNamespace(String namespaceUri) {
+		INamespaceDefinition namespace = namespaces.get(namespaceUri);
+		if (namespace == null) {
+			namespace = namespaceResolver.resolveNamespace(namespaceUri);
+			if (namespace == null) {
+				throw new ParseException("Unknown namespace: " + namespaceUri);
+			}
+			namespaces.put(namespaceUri, namespace);
+		}
+		return namespace;
 	}
 
 	private String getLocationInfo() {

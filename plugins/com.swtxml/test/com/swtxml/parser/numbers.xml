@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test no="1" xmlns="test">
+	<test no="2">
+		<test no="3">
+			<test no="4"/>
+			<test no="5"/>
+		</test>
+	</test>
+	<test no="6"/>
+</test>

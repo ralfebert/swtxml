@@ -11,16 +11,17 @@ import com.swtxml.util.proposals.Match;
 
 public class SimpleTypes {
 
+	// TODO: keep types static
 	public static void addSimpleTypes(PropertyRegistry inj) {
-		inj.add(new PropertyMatcher(Boolean.class, Boolean.TYPE), new BooleanConverter());
-		inj.add(new PropertyMatcher(Integer.class, Integer.TYPE), new IntegerConverter());
-		inj.add(new PropertyMatcher(Float.class, Float.TYPE), new FloatConverter());
-		inj.add(new PropertyMatcher(Character.class, Character.TYPE), new CharacterConverter());
-		inj.add(new PropertyMatcher(String.class), new StringConverter());
-		inj.add(new PropertyMatcher(int[].class), new IntArrayConverter());
+		inj.add(new PropertyMatcher(Boolean.class, Boolean.TYPE), new BooleanType());
+		inj.add(new PropertyMatcher(Integer.class, Integer.TYPE), new IntegerType());
+		inj.add(new PropertyMatcher(Float.class, Float.TYPE), new FloatType());
+		inj.add(new PropertyMatcher(Character.class, Character.TYPE), new CharacterType());
+		inj.add(new PropertyMatcher(String.class), new StringType());
+		inj.add(new PropertyMatcher(int[].class), new IntArrayType());
 	}
 
-	public static class StringConverter implements IType<String> {
+	public static class StringType implements IType<String> {
 		public String convert(String value) {
 			// TODO: i18n
 			if (value.startsWith("%")) {
@@ -30,7 +31,7 @@ public class SimpleTypes {
 		}
 	}
 
-	public static class BooleanConverter implements IType<Boolean>, IContentAssistable {
+	public static class BooleanType implements IType<Boolean>, IContentAssistable {
 		public Boolean convert(String value) {
 			return Boolean.parseBoolean(value);
 		}
@@ -40,25 +41,25 @@ public class SimpleTypes {
 		}
 	}
 
-	public static class IntegerConverter implements IType<Integer> {
+	public static class IntegerType implements IType<Integer> {
 		public Integer convert(String value) {
 			return Integer.parseInt(value);
 		}
 	}
 
-	public static class FloatConverter implements IType<Float> {
+	public static class FloatType implements IType<Float> {
 		public Float convert(String value) {
 			return Float.parseFloat(value);
 		}
 	}
 
-	public static class CharacterConverter implements IType<Character> {
+	public static class CharacterType implements IType<Character> {
 		public Character convert(String value) {
 			return value.charAt(0);
 		}
 	}
 
-	public static class IntArrayConverter implements IType<int[]> {
+	public static class IntArrayType implements IType<int[]> {
 
 		public int[] convert(String value) {
 			String[] intStrings = StringUtils.split(value, ',');

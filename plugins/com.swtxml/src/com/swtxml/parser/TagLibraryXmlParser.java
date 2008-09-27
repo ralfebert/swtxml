@@ -36,11 +36,11 @@ public class TagLibraryXmlParser {
 		this.processors = processors;
 	}
 
-	protected <T> T parse(Class<?> clazz, Class<T> rootNodeClass) {
-		return parse(clazz, "xml", rootNodeClass);
+	protected Document parse(Class<?> clazz) {
+		return parse(clazz, "xml");
 	}
 
-	protected <T> T parse(Class<?> clazz, String extension, Class<T> rootNodeClass) {
+	protected Document parse(Class<?> clazz, String extension) {
 		String fname = clazz.getSimpleName() + "." + extension;
 		InputStream resource = clazz.getResourceAsStream(fname);
 		if (resource == null) {
@@ -48,19 +48,20 @@ public class TagLibraryXmlParser {
 					+ clazz.getPackage().getName());
 		}
 
-		return parse(fname, resource, rootNodeClass);
+		return parse(fname, resource);
 	}
 
-	public <T> T parse(String filename, InputStream inputStream, Class<T> rootNodeClass) {
+	public <T> Document parse(String filename, InputStream inputStream) {
 		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 		parserFactory.setNamespaceAware(true);
 
 		try {
 			SAXParser parser = parserFactory.newSAXParser();
-			TagLibrarySaxHandler s = new TagLibrarySaxHandler(this, namespaceResolver, filename);
-			parser.parse(inputStream, s);
+			// TODO: don't keep document
+			this.document = new Document();
 
-			this.document = s.getDocument();
+			TagLibrarySaxHandler s = new TagLibrarySaxHandler(document, namespaceResolver, filename);
+			parser.parse(inputStream, s);
 
 			for (ITagProcessor processor : processors) {
 				for (TagInformation node : document.getAllNodes()) {
@@ -70,7 +71,7 @@ public class TagLibraryXmlParser {
 					Context.clear();
 				}
 			}
-			return document.getRoot().adaptTo(rootNodeClass);
+			return document;
 		} catch (ParserConfigurationException e) {
 			throw new XmlParsingException(e);
 		} catch (SAXException e) {
