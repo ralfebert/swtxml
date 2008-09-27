@@ -1,9 +1,6 @@
 package com.swtxml.tag;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.swtxml.parser.XmlParsingException;
@@ -27,7 +24,6 @@ public class Document implements IIdResolver, IAdaptable {
 		return root;
 	}
 
-	private List<TagInformation> allNodes = new ArrayList<TagInformation>();
 	private TagInformation root;
 
 	void register(TagInformation node) {
@@ -43,12 +39,6 @@ public class Document implements IIdResolver, IAdaptable {
 		if (id != null) {
 			nodesById.put(id, node);
 		}
-		this.allNodes.add(node);
-	}
-
-	@Deprecated
-	public Collection<TagInformation> getAllNodes() {
-		return allNodes;
 	}
 
 	@SuppressWarnings("unchecked")
