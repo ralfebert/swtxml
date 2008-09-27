@@ -50,58 +50,57 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		super();
 	}
 
-	@SuppressWarnings("unchecked")
+	// TODO: use match api for tagname / attribute
 	@Override
 	protected void addTagNameProposals(final ContentAssistRequest contentAssistRequest,
 			int childPosition) {
-		Collection<ITagDefinition> tags = (Collection<ITagDefinition>) registry.getTags().values();
-		List<ITagDefinition> matchingTags = new ArrayList<ITagDefinition>(CollectionUtils.select(tags,
-				new IPredicate<ITagDefinition>() {
+		Collection<String> tags = registry.getTagNames();
+		List<String> matchingTags = new ArrayList<String>(CollectionUtils.select(tags,
+				new IPredicate<String>() {
 
-					public boolean match(ITagDefinition tag) {
-						return tag.getName().toLowerCase().startsWith(
+					public boolean match(String tag) {
+						return tag.toLowerCase().startsWith(
 								contentAssistRequest.getMatchString().toLowerCase());
 					}
 
 				}));
 		Collections.sort(matchingTags);
-		for (ITagDefinition tag : matchingTags) {
-			contentAssistRequest.addProposal(new CompletionProposal(tag.getName() + "/>",
+		for (String tag : matchingTags) {
+			contentAssistRequest.addProposal(new CompletionProposal(tag + "/>",
 					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
 							.getReplacementLength(), 5));
 		}
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void addAttributeNameProposals(final ContentAssistRequest contentAssistRequest) {
-		ITagDefinition tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
+		ITagDefinition tag = registry.getTag(contentAssistRequest.getNode().getNodeName());
 		if (tag == null) {
 			return;
 		}
 
-		List<IAttributeDefinition> matchingAttributes = new ArrayList<IAttributeDefinition>(CollectionUtils.select(tag
-				.getAttributes().values(), new IPredicate<IAttributeDefinition>() {
+		List<String> matchingAttributes = new ArrayList<String>(CollectionUtils.select(tag
+				.getAttributeNames(), new IPredicate<String>() {
 
-			public boolean match(IAttributeDefinition attr) {
-				return attr.getName().toLowerCase().startsWith(
+			public boolean match(String attr) {
+				return attr.toLowerCase().startsWith(
 						contentAssistRequest.getMatchString().toLowerCase());
 			}
 
 		}));
 		Collections.sort(matchingAttributes);
-		for (IAttributeDefinition attr : matchingAttributes) {
-			contentAssistRequest.addProposal(new CompletionProposal(attr.getName() + "=\"\"",
+		for (String attr : matchingAttributes) {
+			contentAssistRequest.addProposal(new CompletionProposal(attr + "=\"\"",
 					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
-							.getReplacementLength(), attr.getName().length() + 2));
+							.getReplacementLength(), attr.length() + 2));
 		}
 
 	}
 
 	@Override
 	protected void addAttributeValueProposals(final ContentAssistRequest contentAssistRequest) {
-		ITagDefinition tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
+		ITagDefinition tag = registry.getTag(contentAssistRequest.getNode().getNodeName());
 		if (tag == null) {
 			return;
 		}
@@ -130,7 +129,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		}
 
 		String attributeName = open.getText(nameRegion);
-		IAttributeDefinition attribute = tag.getAttributes().get(attributeName);
+		IAttributeDefinition attribute = tag.getAttribute(attributeName);
 		if (attribute == null) {
 			return;
 		}

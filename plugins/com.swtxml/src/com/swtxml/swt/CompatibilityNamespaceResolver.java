@@ -2,6 +2,7 @@ package com.swtxml.swt;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;
@@ -24,9 +25,16 @@ public class CompatibilityNamespaceResolver implements INamespaceResolver {
 				public Map<String, ? extends ITagDefinition> getTags() {
 					return prototypeTags;
 				}
+
+				public ITagDefinition getTag(String name) {
+					return prototypeTags.get(name);
+				}
+
+				public Set<String> getTagNames() {
+					return prototypeTags.keySet();
+				}
 			};
 		}
 		throw new ParseException("Unknown namespace: " + uri);
 	}
-
 }

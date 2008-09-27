@@ -20,17 +20,17 @@ public class SwtNamespaceTest {
 	@Before
 	public void setUp() throws Exception {
 		swtTagRegistry = new SwtNamespace();
-		buttonTag = swtTagRegistry.getTags().get("Button");
+		buttonTag = swtTagRegistry.getTag("Button");
 	}
 
 	@Test
 	public void testGetTagMetaData() {
 		assertEquals("Button", buttonTag.getName());
 
-		assertTrue(swtTagRegistry.getTags().size() > 0);
-		assertTrue(buttonTag.getAttributes().size() > 0);
+		assertTrue(swtTagRegistry.getTagNames().size() > 0);
+		assertTrue(buttonTag.getAttributeNames().size() > 0);
 
-		IAttributeDefinition textAttribute = buttonTag.getAttributes().get("text");
+		IAttributeDefinition textAttribute = buttonTag.getAttribute("text");
 		assertEquals("text", textAttribute.getName());
 	}
 

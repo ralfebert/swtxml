@@ -1,12 +1,14 @@
 package com.swtxml.swt.metadata;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.DefinitionException;
+import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.util.lang.IOUtils;
 
 public class SwtNamespace implements INamespaceDefinition {
@@ -27,8 +29,12 @@ public class SwtNamespace implements INamespaceDefinition {
 		}
 	}
 
-	public Map<String, WidgetTag> getTags() {
-		return tagsByName;
+	public WidgetTag getTag(String name) {
+		return tagsByName.get(name);
+	}
+
+	public Set<String> getTagNames() {
+		return Collections.unmodifiableSet(tagsByName.keySet());
 	}
 
 }

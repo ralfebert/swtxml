@@ -1,14 +1,16 @@
 package com.swtxml.swt.metadata;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.AttributeDefinition;
+import com.swtxml.definition.DefinitionException;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.definition.DefinitionException;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.types.StyleType;
 import com.swtxml.util.properties.ClassProperties;
@@ -23,24 +25,19 @@ public class WidgetTag implements ITagDefinition {
 
 	public WidgetTag(String className) {
 		this.className = className;
+
+		ClassProperties<? extends Widget> properties = SwtHandling.WIDGET_PROPERTIES
+				.getProperties(getSwtWidgetClass());
+		attributes = new HashMap<String, IAttributeDefinition>();
+		for (Property property : properties.getProperties().values()) {
+			WidgetAttribute attribute = new WidgetAttribute(property);
+			attributes.put(attribute.getName(), attribute);
+		}
+		attributes.put("style", new AttributeDefinition("style", new StyleType(SwtHandling.SWT)));
 	}
 
 	public String getName() {
 		return getSwtWidgetClass().getSimpleName();
-	}
-
-	public Map<String, IAttributeDefinition> getAttributes() {
-		if (attributes == null) {
-			ClassProperties<? extends Widget> properties = SwtHandling.WIDGET_PROPERTIES
-					.getProperties(getSwtWidgetClass());
-			attributes = new HashMap<String, IAttributeDefinition>();
-			for (Property property : properties.getProperties().values()) {
-				WidgetAttribute attribute = new WidgetAttribute(property);
-				attributes.put(attribute.getName(), attribute);
-			}
-			attributes.put("style", new AttributeDefinition("style", new StyleType(SwtHandling.SWT)));
-		}
-		return attributes;
 	}
 
 	@Override
@@ -62,5 +59,13 @@ public class WidgetTag implements ITagDefinition {
 
 	public int compareTo(ITagDefinition o) {
 		return this.getName().compareTo(o.getName());
+	}
+
+	public IAttributeDefinition getAttribute(String name) {
+		return attributes.get(name);
+	}
+
+	public Set<String> getAttributeNames() {
+		return Collections.unmodifiableSet(attributes.keySet());
 	}
 }

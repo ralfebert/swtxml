@@ -1,9 +1,11 @@
 package com.swtxml.definition;
 
-import java.util.Map;
+import java.util.Set;
 
 public interface INamespaceDefinition {
 
-	public abstract Map<String, ? extends ITagDefinition> getTags();
+	public Set<String> getTagNames();
+
+	public ITagDefinition getTag(String name);
 
 }

@@ -1,11 +1,12 @@
 package com.swtxml.definition;
 
-import java.util.Map;
+import java.util.Set;
 
 public interface ITagDefinition extends Comparable<ITagDefinition> {
 
 	String getName();
 
-	Map<String, ? extends IAttributeDefinition> getAttributes();
+	Set<String> getAttributeNames();
 
+	public IAttributeDefinition getAttribute(String name);
 }
