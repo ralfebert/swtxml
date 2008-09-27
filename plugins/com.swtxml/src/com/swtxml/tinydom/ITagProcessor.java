@@ -1,6 +1,4 @@
-package com.swtxml.parser;
-
-import com.swtxml.tag.Tag;
+package com.swtxml.tinydom;
 
 public interface ITagProcessor {
 

@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.parser;
+package com.swtxml.tinydom;
 
 import java.io.InputStream;
 
@@ -19,13 +19,13 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import com.swtxml.definition.INamespaceResolver;
-import com.swtxml.tag.Tag;
+import com.swtxml.util.parser.ParseException;
 
-public class TagLibraryXmlParser {
+public class TinyDomParser {
 
 	private INamespaceResolver namespaceResolver;
 
-	public TagLibraryXmlParser(INamespaceResolver namespaceResolver) {
+	public TinyDomParser(INamespaceResolver namespaceResolver) {
 		super();
 		this.namespaceResolver = namespaceResolver;
 	}
@@ -38,7 +38,7 @@ public class TagLibraryXmlParser {
 		String fname = clazz.getSimpleName() + "." + extension;
 		InputStream resource = clazz.getResourceAsStream(fname);
 		if (resource == null) {
-			throw new XmlParsingException(fname + " not found in package "
+			throw new ParseException(fname + " not found in package "
 					+ clazz.getPackage().getName());
 		}
 
@@ -51,11 +51,11 @@ public class TagLibraryXmlParser {
 
 		SAXParser parser = createSaxParser(parserFactory);
 
-		TagLibrarySaxHandler saxHandler = new TagLibrarySaxHandler(namespaceResolver, filename);
+		TinyDomSaxHandler saxHandler = new TinyDomSaxHandler(namespaceResolver, filename);
 		try {
 			parser.parse(inputStream, saxHandler);
 		} catch (Exception e) {
-			throw new XmlParsingException(saxHandler.getLocationInfo() + e.getMessage(), e);
+			throw new ParseException(saxHandler.getLocationInfo() + e.getMessage(), e);
 		}
 
 		return saxHandler.getRoot();
@@ -65,9 +65,9 @@ public class TagLibraryXmlParser {
 		try {
 			return parserFactory.newSAXParser();
 		} catch (ParserConfigurationException e) {
-			throw new XmlParsingException(e);
+			throw new ParseException(e);
 		} catch (SAXException e) {
-			throw new XmlParsingException(e);
+			throw new ParseException(e);
 		}
 	}
 

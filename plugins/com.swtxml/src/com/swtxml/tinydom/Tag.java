@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.tag;
+package com.swtxml.tinydom;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,8 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.parser.ITagProcessor;
-import com.swtxml.parser.XmlParsingException;
 import com.swtxml.util.adapter.IAdaptable;
 import com.swtxml.util.parser.ParseException;
 
@@ -135,7 +133,7 @@ public class Tag implements IAdaptable {
 				try {
 					processor.process(tag);
 				} catch (Exception e) {
-					throw new XmlParsingException(tag.getLocationInfo() + e.getMessage(), e);
+					throw new ParseException(tag.getLocationInfo() + e.getMessage(), e);
 				}
 			}
 		}

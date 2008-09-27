@@ -1,4 +1,4 @@
-package com.swtxml.swt.properties;
+package com.swtxml.swt;
 
 public interface IIdResolver {
 

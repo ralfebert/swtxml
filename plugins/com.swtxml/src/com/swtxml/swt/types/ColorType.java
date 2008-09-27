@@ -7,8 +7,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
-import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.SwtHandling;
+import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IContentAssistable;
 import com.swtxml.util.types.IType;
@@ -32,7 +32,7 @@ public class ColorType implements IType<Color>, IContentAssistable {
 				return Display.getDefault().getSystemColor(constant);
 			}
 
-			throw new XmlParsingException("Invalid color value: " + value
+			throw new ParseException("Invalid color value: " + value
 					+ " (allowed are html colors like #ff00ff or "
 					+ "constants like 'red' as defined in SWT.COLOR_RED)");
 		}

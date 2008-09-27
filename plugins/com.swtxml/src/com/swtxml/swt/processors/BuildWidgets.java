@@ -4,11 +4,11 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.parser.ITagProcessor;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.metadata.WidgetBuilder;
 import com.swtxml.swt.metadata.WidgetTag;
-import com.swtxml.tag.Tag;
+import com.swtxml.tinydom.ITagProcessor;
+import com.swtxml.tinydom.Tag;
 import com.swtxml.util.parser.ParseException;
 
 public class BuildWidgets implements ITagProcessor {

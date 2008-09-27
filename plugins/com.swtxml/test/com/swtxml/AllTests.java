@@ -3,12 +3,12 @@ package com.swtxml;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.swtxml.parser.XmlParserTest;
 import com.swtxml.swt.injector.FormAttachmentTypeTest;
 import com.swtxml.swt.injector.SwtInjectorTest;
 import com.swtxml.swt.injector.SwtTypesTest;
 import com.swtxml.swt.metadata.SwtNamespaceTest;
 import com.swtxml.swt.sample.SwtWidgetsTest;
+import com.swtxml.tinydom.XmlParserTest;
 import com.swtxml.util.collections.CollectionUtilsTest;
 import com.swtxml.util.context.ContextTest;
 import com.swtxml.util.parser.ConstantParserTest;

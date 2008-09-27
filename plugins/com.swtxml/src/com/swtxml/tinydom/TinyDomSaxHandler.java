@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.parser;
+package com.swtxml.tinydom;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,10 +24,9 @@ import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.tag.Tag;
 import com.swtxml.util.parser.ParseException;
 
-public class TagLibrarySaxHandler extends DefaultHandler {
+public class TinyDomSaxHandler extends DefaultHandler {
 
 	private final String xmlFilename;
 	private Locator locator;
@@ -35,7 +34,7 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 	private final INamespaceResolver namespaceResolver;
 	private final Map<String, INamespaceDefinition> namespaces = new HashMap<String, INamespaceDefinition>();
 
-	TagLibrarySaxHandler(INamespaceResolver namespaceResolver, String xmlFilename) {
+	TinyDomSaxHandler(INamespaceResolver namespaceResolver, String xmlFilename) {
 		this.namespaceResolver = namespaceResolver;
 		this.xmlFilename = xmlFilename;
 	}

@@ -8,24 +8,15 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.parser;
+package com.swtxml.swt;
 
-public class XmlParsingException extends RuntimeException {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-	public XmlParsingException() {
-		super();
-	}
-
-	public XmlParsingException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public XmlParsingException(String message) {
-		super(message);
-	}
-
-	public XmlParsingException(Throwable cause) {
-		super(cause);
-	}
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.FIELD)
+public @interface ById {
 
 }

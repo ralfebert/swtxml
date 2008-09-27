@@ -16,19 +16,17 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceResolver;
-import com.swtxml.parser.ById;
-import com.swtxml.parser.ITagProcessor;
-import com.swtxml.parser.TagLibraryXmlParser;
-import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.processors.BuildWidgets;
 import com.swtxml.swt.processors.CollectIds;
 import com.swtxml.swt.processors.SetAttributes;
-import com.swtxml.swt.properties.IIdResolver;
-import com.swtxml.tag.Tag;
+import com.swtxml.tinydom.ITagProcessor;
+import com.swtxml.tinydom.Tag;
+import com.swtxml.tinydom.TinyDomParser;
 import com.swtxml.util.context.Context;
+import com.swtxml.util.parser.ParseException;
 
-public class SwtXmlParser extends TagLibraryXmlParser {
+public class SwtXmlParser extends TinyDomParser {
 
 	private Object controller;
 	private Composite parent;
@@ -63,7 +61,7 @@ public class SwtXmlParser extends TagLibraryXmlParser {
 						try {
 							processor.process(tag);
 						} catch (Exception e) {
-							throw new XmlParsingException(tag.getLocationInfo() + e.getMessage(), e);
+							throw new ParseException(tag.getLocationInfo() + e.getMessage(), e);
 						}
 					}
 				});
@@ -80,7 +78,7 @@ public class SwtXmlParser extends TagLibraryXmlParser {
 				try {
 					Object value = ids.getById(field.getName(), field.getType());
 					if (value == null) {
-						throw new XmlParsingException("No element with id " + field.getName()
+						throw new ParseException("No element with id " + field.getName()
 								+ " found for injecting @ById");
 					}
 					boolean oldAccess = field.isAccessible();
@@ -88,7 +86,7 @@ public class SwtXmlParser extends TagLibraryXmlParser {
 					field.set(controller, value);
 					field.setAccessible(oldAccess);
 				} catch (Exception e) {
-					throw new XmlParsingException(e);
+					throw new ParseException(e);
 				}
 			}
 		}

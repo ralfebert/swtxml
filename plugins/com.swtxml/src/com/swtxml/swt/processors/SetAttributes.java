@@ -5,9 +5,9 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.parser.ITagProcessor;
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.tag.Tag;
+import com.swtxml.tinydom.ITagProcessor;
+import com.swtxml.tinydom.Tag;
 import com.swtxml.util.parser.ParseException;
 
 public class SetAttributes implements ITagProcessor {

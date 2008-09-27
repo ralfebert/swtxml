@@ -1,4 +1,4 @@
-package com.swtxml.parser;
+package com.swtxml.tinydom;
 
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createMock;
@@ -14,7 +14,9 @@ import org.junit.Test;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.definition.impl.TagDefinition;
-import com.swtxml.tag.Tag;
+import com.swtxml.tinydom.ITagProcessor;
+import com.swtxml.tinydom.Tag;
+import com.swtxml.tinydom.TinyDomParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.types.SimpleTypes;
 
@@ -49,7 +51,7 @@ public class XmlParserTest {
 	public void testDepthFirstTagProcessing() {
 		INamespaceResolver namespaceResolver = sampleNamespace();
 		CollectNumbers collectNumbers = new CollectNumbers();
-		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver);
 		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
 		root.depthFirst(collectNumbers, collectNumbers);
 		assertEquals("112233445566", collectNumbers.getNumbers());
@@ -58,11 +60,11 @@ public class XmlParserTest {
 	@Test
 	public void testWrongTag() {
 		INamespaceResolver namespaceResolver = sampleNamespace();
-		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver);
 		try {
 			parser.parse("test", getClass().getResourceAsStream("wrongtag.xml"));
 			fail("expected exception");
-		} catch (XmlParsingException e) {
+		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));
 			assertTrue(e.getMessage().contains("invalid"));
 			assertTrue(e.getMessage().contains("test"));
@@ -72,11 +74,11 @@ public class XmlParserTest {
 	@Test
 	public void testWrongAttribute() {
 		INamespaceResolver namespaceResolver = sampleNamespace();
-		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver);
 		try {
 			parser.parse("test", getClass().getResourceAsStream("wrongattribute.xml"));
 			fail("expected exception");
-		} catch (XmlParsingException e) {
+		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));
 			assertTrue(e.getMessage().contains("invalid"));
 			assertTrue(e.getMessage().contains("test"));
@@ -91,12 +93,12 @@ public class XmlParserTest {
 		replay(tagProcessor);
 
 		INamespaceResolver namespaceResolver = sampleNamespace();
-		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver);
 		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
 		try {
 			root.depthFirst(tagProcessor);
 			fail("expected");
-		} catch (XmlParsingException e) {
+		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));
 			assertTrue(e.getMessage().contains("NO"));
 		}

@@ -7,8 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Control;
 
+import com.swtxml.swt.IIdResolver;
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.ConstantParser;
 import com.swtxml.util.parser.ParseException;
