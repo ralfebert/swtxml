@@ -56,8 +56,8 @@ public class MagicTagNodeObjectProxy extends TagNode {
 		for (String name : attributes.keySet()) {
 			// TODO: widget vs general class
 			if (tag != null && obj instanceof Widget) {
-				SwtHandling.createSwtProperties(getDocument()).getProperties(obj.getClass())
-						.getInjector(obj).setPropertyValue(name, attributes.get(name));
+				SwtHandling.WIDGET_PROPERTIES.getProperties(obj.getClass()).getInjector(obj)
+						.setPropertyValue(name, attributes.get(name));
 			}
 		}
 	}

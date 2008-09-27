@@ -64,6 +64,7 @@ public class TagLibraryXmlParser {
 
 			for (TagNode node : document.getAllNodes()) {
 				Context.addAdapter(node);
+				Context.addAdapter(document);
 				node.process();
 				Context.clear();
 			}

@@ -10,11 +10,9 @@ import com.swtxml.metadata.IAttribute;
 import com.swtxml.metadata.ITag;
 import com.swtxml.metadata.MetaDataException;
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.swt.types.StyleType;
 import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.Property;
-import com.swtxml.util.properties.PropertyRegistry;
 
 public class WidgetTag implements ITag {
 
@@ -33,14 +31,7 @@ public class WidgetTag implements ITag {
 
 	public Map<String, IAttribute> getAttributes() {
 		if (attributes == null) {
-			// TODO: id resolving
-			PropertyRegistry propertyRegistry = SwtHandling.createSwtProperties(new IIdResolver() {
-				public <T> T getById(String id, Class<T> clazz) {
-					return null;
-				}
-			});
-
-			ClassProperties<? extends Widget> properties = propertyRegistry
+			ClassProperties<? extends Widget> properties = SwtHandling.WIDGET_PROPERTIES
 					.getProperties(getSwtWidgetClass());
 			attributes = new HashMap<String, IAttribute>();
 			for (Property property : properties.getProperties().values()) {

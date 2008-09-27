@@ -10,7 +10,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.FormAttachmentType;
 import com.swtxml.swt.types.LayoutDataType;
@@ -26,45 +25,38 @@ public class SwtHandling {
 
 	public final static ConstantParser SWT = new ConstantParser(SWT.class);
 
-	public static PropertyRegistry createSwtProperties(IIdResolver idResolver) {
-		PropertyRegistry layoutInjector = createLayoutProperties(idResolver);
+	public final static PropertyRegistry WIDGET_PROPERTIES = createWidgetProperties();
 
-		PropertyRegistry inj = new PropertyRegistry(false);
+	public final static PropertyRegistry LAYOUT_PROPERTIES = createLayoutProperties();
 
-		inj.add(new PropertyMatcher(Widget.class, "style", Integer.TYPE), new StyleType(SWT));
-
-		inj.add(new PropertyMatcher(Composite.class, "layout", Layout.class), new LayoutType(
-				layoutInjector));
-
-		inj.add(new PropertyMatcher(Color.class), new ColorType());
-
-		inj.add(new PropertyMatcher(Point.class), new PointType());
-
-		inj.add(new PropertyMatcher(Control.class, "layoutData"), new LayoutDataType(
-				layoutInjector));
-
-		SimpleTypes.addSimpleTypes(inj);
-
-		return inj;
+	private static PropertyRegistry createWidgetProperties() {
+		PropertyRegistry props = new PropertyRegistry(false);
+		props.add(new PropertyMatcher(Widget.class, "style", Integer.TYPE), new StyleType(SWT));
+		props.add(new PropertyMatcher(Composite.class, "layout", Layout.class), new LayoutType());
+		props.add(new PropertyMatcher(Color.class), new ColorType());
+		props.add(new PropertyMatcher(Point.class), new PointType());
+		props.add(new PropertyMatcher(Control.class, "layoutData"), new LayoutDataType());
+		SimpleTypes.addSimpleTypes(props);
+		return props;
 	}
 
-	public static PropertyRegistry createLayoutProperties(IIdResolver idResolver) {
-		PropertyRegistry inj = new PropertyRegistry(true);
+	private static PropertyRegistry createLayoutProperties() {
+		PropertyRegistry props = new PropertyRegistry(true);
 
-		inj.add(new PropertyMatcher(Layout.class, "type", Integer.TYPE), new StyleType(SWT
+		props.add(new PropertyMatcher(Layout.class, "type", Integer.TYPE), new StyleType(SWT
 				.filter("HORIZONTAL|VERTICAL")));
 
-		inj.add(new PropertyMatcher(GridData.class, "verticalAlignment", Integer.TYPE),
+		props.add(new PropertyMatcher(GridData.class, "verticalAlignment", Integer.TYPE),
 				new StyleType(SWT.filter("BEGINNING|CENTER|END|FILL|TOP|BOTTOM")));
 
-		inj.add(new PropertyMatcher(GridData.class, "horizontalAlignment", Integer.TYPE),
+		props.add(new PropertyMatcher(GridData.class, "horizontalAlignment", Integer.TYPE),
 				new StyleType(SWT.filter("BEGINNING|CENTER|END|FILL|LEFT|RIGHT")));
 
-		inj.add(new PropertyMatcher(FormAttachment.class), new FormAttachmentType(idResolver));
+		props.add(new PropertyMatcher(FormAttachment.class), new FormAttachmentType());
 
-		SimpleTypes.addSimpleTypes(inj);
+		SimpleTypes.addSimpleTypes(props);
 
-		return inj;
+		return props;
 	}
 
 }

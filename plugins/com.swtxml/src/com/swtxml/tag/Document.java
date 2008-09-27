@@ -8,8 +8,9 @@ import java.util.Map;
 
 import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.properties.IIdResolver;
+import com.swtxml.util.adapter.IAdaptable;
 
-public class Document implements IIdResolver {
+public class Document implements IIdResolver, IAdaptable {
 
 	private Map<String, TagNode> nodesById = new HashMap<String, TagNode>();
 
@@ -46,6 +47,14 @@ public class Document implements IIdResolver {
 	@Deprecated
 	public Collection<TagNode> getAllNodes() {
 		return allNodes;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <A> A adaptTo(Class<A> adapterClass) {
+		if (IIdResolver.class.equals(adapterClass)) {
+			return (A) this;
+		}
+		return null;
 	}
 
 }

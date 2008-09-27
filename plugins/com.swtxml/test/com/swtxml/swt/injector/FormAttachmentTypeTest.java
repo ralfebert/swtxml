@@ -10,11 +10,14 @@ import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.swt.types.FormAttachmentType;
+import com.swtxml.util.adapter.MockAdapter;
+import com.swtxml.util.context.Context;
 
 public class FormAttachmentTypeTest {
 
@@ -22,12 +25,18 @@ public class FormAttachmentTypeTest {
 	private FormAttachmentType type;
 	private Button test;
 
+	@After
+	public void cleanupContext() {
+		Context.clear();
+	}
+
 	@Before
 	public void setUp() throws Exception {
 		idResolver = createMock(IIdResolver.class);
+		Context.addAdapter(new MockAdapter(idResolver));
 		test = new Button(new Shell(), SWT.NONE);
 		expect(idResolver.getById("test", Control.class)).andReturn(test);
-		type = new FormAttachmentType(idResolver);
+		type = new FormAttachmentType();
 		replay(idResolver);
 	}
 

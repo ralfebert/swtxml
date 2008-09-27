@@ -1,6 +1,5 @@
 package com.swtxml.swt.injector;
 
-import static org.easymock.EasyMock.createMock;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -14,11 +13,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import com.swtxml.swt.SwtHandling;
-import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.LayoutDataType;
 import com.swtxml.swt.types.LayoutType;
@@ -28,19 +25,10 @@ import com.swtxml.util.adapter.MockAdapter;
 import com.swtxml.util.context.Context;
 import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.lang.IFunction;
-import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IType;
 
 public class SwtTypesTest {
-
-	private PropertyRegistry layoutInjector;
-
-	@Before
-	public void setup() {
-		IIdResolver idResolver = createMock(IIdResolver.class);
-		layoutInjector = SwtHandling.createLayoutProperties(idResolver);
-	}
 
 	@After
 	public void clearContext() {
@@ -69,7 +57,7 @@ public class SwtTypesTest {
 
 	@Test
 	public void testGridLayout() {
-		LayoutType layoutType = new LayoutType(layoutInjector);
+		LayoutType layoutType = new LayoutType();
 		GridLayout layout = (GridLayout) layoutType
 				.convert("layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:11;");
 		assertEquals(2, layout.numColumns);
@@ -79,7 +67,7 @@ public class SwtTypesTest {
 
 	@Test
 	public void testRowLayout() {
-		LayoutType layoutType = new LayoutType(layoutInjector);
+		LayoutType layoutType = new LayoutType();
 		RowLayout layout = (RowLayout) layoutType.convert("layout:row;type:vertical;spacing:5;");
 		assertEquals(SWT.VERTICAL, layout.type);
 		assertEquals(5, layout.spacing);
@@ -87,7 +75,7 @@ public class SwtTypesTest {
 
 	@Test
 	public void testLayoutCompletion() {
-		LayoutType layoutType = new LayoutType(layoutInjector);
+		LayoutType layoutType = new LayoutType();
 		assertEquals("layout:§;", layoutType.getProposals(new Match("la§")).get(0).toString());
 		assertEquals("layout:§;", layoutType.getProposals(new Match("§")).get(0).toString());
 		assertEquals("type:§;layout:row;", layoutType.getProposals(new Match("ty§;layout:row;"))
@@ -110,7 +98,7 @@ public class SwtTypesTest {
 
 	@Test
 	public void testLayoutCompletionDoesNotContainAlreadySetProperties() {
-		LayoutType layoutType = new LayoutType(layoutInjector);
+		LayoutType layoutType = new LayoutType();
 		List<Match> proposals = layoutType.getProposals(new Match("type:vertical;layout:row;§"));
 		List<String> proposalTexts = CollectionUtils.collect(proposals,
 				new IFunction<Match, String>() {
@@ -125,7 +113,7 @@ public class SwtTypesTest {
 	@Test
 	public void testLayoutDataSetter() {
 		Context.addAdapter(new MockAdapter(new GridLayout()));
-		LayoutDataType layoutDataType = new LayoutDataType(layoutInjector);
+		LayoutDataType layoutDataType = new LayoutDataType();
 		GridData data = (GridData) layoutDataType.convert("widthHint:120");
 		assertEquals(120, data.widthHint);
 	}
@@ -133,7 +121,7 @@ public class SwtTypesTest {
 	@Test
 	public void testLayoutDataContentAssist() {
 		Context.addAdapter(new MockAdapter(new GridLayout()));
-		LayoutDataType type = new LayoutDataType(layoutInjector);
+		LayoutDataType type = new LayoutDataType();
 		assertEquals("widthHint:§;", type.getProposals(new Match("wi§")).get(0).toString());
 		assertEquals("verticalAlignment:CENTER;§", type.getProposals(
 				new Match("verticalAlignment:c§")).get(0).toString());

@@ -12,22 +12,16 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Layout;
 
+import com.swtxml.swt.SwtHandling;
 import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
-import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.reflector.ReflectorException;
 import com.swtxml.util.types.IContentAssistable;
 import com.swtxml.util.types.IType;
 
 public class LayoutDataType implements IType<Object>, IContentAssistable {
-
-	private PropertyRegistry layoutProperties;
-
-	public LayoutDataType(PropertyRegistry layoutProperties) {
-		this.layoutProperties = layoutProperties;
-	}
 
 	public Object convert(String value) {
 		Layout layout = Context.adaptTo(Layout.class);
@@ -52,9 +46,7 @@ public class LayoutDataType implements IType<Object>, IContentAssistable {
 		} catch (Exception e) {
 			throw new ReflectorException(e);
 		}
-		// TODO: straighten out this "LayoutData" needs to see its parent thing
-		// and is a setter for that reason
-		layoutProperties.getProperties(layoutData.getClass()).getInjector(layoutData)
+		SwtHandling.LAYOUT_PROPERTIES.getProperties(layoutData.getClass()).getInjector(layoutData)
 				.setPropertyValues(layoutConstraints);
 		return layoutData;
 	}
@@ -81,6 +73,7 @@ public class LayoutDataType implements IType<Object>, IContentAssistable {
 			return Collections.emptyList();
 		}
 		PropertiesContentAssist assist = new PropertiesContentAssist(match);
-		return assist.getProposals(layoutProperties.getProperties(getLayoutDataClass(layout)));
+		return assist.getProposals(SwtHandling.LAYOUT_PROPERTIES
+				.getProperties(getLayoutDataClass(layout)));
 	}
 }

@@ -29,7 +29,6 @@ import org.w3c.dom.Node;
 import com.swtxml.metadata.IAttribute;
 import com.swtxml.metadata.INamespace;
 import com.swtxml.metadata.ITag;
-import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.util.adapter.IAdaptable;
@@ -82,16 +81,15 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			return;
 		}
 
-		List<IAttribute> matchingAttributes = new ArrayList<IAttribute>(CollectionUtils.select(
-				(Collection<IAttribute>) tag.getAttributes().values(),
-				new IPredicate<IAttribute>() {
+		List<IAttribute> matchingAttributes = new ArrayList<IAttribute>(CollectionUtils.select(tag
+				.getAttributes().values(), new IPredicate<IAttribute>() {
 
-					public boolean match(IAttribute attr) {
-						return attr.getName().toLowerCase().startsWith(
-								contentAssistRequest.getMatchString().toLowerCase());
-					}
+			public boolean match(IAttribute attr) {
+				return attr.getName().toLowerCase().startsWith(
+						contentAssistRequest.getMatchString().toLowerCase());
+			}
 
-				}));
+		}));
 		Collections.sort(matchingAttributes);
 		for (IAttribute attr : matchingAttributes) {
 			contentAssistRequest.addProposal(new CompletionProposal(attr.getName() + "=\"\"",
@@ -146,9 +144,8 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 						Node layoutNode = contentAssistRequest.getNode().getParentNode()
 								.getAttributes().getNamedItem("layout");
 						if (layoutNode != null) {
-							// TODO: static layout properties
-							return (A) new LayoutType(SwtHandling.createLayoutProperties(null))
-									.convert(layoutNode.getNodeValue(), Strictness.LAX);
+							return (A) new LayoutType().convert(layoutNode.getNodeValue(),
+									Strictness.LAX);
 						}
 					}
 					return null;

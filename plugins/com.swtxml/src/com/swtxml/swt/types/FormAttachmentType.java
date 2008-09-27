@@ -9,18 +9,17 @@ import org.eclipse.swt.widgets.Control;
 
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.properties.IIdResolver;
+import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.ConstantParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.types.IType;
 
 public class FormAttachmentType implements IType<FormAttachment> {
 
-	private IIdResolver idResolver;
 	private final static ConstantParser CONSTANTS_ALIGN = SwtHandling.SWT
 			.filter("TOP|BOTTOM|LEFT|RIGHT|CENTER|DEFAULT");
 
-	public FormAttachmentType(IIdResolver idResolver) {
-		this.idResolver = idResolver;
+	public FormAttachmentType() {
 	}
 
 	public FormAttachment convert(String value) {
@@ -52,6 +51,10 @@ public class FormAttachmentType implements IType<FormAttachment> {
 					String[] controlString = StringUtils.split(part, ".");
 					if (controlString.length >= 1) {
 						String id = controlString[0].trim();
+						IIdResolver idResolver = Context.adaptTo(IIdResolver.class);
+						if (idResolver == null) {
+							throw new ParseException("No IDs available in current context");
+						}
 						Control control = idResolver.getById(id, Control.class);
 						if (control == null) {
 							throw new ParseException("Control with id " + id + " not found");

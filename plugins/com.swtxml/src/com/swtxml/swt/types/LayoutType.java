@@ -7,11 +7,11 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Layout;
 
+import com.swtxml.swt.SwtHandling;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.parser.Strictness;
 import com.swtxml.util.properties.IInjector;
-import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.reflector.ReflectorException;
 import com.swtxml.util.types.IContentAssistable;
@@ -21,12 +21,6 @@ public class LayoutType implements IType<Layout>, IContentAssistable {
 
 	private static final String LAYOUT_KEY = "layout";
 	private final static String SWT_LAYOUT_PACKAGE = RowLayout.class.getPackage().getName();
-
-	private PropertyRegistry layoutProperties;
-
-	public LayoutType(PropertyRegistry layoutProperties) {
-		this.layoutProperties = layoutProperties;
-	}
 
 	public Layout convert(String value) {
 		return convert(value, Strictness.STRICT);
@@ -46,7 +40,8 @@ public class LayoutType implements IType<Layout>, IContentAssistable {
 
 		Layout layout = createLayout(layoutName, Strictness.STRICT);
 
-		IInjector injector = layoutProperties.getProperties(layout.getClass()).getInjector(layout);
+		IInjector injector = SwtHandling.LAYOUT_PROPERTIES.getProperties(layout.getClass())
+				.getInjector(layout);
 		injector.setPropertyValues(layoutConstraints);
 
 		return layout;
@@ -86,6 +81,6 @@ public class LayoutType implements IType<Layout>, IContentAssistable {
 			return assist.getKeyValueMatch().propose(LAYOUT_KEY + ":");
 		}
 
-		return assist.getProposals(layoutProperties.getProperties(layoutClass));
+		return assist.getProposals(SwtHandling.LAYOUT_PROPERTIES.getProperties(layoutClass));
 	}
 }
