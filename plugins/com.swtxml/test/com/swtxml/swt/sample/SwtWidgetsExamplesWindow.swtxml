@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="iso-8859-1"?>
 <Composite
     xmlns="class://com.swtxml.swt.SwtWidgetTagLibrary"
-    xmlns:pt="class://com.swtxml.swt.PrototypeTagLibrary"
     layout="layout:fill;">
     
     <TabFolder>
@@ -27,7 +26,7 @@
 
                 <Label text="Test:" layoutData="widthHint:120  ;  " toolTipText="test"/>
                 <Combo style="READ_ONLY" toolTipText="whatever">
-                    <pt:list values="Volvic|Vittel|Thüringer Waldquell|Höllensprudel|Apollinaris"/>
+<!--                    <pt:list values="Volvic|Vittel|Thüringer Waldquell|Höllensprudel|Apollinaris"/>-->
                 </Combo>
                 
                 
@@ -38,10 +37,10 @@
                     <TableColumn text="Mineral" width="80"/>
                     <TableColumn text="Mineralisierung (mg/l)" width="200"/>
                     
-                    <pt:table>
+                    <!--<pt:table>
                         <pt:row values="Kalcium|10"/>
                         <pt:row values="Natrium|0.001"/>
-                    </pt:table>
+                    </pt:table>-->
                 </Table>
 
 
@@ -90,7 +89,7 @@
                 <Group text="Hallo" style="BORDER" layout="layout:row;">
                     <Tree layoutData="width:150;height:200;"/>
                     <List style="FULL_SELECTION" layoutData="width:150;height:200;">
-                        <pt:list values="Volvic|Vittel|Thüringer Waldquell|Höllensprudel|Apollinaris"/>
+                        <!--<pt:list values="Volvic|Vittel|Thüringer Waldquell|Höllensprudel|Apollinaris"/>-->
                     </List>
                 </Group>
                 
