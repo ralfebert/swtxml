@@ -5,21 +5,21 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.metadata.Attribute;
-import com.swtxml.metadata.IAttribute;
-import com.swtxml.metadata.ITag;
-import com.swtxml.metadata.MetaDataException;
+import com.swtxml.definition.AttributeDefinition;
+import com.swtxml.definition.IAttributeDefinition;
+import com.swtxml.definition.ITagDefinition;
+import com.swtxml.definition.DefinitionException;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.types.StyleType;
 import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.Property;
 
-public class WidgetTag implements ITag {
+public class WidgetTag implements ITagDefinition {
 
 	private String className;
 	private Class<? extends Widget> swtWidgetClass;
 
-	private Map<String, IAttribute> attributes;
+	private Map<String, IAttributeDefinition> attributes;
 
 	public WidgetTag(String className) {
 		this.className = className;
@@ -29,16 +29,16 @@ public class WidgetTag implements ITag {
 		return getSwtWidgetClass().getSimpleName();
 	}
 
-	public Map<String, IAttribute> getAttributes() {
+	public Map<String, IAttributeDefinition> getAttributes() {
 		if (attributes == null) {
 			ClassProperties<? extends Widget> properties = SwtHandling.WIDGET_PROPERTIES
 					.getProperties(getSwtWidgetClass());
-			attributes = new HashMap<String, IAttribute>();
+			attributes = new HashMap<String, IAttributeDefinition>();
 			for (Property property : properties.getProperties().values()) {
 				WidgetAttribute attribute = new WidgetAttribute(property);
 				attributes.put(attribute.getName(), attribute);
 			}
-			attributes.put("style", new Attribute("style", new StyleType(SwtHandling.SWT)));
+			attributes.put("style", new AttributeDefinition("style", new StyleType(SwtHandling.SWT)));
 		}
 		return attributes;
 	}
@@ -54,13 +54,13 @@ public class WidgetTag implements ITag {
 			try {
 				this.swtWidgetClass = (Class<Widget>) Class.forName(className);
 			} catch (ClassNotFoundException e) {
-				throw new MetaDataException(e);
+				throw new DefinitionException(e);
 			}
 		}
 		return swtWidgetClass;
 	}
 
-	public int compareTo(ITag o) {
+	public int compareTo(ITagDefinition o) {
 		return this.getName().compareTo(o.getName());
 	}
 }

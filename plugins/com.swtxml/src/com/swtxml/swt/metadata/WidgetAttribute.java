@@ -1,10 +1,10 @@
 package com.swtxml.swt.metadata;
 
-import com.swtxml.metadata.IAttribute;
+import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.util.properties.Property;
 import com.swtxml.util.types.IType;
 
-public class WidgetAttribute implements IAttribute {
+public class WidgetAttribute implements IAttributeDefinition {
 
 	private Property property;
 
@@ -21,7 +21,7 @@ public class WidgetAttribute implements IAttribute {
 		return "SwtTagAttribute[" + property.getName() + "]";
 	}
 
-	public int compareTo(IAttribute o) {
+	public int compareTo(IAttributeDefinition o) {
 		return getName().compareTo(o.getName());
 	}
 

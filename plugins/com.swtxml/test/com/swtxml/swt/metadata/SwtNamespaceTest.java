@@ -10,7 +10,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.swtxml.metadata.IAttribute;
+import com.swtxml.definition.IAttributeDefinition;
 
 public class SwtNamespaceTest {
 
@@ -30,7 +30,7 @@ public class SwtNamespaceTest {
 		assertTrue(swtTagRegistry.getTags().size() > 0);
 		assertTrue(buttonTag.getAttributes().size() > 0);
 
-		IAttribute textAttribute = buttonTag.getAttributes().get("text");
+		IAttributeDefinition textAttribute = buttonTag.getAttributes().get("text");
 		assertEquals("text", textAttribute.getName());
 	}
 

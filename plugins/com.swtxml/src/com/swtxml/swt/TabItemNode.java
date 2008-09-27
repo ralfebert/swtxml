@@ -13,14 +13,14 @@ package com.swtxml.swt;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabItem;
 
+import com.swtxml.definition.ITagDefinition;
 import com.swtxml.magic.MagicTagNodeObjectProxy;
-import com.swtxml.metadata.ITag;
 import com.swtxml.parser.TagLibraryException;
 import com.swtxml.tag.TagInformation;
 
 public class TabItemNode extends MagicTagNodeObjectProxy {
 
-	public TabItemNode(ITag tag, TagInformation tagInformation, Object obj) {
+	public TabItemNode(ITagDefinition tag, TagInformation tagInformation, Object obj) {
 		super(tag, tagInformation, obj);
 	}
 

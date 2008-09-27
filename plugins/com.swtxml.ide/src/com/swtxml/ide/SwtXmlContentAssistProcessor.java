@@ -26,9 +26,9 @@ import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 import org.w3c.dom.Node;
 
-import com.swtxml.metadata.IAttribute;
-import com.swtxml.metadata.INamespace;
-import com.swtxml.metadata.ITag;
+import com.swtxml.definition.IAttributeDefinition;
+import com.swtxml.definition.INamespaceDefinition;
+import com.swtxml.definition.ITagDefinition;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.util.adapter.IAdaptable;
@@ -44,7 +44,7 @@ import com.swtxml.util.types.IType;
 public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
 	// TODO: this should know nothing about swt
-	private INamespace registry = new SwtNamespace();
+	private INamespaceDefinition registry = new SwtNamespace();
 
 	public SwtXmlContentAssistProcessor() {
 		super();
@@ -54,18 +54,18 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 	@Override
 	protected void addTagNameProposals(final ContentAssistRequest contentAssistRequest,
 			int childPosition) {
-		Collection<ITag> tags = (Collection<ITag>) registry.getTags().values();
-		List<ITag> matchingTags = new ArrayList<ITag>(CollectionUtils.select(tags,
-				new IPredicate<ITag>() {
+		Collection<ITagDefinition> tags = (Collection<ITagDefinition>) registry.getTags().values();
+		List<ITagDefinition> matchingTags = new ArrayList<ITagDefinition>(CollectionUtils.select(tags,
+				new IPredicate<ITagDefinition>() {
 
-					public boolean match(ITag tag) {
+					public boolean match(ITagDefinition tag) {
 						return tag.getName().toLowerCase().startsWith(
 								contentAssistRequest.getMatchString().toLowerCase());
 					}
 
 				}));
 		Collections.sort(matchingTags);
-		for (ITag tag : matchingTags) {
+		for (ITagDefinition tag : matchingTags) {
 			contentAssistRequest.addProposal(new CompletionProposal(tag.getName() + "/>",
 					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
 							.getReplacementLength(), 5));
@@ -76,22 +76,22 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 	@SuppressWarnings("unchecked")
 	@Override
 	protected void addAttributeNameProposals(final ContentAssistRequest contentAssistRequest) {
-		ITag tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
+		ITagDefinition tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
 		if (tag == null) {
 			return;
 		}
 
-		List<IAttribute> matchingAttributes = new ArrayList<IAttribute>(CollectionUtils.select(tag
-				.getAttributes().values(), new IPredicate<IAttribute>() {
+		List<IAttributeDefinition> matchingAttributes = new ArrayList<IAttributeDefinition>(CollectionUtils.select(tag
+				.getAttributes().values(), new IPredicate<IAttributeDefinition>() {
 
-			public boolean match(IAttribute attr) {
+			public boolean match(IAttributeDefinition attr) {
 				return attr.getName().toLowerCase().startsWith(
 						contentAssistRequest.getMatchString().toLowerCase());
 			}
 
 		}));
 		Collections.sort(matchingAttributes);
-		for (IAttribute attr : matchingAttributes) {
+		for (IAttributeDefinition attr : matchingAttributes) {
 			contentAssistRequest.addProposal(new CompletionProposal(attr.getName() + "=\"\"",
 					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
 							.getReplacementLength(), attr.getName().length() + 2));
@@ -101,7 +101,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
 	@Override
 	protected void addAttributeValueProposals(final ContentAssistRequest contentAssistRequest) {
-		ITag tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
+		ITagDefinition tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
 		if (tag == null) {
 			return;
 		}
@@ -130,7 +130,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		}
 
 		String attributeName = open.getText(nameRegion);
-		IAttribute attribute = tag.getAttributes().get(attributeName);
+		IAttributeDefinition attribute = tag.getAttributes().get(attributeName);
 		if (attribute == null) {
 			return;
 		}

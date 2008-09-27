@@ -5,11 +5,11 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.swtxml.metadata.INamespace;
-import com.swtxml.metadata.MetaDataException;
+import com.swtxml.definition.INamespaceDefinition;
+import com.swtxml.definition.DefinitionException;
 import com.swtxml.util.lang.IOUtils;
 
-public class SwtNamespace implements INamespace {
+public class SwtNamespace implements INamespaceDefinition {
 
 	private Map<String, WidgetTag> tagsByName = new HashMap<String, WidgetTag>();
 
@@ -20,7 +20,7 @@ public class SwtNamespace implements INamespace {
 			WidgetTag tag = new WidgetTag(className);
 			WidgetTag existingTag = tagsByName.get(tag.getName());
 			if (existingTag != null) {
-				throw new MetaDataException("Tag naming conflict between " + tag + " and "
+				throw new DefinitionException("Tag naming conflict between " + tag + " and "
 						+ existingTag + "!");
 			}
 			tagsByName.put(tag.getName(), tag);

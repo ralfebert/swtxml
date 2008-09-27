@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.metadata.ITag;
+import com.swtxml.definition.ITagDefinition;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
@@ -22,9 +22,9 @@ import com.swtxml.tag.TagNode;
 public class MagicTagNodeObjectProxy extends TagNode {
 
 	private Object obj;
-	private ITag tag;
+	private ITagDefinition tag;
 
-	public MagicTagNodeObjectProxy(ITag tag, TagInformation tagInformation, Object obj) {
+	public MagicTagNodeObjectProxy(ITagDefinition tag, TagInformation tagInformation, Object obj) {
 		super(tagInformation);
 		this.tag = tag;
 		this.obj = obj;

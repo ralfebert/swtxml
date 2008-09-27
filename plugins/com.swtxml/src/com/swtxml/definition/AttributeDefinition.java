@@ -1,13 +1,13 @@
-package com.swtxml.metadata;
+package com.swtxml.definition;
 
 import com.swtxml.util.types.IType;
 
-public class Attribute implements IAttribute {
+public class AttributeDefinition implements IAttributeDefinition {
 
 	private String name;
 	private IType<?> type;
 
-	public Attribute(String name, IType<?> type) {
+	public AttributeDefinition(String name, IType<?> type) {
 		super();
 		this.name = name;
 		this.type = type;
@@ -29,7 +29,7 @@ public class Attribute implements IAttribute {
 		this.type = type;
 	}
 
-	public int compareTo(IAttribute o) {
+	public int compareTo(IAttributeDefinition o) {
 		return this.name.compareTo(o.getName());
 	}
 
