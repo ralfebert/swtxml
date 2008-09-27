@@ -33,8 +33,8 @@ public class PropertyRegistryTest {
 				typeForTestVO);
 		propertyRegistry.add(new PropertyMatcher(), neverUsedType);
 
-		expect(intType.convert(test, "5")).andReturn(5);
-		expect(typeForTestVO.convert(test, "yaya")).andReturn("yaya2");
+		expect(intType.convert("5")).andReturn(5);
+		expect(typeForTestVO.convert("yaya")).andReturn("yaya2");
 
 		replay(intType, typeForTestVO, neverUsedType);
 

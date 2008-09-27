@@ -7,7 +7,7 @@ import com.swtxml.util.types.IType;
 
 public class PointType implements IType<Point> {
 
-	public Point convert(Object obj, String value) {
+	public Point convert(String value) {
 		String[] sizes = StringUtils.split(value, ",x");
 		return new Point(Integer.parseInt(sizes[0]), Integer.parseInt(sizes[1]));
 	}

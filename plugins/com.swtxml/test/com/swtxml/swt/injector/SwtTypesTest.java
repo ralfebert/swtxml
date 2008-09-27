@@ -43,17 +43,17 @@ public class SwtTypesTest {
 	public void testColor() {
 		IType<Color> colorType = new ColorType();
 
-		Color color = colorType.convert(null, "#010203");
+		Color color = colorType.convert("#010203");
 		assertEquals(1, color.getRed());
 		assertEquals(2, color.getGreen());
 		assertEquals(3, color.getBlue());
 
-		color = colorType.convert(null, "#FFabCD");
+		color = colorType.convert("#FFabCD");
 		assertEquals(255, color.getRed());
 		assertEquals(171, color.getGreen());
 		assertEquals(205, color.getBlue());
 
-		color = colorType.convert(null, "black");
+		color = colorType.convert("black");
 		assertEquals(0, color.getRed());
 		assertEquals(0, color.getGreen());
 		assertEquals(0, color.getBlue());
@@ -62,8 +62,7 @@ public class SwtTypesTest {
 	@Test
 	public void testGridLayout() {
 		LayoutType layoutType = new LayoutType(layoutInjector);
-		GridLayout layout = (GridLayout) layoutType.convert(null,
-				"layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:11;");
+		GridLayout layout = (GridLayout) layoutType.convert("layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:11;");
 		assertEquals(2, layout.numColumns);
 		assertEquals(10, layout.horizontalSpacing);
 		assertEquals(11, layout.verticalSpacing);
@@ -72,8 +71,7 @@ public class SwtTypesTest {
 	@Test
 	public void testRowLayout() {
 		LayoutType layoutType = new LayoutType(layoutInjector);
-		RowLayout layout = (RowLayout) layoutType.convert(null,
-				"layout:row;type:vertical;spacing:5;");
+		RowLayout layout = (RowLayout) layoutType.convert("layout:row;type:vertical;spacing:5;");
 		assertEquals(SWT.VERTICAL, layout.type);
 		assertEquals(5, layout.spacing);
 	}
@@ -123,13 +121,13 @@ public class SwtTypesTest {
 
 	@Test
 	public void testPointType() {
-		assertEquals(new Point(12, 141), new PointType().convert(null, "12x141"));
+		assertEquals(new Point(12, 141), new PointType().convert("12x141"));
 	}
 
 	@Test
 	public void testStyleType() {
 		StyleType type = new StyleType(SwtHandling.SWT);
-		assertEquals(SWT.BORDER | SWT.COLOR_RED, type.convert(null, "border|color_red"));
+		assertEquals(SWT.BORDER | SWT.COLOR_RED, type.convert("border|color_red"));
 		assertEquals("border|BORDER_DASH§", type.getProposals(new Match("border|border_da§xxxx"))
 				.get(0).toString());
 	}

@@ -18,7 +18,7 @@ public class Property {
 	}
 
 	public void set(Object obj, String value) {
-		property.set(obj, type.convert(obj, value));
+		property.set(obj, type.convert(value));
 	}
 
 	public String getName() {

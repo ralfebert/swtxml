@@ -25,7 +25,7 @@ public class LayoutDataType implements IType<Object> {
 		this.layoutProperties = layoutProperties;
 	}
 
-	public Object convert(Object obj, String value) {
+	public Object convert(String value) {
 		Layout layout = Context.adaptTo(Layout.class);
 		if (layout == null) {
 			throw new ParseException("LayoutData can only be used in a Layout context");

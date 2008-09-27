@@ -25,7 +25,7 @@ public class ColorType implements IType<Color>, IContentAssistable {
 		}
 	}
 
-	public Color convert(Object obj, String value) {
+	public Color convert(String value) {
 		if (!value.startsWith("#") || value.length() != 7) {
 			Integer constant = SWT_COLORS.get(value.toUpperCase().trim());
 			if (constant != null) {

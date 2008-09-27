@@ -37,7 +37,7 @@ public class LayoutType implements IType<Object>, IContentAssistable {
 		this.layoutProperties = layoutProperties;
 	}
 
-	public Object convert(Object obj, String value) {
+	public Object convert(String value) {
 		Map<String, String> layoutConstraints = KeyValueParser.parse(value);
 
 		String layoutName = layoutConstraints.remove(LAYOUT_KEY);

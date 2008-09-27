@@ -15,7 +15,7 @@ public class StyleType implements IType<Integer>, IContentAssistable {
 		this.constants = constants;
 	}
 
-	public Integer convert(Object obj, String value) {
+	public Integer convert(String value) {
 		return constants.getIntValue(value);
 	}
 
