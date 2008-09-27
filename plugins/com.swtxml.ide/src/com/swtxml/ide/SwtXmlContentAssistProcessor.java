@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.text.contentassist.CompletionProposal;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegionList;
@@ -23,13 +24,19 @@ import org.eclipse.wst.xml.core.internal.provisional.document.IDOMNode;
 import org.eclipse.wst.xml.core.internal.regions.DOMRegionContext;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
+import org.w3c.dom.Node;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Collections2;
 import com.swtxml.metadata.IAttribute;
 import com.swtxml.metadata.INamespace;
 import com.swtxml.metadata.ITag;
+import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.metadata.SwtNamespace;
+import com.swtxml.swt.types.LayoutType;
+import com.swtxml.util.adapter.IAdaptable;
+import com.swtxml.util.context.Context;
+import com.swtxml.util.parser.Strictness;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IContentAssistable;
 import com.swtxml.util.types.IType;
@@ -37,7 +44,7 @@ import com.swtxml.util.types.IType;
 @SuppressWarnings("restriction")
 public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
-	// TODO: this should knows nothing about swt
+	// TODO: this should know nothing about swt
 	private INamespace registry = new SwtNamespace();
 
 	public SwtXmlContentAssistProcessor() {
@@ -47,7 +54,6 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 	@Override
 	protected void addTagNameProposals(final ContentAssistRequest contentAssistRequest,
 			int childPosition) {
-		System.out.println(contentAssistRequest);
 		Collection<? extends ITag> tags = registry.getTags().values();
 		List<ITag> matchingTags = new ArrayList<ITag>(Collections2.filter(tags,
 				new Predicate<ITag>() {
@@ -128,6 +134,26 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			return;
 		}
 
+		// TODO: refactor this out
+		if ("layoutData".equals(attributeName)) {
+			Context.addAdapter(new IAdaptable() {
+
+				public <A> A adaptTo(Class<A> adapterClass) {
+					if (adapterClass == Layout.class) {
+						Node layoutNode = contentAssistRequest.getNode().getParentNode()
+								.getAttributes().getNamedItem("layout");
+						if (layoutNode != null) {
+							// TODO: static layout properties
+							return (A) new LayoutType(SwtHandling.createLayoutProperties(null))
+									.convert(layoutNode.getNodeValue(), Strictness.LAX);
+						}
+					}
+					return null;
+				}
+
+			});
+		}
+
 		IType<?> type = attribute.getType();
 		if (type instanceof IContentAssistable) {
 
@@ -138,10 +164,12 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			for (Match proposal : proposals) {
 				CompletionProposal newProposal = new CompletionProposal(proposal
 						.getReplacementText(), contentAssistRequest.getReplacementBeginPosition(),
-						contentAssistRequest.getReplacementLength(), proposal.getReplacementCursorPos(), null,
-						proposal.getText(), null, null);
+						contentAssistRequest.getReplacementLength(), proposal
+								.getReplacementCursorPos(), null, proposal.getText(), null, null);
 				contentAssistRequest.addProposal(newProposal);
 			}
 		}
+
+		Context.clear();
 	}
 }

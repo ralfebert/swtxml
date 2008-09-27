@@ -1,5 +1,7 @@
 package com.swtxml.swt.types;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.swt.layout.FormData;
@@ -14,10 +16,12 @@ import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.properties.PropertyRegistry;
+import com.swtxml.util.proposals.Match;
 import com.swtxml.util.reflector.ReflectorException;
+import com.swtxml.util.types.IContentAssistable;
 import com.swtxml.util.types.IType;
 
-public class LayoutDataType implements IType<Object> {
+public class LayoutDataType implements IType<Object>, IContentAssistable {
 
 	private PropertyRegistry layoutProperties;
 
@@ -69,6 +73,13 @@ public class LayoutDataType implements IType<Object> {
 			return FormData.class;
 		}
 		return null;
+	}
+
+	public List<Match> getProposals(Match match) {
+		Layout layout = Context.adaptTo(Layout.class);
+		// if (layout==null)
+		// return
+		return Collections.emptyList();
 	}
 
 }

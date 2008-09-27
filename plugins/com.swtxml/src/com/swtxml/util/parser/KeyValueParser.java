@@ -11,16 +11,16 @@ public class KeyValueParser {
 	public final static Splitter KEY_VALUE_SPLITTER = new Splitter(":");
 
 	public static Map<String, String> parse(String value) {
-		return parse(value, true);
+		return parse(value, Strictness.STRICT);
 	}
 
-	public static Map<String, String> parse(String value, boolean strict) {
+	public static Map<String, String> parse(String value, Strictness strictness) {
 		Map<String, String> values = new HashMap<String, String>();
 		for (String valuePair : VALUE_SPLITTER.split(value)) {
 			if (StringUtils.isNotBlank(valuePair)) {
 				String[] keyValue = KEY_VALUE_SPLITTER.split(valuePair);
 				if (keyValue.length != 2) {
-					if (strict) {
+					if (strictness == Strictness.STRICT) {
 						throw new ParseException("Invalid format: \"" + valuePair + "\" ");
 					} else {
 						if (keyValue.length == 1) {

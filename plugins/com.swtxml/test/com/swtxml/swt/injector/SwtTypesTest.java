@@ -13,6 +13,7 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -25,6 +26,8 @@ import com.swtxml.swt.types.LayoutDataType;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.swt.types.PointType;
 import com.swtxml.swt.types.StyleType;
+import com.swtxml.util.adapter.MockAdapter;
+import com.swtxml.util.context.Context;
 import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IType;
@@ -37,6 +40,11 @@ public class SwtTypesTest {
 	public void setup() {
 		IIdResolver idResolver = createMock(IIdResolver.class);
 		layoutInjector = SwtHandling.createLayoutProperties(idResolver);
+	}
+
+	@After
+	public void clearContext() {
+		Context.clear();
 	}
 
 	@Test
@@ -62,7 +70,8 @@ public class SwtTypesTest {
 	@Test
 	public void testGridLayout() {
 		LayoutType layoutType = new LayoutType(layoutInjector);
-		GridLayout layout = (GridLayout) layoutType.convert("layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:11;");
+		GridLayout layout = (GridLayout) layoutType
+				.convert("layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:11;");
 		assertEquals(2, layout.numColumns);
 		assertEquals(10, layout.horizontalSpacing);
 		assertEquals(11, layout.verticalSpacing);
@@ -114,9 +123,17 @@ public class SwtTypesTest {
 
 	@Test
 	public void testLayoutDataSetter() {
-		GridData data = (GridData) new LayoutDataType(layoutInjector).createLayoutData(
-				new GridLayout(), "widthHint:120");
+		Context.addAdapter(new MockAdapter(new GridLayout()));
+		LayoutDataType layoutDataType = new LayoutDataType(layoutInjector);
+		GridData data = (GridData) layoutDataType.convert("widthHint:120");
 		assertEquals(120, data.widthHint);
+	}
+
+	@Test
+	public void testLayoutDataContentAssist() {
+		Context.addAdapter(new MockAdapter(new GridLayout()));
+		LayoutDataType type = new LayoutDataType(layoutInjector);
+		assertEquals("widthHint:§;", type.getProposals(new Match("wi§")).get(0).toString());
 	}
 
 	@Test

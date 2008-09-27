@@ -17,6 +17,7 @@ import com.google.common.collect.Iterables;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.parser.Splitter;
+import com.swtxml.util.parser.Strictness;
 import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.IInjector;
 import com.swtxml.util.properties.Property;
@@ -26,7 +27,7 @@ import com.swtxml.util.reflector.ReflectorException;
 import com.swtxml.util.types.IContentAssistable;
 import com.swtxml.util.types.IType;
 
-public class LayoutType implements IType<Object>, IContentAssistable {
+public class LayoutType implements IType<Layout>, IContentAssistable {
 
 	private static final String LAYOUT_KEY = "layout";
 	private final static String SWT_LAYOUT_PACKAGE = RowLayout.class.getPackage().getName();
@@ -37,8 +38,12 @@ public class LayoutType implements IType<Object>, IContentAssistable {
 		this.layoutProperties = layoutProperties;
 	}
 
-	public Object convert(String value) {
-		Map<String, String> layoutConstraints = KeyValueParser.parse(value);
+	public Layout convert(String value) {
+		return convert(value, Strictness.STRICT);
+	}
+
+	public Layout convert(String value, Strictness strictness) {
+		Map<String, String> layoutConstraints = KeyValueParser.parse(value, strictness);
 
 		String layoutName = layoutConstraints.remove(LAYOUT_KEY);
 		if (layoutName == null) {
@@ -72,7 +77,8 @@ public class LayoutType implements IType<Object>, IContentAssistable {
 			match.moveCursor(-1);
 		}
 
-		Map<String, String> layoutConstraints = KeyValueParser.parse(match.getText(), false);
+		Map<String, String> layoutConstraints = KeyValueParser.parse(match.getText(),
+				Strictness.LAX);
 		String layoutName = layoutConstraints.get("layout");
 		match = match.restrict(KeyValueParser.VALUE_SPLITTER);
 
