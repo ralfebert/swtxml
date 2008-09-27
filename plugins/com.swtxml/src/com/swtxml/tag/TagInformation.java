@@ -47,20 +47,6 @@ public class TagInformation implements IAdaptable {
 		this.level = level;
 		this.attributes = attributes;
 		this.adapterObjects = new ArrayList<Object>();
-	}
-
-	@Deprecated
-	public TagInformation(TagInformation tagInfo) {
-		super();
-		this.document = tagInfo.document;
-		this.tagDefinition = tagInfo.tagDefinition;
-		this.tagLibrary = tagInfo.tagLibrary;
-		this.parent = tagInfo.parent;
-		this.tagName = tagInfo.tagName;
-		this.locationInfo = tagInfo.locationInfo;
-		this.level = tagInfo.level;
-		this.attributes = tagInfo.attributes;
-		this.adapterObjects = tagInfo.adapterObjects;
 		this.getDocument().register(this);
 		if (this.parent != null) {
 			this.parent.children.add(this);

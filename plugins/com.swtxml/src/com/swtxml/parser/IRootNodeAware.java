@@ -11,10 +11,9 @@
 package com.swtxml.parser;
 
 import com.swtxml.tag.TagInformation;
-import com.swtxml.tag.TagNode;
 
 public interface IRootNodeAware {
 
-	TagNode rootTag(TagInformation tagInformation);
+	void rootTag(TagInformation tagInformation);
 
 }

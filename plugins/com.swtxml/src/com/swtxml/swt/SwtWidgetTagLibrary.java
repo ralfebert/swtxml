@@ -14,17 +14,15 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.magic.MagicTagNodeObjectProxy;
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
 import com.swtxml.swt.metadata.WidgetBuilder;
 import com.swtxml.swt.metadata.WidgetTag;
 import com.swtxml.tag.TagInformation;
-import com.swtxml.tag.TagNode;
 
 public class SwtWidgetTagLibrary implements ITagLibrary {
 
-	public TagNode tag(TagInformation tagInfo) {
+	public TagInformation tag(TagInformation tagInfo) {
 
 		WidgetTag tag = (WidgetTag) tagInfo.getTagDefinition();
 		WidgetBuilder builder = new WidgetBuilder(tag);
@@ -34,15 +32,11 @@ public class SwtWidgetTagLibrary implements ITagLibrary {
 			Composite parent = (Composite) tagInfo.parentRecursiveAdaptTo(builder.getParentClass());
 			Widget widget = builder.build(parent, style == null ? SWT.NONE : style);
 			tagInfo.makeAdaptable(widget);
-			return new MagicTagNodeObjectProxy(tagInfo, widget);
+			return tagInfo;
 		} catch (Exception e) {
 			throw new TagLibraryException(tagInfo, e);
 		}
 
-	}
-
-	public void foreignAttribute(TagNode node, String name, String value) {
-		// nothing to do
 	}
 
 }

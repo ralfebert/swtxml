@@ -12,14 +12,12 @@ package com.swtxml.swt;
 
 import org.eclipse.swt.widgets.Composite;
 
-import com.swtxml.magic.MagicTagNodeObjectProxy;
 import com.swtxml.parser.IControllerObjectProvider;
 import com.swtxml.parser.IRootNodeAware;
 import com.swtxml.parser.TagLibraryException;
 import com.swtxml.parser.TagLibraryXmlParser;
 import com.swtxml.swt.processors.SetAttributes;
 import com.swtxml.tag.TagInformation;
-import com.swtxml.tag.TagNode;
 
 public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNodeAware,
 		IControllerObjectProvider {
@@ -42,18 +40,14 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNod
 		return controller;
 	}
 
-	public TagNode rootTag(TagInformation tagInformation) {
+	public void rootTag(TagInformation tagInformation) {
 		if (!tagInformation.getTagName().equals(Composite.class.getSimpleName())) {
 			throw new TagLibraryException(tagInformation, "Invalid root tag "
 					+ tagInformation.getTagName() + ", expected <"
 					+ Composite.class.getSimpleName() + ">");
 		}
 
-		// TODO: null as tag is strange here, think about root nodes in context
-		// of metadata
-		MagicTagNodeObjectProxy node = new MagicTagNodeObjectProxy(tagInformation, parent);
-		node.makeAdaptable(parent);
-		return node;
+		tagInformation.makeAdaptable(parent);
 	}
 
 	@Override
