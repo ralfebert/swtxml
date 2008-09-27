@@ -1,10 +1,15 @@
 package com.swtxml.util.proposals;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Collections2;
 import com.swtxml.util.parser.Splitter;
 
 public class Match {
@@ -117,9 +122,8 @@ public class Match {
 		return text;
 	}
 
-	public List<Match> propose(String... proposals) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Match> propose(String... values) {
+		return propose(Arrays.asList(values));
 	}
 
 	private void restrictR(Splitter splitter) {
@@ -138,9 +142,29 @@ public class Match {
 		}
 	}
 
-	public List<Match> propose(Collection<String> constants) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Match> propose(Collection<String> values) {
+		final String textBeforeCursor = getTextBeforeCursor();
+		List<String> filteredValues = new ArrayList<String>(Collections2.filter(values,
+				new Predicate<String>() {
+
+					public boolean apply(String value) {
+						return value.toLowerCase().startsWith(textBeforeCursor.toLowerCase());
+					}
+
+				}));
+		Collections.sort(filteredValues);
+		ArrayList<Match> resultMatches = new ArrayList<Match>();
+		for (String value : filteredValues) {
+			resultMatches.add(this.replace(value));
+		}
+		return resultMatches;
+	}
+
+	public String getTextBeforeCursor() {
+		if (cursorPos <= start) {
+			return "";
+		}
+		return text.substring(start, cursorPos);
 	}
 
 	public void dump() {

@@ -2,6 +2,8 @@ package com.swtxml.util.proposals;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -67,5 +69,38 @@ public class ProposalsTest {
 		m = m.replace("xxx");
 		assertEquals("xxx", m.getText());
 		assertEquals("123,456.xxx§,012", m.toString());
+	}
+
+	@Test
+	public void getTextBeforeCursor() {
+		assertEquals("7", new Match("123,456.7§89,012").restrict(new Splitter(",."))
+				.getTextBeforeCursor());
+		assertEquals("", new Match("123,456.§789,012").restrict(new Splitter(",."))
+				.getTextBeforeCursor());
+	}
+
+	@Test
+	public void testProposeNoResults() {
+		m = new Match("123,456.7§89,012").restrict(new Splitter(",."));
+		List<Match> proposals = m.propose("red", "green", "blue");
+		assertEquals(0, proposals.size());
+	}
+
+	@Test
+	public void testProposeFiltered() {
+		m = new Match("123,456.r§89,012").restrict(new Splitter(",."));
+		List<Match> proposals = m.propose("red", "green", "blue");
+		assertEquals(1, proposals.size());
+		assertEquals("red", proposals.get(0).getText());
+		assertEquals("123,456.red§,012", proposals.get(0).toString());
+	}
+
+	@Test
+	public void testProposeAll() {
+		m = new Match("123,456.§89,012").restrict(new Splitter(",."));
+		List<Match> proposals = m.propose("red", "green", "blue");
+		assertEquals(3, proposals.size());
+		assertEquals("blue", proposals.get(0).getText());
+		assertEquals("123,456.blue§,012", proposals.get(0).toString());
 	}
 }
