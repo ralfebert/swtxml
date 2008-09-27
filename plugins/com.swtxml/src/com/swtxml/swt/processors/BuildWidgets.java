@@ -5,19 +5,31 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.parser.ITagProcessor;
+import com.swtxml.parser.TagLibraryException;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.metadata.WidgetBuilder;
 import com.swtxml.swt.metadata.WidgetTag;
 import com.swtxml.tag.TagInformation;
 
-public class BuildWidget implements ITagProcessor {
+public class BuildWidgets implements ITagProcessor {
+
+	private Composite parent;
+
+	public BuildWidgets(Composite parent) {
+		this.parent = parent;
+	}
 
 	public void process(TagInformation tag) {
 		if (!(tag.getTagDefinition() instanceof WidgetTag)) {
 			return;
 		}
-		// TODO: clarify root node processing
-		if (tag.getParent() == null) {
+
+		if (tag.isRoot()) {
+			if (!tag.getTagName().equals(Composite.class.getSimpleName())) {
+				throw new TagLibraryException(tag, "Invalid root tag " + tag.getTagName()
+						+ ", expected <" + Composite.class.getSimpleName() + ">");
+			}
+			tag.makeAdaptable(parent);
 			return;
 		}
 

@@ -126,4 +126,8 @@ public class TagInformation implements IAdaptable {
 		return children;
 	}
 
+	public boolean isRoot() {
+		return getParent() == null;
+	}
+
 }

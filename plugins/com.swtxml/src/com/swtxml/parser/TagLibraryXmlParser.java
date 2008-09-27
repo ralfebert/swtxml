@@ -13,9 +13,6 @@ package com.swtxml.parser;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -30,22 +27,13 @@ import com.swtxml.util.context.Context;
 public class TagLibraryXmlParser {
 
 	private Document document;
-	private List<ITagProcessor> processors;
+	private ITagProcessor[] processors;
 	private INamespaceResolver namespaceResolver;
 
 	public TagLibraryXmlParser(INamespaceResolver namespaceResolver, ITagProcessor... processors) {
 		super();
 		this.namespaceResolver = namespaceResolver;
-		this.processors = new ArrayList<ITagProcessor>(Arrays.asList(processors));
-		// TODO: remove
-		this.processors.add(1, new ITagProcessor() {
-			public void process(TagInformation tag) {
-				if ((TagLibraryXmlParser.this instanceof IRootNodeAware) && tag.getParent() == null) {
-					((IRootNodeAware) TagLibraryXmlParser.this).rootTag(tag);
-				}
-			}
-		});
-
+		this.processors = processors;
 	}
 
 	protected <T> T parse(Class<?> clazz, Class<T> rootNodeClass) {

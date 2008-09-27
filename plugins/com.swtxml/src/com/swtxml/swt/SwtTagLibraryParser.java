@@ -13,21 +13,17 @@ package com.swtxml.swt;
 import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.parser.IControllerObjectProvider;
-import com.swtxml.parser.IRootNodeAware;
-import com.swtxml.parser.TagLibraryException;
 import com.swtxml.parser.TagLibraryXmlParser;
-import com.swtxml.swt.processors.BuildWidget;
+import com.swtxml.swt.processors.BuildWidgets;
 import com.swtxml.swt.processors.SetAttributes;
-import com.swtxml.tag.TagInformation;
 
-public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNodeAware,
-		IControllerObjectProvider {
+public class SwtTagLibraryParser extends TagLibraryXmlParser implements IControllerObjectProvider {
 
 	private Composite parent;
 	private Object controller;
 
 	public SwtTagLibraryParser(Composite parent, Object controller) {
-		super(new CompatibilityNamespaceResolver(), new BuildWidget(), new SetAttributes());
+		super(new CompatibilityNamespaceResolver(), new BuildWidgets(parent), new SetAttributes());
 		this.parent = parent;
 		this.controller = controller;
 	}
@@ -39,16 +35,6 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNod
 
 	public Object getController() {
 		return controller;
-	}
-
-	public void rootTag(TagInformation tagInformation) {
-		if (!tagInformation.getTagName().equals(Composite.class.getSimpleName())) {
-			throw new TagLibraryException(tagInformation, "Invalid root tag "
-					+ tagInformation.getTagName() + ", expected <"
-					+ Composite.class.getSimpleName() + ">");
-		}
-
-		tagInformation.makeAdaptable(parent);
 	}
 
 	@Override
