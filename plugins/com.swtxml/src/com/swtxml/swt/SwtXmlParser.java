@@ -25,11 +25,11 @@ import com.swtxml.swt.processors.SetAttributes;
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.tag.Document;
 
-public class SwtTagLibraryParser extends TagLibraryXmlParser {
+public class SwtXmlParser extends TagLibraryXmlParser {
 
 	private Object controller;
 
-	public SwtTagLibraryParser(Composite parent, Object controller) {
+	public SwtXmlParser(Composite parent, Object controller) {
 		super(getSwtNamespaceResolver(), new BuildWidgets(parent), new SetAttributes());
 		this.controller = controller;
 	}

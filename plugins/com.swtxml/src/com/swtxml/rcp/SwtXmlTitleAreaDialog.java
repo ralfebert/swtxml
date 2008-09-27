@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import com.swtxml.swt.SwtTagLibraryParser;
+import com.swtxml.swt.SwtXmlParser;
 
 public class SwtXmlTitleAreaDialog extends TitleAreaDialog {
 
@@ -37,7 +37,7 @@ public class SwtXmlTitleAreaDialog extends TitleAreaDialog {
 		Composite composite = (Composite) super.createDialogArea(parent);
 		Composite xmlComposite = new Composite(composite, SWT.NONE);
 		xmlComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		SwtTagLibraryParser parser = new SwtTagLibraryParser(xmlComposite, this);
+		SwtXmlParser parser = new SwtXmlParser(xmlComposite, this);
 		parser.parse();
 		return composite;
 

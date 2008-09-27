@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Shell;
 
-import com.swtxml.swt.SwtTagLibraryParser;
+import com.swtxml.swt.SwtXmlParser;
 
 public abstract class SwtXmlWindow extends Window {
 
@@ -29,7 +29,7 @@ public abstract class SwtXmlWindow extends Window {
 	@Override
 	protected Control createContents(final Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
-		SwtTagLibraryParser parser = new SwtTagLibraryParser(composite, this);
+		SwtXmlParser parser = new SwtXmlParser(composite, this);
 		parser.parse();
 		return composite;
 	}

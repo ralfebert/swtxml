@@ -15,7 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-import com.swtxml.swt.SwtTagLibraryParser;
+import com.swtxml.swt.SwtXmlParser;
 
 public class SwtXmlWizardPage extends WizardPage {
 
@@ -30,7 +30,7 @@ public class SwtXmlWizardPage extends WizardPage {
 	public void createControl(Composite parent) {
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		SwtTagLibraryParser parser = new SwtTagLibraryParser(composite, this);
+		SwtXmlParser parser = new SwtXmlParser(composite, this);
 		parser.parse();
 		setControl(composite);
 	}

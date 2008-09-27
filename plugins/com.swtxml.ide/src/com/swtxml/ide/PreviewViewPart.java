@@ -23,7 +23,7 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.part.ViewPart;
 
-import com.swtxml.swt.SwtTagLibraryParser;
+import com.swtxml.swt.SwtXmlParser;
 
 public class PreviewViewPart extends ViewPart implements ISelectionListener {
 
@@ -57,7 +57,7 @@ public class PreviewViewPart extends ViewPart implements ISelectionListener {
 			if (!hash.equals(lastDocumentHash)) {
 				System.out.println("refreshing preview");
 				lastDocumentHash = hash;
-				new SwtTagLibraryParser(parent, this).parse("xxx", new ByteArrayInputStream(
+				new SwtXmlParser(parent, this).parse("xxx", new ByteArrayInputStream(
 						documentBytes));
 				for (Control c : children) {
 					c.dispose();

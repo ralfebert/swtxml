@@ -15,7 +15,7 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.EditorPart;
 
-import com.swtxml.swt.SwtTagLibraryParser;
+import com.swtxml.swt.SwtXmlParser;
 
 public abstract class SwtXmlEditorPart extends EditorPart {
 
@@ -28,7 +28,7 @@ public abstract class SwtXmlEditorPart extends EditorPart {
 		parent.setLayout(new FillLayout());
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		SwtTagLibraryParser parser = new SwtTagLibraryParser(composite, this);
+		SwtXmlParser parser = new SwtXmlParser(composite, this);
 		parser.parse();
 
 	}

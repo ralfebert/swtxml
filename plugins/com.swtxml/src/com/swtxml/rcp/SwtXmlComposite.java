@@ -12,14 +12,14 @@ package com.swtxml.rcp;
 
 import org.eclipse.swt.widgets.Composite;
 
-import com.swtxml.swt.SwtTagLibraryParser;
+import com.swtxml.swt.SwtXmlParser;
 
 public abstract class SwtXmlComposite extends Composite {
 
 	public SwtXmlComposite(Composite parent, int style) {
 		super(parent, style);
 
-		SwtTagLibraryParser parser = new SwtTagLibraryParser(this, this);
+		SwtXmlParser parser = new SwtXmlParser(this, this);
 		parser.parse();
 	}
 
