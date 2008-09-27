@@ -17,6 +17,7 @@ import com.swtxml.parser.IControllerObjectProvider;
 import com.swtxml.parser.IRootNodeAware;
 import com.swtxml.parser.TagLibraryException;
 import com.swtxml.parser.TagLibraryXmlParser;
+import com.swtxml.swt.processors.SetAttributesProcessor;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
@@ -27,7 +28,7 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNod
 	private Object controller;
 
 	public SwtTagLibraryParser(Composite parent, Object controller) {
-		super(new CompatibilityNamespaceResolver());
+		super(new CompatibilityNamespaceResolver(), new SetAttributesProcessor());
 		this.parent = parent;
 		this.controller = controller;
 	}

@@ -132,6 +132,10 @@ public class TagInformation implements IAdaptable {
 		return attr;
 	}
 
+	public Map<String, String> getAttributes() {
+		return attributes;
+	}
+
 	public TagInformation getParent() {
 		return parent;
 	}
