@@ -21,7 +21,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import com.swtxml.tag.Document;
-import com.swtxml.tag.TagNode;
+import com.swtxml.tag.TagInformation;
 import com.swtxml.util.context.Context;
 
 public class TagLibraryXmlParser {
@@ -54,15 +54,7 @@ public class TagLibraryXmlParser {
 
 			this.document = s.getDocument();
 
-			for (TagNode node : document.getAllNodes()) {
-				// TODO: freeze children list after this
-				TagNode parent = node.getParent();
-				if (parent != null) {
-					parent.getChildren().add(node);
-				}
-			}
-
-			for (TagNode node : document.getAllNodes()) {
+			for (TagInformation node : document.getAllNodes()) {
 				Context.addAdapter(node);
 				Context.addAdapter(document);
 				node.process();

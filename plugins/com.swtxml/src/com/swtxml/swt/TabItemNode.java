@@ -17,7 +17,6 @@ import com.swtxml.magic.MagicTagNodeObjectProxy;
 import com.swtxml.metadata.ITag;
 import com.swtxml.parser.TagLibraryException;
 import com.swtxml.tag.TagInformation;
-import com.swtxml.tag.TagNode;
 
 public class TabItemNode extends MagicTagNodeObjectProxy {
 
@@ -29,7 +28,7 @@ public class TabItemNode extends MagicTagNodeObjectProxy {
 	public void process() {
 		super.process();
 		Control control = null;
-		for (TagNode children : getChildren()) {
+		for (TagInformation children : getChildren()) {
 			Control childNodeControl = children.adaptTo(Control.class);
 			if (childNodeControl != null) {
 				if (control != null) {

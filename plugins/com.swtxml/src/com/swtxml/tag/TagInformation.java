@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.swtxml.tag;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import com.swtxml.parser.ITagLibrary;
@@ -21,13 +23,14 @@ public class TagInformation implements IAdaptable {
 	private final Document document;
 
 	private final ITagLibrary tagLibrary;
-	private final TagNode parent;
+	private final TagInformation parent;
 	private final String tagName;
 	private final String locationInfo;
 	private final int level;
 	protected final Map<String, String> attributes;
+	private List<TagInformation> children = new ArrayList<TagInformation>();
 
-	public TagInformation(Document document, ITagLibrary tagLibrary, TagNode parent,
+	public TagInformation(Document document, ITagLibrary tagLibrary, TagInformation parent,
 			String tagName, String locationInfo, int level, Map<String, String> attributes) {
 		this.document = document;
 		this.tagLibrary = tagLibrary;
@@ -38,6 +41,7 @@ public class TagInformation implements IAdaptable {
 		this.attributes = attributes;
 	}
 
+	@Deprecated
 	public TagInformation(TagInformation tagInfo) {
 		super();
 		this.document = tagInfo.document;
@@ -47,6 +51,10 @@ public class TagInformation implements IAdaptable {
 		this.locationInfo = tagInfo.locationInfo;
 		this.level = tagInfo.level;
 		this.attributes = tagInfo.attributes;
+		this.getDocument().register(this);
+		if (this.parent != null) {
+			this.parent.children.add(this);
+		}
 	}
 
 	public String getLocationInfo() {
@@ -97,12 +105,20 @@ public class TagInformation implements IAdaptable {
 		return attr;
 	}
 
-	public TagNode getParent() {
+	public TagInformation getParent() {
 		return parent;
 	}
 
 	public Document getDocument() {
 		return document;
+	}
+
+	public List<TagInformation> getChildren() {
+		return children;
+	}
+
+	@Deprecated
+	public void process() {
 	}
 
 }

@@ -10,28 +10,15 @@
  *******************************************************************************/
 package com.swtxml.tag;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class TagNode extends TagInformation {
-
-	private List<TagNode> children = new ArrayList<TagNode>();
 
 	public TagNode(TagInformation tagInfo) {
 		super(tagInfo);
-		this.getDocument().register(this);
-	}
-
-	public void process() {
 	}
 
 	@Override
 	public String toString() {
 		return getClass().getSimpleName();
-	}
-
-	public List<TagNode> getChildren() {
-		return children;
 	}
 
 }
