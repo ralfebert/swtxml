@@ -1,18 +1,21 @@
 package com.swtxml.parser;
 
+import static org.easymock.EasyMock.anyObject;
+import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
+import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import org.easymock.EasyMock;
 import org.junit.Test;
 
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.definition.impl.TagDefinition;
 import com.swtxml.tag.TagInformation;
+import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.types.SimpleTypes;
 
 public class XmlParserTest {
@@ -35,7 +38,7 @@ public class XmlParserTest {
 		TagDefinition tag = testNamespace.defineTag("test");
 		tag.defineAttribute("no", new SimpleTypes.StringType());
 
-		INamespaceResolver namespaceResolver = EasyMock.createMock(INamespaceResolver.class);
+		INamespaceResolver namespaceResolver = createMock(INamespaceResolver.class);
 		expect(namespaceResolver.resolveNamespace("test")).andReturn(testNamespace);
 
 		replay(namespaceResolver);
@@ -80,4 +83,21 @@ public class XmlParserTest {
 		}
 	}
 
+	@Test
+	public void testProcessingError() {
+		ITagProcessor tagProcessor = createMock(ITagProcessor.class);
+		tagProcessor.process((TagInformation) anyObject());
+		expectLastCall().andThrow(new ParseException("NO"));
+		replay(tagProcessor);
+
+		INamespaceResolver namespaceResolver = sampleNamespace();
+		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver, tagProcessor);
+		try {
+			parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
+			fail("expected");
+		} catch (XmlParsingException e) {
+			assertTrue(e.getMessage().contains("line 2"));
+			assertTrue(e.getMessage().contains("NO"));
+		}
+	}
 }

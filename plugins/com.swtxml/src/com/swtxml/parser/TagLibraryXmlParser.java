@@ -70,7 +70,11 @@ public class TagLibraryXmlParser {
 			for (TagInformation node : document.getRoot().depthFirst()) {
 				Context.addAdapter(node);
 				Context.addAdapter(document);
-				processor.process(node);
+				try {
+					processor.process(node);
+				} catch (Exception e) {
+					throw new XmlParsingException(node.getLocationInfo() + e.getMessage(), e);
+				}
 				Context.clear();
 			}
 		}
