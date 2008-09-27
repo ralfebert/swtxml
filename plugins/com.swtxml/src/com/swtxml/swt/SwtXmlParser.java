@@ -21,6 +21,7 @@ import com.swtxml.parser.TagLibraryXmlParser;
 import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.processors.BuildWidgets;
+import com.swtxml.swt.processors.CollectIds;
 import com.swtxml.swt.processors.SetAttributes;
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.tag.Document;
@@ -30,7 +31,8 @@ public class SwtXmlParser extends TagLibraryXmlParser {
 	private Object controller;
 
 	public SwtXmlParser(Composite parent, Object controller) {
-		super(createSwtNamespaceResolver(), new BuildWidgets(parent), new SetAttributes());
+		super(createSwtNamespaceResolver(), new CollectIds(), new BuildWidgets(parent),
+				new SetAttributes());
 		this.controller = controller;
 	}
 
