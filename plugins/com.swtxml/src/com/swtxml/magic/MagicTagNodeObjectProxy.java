@@ -37,17 +37,17 @@ public class MagicTagNodeObjectProxy extends TagNode {
 
 	@Override
 	public <T> T adaptTo(Class<T> type) {
-		if (TagNode.class.isAssignableFrom(type)) {
-			return (T) this;
+		if (type.isAssignableFrom(obj.getClass())) {
+			return (T) obj;
+		} else if (type.isAssignableFrom(Layout.class)) {
 			// TODO: again: this is not for object proxies, but for swt widgets
 			// only
-		} else if (type.isAssignableFrom(Layout.class)) {
 			if (!(obj instanceof Control)) {
 				return null;
 			}
 			return (T) ((Control) obj).getParent().getLayout();
 		} else {
-			return (T) ((type.isAssignableFrom(obj.getClass())) ? obj : null);
+			return super.adaptTo(type);
 		}
 	}
 
