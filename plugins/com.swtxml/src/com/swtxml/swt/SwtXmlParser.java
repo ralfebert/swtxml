@@ -25,7 +25,6 @@ import com.swtxml.swt.processors.BuildWidgets;
 import com.swtxml.swt.processors.CollectIds;
 import com.swtxml.swt.processors.SetAttributes;
 import com.swtxml.swt.properties.IIdResolver;
-import com.swtxml.tag.Document;
 import com.swtxml.tag.Tag;
 import com.swtxml.util.context.Context;
 
@@ -47,16 +46,16 @@ public class SwtXmlParser extends TagLibraryXmlParser {
 	}
 
 	public void parse() {
-		final Document document = super.parse(controller.getClass(), "swtxml");
+		final Tag root = super.parse(controller.getClass(), "swtxml");
 
 		ITagProcessor[] processors = new ITagProcessor[] { new BuildWidgets(parent),
 				new SetAttributes() };
 
 		final CollectIds collectIds = new CollectIds();
-		document.getRoot().depthFirst(collectIds);
+		root.depthFirst(collectIds);
 
 		for (final ITagProcessor processor : processors) {
-			for (final Tag tag : document.getRoot().depthFirst()) {
+			for (final Tag tag : root.depthFirst()) {
 				Context.runWith(new Runnable() {
 					public void run() {
 						Context.addAdapter(tag);

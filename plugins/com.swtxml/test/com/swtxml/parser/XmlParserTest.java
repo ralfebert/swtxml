@@ -50,7 +50,7 @@ public class XmlParserTest {
 		INamespaceResolver namespaceResolver = sampleNamespace();
 		CollectNumbers collectNumbers = new CollectNumbers();
 		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver);
-		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml")).getRoot();
+		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
 		root.depthFirst(collectNumbers, collectNumbers);
 		assertEquals("112233445566", collectNumbers.getNumbers());
 	}
@@ -92,7 +92,7 @@ public class XmlParserTest {
 
 		INamespaceResolver namespaceResolver = sampleNamespace();
 		TagLibraryXmlParser parser = new TagLibraryXmlParser(namespaceResolver);
-		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml")).getRoot();
+		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
 		try {
 			root.depthFirst(tagProcessor);
 			fail("expected");

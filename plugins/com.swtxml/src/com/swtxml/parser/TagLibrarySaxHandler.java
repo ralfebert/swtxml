@@ -24,7 +24,6 @@ import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.tag.Document;
 import com.swtxml.tag.Tag;
 import com.swtxml.util.parser.ParseException;
 
@@ -32,12 +31,11 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 
 	private final String xmlFilename;
 	private Locator locator;
-	private final Document document;
+	private Tag root;
 	private final INamespaceResolver namespaceResolver;
 	private final Map<String, INamespaceDefinition> namespaces = new HashMap<String, INamespaceDefinition>();
 
-	TagLibrarySaxHandler(Document document, INamespaceResolver namespaceResolver, String xmlFilename) {
-		this.document = document;
+	TagLibrarySaxHandler(INamespaceResolver namespaceResolver, String xmlFilename) {
 		this.namespaceResolver = namespaceResolver;
 		this.xmlFilename = xmlFilename;
 	}
@@ -55,9 +53,12 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		}
 		Map<String, String> attributeList = processAttributes(namespaceUri, attributes,
 				tagDefinition);
-		Tag tag = new Tag(document, tagDefinition, parserStack.isEmpty() ? null : parserStack
-				.peek(), localName, getLocationInfo(), parserStack.size(), attributeList);
+		Tag tag = new Tag(tagDefinition, parserStack.isEmpty() ? null : parserStack.peek(),
+				localName, getLocationInfo(), parserStack.size(), attributeList);
 
+		if (root == null) {
+			this.root = tag;
+		}
 		parserStack.push(tag);
 	}
 
@@ -112,4 +113,7 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		this.locator = locator;
 	}
 
+	public Tag getRoot() {
+		return root;
+	}
 }

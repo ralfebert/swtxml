@@ -23,10 +23,7 @@ import com.swtxml.util.parser.ParseException;
 
 public class Tag implements IAdaptable {
 
-	private final Document document;
-
 	private ITagDefinition tagDefinition;
-
 	private final Tag parent;
 	private final String tagName;
 	private final String locationInfo;
@@ -35,9 +32,8 @@ public class Tag implements IAdaptable {
 	private final List<Tag> children = new ArrayList<Tag>();
 	private final List<Object> adapterObjects;
 
-	public Tag(Document document, ITagDefinition tagDefinition, Tag parent, String tagName,
-			String locationInfo, int level, Map<String, String> attributes) {
-		this.document = document;
+	public Tag(ITagDefinition tagDefinition, Tag parent, String tagName, String locationInfo,
+			int level, Map<String, String> attributes) {
 		this.tagDefinition = tagDefinition;
 		this.parent = parent;
 		this.tagName = tagName;
@@ -45,7 +41,6 @@ public class Tag implements IAdaptable {
 		this.level = level;
 		this.attributes = attributes;
 		this.adapterObjects = new ArrayList<Object>();
-		this.getDocument().register(this);
 		if (this.parent != null) {
 			this.parent.children.add(this);
 		}
@@ -114,10 +109,6 @@ public class Tag implements IAdaptable {
 
 	public Tag getParent() {
 		return parent;
-	}
-
-	public Document getDocument() {
-		return document;
 	}
 
 	public List<Tag> getChildren() {

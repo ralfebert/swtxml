@@ -19,7 +19,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import com.swtxml.definition.INamespaceResolver;
-import com.swtxml.tag.Document;
+import com.swtxml.tag.Tag;
 
 public class TagLibraryXmlParser {
 
@@ -30,11 +30,11 @@ public class TagLibraryXmlParser {
 		this.namespaceResolver = namespaceResolver;
 	}
 
-	protected Document parse(Class<?> clazz) {
+	protected Tag parse(Class<?> clazz) {
 		return parse(clazz, "xml");
 	}
 
-	protected Document parse(Class<?> clazz, String extension) {
+	protected Tag parse(Class<?> clazz, String extension) {
 		String fname = clazz.getSimpleName() + "." + extension;
 		InputStream resource = clazz.getResourceAsStream(fname);
 		if (resource == null) {
@@ -45,21 +45,20 @@ public class TagLibraryXmlParser {
 		return parse(fname, resource);
 	}
 
-	public <T> Document parse(String filename, InputStream inputStream) {
+	public <T> Tag parse(String filename, InputStream inputStream) {
 		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 		parserFactory.setNamespaceAware(true);
 
 		SAXParser parser = createSaxParser(parserFactory);
-		final Document document = new Document();
 
-		TagLibrarySaxHandler s = new TagLibrarySaxHandler(document, namespaceResolver, filename);
+		TagLibrarySaxHandler saxHandler = new TagLibrarySaxHandler(namespaceResolver, filename);
 		try {
-			parser.parse(inputStream, s);
+			parser.parse(inputStream, saxHandler);
 		} catch (Exception e) {
-			throw new XmlParsingException(s.getLocationInfo() + e.getMessage(), e);
+			throw new XmlParsingException(saxHandler.getLocationInfo() + e.getMessage(), e);
 		}
 
-		return document;
+		return saxHandler.getRoot();
 	}
 
 	private SAXParser createSaxParser(SAXParserFactory parserFactory) {
