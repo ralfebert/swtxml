@@ -34,7 +34,7 @@ public class SwtWidgetTagLibrary implements ITagLibrary {
 			Composite parent = (Composite) tagInfo.parentRecursiveAdaptTo(builder.getParentClass());
 			Widget widget = builder.build(parent, style == null ? SWT.NONE : style);
 			tagInfo.makeAdaptable(widget);
-			return new MagicTagNodeObjectProxy(tag, tagInfo, widget);
+			return new MagicTagNodeObjectProxy(tagInfo, widget);
 		} catch (Exception e) {
 			throw new TagLibraryException(tagInfo, e);
 		}

@@ -17,7 +17,7 @@ import com.swtxml.parser.IControllerObjectProvider;
 import com.swtxml.parser.IRootNodeAware;
 import com.swtxml.parser.TagLibraryException;
 import com.swtxml.parser.TagLibraryXmlParser;
-import com.swtxml.swt.processors.SetAttributesProcessor;
+import com.swtxml.swt.processors.SetAttributes;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
@@ -28,7 +28,7 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNod
 	private Object controller;
 
 	public SwtTagLibraryParser(Composite parent, Object controller) {
-		super(new CompatibilityNamespaceResolver(), new SetAttributesProcessor());
+		super(new CompatibilityNamespaceResolver(), new SetAttributes());
 		this.parent = parent;
 		this.controller = controller;
 	}
@@ -51,7 +51,7 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNod
 
 		// TODO: null as tag is strange here, think about root nodes in context
 		// of metadata
-		MagicTagNodeObjectProxy node = new MagicTagNodeObjectProxy(null, tagInformation, parent);
+		MagicTagNodeObjectProxy node = new MagicTagNodeObjectProxy(tagInformation, parent);
 		node.makeAdaptable(parent);
 		return node;
 	}

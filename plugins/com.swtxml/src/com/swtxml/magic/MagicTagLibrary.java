@@ -95,7 +95,7 @@ public abstract class MagicTagLibrary implements ITagLibrary {
 					tagResult = (TagNode) result;
 				} else {
 					// TODO: is this still used?
-					tagResult = new MagicTagNodeObjectProxy(null, tagInfo, result);
+					tagResult = new MagicTagNodeObjectProxy(tagInfo, result);
 				}
 				return tagResult;
 			} catch (InvocationTargetException e) {

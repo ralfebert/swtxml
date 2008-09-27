@@ -10,7 +10,7 @@ import com.swtxml.parser.TagLibraryException;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.tag.TagInformation;
 
-public class SetAttributesProcessor implements ITagProcessor {
+public class SetAttributes implements ITagProcessor {
 
 	public void process(TagInformation tag) {
 		Widget widget = tag.adaptTo(Widget.class);

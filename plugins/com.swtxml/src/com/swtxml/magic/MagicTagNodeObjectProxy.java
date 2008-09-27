@@ -10,18 +10,15 @@
  *******************************************************************************/
 package com.swtxml.magic;
 
-import com.swtxml.definition.ITagDefinition;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
 
 public class MagicTagNodeObjectProxy extends TagNode {
 
 	private Object obj;
-	private ITagDefinition tag;
 
-	public MagicTagNodeObjectProxy(ITagDefinition tag, TagInformation tagInformation, Object obj) {
+	public MagicTagNodeObjectProxy(TagInformation tagInformation, Object obj) {
 		super(tagInformation);
-		this.tag = tag;
 		this.obj = obj;
 	}
 
