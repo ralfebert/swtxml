@@ -12,20 +12,27 @@ package com.swtxml.swt;
 
 import org.eclipse.swt.widgets.Composite;
 
+import com.swtxml.definition.INamespaceResolver;
+import com.swtxml.definition.impl.NamespaceResolver;
 import com.swtxml.parser.IControllerObjectProvider;
 import com.swtxml.parser.TagLibraryXmlParser;
+import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.processors.BuildWidgets;
 import com.swtxml.swt.processors.SetAttributes;
 
 public class SwtTagLibraryParser extends TagLibraryXmlParser implements IControllerObjectProvider {
 
-	private Composite parent;
 	private Object controller;
 
 	public SwtTagLibraryParser(Composite parent, Object controller) {
-		super(new CompatibilityNamespaceResolver(), new BuildWidgets(parent), new SetAttributes());
-		this.parent = parent;
+		super(getSwtNamespaceResolver(), new BuildWidgets(parent), new SetAttributes());
 		this.controller = controller;
+	}
+
+	private static INamespaceResolver getSwtNamespaceResolver() {
+		NamespaceResolver resolver = new NamespaceResolver();
+		resolver.addNamespace("swt", new SwtNamespace());
+		return resolver;
 	}
 
 	public void parse() {
@@ -35,12 +42,6 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IControl
 
 	public Object getController() {
 		return controller;
-	}
-
-	@Override
-	protected ClassLoader getClassLoader() {
-		return (controller != null) ? controller.getClass().getClassLoader() : super
-				.getClassLoader();
 	}
 
 }

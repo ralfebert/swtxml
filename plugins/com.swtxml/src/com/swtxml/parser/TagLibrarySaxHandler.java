@@ -21,6 +21,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.swtxml.definition.INamespaceDefinition;
+import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.ITagDefinition;
 import com.swtxml.tag.Document;
 import com.swtxml.tag.TagInformation;

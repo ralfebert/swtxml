@@ -20,6 +20,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
 
+import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.tag.Document;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.util.context.Context;
@@ -104,10 +105,6 @@ public class TagLibraryXmlParser {
 				}
 			}
 		}
-	}
-
-	protected ClassLoader getClassLoader() {
-		return this.getClass().getClassLoader();
 	}
 
 }

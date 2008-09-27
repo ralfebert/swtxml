@@ -7,6 +7,7 @@ import static org.junit.Assert.assertEquals;
 import org.easymock.EasyMock;
 import org.junit.Test;
 
+import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.definition.impl.TagDefinition;
 import com.swtxml.tag.TagInformation;

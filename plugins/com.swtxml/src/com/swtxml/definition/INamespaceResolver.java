@@ -1,6 +1,5 @@
-package com.swtxml.parser;
+package com.swtxml.definition;
 
-import com.swtxml.definition.INamespaceDefinition;
 
 public interface INamespaceResolver {
 
