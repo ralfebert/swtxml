@@ -116,13 +116,6 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 				parserStack.isEmpty() ? null : parserStack.peek(), localName, getLocationInfo(),
 				parserStack.size(), attributeList);
 
-		TagInformation tag = null;
-		if (parser instanceof IRootNodeAware && parserStack.isEmpty()) {
-			((IRootNodeAware) parser).rootTag(tagInformation);
-		} else {
-			tagLibrary.tag(tagInformation);
-		}
-
 		parserStack.push(tagInformation);
 	}
 

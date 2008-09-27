@@ -43,6 +43,16 @@ public class TagLibraryXmlParser {
 				tag.process();
 			}
 		});
+		this.processors.add(1, new ITagProcessor() {
+			public void process(TagInformation tag) {
+				if ((TagLibraryXmlParser.this instanceof IRootNodeAware) && tag.getParent() == null) {
+					((IRootNodeAware) TagLibraryXmlParser.this).rootTag(tag);
+				} else {
+					tag.getTagLibrary().tag(tag);
+				}
+			}
+		});
+
 	}
 
 	protected <T> T parse(Class<?> clazz, Class<T> rootNodeClass) {
