@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.parser.TagLibraryException;
 import com.swtxml.util.adapter.IAdaptable;
 import com.swtxml.util.parser.ParseException;
 
@@ -105,14 +104,6 @@ public class TagInformation implements IAdaptable {
 
 	public String slurpAttribute(String name) {
 		return attributes.remove(name);
-	}
-
-	public String requireAttribute(String name) {
-		String attr = getAttribute(name);
-		if (attr == null) {
-			throw new TagLibraryException(this, "Required attribute " + name + " not found!");
-		}
-		return attr;
 	}
 
 	public Map<String, String> getAttributes() {

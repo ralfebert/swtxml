@@ -6,9 +6,9 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.parser.ITagProcessor;
-import com.swtxml.parser.TagLibraryException;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.tag.TagInformation;
+import com.swtxml.util.parser.ParseException;
 
 public class SetAttributes implements ITagProcessor {
 
@@ -32,8 +32,7 @@ public class SetAttributes implements ITagProcessor {
 				Control childNodeControl = children.adaptTo(Control.class);
 				if (childNodeControl != null) {
 					if (control != null) {
-						throw new TagLibraryException(tag,
-								"TabItems may have only one control inside!");
+						throw new ParseException("TabItems may have only one control inside!");
 					} else {
 						control = childNodeControl;
 					}

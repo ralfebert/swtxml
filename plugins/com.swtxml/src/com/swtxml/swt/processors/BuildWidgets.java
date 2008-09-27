@@ -5,11 +5,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.parser.ITagProcessor;
-import com.swtxml.parser.TagLibraryException;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.metadata.WidgetBuilder;
 import com.swtxml.swt.metadata.WidgetTag;
 import com.swtxml.tag.TagInformation;
+import com.swtxml.util.parser.ParseException;
 
 public class BuildWidgets implements ITagProcessor {
 
@@ -26,8 +26,8 @@ public class BuildWidgets implements ITagProcessor {
 
 		if (tag.isRoot()) {
 			if (!tag.getTagName().equals(Composite.class.getSimpleName())) {
-				throw new TagLibraryException(tag, "Invalid root tag " + tag.getTagName()
-						+ ", expected <" + Composite.class.getSimpleName() + ">");
+				throw new ParseException("Invalid root tag " + tag.getTagName() + ", expected <"
+						+ Composite.class.getSimpleName() + ">");
 			}
 			tag.makeAdaptable(parent);
 			return;
