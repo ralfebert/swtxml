@@ -26,8 +26,6 @@ import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 import org.w3c.dom.Node;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
 import com.swtxml.metadata.IAttribute;
 import com.swtxml.metadata.INamespace;
 import com.swtxml.metadata.ITag;
@@ -36,6 +34,8 @@ import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.util.adapter.IAdaptable;
 import com.swtxml.util.context.Context;
+import com.swtxml.util.lang.CollectionUtils;
+import com.swtxml.util.lang.IPredicate;
 import com.swtxml.util.parser.Strictness;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IContentAssistable;
@@ -51,14 +51,15 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		super();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void addTagNameProposals(final ContentAssistRequest contentAssistRequest,
 			int childPosition) {
-		Collection<? extends ITag> tags = registry.getTags().values();
-		List<ITag> matchingTags = new ArrayList<ITag>(Collections2.filter(tags,
-				new Predicate<ITag>() {
+		Collection<ITag> tags = (Collection<ITag>) registry.getTags().values();
+		List<ITag> matchingTags = new ArrayList<ITag>(CollectionUtils.select(tags,
+				new IPredicate<ITag>() {
 
-					public boolean apply(ITag tag) {
+					public boolean match(ITag tag) {
 						return tag.getName().toLowerCase().startsWith(
 								contentAssistRequest.getMatchString().toLowerCase());
 					}
@@ -73,6 +74,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	protected void addAttributeNameProposals(final ContentAssistRequest contentAssistRequest) {
 		ITag tag = registry.getTags().get(contentAssistRequest.getNode().getNodeName());
@@ -80,15 +82,16 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			return;
 		}
 
-		List<IAttribute> matchingAttributes = new ArrayList<IAttribute>(Collections2.filter(tag
-				.getAttributes().values(), new Predicate<IAttribute>() {
+		List<IAttribute> matchingAttributes = new ArrayList<IAttribute>(CollectionUtils.select(
+				(Collection<IAttribute>) tag.getAttributes().values(),
+				new IPredicate<IAttribute>() {
 
-			public boolean apply(IAttribute attr) {
-				return attr.getName().toLowerCase().startsWith(
-						contentAssistRequest.getMatchString().toLowerCase());
-			}
+					public boolean match(IAttribute attr) {
+						return attr.getName().toLowerCase().startsWith(
+								contentAssistRequest.getMatchString().toLowerCase());
+					}
 
-		}));
+				}));
 		Collections.sort(matchingAttributes);
 		for (IAttribute attr : matchingAttributes) {
 			contentAssistRequest.addProposal(new CompletionProposal(attr.getName() + "=\"\"",

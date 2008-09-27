@@ -7,15 +7,15 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
+import com.swtxml.util.lang.CollectionUtils;
+import com.swtxml.util.lang.IPredicate;
 
 public class Reflector {
 
 	public static Collection<Method> findPublicSetters(Class<?> cl) {
-		return Collections2.filter(Arrays.asList(cl.getMethods()), new Predicate<Method>() {
+		return CollectionUtils.select(Arrays.asList(cl.getMethods()), new IPredicate<Method>() {
 
-			public boolean apply(Method m) {
+			public boolean match(Method m) {
 				return m.getName().startsWith("set") && m.getParameterTypes().length == 1;
 			}
 
@@ -31,10 +31,10 @@ public class Reflector {
 		Collection<IReflectorProperty> properties = new ArrayList<IReflectorProperty>();
 		Collection<Method> setters = findPublicSetters(cl);
 		for (final Method setter : setters) {
-			Collection<Method> getters = Collections2.filter(Arrays.asList(cl.getMethods()),
-					new Predicate<Method>() {
+			Collection<Method> getters = CollectionUtils.select(Arrays.asList(cl.getMethods()),
+					new IPredicate<Method>() {
 
-						public boolean apply(Method m) {
+						public boolean match(Method m) {
 							return m.getName().equals("g" + setter.getName().substring(1))
 									&& m.getParameterTypes().length == 0
 									&& m.getReturnType() == setter.getParameterTypes()[0];

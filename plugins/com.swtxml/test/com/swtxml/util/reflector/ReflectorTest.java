@@ -1,39 +1,35 @@
 package com.swtxml.util.reflector;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.NoSuchElementException;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
-import com.swtxml.util.reflector.IReflectorProperty;
-import com.swtxml.util.reflector.Reflector;
-import com.swtxml.util.reflector.ReflectorBean;
+import com.swtxml.util.lang.CollectionUtils;
+import com.swtxml.util.lang.IPredicate;
 
 public class ReflectorTest {
 
-	private final static Predicate<Method> getMethodNamePredicate(final String name) {
-		return new Predicate<Method>() {
+	private final static IPredicate<Method> getMethodNamePredicate(final String name) {
+		return new IPredicate<Method>() {
 
-			public boolean apply(Method m) {
+			public boolean match(Method m) {
 				return m.getName().equals(name);
 			}
 
 		};
 	}
 
-	private final static Predicate<IReflectorProperty> getReflectorPropertyNamePredicate(
+	private final static IPredicate<IReflectorProperty> getReflectorPropertyNamePredicate(
 			final String name) {
-		return new Predicate<IReflectorProperty>() {
+		return new IPredicate<IReflectorProperty>() {
 
-			public boolean apply(IReflectorProperty prop) {
+			public boolean match(IReflectorProperty prop) {
 				return prop.getName().equals(name);
 			}
 
@@ -49,32 +45,33 @@ public class ReflectorTest {
 
 	@Test
 	public void testFindPublicSetters() {
-		assertTrue(Iterables.find(testVoSetters, getMethodNamePredicate("setText")) != null);
-		assertTrue("superclass setter", Iterables.find(testVoSetters,
+		assertTrue(CollectionUtils.find(testVoSetters, getMethodNamePredicate("setText")) != null);
+		assertTrue("superclass setter", CollectionUtils.find(testVoSetters,
 				getMethodNamePredicate("setBaseText")) != null);
 	}
 
-	@Test(expected = NoSuchElementException.class)
 	public void testFindPublicSettersContainNoProtectedSetters() {
-		Iterables.find(testVoSetters, getMethodNamePredicate("setProtectedProperty"));
+		assertNull(CollectionUtils.find(testVoSetters,
+				getMethodNamePredicate("setProtectedProperty")));
 	}
 
 	@Test
 	public void testFindPublicSettersContainNoMultiArgumentSetMethods() {
-		assertTrue(Collections2.filter(testVoSetters, getMethodNamePredicate("setMulti")).isEmpty());
+		assertTrue(CollectionUtils.select(testVoSetters, getMethodNamePredicate("setMulti"))
+				.isEmpty());
 	}
 
 	@Test
 	public void findPublicProperties() {
 		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class);
-		assertTrue(Iterables.find(properties, getReflectorPropertyNamePredicate("text")) != null);
-		assertTrue("superclass property", Iterables.find(properties,
+		assertTrue(CollectionUtils.find(properties, getReflectorPropertyNamePredicate("text")) != null);
+		assertTrue("superclass property", CollectionUtils.find(properties,
 				getReflectorPropertyNamePredicate("baseText")) != null);
-		assertTrue("public fields not included", Collections2.filter(properties,
+		assertTrue("public fields not included", CollectionUtils.select(properties,
 				getReflectorPropertyNamePredicate("publicText")).isEmpty());
-		assertTrue("protected property not included", Collections2.filter(properties,
+		assertTrue("protected property not included", CollectionUtils.select(properties,
 				getReflectorPropertyNamePredicate("publicText")).isEmpty());
-		assertTrue("base protected field not included", Collections2.filter(properties,
+		assertTrue("base protected field not included", CollectionUtils.select(properties,
 				getReflectorPropertyNamePredicate("protectedProperty")).isEmpty());
 	}
 
@@ -82,14 +79,14 @@ public class ReflectorTest {
 	public void findPublicPropertiesIncludingPublicFields() {
 		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class,
 				true);
-		assertTrue(Iterables.find(properties, getReflectorPropertyNamePredicate("text")) != null);
-		assertTrue("superclass property", Iterables.find(properties,
+		assertTrue(CollectionUtils.find(properties, getReflectorPropertyNamePredicate("text")) != null);
+		assertTrue("superclass property", CollectionUtils.find(properties,
 				getReflectorPropertyNamePredicate("baseText")) != null);
-		assertTrue("public field", Collections2.filter(properties,
+		assertTrue("public field", CollectionUtils.select(properties,
 				getReflectorPropertyNamePredicate("publicText")) != null);
-		assertTrue("base public field", Collections2.filter(properties,
+		assertTrue("base public field", CollectionUtils.select(properties,
 				getReflectorPropertyNamePredicate("basePublicText")) != null);
-		assertTrue("protected field not included", Collections2.filter(properties,
+		assertTrue("protected field not included", CollectionUtils.select(properties,
 				getReflectorPropertyNamePredicate("protectedText")).isEmpty());
 	}
 

@@ -5,8 +5,8 @@ import java.util.Arrays;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
+import com.swtxml.util.lang.CollectionUtils;
+import com.swtxml.util.lang.IPredicate;
 import com.swtxml.util.reflector.ReflectorException;
 
 public class WidgetBuilder {
@@ -35,10 +35,10 @@ public class WidgetBuilder {
 
 	@SuppressWarnings("unchecked")
 	private Constructor getWidgetConstructor(Class<? extends Widget> widgetClass) {
-		return Iterables.find(Arrays.asList(widgetClass.getConstructors()),
-				new Predicate<Constructor>() {
+		return CollectionUtils.find(Arrays.asList(widgetClass.getConstructors()),
+				new IPredicate<Constructor>() {
 
-					public boolean apply(Constructor constructor) {
+					public boolean match(Constructor constructor) {
 						return (constructor.getParameterTypes().length == 2 && constructor
 								.getParameterTypes()[1] == Integer.TYPE);
 					}

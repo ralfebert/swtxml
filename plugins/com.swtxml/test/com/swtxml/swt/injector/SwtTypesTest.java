@@ -17,8 +17,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Lists;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.swt.types.ColorType;
@@ -28,6 +26,8 @@ import com.swtxml.swt.types.PointType;
 import com.swtxml.swt.types.StyleType;
 import com.swtxml.util.adapter.MockAdapter;
 import com.swtxml.util.context.Context;
+import com.swtxml.util.lang.CollectionUtils;
+import com.swtxml.util.lang.IFunction;
 import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IType;
@@ -112,11 +112,12 @@ public class SwtTypesTest {
 	public void testLayoutCompletionDoesNotContainAlreadySetProperties() {
 		LayoutType layoutType = new LayoutType(layoutInjector);
 		List<Match> proposals = layoutType.getProposals(new Match("type:vertical;layout:row;§"));
-		List<String> proposalTexts = Lists.transform(proposals, new Function<Match, String>() {
-			public String apply(Match m) {
-				return m.getText();
-			}
-		});
+		List<String> proposalTexts = CollectionUtils.collect(proposals,
+				new IFunction<Match, String>() {
+					public String apply(Match m) {
+						return m.getText();
+					}
+				});
 		assertTrue(proposalTexts.contains("marginBottom:"));
 		assertFalse(proposalTexts.contains("type:"));
 	}

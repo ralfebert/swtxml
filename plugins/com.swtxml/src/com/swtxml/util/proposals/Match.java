@@ -8,8 +8,8 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Collections2;
+import com.swtxml.util.lang.CollectionUtils;
+import com.swtxml.util.lang.IPredicate;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.parser.Splitter;
 
@@ -144,10 +144,10 @@ public class Match {
 
 	public List<Match> propose(Collection<String> values) {
 		final String textBeforeCursor = getTextBeforeCursor().toLowerCase().trim();
-		List<String> filteredValues = new ArrayList<String>(Collections2.filter(values,
-				new Predicate<String>() {
+		List<String> filteredValues = new ArrayList<String>(CollectionUtils.select(values,
+				new IPredicate<String>() {
 
-					public boolean apply(String value) {
+					public boolean match(String value) {
 						return value.toLowerCase().startsWith(textBeforeCursor);
 					}
 

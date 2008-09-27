@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Iterables;
+import com.swtxml.util.lang.CollectionUtils;
+import com.swtxml.util.lang.IFunction;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.Splitter;
 import com.swtxml.util.parser.Strictness;
@@ -49,12 +48,12 @@ public class PropertiesContentAssist {
 		if (colonPos < 0 || colonPos >= cursor) {
 			Set<String> propertyNames = new HashSet<String>(properties.getProperties().keySet());
 			propertyNames.removeAll(propertyValues.keySet());
-			Collection<String> propertyProposals = Collections2.forIterable(Iterables.transform(
-					propertyNames, new Function<String, String>() {
+			Collection<String> propertyProposals = CollectionUtils.collect(propertyNames,
+					new IFunction<String, String>() {
 						public String apply(String s) {
 							return s + ":";
 						}
-					}));
+					});
 			return match.propose(propertyProposals);
 		} else {
 			String[] keyValue = colon.split(text);
