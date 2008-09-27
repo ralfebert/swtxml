@@ -22,6 +22,7 @@ import com.swtxml.parser.TagLibraryXmlParser;
 import com.swtxml.parser.XmlParsingException;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.processors.BuildWidgets;
+import com.swtxml.swt.processors.CollectIds;
 import com.swtxml.swt.processors.SetAttributes;
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.tag.Document;
@@ -51,12 +52,15 @@ public class SwtXmlParser extends TagLibraryXmlParser {
 		ITagProcessor[] processors = new ITagProcessor[] { new BuildWidgets(parent),
 				new SetAttributes() };
 
+		final CollectIds collectIds = new CollectIds();
+		document.getRoot().depthFirst(collectIds);
+
 		for (final ITagProcessor processor : processors) {
 			for (final Tag tag : document.getRoot().depthFirst()) {
 				Context.runWith(new Runnable() {
 					public void run() {
 						Context.addAdapter(tag);
-						Context.addAdapter(document);
+						Context.addAdapter(collectIds);
 						try {
 							processor.process(tag);
 						} catch (Exception e) {
@@ -67,7 +71,7 @@ public class SwtXmlParser extends TagLibraryXmlParser {
 			}
 		}
 
-		injectById(document);
+		injectById(collectIds);
 	}
 
 	public void injectById(IIdResolver ids) {

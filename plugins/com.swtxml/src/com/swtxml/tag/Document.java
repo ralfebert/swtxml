@@ -8,18 +8,9 @@ import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.util.adapter.IAdaptable;
 
 //TODO: remove document
-public class Document implements IIdResolver, IAdaptable {
+public class Document implements IAdaptable {
 
 	private Map<String, Tag> nodesById = new HashMap<String, Tag>();
-
-	public <T> T getById(String id, Class<T> clazz) {
-		Tag node = nodesById.get(id);
-		if (node == null) {
-			return null;
-		}
-
-		return node.adaptTo(clazz);
-	}
 
 	public Tag getRoot() {
 		return root;
@@ -36,7 +27,7 @@ public class Document implements IIdResolver, IAdaptable {
 		}
 		// TODO: refactor out into processor, maybe recursive processors for
 		// setting context?
-		String id = node.slurpAttribute("id");
+		String id = node.getAttribute("id");
 		if (id != null) {
 			nodesById.put(id, node);
 		}
