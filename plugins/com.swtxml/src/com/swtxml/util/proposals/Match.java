@@ -72,7 +72,7 @@ public class Match {
 		this.end--;
 	}
 
-	public Match stripQuotes() {
+	public Match handleQuotes() {
 		Match m = new Match(this);
 		m.stripQuotesR();
 		return m;

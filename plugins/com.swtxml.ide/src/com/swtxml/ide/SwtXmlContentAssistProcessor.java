@@ -132,14 +132,14 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		if (type instanceof IContentAssistable) {
 
 			Match match = new Match(contentAssistRequest.getText(), contentAssistRequest
-					.getMatchString().length()).stripQuotes();
+					.getMatchString().length()).handleQuotes();
 			List<Match> proposals = ((IContentAssistable) type).getProposals(match);
 
 			for (Match proposal : proposals) {
 				CompletionProposal newProposal = new CompletionProposal(proposal
 						.getReplacementText(), contentAssistRequest.getReplacementBeginPosition(),
-						contentAssistRequest.getReplacementLength(), match.getCursorPos(), null,
-						match.getText(), null, null);
+						contentAssistRequest.getReplacementLength(), proposal.getCursorPos(), null,
+						proposal.getText(), null, null);
 				contentAssistRequest.addProposal(newProposal);
 			}
 		}

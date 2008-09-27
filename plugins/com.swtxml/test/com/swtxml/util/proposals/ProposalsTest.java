@@ -47,18 +47,18 @@ public class ProposalsTest {
 	}
 
 	@Test
-	public void stripQuotes() {
-		assertEquals("\"123§456\"", m.stripQuotes().toString());
-		assertEquals("\"123§456\"", m2.stripQuotes().toString());
-		assertEquals("123456", m.stripQuotes().getText());
-		assertEquals("123456", m2.stripQuotes().getText());
-		assertEquals("\"123456\"", m.stripQuotes().getReplacementText());
-		assertEquals("\"123456\"", m2.stripQuotes().getReplacementText());
+	public void handleQuotes() {
+		assertEquals("\"123§456\"", m.handleQuotes().toString());
+		assertEquals("\"123§456\"", m2.handleQuotes().toString());
+		assertEquals("123456", m.handleQuotes().getText());
+		assertEquals("123456", m2.handleQuotes().getText());
+		assertEquals("\"123456\"", m.handleQuotes().getReplacementText());
+		assertEquals("\"123456\"", m2.handleQuotes().getReplacementText());
 	}
 
 	@Test
 	public void insertWorksWithOffsets() {
-		assertEquals("\"12xxx3§456\"", m2.stripQuotes().insert("xxx", 2).toString());
+		assertEquals("\"12xxx3§456\"", m2.handleQuotes().insert("xxx", 2).toString());
 	}
 
 	@Test
@@ -102,5 +102,13 @@ public class ProposalsTest {
 		assertEquals(3, proposals.size());
 		assertEquals("blue", proposals.get(0).getText());
 		assertEquals("123,456.blue§,012", proposals.get(0).toString());
+	}
+
+	@Test
+	public void testCursorAfterReplacement() {
+		assertEquals("test§", new Match("§").replace("test").toString());
+		assertEquals("test§", new Match("t§").replace("test").toString());
+		assertEquals("\"test§\"", new Match("\"§\"").handleQuotes().replace("test").toString());
+		assertEquals("\"test§\"", new Match("\"t§\"").handleQuotes().replace("test").toString());
 	}
 }
