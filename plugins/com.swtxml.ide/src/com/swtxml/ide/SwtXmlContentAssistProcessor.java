@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.eclipse.jface.text.contentassist.CompletionProposal;
 import org.eclipse.wst.sse.core.internal.provisional.text.IStructuredDocumentRegion;
 import org.eclipse.wst.sse.core.internal.provisional.text.ITextRegion;
@@ -31,6 +30,7 @@ import com.swtxml.metadata.IAttribute;
 import com.swtxml.metadata.INamespace;
 import com.swtxml.metadata.ITag;
 import com.swtxml.swt.metadata.SwtNamespace;
+import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IEnumeratedType;
 import com.swtxml.util.types.IType;
 
@@ -129,26 +129,30 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		}
 
 		IType<?> type = attribute.getType();
+
 		if (type instanceof IEnumeratedType) {
 			List<String> proposals = new ArrayList<String>(((IEnumeratedType) type).getEnumValues());
 			Collections.sort(proposals);
 
-			final String match = StringUtils.strip(contentAssistRequest.getMatchString()
-					.toLowerCase(), "\"'");
-			List<String> matchingProposals = new ArrayList<String>(Collections2.filter(proposals,
-					new Predicate<String>() {
+			Match match = new Match(contentAssistRequest.getText(), contentAssistRequest
+					.getMatchString().length());
 
-						public boolean apply(String proposal) {
-							return proposal.toLowerCase().startsWith(match);
-						}
+			// List<String> matchingProposals = new
+			// ArrayList<String>(Collections2.filter(proposals,
+			// new Predicate<String>() {
+			//
+			// public boolean apply(String proposal) {
+			// return proposal.toLowerCase().startsWith(match);
+			// }
+			//
+			// }));
 
-					}));
-
-			for (String proposal : matchingProposals) {
-				contentAssistRequest.addProposal(new CompletionProposal(proposal,
-						contentAssistRequest.getReplacementBeginPosition() + 1,
-						contentAssistRequest.getReplacementLength() - 2, proposal.length() + 1));
-			}
+			// for (String proposal : match) {
+			System.out.println(match);
+			contentAssistRequest.addProposal(new CompletionProposal(match.getText(),
+					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
+							.getReplacementLength(), match.getCursorPos()));
+			// }
 		}
 	}
 }
