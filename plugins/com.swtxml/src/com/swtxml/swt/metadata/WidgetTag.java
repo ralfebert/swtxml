@@ -5,10 +5,13 @@ import java.util.Map;
 
 import org.eclipse.swt.widgets.Widget;
 
+import com.swtxml.metadata.Attribute;
+import com.swtxml.metadata.IAttribute;
 import com.swtxml.metadata.ITag;
 import com.swtxml.metadata.MetaDataException;
 import com.swtxml.swt.SwtHandling;
 import com.swtxml.swt.properties.IIdResolver;
+import com.swtxml.swt.types.StyleType;
 import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.Property;
 import com.swtxml.util.properties.PropertyRegistry;
@@ -18,7 +21,7 @@ public class WidgetTag implements ITag {
 	private String className;
 	private Class<? extends Widget> swtWidgetClass;
 
-	private Map<String, WidgetAttribute> attributes;
+	private Map<String, IAttribute> attributes;
 
 	public WidgetTag(String className) {
 		this.className = className;
@@ -28,7 +31,7 @@ public class WidgetTag implements ITag {
 		return getSwtWidgetClass().getSimpleName();
 	}
 
-	public Map<String, WidgetAttribute> getAttributes() {
+	public Map<String, IAttribute> getAttributes() {
 		if (attributes == null) {
 			// TODO: id resolving
 			PropertyRegistry propertyRegistry = SwtHandling.createSwtProperties(new IIdResolver() {
@@ -39,11 +42,12 @@ public class WidgetTag implements ITag {
 
 			ClassProperties<? extends Widget> properties = propertyRegistry
 					.getProperties(getSwtWidgetClass());
-			attributes = new HashMap<String, WidgetAttribute>();
+			attributes = new HashMap<String, IAttribute>();
 			for (Property property : properties.getProperties().values()) {
 				WidgetAttribute attribute = new WidgetAttribute(property);
 				attributes.put(attribute.getName(), attribute);
 			}
+			attributes.put("style", new Attribute("style", new StyleType(SwtHandling.SWT)));
 		}
 		return attributes;
 	}
