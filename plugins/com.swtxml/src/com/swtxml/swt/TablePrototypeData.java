@@ -29,11 +29,11 @@ public class TablePrototypeData extends TagNode {
 	}
 
 	@Override
-	public <T> T get(Class<T> type) {
+	public <T> T adaptTo(Class<T> type) {
 		if (TableViewer.class.isAssignableFrom(type)) {
 			return (T) viewer;
 		} else {
-			return super.get(type);
+			return super.adaptTo(type);
 		}
 	}
 

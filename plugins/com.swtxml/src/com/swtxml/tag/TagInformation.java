@@ -14,8 +14,9 @@ import java.util.Map;
 
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
+import com.swtxml.util.adapter.IAdaptable;
 
-public class TagInformation {
+public class TagInformation implements IAdaptable {
 
 	private final Document document;
 
@@ -60,21 +61,22 @@ public class TagInformation {
 		return level;
 	}
 
-	public <T> T get(Class<T> type) {
+	@SuppressWarnings("unchecked")
+	public <T> T adaptTo(Class<T> type) {
 		return (T) (type.isAssignableFrom(getClass()) ? this : null);
 	}
 
-	public final <T> T findParent(Class<T> type) {
-		return (parent != null) ? parent.get(type) : null;
+	public final <T> T parentAdaptTo(Class<T> type) {
+		return (parent != null) ? parent.adaptTo(type) : null;
 	}
 
-	public final <T> T findParentRecursive(Class<T> type) {
-		T match = findParent(type);
+	public final <T> T parentRecursiveAdaptTo(Class<T> type) {
+		T match = parentAdaptTo(type);
 		if (match != null) {
 			return match;
 		}
 		if (parent != null) {
-			return parent.findParent(type);
+			return parent.parentAdaptTo(type);
 		}
 		return null;
 	}

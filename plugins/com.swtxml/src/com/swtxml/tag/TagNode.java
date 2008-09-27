@@ -13,9 +13,7 @@ package com.swtxml.tag;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.swtxml.util.adapter.IAdaptable;
-
-public abstract class TagNode extends TagInformation implements IAdaptable {
+public abstract class TagNode extends TagInformation {
 
 	private List<TagNode> children = new ArrayList<TagNode>();
 
@@ -34,10 +32,6 @@ public abstract class TagNode extends TagInformation implements IAdaptable {
 
 	public List<TagNode> getChildren() {
 		return children;
-	}
-
-	public <A> A adaptTo(Class<A> adapterClass) {
-		return get(adapterClass);
 	}
 
 }

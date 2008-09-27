@@ -30,7 +30,7 @@ public class TabItemNode extends MagicTagNodeObjectProxy {
 		super.process();
 		Control control = null;
 		for (TagNode children : getChildren()) {
-			Control childNodeControl = children.get(Control.class);
+			Control childNodeControl = children.adaptTo(Control.class);
 			if (childNodeControl != null) {
 				if (control != null) {
 					throw new TagLibraryException(this,
@@ -41,8 +41,7 @@ public class TabItemNode extends MagicTagNodeObjectProxy {
 			}
 		}
 		if (control != null) {
-			get(TabItem.class).setControl(control);
+			adaptTo(TabItem.class).setControl(control);
 		}
 	}
-
 }

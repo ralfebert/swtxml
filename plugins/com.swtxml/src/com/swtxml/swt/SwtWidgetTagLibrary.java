@@ -38,7 +38,7 @@ public class SwtWidgetTagLibrary implements ITagLibrary {
 		try {
 			Integer style = SwtHandling.SWT.getIntValue(tagInfo.getAttribute("style"));
 			Class<?> parentClass = builder.getParentClass();
-			Widget widget = builder.build(tagInfo.findParentRecursive(parentClass),
+			Widget widget = builder.build(tagInfo.parentRecursiveAdaptTo(parentClass),
 					style == null ? SWT.NONE : style);
 			if (widget instanceof TabItem) {
 				return new TabItemNode(tag, tagInfo, widget);

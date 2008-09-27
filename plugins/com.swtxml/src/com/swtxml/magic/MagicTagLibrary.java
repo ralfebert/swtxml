@@ -68,9 +68,9 @@ public abstract class MagicTagLibrary implements ITagLibrary {
 				if (annotation instanceof Parent) {
 					Object parentObject = null;
 					if (((Parent) annotation).recursive()) {
-						parentObject = tagInfo.findParentRecursive(type);
+						parentObject = tagInfo.parentRecursiveAdaptTo(type);
 					} else {
-						parentObject = tagInfo.findParent(type);
+						parentObject = tagInfo.parentAdaptTo(type);
 					}
 					return (parentObject == null) ? NOTBOUND : parentObject;
 				}

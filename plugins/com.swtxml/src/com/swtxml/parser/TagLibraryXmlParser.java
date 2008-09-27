@@ -69,7 +69,7 @@ public class TagLibraryXmlParser {
 				Context.clear();
 			}
 
-			return document.getRoot().get(rootNodeClass);
+			return document.getRoot().adaptTo(rootNodeClass);
 		} catch (ParserConfigurationException e) {
 			throw new XmlParsingException(e);
 		} catch (SAXException e) {

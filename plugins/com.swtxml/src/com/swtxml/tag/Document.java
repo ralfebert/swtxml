@@ -20,7 +20,7 @@ public class Document implements IIdResolver, IAdaptable {
 			return null;
 		}
 
-		return node.get(clazz);
+		return node.adaptTo(clazz);
 	}
 
 	public TagNode getRoot() {
