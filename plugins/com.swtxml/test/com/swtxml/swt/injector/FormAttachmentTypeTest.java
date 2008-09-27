@@ -16,10 +16,10 @@ import org.junit.Test;
 import com.swtxml.swt.properties.IIdResolver;
 import com.swtxml.swt.types.FormAttachmentType;
 
-public class FormAttachmentConverterTest {
+public class FormAttachmentTypeTest {
 
 	private IIdResolver idResolver;
-	private FormAttachmentType converter;
+	private FormAttachmentType type;
 	private Button test;
 
 	@Before
@@ -27,27 +27,27 @@ public class FormAttachmentConverterTest {
 		idResolver = createMock(IIdResolver.class);
 		test = new Button(new Shell(), SWT.NONE);
 		expect(idResolver.getById("test", Control.class)).andReturn(test);
-		converter = new FormAttachmentType(idResolver);
+		type = new FormAttachmentType(idResolver);
 		replay(idResolver);
 	}
 
 	@Test
 	public void testSimple() {
-		FormAttachment attachment = converter.convert(test, "10");
+		FormAttachment attachment = type.convert(test, "10");
 		assertEquals(10, attachment.offset);
 		assertEquals(0, attachment.numerator);
 	}
 
 	@Test
 	public void testPercentage() {
-		FormAttachment attachment = converter.convert(test, "90%-10");
+		FormAttachment attachment = type.convert(test, "90%-10");
 		assertEquals(-10, attachment.offset);
 		assertEquals(90, attachment.numerator);
 	}
 
 	@Test
 	public void testReferControl() {
-		FormAttachment attachment = converter.convert(test, "test-10");
+		FormAttachment attachment = type.convert(test, "test-10");
 		assertEquals(test, attachment.control);
 		assertEquals(-10, attachment.offset);
 		assertEquals(0, attachment.numerator);

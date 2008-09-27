@@ -21,7 +21,7 @@ import com.swtxml.swt.types.PointType;
 import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.types.IType;
 
-public class SwtConvertersTest {
+public class SwtTypesTest {
 
 	private PropertyRegistry layoutInjector;
 
