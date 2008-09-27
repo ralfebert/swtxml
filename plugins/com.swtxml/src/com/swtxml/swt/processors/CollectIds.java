@@ -28,6 +28,7 @@ public class CollectIds implements ITagProcessor, IIdResolver, IAdaptable {
 		return node.adaptTo(clazz);
 	}
 
+	@SuppressWarnings("unchecked")
 	public <A> A adaptTo(Class<A> type) {
 		if (type.isAssignableFrom(IIdResolver.class)) {
 			return (A) this;
