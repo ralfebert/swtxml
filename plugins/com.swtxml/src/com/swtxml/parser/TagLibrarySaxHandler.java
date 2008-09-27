@@ -23,9 +23,11 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import com.swtxml.definition.INamespaceDefinition;
+import com.swtxml.definition.ITagDefinition;
 import com.swtxml.tag.Document;
 import com.swtxml.tag.TagInformation;
 import com.swtxml.tag.TagNode;
+import com.swtxml.util.parser.ParseException;
 
 public class TagLibrarySaxHandler extends DefaultHandler {
 
@@ -95,9 +97,17 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		Map<String, String> attributeList = new HashMap<String, String>();
 		ITagLibrary tagLibrary = getTagLibrary(namespaceUri);
 		INamespaceDefinition namespace = namespaceResolver.resolveNamespace(namespaceUri);
-		TagInformation tagInformation = new TagInformation(document, tagLibrary, parserStack
-				.isEmpty() ? null : parserStack.peek(), localName, getLocationInfo(), parserStack
-				.size(), attributeList);
+		if (namespace == null) {
+			throw new ParseException("Unknown namespace: " + namespaceUri);
+		}
+		ITagDefinition tagDefinition = namespace.getTag(localName);
+		if (tagDefinition == null) {
+			throw new ParseException("Unknown tag \"" + localName + "\" for namespace "
+					+ namespaceUri);
+		}
+		TagInformation tagInformation = new TagInformation(document, tagDefinition, tagLibrary,
+				parserStack.isEmpty() ? null : parserStack.peek(), localName, getLocationInfo(),
+				parserStack.size(), attributeList);
 		for (int i = 0; i < attributes.getLength(); i++) {
 			String uri = attributes.getURI(i);
 			if (StringUtils.isEmpty(uri) || uri.equals(namespaceUri)) {

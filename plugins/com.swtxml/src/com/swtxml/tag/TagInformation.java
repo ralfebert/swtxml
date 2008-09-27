@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.swtxml.definition.ITagDefinition;
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
 import com.swtxml.util.adapter.IAdaptable;
@@ -23,6 +24,8 @@ public class TagInformation implements IAdaptable {
 	private final Document document;
 
 	private final ITagLibrary tagLibrary;
+	private ITagDefinition tagDefinition;
+
 	private final TagInformation parent;
 	private final String tagName;
 	private final String locationInfo;
@@ -30,9 +33,11 @@ public class TagInformation implements IAdaptable {
 	protected final Map<String, String> attributes;
 	private List<TagInformation> children = new ArrayList<TagInformation>();
 
-	public TagInformation(Document document, ITagLibrary tagLibrary, TagInformation parent,
-			String tagName, String locationInfo, int level, Map<String, String> attributes) {
+	public TagInformation(Document document, ITagDefinition tagDefinition, ITagLibrary tagLibrary,
+			TagInformation parent, String tagName, String locationInfo, int level,
+			Map<String, String> attributes) {
 		this.document = document;
+		this.tagDefinition = tagDefinition;
 		this.tagLibrary = tagLibrary;
 		this.parent = parent;
 		this.tagName = tagName;
@@ -45,6 +50,7 @@ public class TagInformation implements IAdaptable {
 	public TagInformation(TagInformation tagInfo) {
 		super();
 		this.document = tagInfo.document;
+		this.tagDefinition = tagInfo.tagDefinition;
 		this.tagLibrary = tagInfo.tagLibrary;
 		this.parent = tagInfo.parent;
 		this.tagName = tagInfo.tagName;
@@ -91,6 +97,10 @@ public class TagInformation implements IAdaptable {
 
 	public ITagLibrary getTagLibrary() {
 		return tagLibrary;
+	}
+
+	public ITagDefinition getTagDefinition() {
+		return tagDefinition;
 	}
 
 	public String getAttribute(String name) {

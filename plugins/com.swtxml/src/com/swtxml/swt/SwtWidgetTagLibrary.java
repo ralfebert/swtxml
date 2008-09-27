@@ -17,7 +17,6 @@ import org.eclipse.swt.widgets.Widget;
 import com.swtxml.magic.MagicTagNodeObjectProxy;
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
-import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.metadata.WidgetBuilder;
 import com.swtxml.swt.metadata.WidgetTag;
 import com.swtxml.tag.TagInformation;
@@ -25,14 +24,9 @@ import com.swtxml.tag.TagNode;
 
 public class SwtWidgetTagLibrary implements ITagLibrary {
 
-	private SwtNamespace registry = new SwtNamespace();
-
 	public TagNode tag(TagInformation tagInfo) {
 
-		WidgetTag tag = registry.getTag(tagInfo.getTagName());
-		if (tag == null) {
-			throw new TagLibraryException(tagInfo, "Unknown tag: " + tagInfo.getTagName());
-		}
+		WidgetTag tag = (WidgetTag) tagInfo.getTagDefinition();
 		WidgetBuilder builder = new WidgetBuilder(tag);
 
 		try {
