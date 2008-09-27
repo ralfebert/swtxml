@@ -50,7 +50,9 @@ public class SwtTagLibraryParser extends TagLibraryXmlParser implements IRootNod
 
 		// TODO: null as tag is strange here, think about root nodes in context
 		// of metadata
-		return new MagicTagNodeObjectProxy(null, tagInformation, parent);
+		MagicTagNodeObjectProxy node = new MagicTagNodeObjectProxy(null, tagInformation, parent);
+		node.makeAdaptable(parent);
+		return node;
 	}
 
 	@Override

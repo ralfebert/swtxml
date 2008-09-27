@@ -18,6 +18,7 @@ import com.swtxml.definition.ITagDefinition;
 import com.swtxml.parser.ITagLibrary;
 import com.swtxml.parser.TagLibraryException;
 import com.swtxml.util.adapter.IAdaptable;
+import com.swtxml.util.parser.ParseException;
 
 public class TagInformation implements IAdaptable {
 
@@ -31,7 +32,8 @@ public class TagInformation implements IAdaptable {
 	private final String locationInfo;
 	private final int level;
 	protected final Map<String, String> attributes;
-	private List<TagInformation> children = new ArrayList<TagInformation>();
+	private final List<TagInformation> children = new ArrayList<TagInformation>();
+	private final List<Object> adapterObjects;
 
 	public TagInformation(Document document, ITagDefinition tagDefinition, ITagLibrary tagLibrary,
 			TagInformation parent, String tagName, String locationInfo, int level,
@@ -44,6 +46,7 @@ public class TagInformation implements IAdaptable {
 		this.locationInfo = locationInfo;
 		this.level = level;
 		this.attributes = attributes;
+		this.adapterObjects = new ArrayList<Object>();
 	}
 
 	@Deprecated
@@ -57,6 +60,7 @@ public class TagInformation implements IAdaptable {
 		this.locationInfo = tagInfo.locationInfo;
 		this.level = tagInfo.level;
 		this.attributes = tagInfo.attributes;
+		this.adapterObjects = tagInfo.adapterObjects;
 		this.getDocument().register(this);
 		if (this.parent != null) {
 			this.parent.children.add(this);
@@ -77,7 +81,20 @@ public class TagInformation implements IAdaptable {
 
 	@SuppressWarnings("unchecked")
 	public <T> T adaptTo(Class<T> type) {
+		for (Object adapterObject : adapterObjects) {
+			if (type.isAssignableFrom(adapterObject.getClass())) {
+				return (T) adapterObject;
+			}
+		}
 		return (T) (type.isAssignableFrom(getClass()) ? this : null);
+	}
+
+	public void makeAdaptable(Object obj) {
+		if (obj == null) {
+			throw new ParseException("makeAdaptable may not be called with null");
+		}
+		// TODO: check for conflicts
+		this.adapterObjects.add(obj);
 	}
 
 	public final <T> T parentAdaptTo(Class<T> type) {

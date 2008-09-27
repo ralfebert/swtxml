@@ -11,6 +11,7 @@
 package com.swtxml.swt;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
@@ -31,9 +32,14 @@ public class SwtWidgetTagLibrary implements ITagLibrary {
 
 		try {
 			Integer style = SwtHandling.SWT.getIntValue(tagInfo.getAttribute("style"));
-			Class<?> parentClass = builder.getParentClass();
-			Widget widget = builder.build(tagInfo.parentRecursiveAdaptTo(parentClass),
-					style == null ? SWT.NONE : style);
+			Composite parent = (Composite) tagInfo.parentRecursiveAdaptTo(builder.getParentClass());
+			Widget widget = builder.build(parent, style == null ? SWT.NONE : style);
+			tagInfo.makeAdaptable(widget);
+			// TODO: do not store an extra reference to the layout - can be
+			// resolved via widget
+			// if (parent.getLayout() != null) {
+			// tagInfo.makeAdaptable(parent.getLayout());
+			// }
 			if (widget instanceof TabItem) {
 				return new TabItemNode(tag, tagInfo, widget);
 			}
