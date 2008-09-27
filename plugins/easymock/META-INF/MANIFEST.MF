@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Easymock Plug-in
+Bundle-SymbolicName: easymock
+Bundle-Version: 1.0.0
+Bundle-ClassPath: easymock.jar
+Export-Package: org.easymock
+Bundle-RequiredExecutionEnvironment: J2SE-1.5

@@ -7,8 +7,9 @@ Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swt,
  org.eclipse.jface,
  org.eclipse.ui,
- org.apache.commons.lang,
- org.junit4;resolution:=optional
+ org.apache.commons.lang;bundle-version="2.3.0",
+ org.junit4;resolution:=optional,
+ easymock;bundle-version="1.0.0";resolution:=optional
 Export-Package: com.swtxml,
  com.swtxml.magic,
  com.swtxml.metadata,
@@ -28,16 +29,7 @@ Export-Package: com.swtxml,
  com.swtxml.util.properties,
  com.swtxml.util.proposals,
  com.swtxml.util.reflector,
- com.swtxml.util.types,
- org.apache.commons.lang,
- org.apache.commons.lang.builder,
- org.apache.commons.lang.enums,
- org.apache.commons.lang.exception,
- org.apache.commons.lang.math,
- org.apache.commons.lang.mutable,
- org.apache.commons.lang.text,
- org.apache.commons.lang.time
+ com.swtxml.util.types
 Bundle-Vendor: Ralf Ebert, info@ralfebert.de
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-ClassPath: lib/commons-lang-2.4.jar,
- .
+Bundle-ClassPath: .
