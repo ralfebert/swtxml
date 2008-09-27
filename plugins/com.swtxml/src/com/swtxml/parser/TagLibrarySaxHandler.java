@@ -48,50 +48,12 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 		this.document = new Document();
 	}
 
-	@Deprecated
-	private static final String CLASS_SCHEME = "class://";
-	private Map<String, ITagLibrary> tagLibraries = new HashMap<String, ITagLibrary>();
 	private Stack<TagInformation> parserStack = new Stack<TagInformation>();
-
-	@Deprecated
-	private ITagLibrary getTagLibrary(String namespaceUri) {
-
-		ITagLibrary tagLibrary = tagLibraries.get(namespaceUri);
-
-		if (tagLibrary == null) {
-
-			if (!namespaceUri.toLowerCase().startsWith(CLASS_SCHEME)) {
-				throw new XmlParsingException(getLocationInfo() + "Invalid namespace uri \""
-						+ namespaceUri + "\": (only " + CLASS_SCHEME + " is supported)\"");
-			}
-
-			String tagLibraryClassName = namespaceUri.substring(CLASS_SCHEME.length());
-			try {
-				Class<?> tagLibraryClass = parser.getClassLoader().loadClass(tagLibraryClassName);
-				if (!ITagLibrary.class.isAssignableFrom(tagLibraryClass)) {
-					throw new XmlParsingException(getLocationInfo() + tagLibraryClassName
-							+ " must implement " + ITagLibrary.class.getCanonicalName());
-				}
-				tagLibrary = (ITagLibrary) tagLibraryClass.newInstance();
-				tagLibraries.put(namespaceUri, tagLibrary);
-			} catch (ClassNotFoundException e) {
-				throw new XmlParsingException(getLocationInfo() + "Class " + tagLibraryClassName
-						+ " for " + namespaceUri + " not found!", e);
-			} catch (InstantiationException e) {
-				throw new XmlParsingException(getLocationInfo() + e.getMessage(), e);
-			} catch (IllegalAccessException e) {
-				throw new XmlParsingException(getLocationInfo() + e.getMessage(), e);
-			}
-		}
-
-		return tagLibrary;
-	}
 
 	@Override
 	public void startElement(String namespaceUri, String localName, String qName,
 			Attributes attributes) throws SAXException {
 		Map<String, String> attributeList = new HashMap<String, String>();
-		ITagLibrary tagLibrary = getTagLibrary(namespaceUri);
 		INamespaceDefinition namespace = namespaceResolver.resolveNamespace(namespaceUri);
 		if (namespace == null) {
 			throw new ParseException("Unknown namespace: " + namespaceUri);
@@ -112,9 +74,9 @@ public class TagLibrarySaxHandler extends DefaultHandler {
 				// .getLocalName(i), attributes.getValue(i), false));
 			}
 		}
-		TagInformation tagInformation = new TagInformation(document, tagDefinition, tagLibrary,
-				parserStack.isEmpty() ? null : parserStack.peek(), localName, getLocationInfo(),
-				parserStack.size(), attributeList);
+		TagInformation tagInformation = new TagInformation(document, tagDefinition, parserStack
+				.isEmpty() ? null : parserStack.peek(), localName, getLocationInfo(), parserStack
+				.size(), attributeList);
 
 		parserStack.push(tagInformation);
 	}
