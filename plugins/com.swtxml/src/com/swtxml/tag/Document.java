@@ -1,16 +1,9 @@
 package com.swtxml.tag;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.swtxml.parser.XmlParsingException;
-import com.swtxml.swt.properties.IIdResolver;
-import com.swtxml.util.adapter.IAdaptable;
 
 //TODO: remove document
-public class Document implements IAdaptable {
-
-	private Map<String, Tag> nodesById = new HashMap<String, Tag>();
+public class Document {
 
 	public Tag getRoot() {
 		return root;
@@ -25,20 +18,6 @@ public class Document implements IAdaptable {
 			}
 			this.root = node;
 		}
-		// TODO: refactor out into processor, maybe recursive processors for
-		// setting context?
-		String id = node.getAttribute("id");
-		if (id != null) {
-			nodesById.put(id, node);
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public <A> A adaptTo(Class<A> adapterClass) {
-		if (IIdResolver.class.equals(adapterClass)) {
-			return (A) this;
-		}
-		return null;
 	}
 
 }
