@@ -54,7 +54,7 @@ public class TagLibraryXmlParser {
 		parserFactory.setNamespaceAware(true);
 
 		SAXParser parser = createSaxParser(parserFactory);
-		Document document = new Document();
+		final Document document = new Document();
 
 		TagLibrarySaxHandler s = new TagLibrarySaxHandler(document, namespaceResolver, filename);
 		try {
@@ -63,16 +63,19 @@ public class TagLibraryXmlParser {
 			throw new XmlParsingException(s.getLocationInfo() + e.getMessage(), e);
 		}
 
-		for (ITagProcessor processor : processors) {
-			for (Tag tag : document.getRoot().depthFirst()) {
-				Context.addAdapter(tag);
-				Context.addAdapter(document);
-				try {
-					processor.process(tag);
-				} catch (Exception e) {
-					throw new XmlParsingException(tag.getLocationInfo() + e.getMessage(), e);
-				}
-				Context.clear();
+		for (final ITagProcessor processor : processors) {
+			for (final Tag tag : document.getRoot().depthFirst()) {
+				Context.runWith(new Runnable() {
+					public void run() {
+						Context.addAdapter(tag);
+						Context.addAdapter(document);
+						try {
+							processor.process(tag);
+						} catch (Exception e) {
+							throw new XmlParsingException(tag.getLocationInfo() + e.getMessage(), e);
+						}
+					}
+				});
 			}
 		}
 

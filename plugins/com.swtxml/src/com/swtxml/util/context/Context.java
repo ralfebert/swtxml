@@ -9,14 +9,22 @@ public class Context {
 
 	private static final ThreadLocal<Context> context = new ThreadLocal<Context>();
 
-	private List<IAdaptable> adapters = new ArrayList<IAdaptable>();
+	private final List<IAdaptable> adapters;
 
-	private static Context get() {
-		return context.get();
+	public Context() {
+		this.adapters = new ArrayList<IAdaptable>();
+	}
+
+	public Context(Context ctx) {
+		this.adapters = new ArrayList<IAdaptable>(ctx.adapters);
+	}
+
+	public static void dump() {
+		System.out.println(context.get());
 	}
 
 	private static Context getOrCreate() {
-		Context ctx = get();
+		Context ctx = context.get();
 		if (ctx == null) {
 			ctx = new Context();
 			context.set(ctx);
@@ -26,7 +34,7 @@ public class Context {
 
 	@SuppressWarnings("unchecked")
 	public static <A> A adaptTo(Class<A> clazz) {
-		Context ctx = get();
+		Context ctx = context.get();
 		if (ctx == null) {
 			return null;
 		}
@@ -44,7 +52,33 @@ public class Context {
 		ctx.adapters.add(adapter);
 	}
 
+	public static void removeAdapter(IAdaptable adapter) {
+		Context ctx = context.get();
+		if (!ctx.adapters.remove(adapter)) {
+			throw new ContextException("Could not remove: " + adapter
+					+ " from Context adapter list!");
+		}
+	}
+
 	public static void clear() {
 		context.set(null);
 	}
+
+	@Override
+	public String toString() {
+		return "Context[" + adapters + "]";
+	}
+
+	public static void runWith(Runnable runnable) {
+		Context oldContext = Context.context.get();
+		if (oldContext != null) {
+			Context.context.set(new Context(oldContext));
+		}
+		try {
+			runnable.run();
+		} finally {
+			Context.context.set(oldContext);
+		}
+	}
+
 }
