@@ -10,9 +10,7 @@
  *******************************************************************************/
 package com.swtxml.ide;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.jface.text.contentassist.CompletionProposal;
@@ -33,8 +31,6 @@ import com.swtxml.definition.ITagDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.util.context.Context;
-import com.swtxml.util.lang.CollectionUtils;
-import com.swtxml.util.lang.IPredicate;
 import com.swtxml.util.parser.Strictness;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IContentAssistable;
@@ -47,7 +43,6 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		super();
 	}
 
-	// TODO: use match api for tagname / attribute
 	@Override
 	protected void addTagNameProposals(final ContentAssistRequest contentAssistRequest,
 			int childPosition) {
@@ -72,22 +67,14 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			return;
 		}
 
-		List<String> matchingAttributes = new ArrayList<String>(CollectionUtils.select(tag
-				.getAttributeNames(), new IPredicate<String>() {
-
-			public boolean match(String attr) {
-				return attr.toLowerCase().startsWith(
-						contentAssistRequest.getMatchString().toLowerCase());
-			}
-
-		}));
-		Collections.sort(matchingAttributes);
-		for (String attr : matchingAttributes) {
-			contentAssistRequest.addProposal(new CompletionProposal(attr + "=\"\"",
-					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
-							.getReplacementLength(), attr.length() + 2));
+		Match match = createMatch(contentAssistRequest);
+		match = match.insertAroundMatch("", "=\"\"");
+		// TODO: Create match API for this
+		List<Match> proposals = match.propose(tag.getAttributeNames());
+		for (Match proposal : proposals) {
+			proposal.moveCursor(2);
 		}
-
+		addProposals(contentAssistRequest, proposals);
 	}
 
 	@Override
