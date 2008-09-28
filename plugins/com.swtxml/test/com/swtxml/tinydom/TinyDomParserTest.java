@@ -5,7 +5,9 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -14,9 +16,6 @@ import org.junit.Test;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.definition.impl.TagDefinition;
-import com.swtxml.tinydom.ITagProcessor;
-import com.swtxml.tinydom.Tag;
-import com.swtxml.tinydom.TinyDomParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.types.SimpleTypes;
 
@@ -49,12 +48,76 @@ public class TinyDomParserTest {
 
 	@Test
 	public void testDepthFirstTagProcessing() {
-		INamespaceResolver namespaceResolver = sampleNamespace();
+		Tag root = parseNumbers();
 		CollectNumbers collectNumbers = new CollectNumbers();
-		TinyDomParser parser = new TinyDomParser(namespaceResolver);
-		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
 		root.depthFirst(collectNumbers, collectNumbers);
 		assertEquals("112233445566", collectNumbers.getNumbers());
+	}
+
+	@Test
+	public void testHierarchy() {
+		Tag root = parseNumbers();
+
+		assertNull(root.getParent());
+		assertEquals(2, root.getChildren().size());
+		assertEquals(root, root.getChildren().get(0).getParent());
+		assertEquals("test", root.getTagName());
+	}
+
+	@Test
+	public void testAttributes() {
+		Tag root = parseNumbers();
+		assertEquals("1", root.getAttribute("no"));
+		assertEquals("1", root.getAttribute("no"));
+		assertEquals("1", root.slurpAttribute("no"));
+		assertEquals(null, root.getAttribute("no"));
+	}
+
+	@Test
+	public void testAdapters() {
+		Tag no1 = parseNumbers();
+		Tag no2 = no1.getChildren().get(0);
+		Tag no3 = no2.getChildren().get(0);
+		Tag no4 = no3.getChildren().get(0);
+
+		String str2 = "Hallo";
+		no2.makeAdaptable(str2);
+
+		String str1 = "xxx";
+		no1.makeAdaptable(str1);
+
+		assertEquals(null, no4.adaptTo(String.class));
+		assertEquals(null, no3.adaptTo(String.class));
+		assertEquals(str2, no2.adaptTo(String.class));
+		assertEquals(str1, no1.adaptTo(String.class));
+
+		assertEquals(0, no4.adaptChildren(String.class).size());
+		assertEquals(0, no3.adaptChildren(String.class).size());
+		assertEquals(0, no2.adaptChildren(String.class).size());
+		assertArrayEquals(new Object[] { str2 }, no1.adaptChildren(String.class).toArray());
+
+		assertEquals(null, no4.parentAdaptTo(String.class));
+		assertEquals(str2, no3.parentAdaptTo(String.class));
+		assertEquals(str1, no2.parentAdaptTo(String.class));
+		assertEquals(null, no1.parentAdaptTo(String.class));
+
+		assertEquals(str2, no4.parentRecursiveAdaptTo(String.class));
+		assertEquals(str2, no3.parentRecursiveAdaptTo(String.class));
+		assertEquals(str1, no2.parentRecursiveAdaptTo(String.class));
+		assertEquals(null, no1.parentRecursiveAdaptTo(String.class));
+	}
+
+	private Tag parseNumbers() {
+		INamespaceResolver namespaceResolver = sampleNamespace();
+		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+		Tag root = parser.parse("numbers.xml", getClass().getResourceAsStream("numbers.xml"));
+		return root;
+	}
+
+	@Test
+	public void testLocationInfo() {
+		Tag root = parseNumbers();
+		assertEquals("numbers.xml [line 2] ", root.getLocationInfo());
 	}
 
 	@Test
