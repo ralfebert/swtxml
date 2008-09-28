@@ -34,7 +34,7 @@ public class WidgetTag implements ITagDefinition {
 			WidgetAttribute attribute = new WidgetAttribute(property);
 			attributes.put(attribute.getName(), attribute);
 		}
-		attributes.put("id", new AttributeDefinition("id", new SimpleTypes.StringType()));
+		attributes.put("id", new AttributeDefinition("id", SimpleTypes.STRING));
 		attributes.put("style", new AttributeDefinition("style", new StyleType(SwtInfo.SWT)));
 	}
 

@@ -37,7 +37,7 @@ public class TinyDomParserTest {
 	private INamespaceResolver sampleNamespace() {
 		NamespaceDefinition testNamespace = new NamespaceDefinition();
 		TagDefinition tag = testNamespace.defineTag("test");
-		tag.defineAttribute("no", new SimpleTypes.StringType());
+		tag.defineAttribute("no", SimpleTypes.STRING);
 
 		INamespaceResolver namespaceResolver = createMock(INamespaceResolver.class);
 		expect(namespaceResolver.resolveNamespace("test")).andReturn(testNamespace);

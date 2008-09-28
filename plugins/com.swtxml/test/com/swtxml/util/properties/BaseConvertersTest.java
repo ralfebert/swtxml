@@ -12,7 +12,6 @@ public class BaseConvertersTest {
 
 	@Test
 	public void testSimpleTypeConverters() {
-		assertTrue(Arrays.equals(new int[] { 1, 2, 3 },
-				new SimpleTypes.IntArrayType().convert("1,2,3")));
+		assertTrue(Arrays.equals(new int[] { 1, 2, 3 }, SimpleTypes.INT_ARRAY.convert("1,2,3")));
 	}
 }
