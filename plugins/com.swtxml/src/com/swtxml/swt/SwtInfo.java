@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.swt.metadata.SwtNamespace;
+import com.swtxml.swt.metadata.WidgetRegistry;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.FormAttachmentType;
 import com.swtxml.swt.types.LayoutDataType;
@@ -25,6 +26,8 @@ import com.swtxml.util.types.SimpleTypes;
 public class SwtInfo {
 
 	public final static ConstantParser SWT = new ConstantParser(SWT.class);
+
+	public final static WidgetRegistry WIDGETS = new WidgetRegistry();
 
 	public final static PropertyRegistry WIDGET_PROPERTIES = createWidgetProperties();
 

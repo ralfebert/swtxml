@@ -19,6 +19,7 @@ import javax.xml.parsers.SAXParserFactory;
 import org.xml.sax.SAXException;
 
 import com.swtxml.definition.INamespaceResolver;
+import com.swtxml.util.lang.IOUtils;
 import com.swtxml.util.parser.ParseException;
 
 public class TinyDomParser {
@@ -35,14 +36,8 @@ public class TinyDomParser {
 	}
 
 	public final Tag parse(Class<?> clazz, String extension) {
-		String fname = clazz.getSimpleName() + "." + extension;
-		InputStream resource = clazz.getResourceAsStream(fname);
-		if (resource == null) {
-			throw new ParseException(fname + " not found in package "
-					+ clazz.getPackage().getName());
-		}
-
-		return parse(fname, resource);
+		return parse(clazz.getSimpleName() + "." + extension, IOUtils.getClassResource(clazz,
+				extension));
 	}
 
 	public final <T> Tag parse(String filename, InputStream inputStream) {

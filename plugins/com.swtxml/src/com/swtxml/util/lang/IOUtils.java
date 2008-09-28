@@ -23,4 +23,14 @@ public class IOUtils {
 		}
 	}
 
+	public static InputStream getClassResource(Class<?> clazz, String extension) {
+		String fname = clazz.getSimpleName() + "." + extension;
+		InputStream resource = clazz.getResourceAsStream(fname);
+		if (resource == null) {
+			throw new RuntimeIOException(fname + " not found in package "
+					+ clazz.getPackage().getName());
+		}
+		return resource;
+	}
+
 }

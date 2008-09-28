@@ -32,6 +32,7 @@ package com.swtxml.util.parser;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -103,7 +104,10 @@ public class ConstantParser {
 	}
 
 	public ConstantParser filter(String value) {
-		String[] values = SPLITTER.split(value);
+		return filter(Arrays.asList(SPLITTER.split(value)));
+	}
+
+	public ConstantParser filter(Iterable<String> values) {
 		Map<String, Integer> matches = new HashMap<String, Integer>();
 		for (String v : values) {
 			v = v.trim().toUpperCase();

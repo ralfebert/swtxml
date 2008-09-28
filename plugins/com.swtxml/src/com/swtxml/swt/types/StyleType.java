@@ -1,5 +1,6 @@
 package com.swtxml.swt.types;
 
+import java.util.Collection;
 import java.util.List;
 
 import com.swtxml.util.parser.ConstantParser;
@@ -20,7 +21,11 @@ public class StyleType implements IType<Integer>, IContentAssistable {
 	}
 
 	public List<Match> getProposals(Match match) {
-		return match.restrict(ConstantParser.SPLITTER).propose(constants.getConstants());
+		return match.restrict(ConstantParser.SPLITTER).propose(getAllowedStyles());
+	}
+
+	public Collection<String> getAllowedStyles() {
+		return constants.getConstants();
 	}
 
 }

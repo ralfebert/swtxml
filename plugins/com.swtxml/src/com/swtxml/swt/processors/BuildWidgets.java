@@ -40,7 +40,7 @@ public class BuildWidgets implements ITagProcessor {
 
 		WidgetTag widgetTag = (WidgetTag) tag.getTagDefinition();
 
-		Constructor<?> constructor = getWidgetConstructor(widgetTag.getSwtWidgetClass());
+		Constructor<?> constructor = getWidgetConstructor(widgetTag.getWidgetClass());
 		Class<?> parentClass = constructor.getParameterTypes()[0];
 
 		Composite parent = (Composite) tag.parentRecursiveAdaptTo(parentClass);
