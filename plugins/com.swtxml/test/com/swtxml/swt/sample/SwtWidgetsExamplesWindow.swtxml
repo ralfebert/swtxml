@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-1"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Composite xmlns="swt"
     layout="layout:fill;">
     
@@ -6,7 +6,7 @@
         <TabItem text="RowLayout">
             <Composite layout="layout:row;type:vertical;spacing:5;">
                 <Button text="Sauber" style="CHECK" id="testButton"/>
-                <Button text="Kühl" style="CHECK"/>
+                <Button text="KÃ¼hl" style="CHECK"/>
                 <Button text="Trocken" style="CHECK"/>
             </Composite>
         </TabItem>
@@ -15,7 +15,7 @@
         <TabItem text="FillLayout">
             <Composite layout="layout:fill;">
                 <Button text="Sauber"/>
-                <Button text="Kühl"/>
+                <Button text="KÃ¼hl"/>
             </Composite>
         </TabItem>
 
@@ -72,17 +72,17 @@
                 <Label text="Frische, die hilft" foreground="red"/>
                 <Label text="Hilfe, die erfrischt!" background="#0000ff" foreground="white"/>
                 <Composite style="BORDER" layout="layout:fill;type:vertical;">
-                    <Label text="Geeignet für natriumarme Ernährung."/>
+                    <Label text="Geeignet fÃ¼r natriumarme ErnÃ¤hrung."/>
                     <Label text="456"/>
                 </Composite>
                 <Spinner/>
                 <Button text="Trink!"/>
                 <Button text="Sauber" style="CHECK"/>
-                <Button text="Kühl" style="CHECK"/>
+                <Button text="KÃ¼hl" style="CHECK"/>
                 <Button text="Trocken" style="RADIO"/>
                 <ProgressBar maximum="100" selection="70"/>
                 <Slider/>
-                <Text style="SINGLE,BORDER" text="Ohne Kohlensäure"/>
+                <Text style="SINGLE,BORDER" text="Ohne KohlensÃ¤ure"/>
                 <Text style="V_SCROLL,BORDER" text="Neue Brunnen verbessern die Lebensbedingungen komplett" layoutData="width:200;height:200;"/>
                 
                 <Group text="Hallo" style="BORDER" layout="layout:row;">
