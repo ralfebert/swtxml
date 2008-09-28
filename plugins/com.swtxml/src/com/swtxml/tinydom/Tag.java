@@ -15,8 +15,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.swtxml.contracts.IAdaptable;
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.util.adapter.IAdaptable;
 import com.swtxml.util.parser.ParseException;
 
 public class Tag implements IAdaptable {

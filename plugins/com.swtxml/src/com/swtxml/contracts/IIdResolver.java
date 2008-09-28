@@ -1,4 +1,4 @@
-package com.swtxml.swt;
+package com.swtxml.contracts;
 
 public interface IIdResolver {
 

@@ -14,6 +14,7 @@ import java.lang.reflect.Field;
 
 import org.eclipse.swt.widgets.Composite;
 
+import com.swtxml.contracts.IIdResolver;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceResolver;
 import com.swtxml.swt.processors.BuildWidgets;

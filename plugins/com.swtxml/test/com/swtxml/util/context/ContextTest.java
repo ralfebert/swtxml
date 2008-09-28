@@ -5,7 +5,7 @@ import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 
-import com.swtxml.util.adapter.IAdaptable;
+import com.swtxml.contracts.IAdaptable;
 
 public class ContextTest {
 

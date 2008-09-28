@@ -1,4 +1,6 @@
-package com.swtxml.util.adapter;
+package com.swtxml.contracts;
+
+import com.swtxml.contracts.IAdaptable;
 
 public class MockAdapter implements IAdaptable {
 

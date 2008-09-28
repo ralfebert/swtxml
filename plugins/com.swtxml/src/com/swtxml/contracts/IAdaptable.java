@@ -1,4 +1,4 @@
-package com.swtxml.util.adapter;
+package com.swtxml.contracts;
 
 public interface IAdaptable {
 

@@ -26,11 +26,11 @@ import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 import org.w3c.dom.Node;
 
+import com.swtxml.contracts.IAdaptable;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.ITagDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.LayoutType;
-import com.swtxml.util.adapter.IAdaptable;
 import com.swtxml.util.context.Context;
 import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.lang.IPredicate;

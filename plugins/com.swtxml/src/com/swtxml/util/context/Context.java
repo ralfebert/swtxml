@@ -3,7 +3,7 @@ package com.swtxml.util.context;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.swtxml.util.adapter.IAdaptable;
+import com.swtxml.contracts.IAdaptable;
 
 public class Context {
 

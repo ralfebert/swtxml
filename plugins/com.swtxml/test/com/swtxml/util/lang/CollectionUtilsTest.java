@@ -1,4 +1,4 @@
-package com.swtxml.util.collections;
+package com.swtxml.util.lang;
 
 import static org.junit.Assert.assertEquals;
 

@@ -15,13 +15,13 @@ import org.eclipse.swt.layout.RowLayout;
 import org.junit.After;
 import org.junit.Test;
 
+import com.swtxml.contracts.MockAdapter;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.LayoutDataType;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.swt.types.PointType;
 import com.swtxml.swt.types.StyleType;
-import com.swtxml.util.adapter.MockAdapter;
 import com.swtxml.util.context.Context;
 import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.lang.IFunction;

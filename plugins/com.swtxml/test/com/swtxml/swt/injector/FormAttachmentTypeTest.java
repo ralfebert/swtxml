@@ -14,9 +14,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.swtxml.swt.IIdResolver;
+import com.swtxml.contracts.IIdResolver;
+import com.swtxml.contracts.MockAdapter;
 import com.swtxml.swt.types.FormAttachmentType;
-import com.swtxml.util.adapter.MockAdapter;
 import com.swtxml.util.context.Context;
 
 public class FormAttachmentTypeTest {

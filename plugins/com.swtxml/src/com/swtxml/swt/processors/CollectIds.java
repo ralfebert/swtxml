@@ -3,10 +3,10 @@ package com.swtxml.swt.processors;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.swtxml.swt.IIdResolver;
+import com.swtxml.contracts.IAdaptable;
+import com.swtxml.contracts.IIdResolver;
 import com.swtxml.tinydom.ITagProcessor;
 import com.swtxml.tinydom.Tag;
-import com.swtxml.util.adapter.IAdaptable;
 
 public class CollectIds implements ITagProcessor, IIdResolver, IAdaptable {
 
