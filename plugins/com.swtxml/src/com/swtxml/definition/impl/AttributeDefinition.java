@@ -30,8 +30,4 @@ public class AttributeDefinition implements IAttributeDefinition {
 		this.type = type;
 	}
 
-	public int compareTo(IAttributeDefinition o) {
-		return this.name.compareTo(o.getName());
-	}
-
 }

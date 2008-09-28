@@ -30,10 +30,6 @@ public class TagDefinition implements ITagDefinition {
 		return name;
 	}
 
-	public int compareTo(ITagDefinition o) {
-		return name.compareTo(o.getName());
-	}
-
 	public AttributeDefinition defineAttribute(String name, IType<?> type) {
 		AttributeDefinition attributeDefinition = new AttributeDefinition(name, type);
 		attributes.put(name, attributeDefinition);
