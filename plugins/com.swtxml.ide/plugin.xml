@@ -39,12 +39,12 @@
           category="com.swtxml.viewcategory"
           class="com.swtxml.ide.PreviewViewPart"
           id="com.swtxml.ide.PreviewViewPart"
-          name="SwtXml Preview"
+          name="SWT/XML Preview"
           restorable="true">
     </view>
     <category
           id="com.swtxml.viewcategory"
-          name="SwtXml">
+          name="SWT/XML">
     </category>
  </extension>
 </plugin>

@@ -1,18 +1,18 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SwtXml Ide Plug-in
+Bundle-Name: SWT/XML IDE
 Bundle-SymbolicName: com.swtxml.ide;singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 0.0.1
 Bundle-Activator: com.swtxml.ide.Activator
 Bundle-Vendor: Ralf Ebert, info@ralfebert.de
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.wst.xml.core;bundle-version="1.1.305",
- org.eclipse.wst.sse.core;bundle-version="1.1.302",
- org.eclipse.jface.text;bundle-version="3.4.1",
- org.eclipse.wst.xml.ui;bundle-version="1.0.410",
- org.eclipse.wst.sse.ui;bundle-version="1.1.2",
- org.eclipse.ui.navigator;bundle-version="3.3.101",
- com.swtxml;bundle-version="1.0.0"
+ org.eclipse.wst.xml.core;bundle-version="1.1.0",
+ org.eclipse.wst.sse.core;bundle-version="1.1.0",
+ org.eclipse.jface.text;bundle-version="3.4.0",
+ org.eclipse.wst.xml.ui;bundle-version="1.0.0",
+ org.eclipse.wst.sse.ui;bundle-version="1.1.0",
+ org.eclipse.ui.navigator;bundle-version="3.3.0",
+ com.swtxml;bundle-version="0.0.1"
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy

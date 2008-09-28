@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: SWT XML Markup Language Plugin
+Bundle-Name: SWT/XML Runtime
 Bundle-SymbolicName: com.swtxml
-Bundle-Version: 1.0.0
+Bundle-Version: 0.0.1
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swt,
  org.eclipse.jface,
