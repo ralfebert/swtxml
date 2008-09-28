@@ -2,6 +2,7 @@ package com.swtxml.util.reflector;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,7 +50,9 @@ public class Reflector {
 		if (includePublicFields) {
 			List<Field> fields = Arrays.asList(cl.getFields());
 			for (Field f : fields) {
-				properties.add(new ReflectorField(f));
+				if (!Modifier.isStatic(f.getModifiers())) {
+					properties.add(new ReflectorField(f));
+				}
 			}
 		}
 

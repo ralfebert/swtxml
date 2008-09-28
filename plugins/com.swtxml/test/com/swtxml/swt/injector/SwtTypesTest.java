@@ -97,8 +97,9 @@ public class SwtTypesTest {
 				new Match("type:v§;layout:row;")).get(0).toString());
 		assertEquals(2, layoutType.getProposals(new Match("type:§;layout:row;")).size());
 
-		assertTrue(getProposalsAsSeenByUser(layoutType.getProposals(new Match("layout:§")))
-				.contains("grid"));
+		List<String> proposals = getProposalsAsSeenByUser(layoutType.getProposals(new Match(
+				"layout:§")));
+		assertTrue(proposals + " does not contain grid", proposals.contains("grid"));
 
 	}
 
@@ -132,10 +133,16 @@ public class SwtTypesTest {
 		assertEquals("verticalAlignment:CENTER;§", type.getProposals(
 				new Match("verticalAlignment:c§")).get(0).toString());
 
+	}
+
+	@Test
+	public void testGridLayoutDataAttributesBug() {
+		Context.addAdapter(new MockAdapter(new GridLayout()));
+		LayoutDataType type = new LayoutDataType();
 		List<String> proposals = getProposalsAsSeenByUser(type.getProposals(new Match("§")));
 		assertTrue(proposals.contains("verticalSpan:"));
-		for (String string : proposals) {
-			if (string.contains("GRAB_VERTICAL")) {
+		for (String p : proposals) {
+			if (p.contains("GRAB_VERTICAL")) {
 				fail("attribute proposal for property name");
 			}
 		}
@@ -153,7 +160,7 @@ public class SwtTypesTest {
 	public void testLayoutDataFillLayout() {
 		Context.addAdapter(new MockAdapter(new FillLayout()));
 		LayoutDataType type = new LayoutDataType();
-		assertTrue(type.getProposals(new Match("§")).size() > 0);
+		assertEquals(0, type.getProposals(new Match("§")).size());
 	}
 
 	@Test

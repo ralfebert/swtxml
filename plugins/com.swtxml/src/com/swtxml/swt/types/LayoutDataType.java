@@ -16,6 +16,8 @@ import com.swtxml.swt.SwtInfo;
 import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.KeyValueParser;
 import com.swtxml.util.parser.ParseException;
+import com.swtxml.util.properties.ClassProperties;
+import com.swtxml.util.properties.PropertiesContentAssist;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.reflector.ReflectorException;
 import com.swtxml.util.types.IContentAssistable;
@@ -68,12 +70,22 @@ public class LayoutDataType implements IType<Object>, IContentAssistable {
 	}
 
 	public List<Match> getProposals(Match match) {
-		Layout layout = Context.adaptTo(Layout.class);
+		final Layout layout = Context.adaptTo(Layout.class);
 		if (layout == null) {
 			return Collections.emptyList();
 		}
-		PropertiesContentAssist assist = new PropertiesContentAssist(match);
-		return assist.getProposals(SwtInfo.LAYOUT_PROPERTIES
-				.getProperties(getLayoutDataClass(layout)));
+		// TODO: overriding the class is not necessary here because the
+		// decision is not dependent on the values
+		PropertiesContentAssist assist = new PropertiesContentAssist() {
+			@Override
+			protected ClassProperties<?> getClassProperties(Map<String, String> values) {
+				Class<?> layoutData = getLayoutDataClass(layout);
+				if (layoutData == null) {
+					return null;
+				}
+				return SwtInfo.LAYOUT_PROPERTIES.getProperties(layoutData);
+			}
+		};
+		return assist.getProposals(match);
 	}
 }

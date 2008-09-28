@@ -3,12 +3,12 @@
  */
 package com.swtxml.util.reflector;
 
-
 public class TestVO extends BaseTestVO {
 	private String text;
 	private int counter;
 	public String publicText;
 	protected String baseProtectedText;
+	public static final int SOME_CONSTANT = 5;
 
 	public String getText() {
 		return text;

@@ -3,6 +3,8 @@ package com.swtxml.util.reflector;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.swtxml.util.lang.ContractProof;
+
 public class ReflectorBean {
 
 	private Collection<IReflectorProperty> properties;
@@ -16,6 +18,7 @@ public class ReflectorBean {
 	}
 
 	public ReflectorBean(Class<?> type, boolean includePublicFields) {
+		ContractProof.notNull(type, "type");
 		this.type = type;
 		this.properties = Reflector.findPublicProperties(type, includePublicFields);
 	}

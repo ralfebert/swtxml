@@ -88,6 +88,8 @@ public class ReflectorTest {
 				getReflectorPropertyNamePredicate("basePublicText")) != null);
 		assertTrue("protected field not included", CollectionUtils.select(properties,
 				getReflectorPropertyNamePredicate("protectedText")).isEmpty());
+		assertTrue("static constants are not found", CollectionUtils.select(properties,
+				getReflectorPropertyNamePredicate("SOME_CONSTANT")).isEmpty());
 	}
 
 	@Test
