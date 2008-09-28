@@ -20,7 +20,7 @@ import com.swtxml.tinydom.TinyDomParser;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.types.SimpleTypes;
 
-public class XmlParserTest {
+public class TinyDomParserTest {
 
 	public static class CollectNumbers implements ITagProcessor {
 

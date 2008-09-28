@@ -7,8 +7,9 @@ import com.swtxml.swt.injector.FormAttachmentTypeTest;
 import com.swtxml.swt.injector.SwtInjectorTest;
 import com.swtxml.swt.injector.SwtTypesTest;
 import com.swtxml.swt.metadata.SwtNamespaceTest;
+import com.swtxml.swt.processors.BuildWidgetsTest;
 import com.swtxml.swt.sample.SwtWidgetsTest;
-import com.swtxml.tinydom.XmlParserTest;
+import com.swtxml.tinydom.TinyDomParserTest;
 import com.swtxml.util.collections.CollectionUtilsTest;
 import com.swtxml.util.context.ContextTest;
 import com.swtxml.util.parser.ConstantParserTest;
@@ -25,7 +26,7 @@ import com.swtxml.util.reflector.ReflectorTest;
 		ReflectorTest.class, PropertyMatcherTest.class, BaseConvertersTest.class,
 		PropertyRegistryTest.class, ConstantParserTest.class, KeyValueParserTest.class,
 		FormAttachmentTypeTest.class, ContextTest.class, SwtTypesTest.class, SwtInjectorTest.class,
-		SwtNamespaceTest.class, XmlParserTest.class, SwtWidgetsTest.class })
+		SwtNamespaceTest.class, TinyDomParserTest.class, BuildWidgetsTest.class, SwtWidgetsTest.class })
 public class AllTests {
 
 }
