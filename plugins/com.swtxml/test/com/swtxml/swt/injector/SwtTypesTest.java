@@ -3,12 +3,14 @@ package com.swtxml.swt.injector;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -94,6 +96,10 @@ public class SwtTypesTest {
 		assertEquals("type:VERTICAL;§layout:row;", layoutType.getProposals(
 				new Match("type:v§;layout:row;")).get(0).toString());
 		assertEquals(2, layoutType.getProposals(new Match("type:§;layout:row;")).size());
+
+		assertTrue(getProposalsAsSeenByUser(layoutType.getProposals(new Match("layout:§")))
+				.contains("grid"));
+
 	}
 
 	@Test
@@ -126,6 +132,34 @@ public class SwtTypesTest {
 		assertEquals("verticalAlignment:CENTER;§", type.getProposals(
 				new Match("verticalAlignment:c§")).get(0).toString());
 
+		List<String> proposals = getProposalsAsSeenByUser(type.getProposals(new Match("§")));
+		assertTrue(proposals.contains("verticalSpan:"));
+		for (String string : proposals) {
+			if (string.contains("GRAB_VERTICAL")) {
+				fail("attribute proposal for property name");
+			}
+		}
+	}
+
+	private List<String> getProposalsAsSeenByUser(List<Match> proposals) {
+		return CollectionUtils.collect(proposals, new IFunction<Match, String>() {
+			public String apply(Match m) {
+				return m.getText();
+			}
+		});
+	}
+
+	@Test
+	public void testLayoutDataFillLayout() {
+		Context.addAdapter(new MockAdapter(new FillLayout()));
+		LayoutDataType type = new LayoutDataType();
+		assertTrue(type.getProposals(new Match("§")).size() > 0);
+	}
+
+	@Test
+	public void testLayoutDataWithoutLayoutContentAssist() {
+		LayoutDataType type = new LayoutDataType();
+		assertEquals(0, type.getProposals(new Match("§")).size());
 	}
 
 	@Test
