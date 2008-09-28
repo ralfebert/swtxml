@@ -105,6 +105,17 @@ public class Tag implements IAdaptable {
 		return children;
 	}
 
+	public <A> List<A> adaptChildren(Class<A> type) {
+		List<A> results = new ArrayList<A>();
+		for (Tag tag : children) {
+			A adapted = tag.adaptTo(type);
+			if (adapted != null) {
+				results.add(adapted);
+			}
+		}
+		return results;
+	}
+
 	public boolean isRoot() {
 		return getParent() == null;
 	}

@@ -1,5 +1,7 @@
 package com.swtxml.swt.processors;
 
+import java.util.List;
+
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.TabItem;
@@ -27,21 +29,13 @@ public class SetAttributes implements ITagProcessor {
 		}
 
 		if (widget instanceof TabItem) {
-			Control control = null;
-			for (Tag children : tag.getChildren()) {
-				Control childNodeControl = children.adaptTo(Control.class);
-				if (childNodeControl != null) {
-					if (control != null) {
-						throw new ParseException("TabItems may have only one control inside!");
-					} else {
-						control = childNodeControl;
-					}
-				}
+			List<Control> controlChildren = tag.adaptChildren(Control.class);
+			if (controlChildren.size() > 1) {
+				throw new ParseException("TabItems may have only one control inside!");
 			}
-			if (control != null) {
-				((TabItem) widget).setControl(control);
+			if (controlChildren.size() == 1) {
+				((TabItem) widget).setControl(controlChildren.get(0));
 			}
-
 		}
 
 		for (String name : tag.getAttributes().keySet()) {
