@@ -15,7 +15,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import com.swtxml.rcp.SwtXmlWindow;
-import com.swtxml.swt.ById;
+import com.swtxml.swt.byid.ById;
 
 public class SwtWidgetsExamplesWindow extends SwtXmlWindow {
 

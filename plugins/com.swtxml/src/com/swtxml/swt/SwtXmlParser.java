@@ -10,13 +10,11 @@
  *******************************************************************************/
 package com.swtxml.swt;
 
-import java.lang.reflect.Field;
-
 import org.eclipse.swt.widgets.Composite;
 
-import com.swtxml.contracts.IIdResolver;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceResolver;
+import com.swtxml.swt.byid.ByIdInjector;
 import com.swtxml.swt.processors.BuildWidgets;
 import com.swtxml.swt.processors.CollectIds;
 import com.swtxml.swt.processors.SetAttributes;
@@ -25,7 +23,6 @@ import com.swtxml.tinydom.ITagProcessor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.tinydom.TinyDomParser;
 import com.swtxml.util.context.Context;
-import com.swtxml.util.parser.ParseException;
 
 public class SwtXmlParser extends TinyDomParser {
 
@@ -61,28 +58,7 @@ public class SwtXmlParser extends TinyDomParser {
 			}
 		});
 
-		injectById(ids);
-	}
-
-	public void injectById(IIdResolver ids) {
-		// TODO: consider superclass methods
-		for (Field field : controller.getClass().getDeclaredFields()) {
-			if (field.isAnnotationPresent(ById.class)) {
-				try {
-					Object value = ids.getById(field.getName(), field.getType());
-					if (value == null) {
-						throw new ParseException("No element with id " + field.getName()
-								+ " found for injecting @ById");
-					}
-					boolean oldAccess = field.isAccessible();
-					field.setAccessible(true);
-					field.set(controller, value);
-					field.setAccessible(oldAccess);
-				} catch (Exception e) {
-					throw new ParseException(e);
-				}
-			}
-		}
+		new ByIdInjector().inject(controller, ids);
 	}
 
 }

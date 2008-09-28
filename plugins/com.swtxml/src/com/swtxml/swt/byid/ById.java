@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.swt;
+package com.swtxml.swt.byid;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
