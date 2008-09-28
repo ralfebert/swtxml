@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Widget;
 
+import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.FormAttachmentType;
 import com.swtxml.swt.types.LayoutDataType;
@@ -28,6 +29,8 @@ public class SwtInfo {
 	public final static PropertyRegistry WIDGET_PROPERTIES = createWidgetProperties();
 
 	public final static PropertyRegistry LAYOUT_PROPERTIES = createLayoutProperties();
+
+	public final static SwtNamespace NAMESPACE = new SwtNamespace();
 
 	private static PropertyRegistry createWidgetProperties() {
 		PropertyRegistry props = new PropertyRegistry(false);

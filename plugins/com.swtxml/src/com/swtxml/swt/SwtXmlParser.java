@@ -16,11 +16,10 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.impl.NamespaceResolver;
-import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.processors.BuildWidgets;
 import com.swtxml.swt.processors.CollectIds;
-import com.swtxml.swt.processors.TagContextProcessor;
 import com.swtxml.swt.processors.SetAttributes;
+import com.swtxml.swt.processors.TagContextProcessor;
 import com.swtxml.tinydom.ITagProcessor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.tinydom.TinyDomParser;
@@ -40,7 +39,7 @@ public class SwtXmlParser extends TinyDomParser {
 
 	private static INamespaceResolver createSwtNamespaceResolver() {
 		NamespaceResolver resolver = new NamespaceResolver();
-		resolver.addNamespace("swt", new SwtNamespace());
+		resolver.addNamespace("swt", SwtInfo.NAMESPACE);
 		return resolver;
 	}
 

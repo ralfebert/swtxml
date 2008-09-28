@@ -10,6 +10,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
+import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.tinydom.Tag;
 
@@ -19,7 +20,7 @@ public class BuildWidgetsTest {
 	public void testBuildWidgets() {
 
 		Shell shell = new Shell();
-		SwtNamespace swt = new SwtNamespace();
+		SwtNamespace swt = SwtInfo.NAMESPACE;
 
 		Tag root = new Tag(swt.getTag("Composite"), null, "-", new HashMap<String, String>());
 		Tag btn = new Tag(swt.getTag("Button"), root, "-", new HashMap<String, String>());

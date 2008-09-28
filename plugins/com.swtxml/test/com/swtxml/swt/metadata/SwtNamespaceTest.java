@@ -7,23 +7,24 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.swtxml.definition.IAttributeDefinition;
+import com.swtxml.swt.SwtInfo;
 
 public class SwtNamespaceTest {
 
-	private SwtNamespace swtTagRegistry;
+	private SwtNamespace swt;
 	private WidgetTag buttonTag;
 
 	@Before
 	public void setUp() throws Exception {
-		swtTagRegistry = new SwtNamespace();
-		buttonTag = swtTagRegistry.getTag("Button");
+		swt = SwtInfo.NAMESPACE;
+		buttonTag = swt.getTag("Button");
 	}
 
 	@Test
 	public void testGetTagMetaData() {
 		assertEquals("Button", buttonTag.getName());
 
-		assertTrue(swtTagRegistry.getTagNames().size() > 0);
+		assertTrue(swt.getTagNames().size() > 0);
 		assertTrue(buttonTag.getAttributeNames().size() > 0);
 
 		IAttributeDefinition textAttribute = buttonTag.getAttribute("text");

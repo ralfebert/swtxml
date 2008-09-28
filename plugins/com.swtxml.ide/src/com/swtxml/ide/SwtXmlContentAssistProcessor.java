@@ -27,9 +27,8 @@ import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 import org.w3c.dom.Node;
 
 import com.swtxml.definition.IAttributeDefinition;
-import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.swt.metadata.SwtNamespace;
+import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.util.adapter.IAdaptable;
 import com.swtxml.util.context.Context;
@@ -43,9 +42,6 @@ import com.swtxml.util.types.IType;
 @SuppressWarnings("restriction")
 public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
-	// TODO: this should know nothing about swt
-	private INamespaceDefinition registry = new SwtNamespace();
-
 	public SwtXmlContentAssistProcessor() {
 		super();
 	}
@@ -54,7 +50,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 	@Override
 	protected void addTagNameProposals(final ContentAssistRequest contentAssistRequest,
 			int childPosition) {
-		Collection<String> tags = registry.getTagNames();
+		Collection<String> tags = SwtInfo.NAMESPACE.getTagNames();
 		List<String> matchingTags = new ArrayList<String>(CollectionUtils.select(tags,
 				new IPredicate<String>() {
 
@@ -75,7 +71,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
 	@Override
 	protected void addAttributeNameProposals(final ContentAssistRequest contentAssistRequest) {
-		ITagDefinition tag = registry.getTag(contentAssistRequest.getNode().getNodeName());
+		ITagDefinition tag = SwtInfo.NAMESPACE.getTag(contentAssistRequest.getNode().getNodeName());
 		if (tag == null) {
 			return;
 		}
@@ -100,7 +96,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
 	@Override
 	protected void addAttributeValueProposals(final ContentAssistRequest contentAssistRequest) {
-		ITagDefinition tag = registry.getTag(contentAssistRequest.getNode().getNodeName());
+		ITagDefinition tag = SwtInfo.NAMESPACE.getTag(contentAssistRequest.getNode().getNodeName());
 		if (tag == null) {
 			return;
 		}
