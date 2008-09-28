@@ -8,6 +8,8 @@ import java.util.Collection;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableItem;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -37,5 +39,11 @@ public class WidgetRegistryTest {
 	@Test
 	public void testGetWidgetClass() {
 		assertEquals(Button.class, registry.getWidgetClass(Button.class.getName()));
+	}
+
+	@Test
+	public void testGetAllowedParentType() {
+		assertEquals(Composite.class, registry.getAllowedParentType(Button.class));
+		assertEquals(Table.class, registry.getAllowedParentType(TableItem.class));
 	}
 }

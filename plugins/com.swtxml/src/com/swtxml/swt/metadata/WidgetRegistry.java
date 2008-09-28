@@ -1,5 +1,6 @@
 package com.swtxml.swt.metadata;
 
+import java.lang.reflect.Constructor;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -11,7 +12,9 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.DefinitionException;
+import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.lang.IOUtils;
+import com.swtxml.util.lang.IPredicate;
 import com.swtxml.util.parser.ParseException;
 
 public class WidgetRegistry {
@@ -53,5 +56,24 @@ public class WidgetRegistry {
 		} catch (ClassNotFoundException e) {
 			throw new DefinitionException(e);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public Constructor getWidgetConstructor(Class<? extends Widget> widgetClass) {
+		return CollectionUtils.find(Arrays.asList(widgetClass.getConstructors()),
+				new IPredicate<Constructor>() {
+
+					public boolean match(Constructor constructor) {
+						return (constructor.getParameterTypes().length == 2 && constructor
+								.getParameterTypes()[1] == Integer.TYPE);
+					}
+
+				});
+	}
+
+	public Class<?> getAllowedParentType(Class<? extends Widget> type) {
+		Constructor<?> constructor = getWidgetConstructor(type);
+		return constructor.getParameterTypes()[0];
+
 	}
 }
