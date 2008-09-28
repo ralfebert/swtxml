@@ -38,8 +38,8 @@ public class LayoutDataType implements IType<Object>, IContentAssistable {
 
 		Class<?> layoutDataClass = getLayoutDataClass(parentLayout);
 		if (layoutDataClass == null) {
-			throw new ParseException("Layout " + layoutDataClass.getSimpleName()
-					+ " doesn't allow layout data!");
+			throw new ParseException("Layout " + parentLayout.getClass().getSimpleName()
+					+ " doesn't allow layoutData!");
 		}
 
 		Object layoutData;

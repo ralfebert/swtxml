@@ -25,6 +25,7 @@ import org.eclipse.wst.xml.core.internal.regions.DOMRegionContext;
 import org.eclipse.wst.xml.ui.internal.contentassist.ContentAssistRequest;
 import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 import org.w3c.dom.Node;
+import org.w3c.dom.Text;
 
 import com.swtxml.contracts.IAdaptable;
 import com.swtxml.definition.IAttributeDefinition;
@@ -50,22 +51,17 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 	@Override
 	protected void addTagNameProposals(final ContentAssistRequest contentAssistRequest,
 			int childPosition) {
+
+		Match match = createMatch(contentAssistRequest);
+
+		// TODO: this should know nothing about swt
 		Collection<String> tags = SwtInfo.NAMESPACE.getTagNames();
-		List<String> matchingTags = new ArrayList<String>(CollectionUtils.select(tags,
-				new IPredicate<String>() {
 
-					public boolean match(String tag) {
-						return tag.toLowerCase().startsWith(
-								contentAssistRequest.getMatchString().toLowerCase());
-					}
-
-				}));
-		Collections.sort(matchingTags);
-		for (String tag : matchingTags) {
-			contentAssistRequest.addProposal(new CompletionProposal(tag + "/>",
-					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
-							.getReplacementLength(), 5));
+		if (contentAssistRequest.getNode() instanceof Text) {
+			match = match.insertAroundMatch("", "/>");
 		}
+
+		addProposals(contentAssistRequest, match.propose(tags));
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
 
@@ -152,19 +148,25 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		IType<?> type = attribute.getType();
 		if (type instanceof IContentAssistable) {
 
-			Match match = new Match(contentAssistRequest.getText(), contentAssistRequest
-					.getMatchString().length()).handleQuotes();
-			List<Match> proposals = ((IContentAssistable) type).getProposals(match);
-
-			for (Match proposal : proposals) {
-				CompletionProposal newProposal = new CompletionProposal(proposal
-						.getReplacementText(), contentAssistRequest.getReplacementBeginPosition(),
-						contentAssistRequest.getReplacementLength(), proposal
-								.getReplacementCursorPos(), null, proposal.getText(), null, null);
-				contentAssistRequest.addProposal(newProposal);
-			}
+			Match match = createMatch(contentAssistRequest).handleQuotes();
+			addProposals(contentAssistRequest, ((IContentAssistable) type).getProposals(match));
 		}
 
 		Context.clear();
+	}
+
+	private void addProposals(final ContentAssistRequest contentAssistRequest, List<Match> proposals) {
+		for (Match proposal : proposals) {
+			CompletionProposal newProposal = new CompletionProposal(proposal.getReplacementText(),
+					contentAssistRequest.getReplacementBeginPosition(), contentAssistRequest
+							.getReplacementLength(), proposal.getReplacementCursorPos(), null,
+					proposal.getText(), null, null);
+			contentAssistRequest.addProposal(newProposal);
+		}
+	}
+
+	private Match createMatch(final ContentAssistRequest contentAssistRequest) {
+		return new Match(contentAssistRequest.getText(), contentAssistRequest.getMatchString()
+				.length());
 	}
 }

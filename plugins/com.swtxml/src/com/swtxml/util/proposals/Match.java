@@ -61,20 +61,22 @@ public class Match {
 		return text.substring(0, cursorPos) + "§" + text.substring(cursorPos);
 	}
 
-	private void _stripQuotes() {
+	private void _handleQuotes() {
 		if (!text.startsWith("\"")) {
-			_insert("\"", 0);
+			_insertAroundMatch("\"", "");
+		} else {
+			this.start++;
 		}
 		if (!text.endsWith("\"")) {
-			_insert("\"", text.length());
+			_insertAroundMatch("", "\"");
+		} else {
+			this.end--;
 		}
-		this.start++;
-		this.end--;
 	}
 
 	public Match handleQuotes() {
 		Match m = new Match(this);
-		m._stripQuotes();
+		m._handleQuotes();
 		return m;
 	}
 
@@ -116,6 +118,20 @@ public class Match {
 		}
 		end -= (length - str.length());
 		text = text.substring(0, i) + str + text.substring(i + length);
+	}
+
+	public Match insertAroundMatch(String startstr, String endstr) {
+		Match m = new Match(this);
+		m._insertAroundMatch(startstr, endstr);
+		return m;
+	}
+
+	private void _insertAroundMatch(String startstr, String endstr) {
+		text = text.substring(0, start) + startstr + text.substring(start, end) + endstr
+				+ text.substring(end);
+		start += startstr.length();
+		end += startstr.length();
+		cursorPos += startstr.length();
 	}
 
 	public String getReplacementText() {

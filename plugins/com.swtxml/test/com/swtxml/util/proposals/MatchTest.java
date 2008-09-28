@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.swtxml.util.parser.Splitter;
 
-public class ProposalsTest {
+public class MatchTest {
 
 	private Match m;
 	private Match m2;
@@ -47,6 +47,13 @@ public class ProposalsTest {
 	}
 
 	@Test
+	public void testInsertAroundMatch() {
+		m = m.insertAroundMatch("yy", "xxx");
+		assertEquals("yy123§456xxx", m.toString());
+		assertEquals("123456", m.getText());
+	}
+
+	@Test
 	public void handleQuotes() {
 		assertEquals("\"123§456\"", m.handleQuotes().toString());
 		assertEquals("\"123§456\"", m2.handleQuotes().toString());
@@ -54,6 +61,13 @@ public class ProposalsTest {
 		assertEquals("123456", m2.handleQuotes().getText());
 		assertEquals("\"123456\"", m.handleQuotes().getReplacementText());
 		assertEquals("\"123456\"", m2.handleQuotes().getReplacementText());
+	}
+
+	@Test
+	public void testInsertAroundMatchWithQuotes() {
+		m = m.handleQuotes().insertAroundMatch("yy", "xxx");
+		assertEquals("\"yy123§456xxx\"", m.toString());
+		assertEquals("123456", m.getText());
 	}
 
 	@Test
