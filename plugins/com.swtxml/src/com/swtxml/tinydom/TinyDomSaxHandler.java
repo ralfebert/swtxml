@@ -52,8 +52,16 @@ public class TinyDomSaxHandler extends DefaultHandler {
 		}
 		Map<String, String> attributeList = processAttributes(namespaceUri, attributes,
 				tagDefinition);
+
 		Tag tag = new Tag(tagDefinition, parserStack.isEmpty() ? null : parserStack.peek(),
 				getLocationInfo(), attributeList);
+
+		ITagDefinition parentTag = tag.getParent() != null ? tag.getParent().getTagDefinition()
+				: ITagDefinition.ROOT;
+		if (!tagDefinition.isAllowedIn(parentTag)) {
+			throw new ParseException("Tag " + tag.getTagName() + " is not allowed in "
+					+ parentTag.getName());
+		}
 
 		if (root == null) {
 			this.root = tag;

@@ -14,6 +14,7 @@ import static org.junit.Assert.fail;
 import org.junit.Test;
 
 import com.swtxml.definition.INamespaceResolver;
+import com.swtxml.definition.ITagDefinition;
 import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.definition.impl.TagDefinition;
 import com.swtxml.util.parser.ParseException;
@@ -36,12 +37,14 @@ public class TinyDomParserTest {
 
 	private INamespaceResolver sampleNamespace() {
 		NamespaceDefinition testNamespace = new NamespaceDefinition();
-		TagDefinition tag = testNamespace.defineTag("test");
+		TagDefinition tag = testNamespace.defineTag("test", ITagDefinition.ROOT).allowNested();
 		tag.defineAttribute("no", SimpleTypes.STRING);
+		return namespace("test", testNamespace);
+	}
 
+	private INamespaceResolver namespace(String name, NamespaceDefinition testNamespace) {
 		INamespaceResolver namespaceResolver = createMock(INamespaceResolver.class);
-		expect(namespaceResolver.resolveNamespace("test")).andReturn(testNamespace);
-
+		expect(namespaceResolver.resolveNamespace(name)).andReturn(testNamespace);
 		replay(namespaceResolver);
 		return namespaceResolver;
 	}
@@ -164,6 +167,23 @@ public class TinyDomParserTest {
 		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));
 			assertTrue(e.getMessage().contains("NO"));
+		}
+	}
+
+	@Test
+	public void testInvalidScope() {
+		NamespaceDefinition testNamespace = new NamespaceDefinition();
+		TagDefinition test = testNamespace.defineTag("test", ITagDefinition.ROOT);
+		testNamespace.defineTag("yes", test);
+
+		INamespaceResolver namespaceResolver = namespace("test", testNamespace);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+		try {
+			parser.parse("test", getClass().getResourceAsStream("invalidscope.xml"));
+			fail("expected exception");
+		} catch (ParseException e) {
+			assertTrue(e.getMessage().contains("line 4"));
+			assertTrue(e.getMessage().contains("test"));
 		}
 	}
 }

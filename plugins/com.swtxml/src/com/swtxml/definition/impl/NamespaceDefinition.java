@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.swtxml.definition.INamespaceDefinition;
+import com.swtxml.definition.ITagDefinition;
 
 public class NamespaceDefinition implements INamespaceDefinition {
 
@@ -19,8 +20,8 @@ public class NamespaceDefinition implements INamespaceDefinition {
 		return Collections.unmodifiableSet(tags.keySet());
 	}
 
-	public TagDefinition defineTag(String name) {
-		TagDefinition tagDefinition = new TagDefinition(name);
+	public TagDefinition defineTag(String name, ITagDefinition... allowedParentTags) {
+		TagDefinition tagDefinition = new TagDefinition(name, allowedParentTags);
 		tags.put(name, tagDefinition);
 		return tagDefinition;
 	}

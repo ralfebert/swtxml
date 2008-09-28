@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.swtxml.definition.IAttributeDefinition;
+import com.swtxml.definition.ITagDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.StyleType;
 
@@ -16,11 +17,13 @@ public class SwtNamespaceTest {
 
 	private SwtNamespace swt;
 	private WidgetTag buttonTag;
+	private WidgetTag compositeTag;
 
 	@Before
 	public void setUp() throws Exception {
 		swt = SwtInfo.NAMESPACE;
 		buttonTag = swt.getTag("Button");
+		compositeTag = swt.getTag("Composite");
 	}
 
 	@Test
@@ -43,5 +46,17 @@ public class SwtNamespaceTest {
 		StyleType type = (StyleType) style.getType();
 		assertTrue(type.getAllowedStyles().contains("TOGGLE"));
 		assertFalse(type.getAllowedStyles().contains("COLOR_RED"));
+	}
+
+	@Test
+	public void testScoping() {
+		assertTrue(compositeTag.isAllowedIn(ITagDefinition.ROOT));
+		assertFalse(buttonTag.isAllowedIn(ITagDefinition.ROOT));
+		assertFalse(compositeTag.isAllowedIn(buttonTag));
+		assertTrue(buttonTag.isAllowedIn(compositeTag));
+		assertFalse(buttonTag.isAllowedIn(buttonTag));
+		assertTrue(compositeTag.isAllowedIn(compositeTag));
+		assertTrue(swt.getTag("Button").isAllowedIn(swt.getTag("TabItem")));
+		assertTrue(swt.getTag("Tree").isAllowedIn(swt.getTag("Group")));
 	}
 }

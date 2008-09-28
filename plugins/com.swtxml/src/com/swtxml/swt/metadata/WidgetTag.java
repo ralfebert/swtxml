@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
@@ -63,5 +65,21 @@ public class WidgetTag implements ITagDefinition {
 
 	public Set<String> getAttributeNames() {
 		return Collections.unmodifiableSet(attributes.keySet());
+	}
+
+	public boolean isAllowedIn(ITagDefinition parentTagDefinition) {
+		if (parentTagDefinition == ITagDefinition.ROOT) {
+			return Composite.class.isAssignableFrom(getWidgetClass());
+		}
+		if (parentTagDefinition instanceof WidgetTag) {
+			Class<? extends Widget> actualParentClass = ((WidgetTag) parentTagDefinition)
+					.getWidgetClass();
+			Class<?> allowedParentClass = SwtInfo.WIDGETS.getAllowedParentType(getWidgetClass());
+			if (TabItem.class.equals(actualParentClass)) {
+				allowedParentClass = TabItem.class;
+			}
+			return allowedParentClass.isAssignableFrom(actualParentClass);
+		}
+		return false;
 	}
 }

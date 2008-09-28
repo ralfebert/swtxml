@@ -44,6 +44,7 @@ public class Tag implements IAdaptable {
 		return locationInfo;
 	}
 
+	// TODO: rename to getname
 	public String getTagName() {
 		return tagDefinition.getName();
 	}

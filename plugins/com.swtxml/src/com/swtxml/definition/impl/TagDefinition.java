@@ -1,7 +1,9 @@
 package com.swtxml.definition.impl;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -13,9 +15,11 @@ public class TagDefinition implements ITagDefinition {
 
 	private final String name;
 	private final Map<String, AttributeDefinition> attributes = new HashMap<String, AttributeDefinition>();
+	private Set<ITagDefinition> allowedParentTags;
 
-	public TagDefinition(String name) {
+	public TagDefinition(String name, ITagDefinition... allowedParentTags) {
 		this.name = name;
+		this.allowedParentTags = new HashSet<ITagDefinition>(Arrays.asList(allowedParentTags));
 	}
 
 	public IAttributeDefinition getAttribute(String name) {
@@ -36,4 +40,12 @@ public class TagDefinition implements ITagDefinition {
 		return attributeDefinition;
 	}
 
+	public boolean isAllowedIn(ITagDefinition parentTagDefinition) {
+		return allowedParentTags.contains(parentTagDefinition);
+	}
+
+	public TagDefinition allowNested() {
+		allowedParentTags.add(this);
+		return this;
+	}
 }
