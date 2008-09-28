@@ -27,6 +27,7 @@ import com.swtxml.definition.ITagDefinition;
 import com.swtxml.definition.impl.AttributeDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.StyleType;
+import com.swtxml.util.parser.ConstantParser;
 import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.Property;
 import com.swtxml.util.types.SimpleTypes;
@@ -48,10 +49,14 @@ public class WidgetTag implements ITagDefinition {
 			WidgetAttribute attribute = new WidgetAttribute(property);
 			attributes.put(attribute.getName(), attribute);
 		}
+
 		attributes.put("id", new AttributeDefinition("id", SimpleTypes.STRING));
+
 		Collection<String> allowedWidgetStyles = SwtInfo.WIDGETS.getAllowedStylesFor(widgetClass);
-		attributes.put("style", new AttributeDefinition("style", new StyleType(SwtInfo.SWT
-				.filter(allowedWidgetStyles))));
+		ConstantParser styles = SwtInfo.SWT.filter(allowedWidgetStyles);
+		if (!styles.getConstants().isEmpty()) {
+			attributes.put("style", new AttributeDefinition("style", new StyleType(styles)));
+		}
 	}
 
 	public Class<? extends Widget> getWidgetClass() {

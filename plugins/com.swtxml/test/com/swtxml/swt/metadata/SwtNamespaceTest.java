@@ -72,4 +72,9 @@ public class SwtNamespaceTest {
 		assertFalse(swt.getTag("Button").isAllowedIn(swt.getTag("TabFolder")));
 		assertTrue(swt.getTag("Tree").isAllowedIn(swt.getTag("Group")));
 	}
+
+	@Test
+	public void testTagsWithoutStyleFlagsHaveNoStyleAttribute() {
+		assertNull(swt.getTag("TabItem").getAttribute("style"));
+	}
 }
