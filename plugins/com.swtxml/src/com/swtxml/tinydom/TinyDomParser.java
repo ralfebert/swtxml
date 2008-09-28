@@ -30,11 +30,11 @@ public class TinyDomParser {
 		this.namespaceResolver = namespaceResolver;
 	}
 
-	protected Tag parse(Class<?> clazz) {
+	public final Tag parse(Class<?> clazz) {
 		return parse(clazz, "xml");
 	}
 
-	protected Tag parse(Class<?> clazz, String extension) {
+	public final Tag parse(Class<?> clazz, String extension) {
 		String fname = clazz.getSimpleName() + "." + extension;
 		InputStream resource = clazz.getResourceAsStream(fname);
 		if (resource == null) {
@@ -45,7 +45,7 @@ public class TinyDomParser {
 		return parse(fname, resource);
 	}
 
-	public <T> Tag parse(String filename, InputStream inputStream) {
+	public final <T> Tag parse(String filename, InputStream inputStream) {
 		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 		parserFactory.setNamespaceAware(true);
 
@@ -58,7 +58,12 @@ public class TinyDomParser {
 			throw new ParseException(saxHandler.getLocationInfo() + e.getMessage(), e);
 		}
 
+		onParseCompleted(saxHandler.getRoot());
 		return saxHandler.getRoot();
+	}
+
+	protected void onParseCompleted(Tag root) {
+
 	}
 
 	private SAXParser createSaxParser(SAXParserFactory parserFactory) {

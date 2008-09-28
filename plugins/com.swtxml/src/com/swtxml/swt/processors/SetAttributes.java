@@ -2,8 +2,8 @@ package com.swtxml.swt.processors;
 
 import java.util.List;
 
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
@@ -21,10 +21,10 @@ public class SetAttributes implements ITagProcessor {
 		}
 
 		if (widget instanceof Control) {
-			Layout layout = ((Control) widget).getParent().getLayout();
-			if (layout != null) {
+			Composite parent = ((Control) widget).getParent();
+			if (parent != null && parent.getLayout() != null) {
 				// TODO: try not to store an extra reference
-				tag.makeAdaptable(layout);
+				tag.makeAdaptable(parent.getLayout());
 			}
 		}
 

@@ -41,9 +41,12 @@ public class SwtXmlParser extends TinyDomParser {
 		return resolver;
 	}
 
-	public void parse() {
-		final Tag root = super.parse(controller.getClass(), "swtxml");
+	public Tag parse() {
+		return super.parse(controller.getClass(), "swtxml");
+	}
 
+	@Override
+	protected void onParseCompleted(final Tag root) {
 		final CollectIds ids = new CollectIds();
 		final ITagProcessor buildWidgets = new TagContextProcessor(new BuildWidgets(parent));
 		final ITagProcessor setAttributes = new TagContextProcessor(new SetAttributes());
@@ -58,7 +61,9 @@ public class SwtXmlParser extends TinyDomParser {
 			}
 		});
 
-		new ByIdInjector().inject(controller, ids);
+		if (controller != null) {
+			new ByIdInjector().inject(controller, ids);
+		}
 	}
 
 }
