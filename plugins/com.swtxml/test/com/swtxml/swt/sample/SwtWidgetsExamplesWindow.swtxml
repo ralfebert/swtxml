@@ -25,7 +25,7 @@
 
                 <Label text="Test:" layoutData="widthHint:120  ;  " toolTipText="test"/>
                 <Combo style="READ_ONLY" toolTipText="whatever">
-<!--                    <pt:list values="Volvic|Vittel|Thüringer Waldquell|Höllensprudel|Apollinaris"/>-->
+<!--                    <pt:list values="Red|Green|Blue|Yellow|Black|Grey"/>-->
                 </Combo>
                 
                 
@@ -88,7 +88,7 @@
                 <Group text="Hallo" style="BORDER" layout="layout:row;">
                     <Tree layoutData="width:150;height:200;"/>
                     <List style="FULL_SELECTION" layoutData="width:150;height:200;">
-                        <!--<pt:list values="Volvic|Vittel|Thüringer Waldquell|Höllensprudel|Apollinaris"/>-->
+                        <!--<pt:list values="Red|Green|Blue|Yellow|Black|Grey"/>-->
                     </List>
                 </Group>
                 

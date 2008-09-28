@@ -1,3 +1,17 @@
+/********************************import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import org.eclipse.swt.SWT;
+import org.junit.Before;
+import org.junit.Test;
+Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *     Ralf Ebert - initial API and implementation
+ *******************************************************************************/
 package com.swtxml.util.parser;
 
 import static org.junit.Assert.assertEquals;

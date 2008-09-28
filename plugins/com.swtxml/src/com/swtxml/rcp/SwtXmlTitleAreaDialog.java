@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2008 Ralf Ebert and others.
+ * Copyright (c) 2008 Ralf Ebert
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,11 +29,9 @@ public class SwtXmlTitleAreaDialog extends TitleAreaDialog {
 	protected Control createDialogArea(final Composite parent) {
 
 		// TitleAreaDialog is a bit picky about the Composite you add to the
-		// provided parent. It needs
-		// to have a GridData layout attachment and beware to change anything
-		// about that! Safest and
-		// most convenient way seems to place a second Composite for free layout
-		// choice
+		// provided parent. It needs to have a GridData layout attachment and
+		// beware to change anything about that! Safest and most convenient way
+		// seems to place a second Composite for free layout choice
 		Composite composite = (Composite) super.createDialogArea(parent);
 		Composite xmlComposite = new Composite(composite, SWT.NONE);
 		xmlComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
