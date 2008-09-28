@@ -57,6 +57,9 @@ public class SwtNamespaceTest {
 		assertFalse(buttonTag.isAllowedIn(buttonTag));
 		assertTrue(compositeTag.isAllowedIn(compositeTag));
 		assertTrue(swt.getTag("Button").isAllowedIn(swt.getTag("TabItem")));
+		assertTrue(swt.getTag("TabItem").isAllowedIn(swt.getTag("TabFolder")));
+		assertTrue(swt.getTag("TabFolder").isAllowedIn(swt.getTag("TabItem")));
+		assertFalse(swt.getTag("Button").isAllowedIn(swt.getTag("TabFolder")));
 		assertTrue(swt.getTag("Tree").isAllowedIn(swt.getTag("Group")));
 	}
 }

@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.swtxml.ide;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -31,6 +32,8 @@ import com.swtxml.definition.ITagDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.util.context.Context;
+import com.swtxml.util.lang.CollectionUtils;
+import com.swtxml.util.lang.IPredicate;
 import com.swtxml.util.parser.Strictness;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IContentAssistable;
@@ -50,13 +53,21 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		Match match = createMatch(contentAssistRequest);
 
 		// TODO: this should know nothing about swt
-		Collection<String> tags = SwtInfo.NAMESPACE.getTagNames();
+		String parentTagName = contentAssistRequest.getNode().getParentNode().getNodeName();
+		final ITagDefinition parentTagDefinition = SwtInfo.NAMESPACE.getTag(parentTagName);
+		// TODO: there should be a non-ide API for this
+		List<String> tags = new ArrayList<String>(SwtInfo.NAMESPACE.getTagNames());
+		Collection<String> filteredTags = CollectionUtils.select(tags, new IPredicate<String>() {
+			public boolean match(String tagName) {
+				return (SwtInfo.NAMESPACE.getTag(tagName).isAllowedIn(parentTagDefinition));
+			}
+		});
 
 		if (contentAssistRequest.getNode() instanceof Text) {
 			match = match.insertAroundMatch("", "/>");
 		}
 
-		addProposals(contentAssistRequest, match.propose(tags));
+		addProposals(contentAssistRequest, match.propose(filteredTags));
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
 

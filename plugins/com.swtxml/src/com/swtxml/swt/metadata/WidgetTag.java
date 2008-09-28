@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
@@ -76,7 +78,10 @@ public class WidgetTag implements ITagDefinition {
 					.getWidgetClass();
 			Class<?> allowedParentClass = SwtInfo.WIDGETS.getAllowedParentType(getWidgetClass());
 			if (TabItem.class.equals(actualParentClass)) {
-				allowedParentClass = TabItem.class;
+				return Control.class.isAssignableFrom(getWidgetClass());
+			}
+			if (TabFolder.class.equals(actualParentClass)) {
+				return TabItem.class.isAssignableFrom(getWidgetClass());
 			}
 			return allowedParentClass.isAssignableFrom(actualParentClass);
 		}
