@@ -52,7 +52,7 @@ public class ExtensionsNamespaceResolver implements INamespaceResolver {
 	public static boolean isAvailable() {
 		try {
 			return (Platform.getExtensionRegistry() != null);
-		} catch (Exception e) {
+		} catch (Throwable e) {
 			return false;
 		}
 	}
