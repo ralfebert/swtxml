@@ -16,6 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import com.swtxml.definition.INamespaceResolver;
@@ -41,6 +42,10 @@ public class TinyDomParser {
 	}
 
 	public final <T> Tag parse(String filename, InputStream inputStream) {
+		return parse(filename, new InputSource(inputStream));
+	}
+
+	public final <T> Tag parse(String filename, InputSource source) {
 		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 		parserFactory.setNamespaceAware(true);
 
@@ -48,7 +53,7 @@ public class TinyDomParser {
 
 		TinyDomSaxHandler saxHandler = new TinyDomSaxHandler(namespaceResolver, filename);
 		try {
-			parser.parse(inputStream, saxHandler);
+			parser.parse(source, saxHandler);
 		} catch (Exception e) {
 			throw new ParseException(saxHandler.getLocationInfo() + e.getMessage(), e);
 		}
