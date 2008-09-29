@@ -78,15 +78,13 @@ public class PreviewViewPart extends ViewPart {
 	public void createPartControl(Composite parent) {
 		this.parent = parent;
 		parent.setLayout(new FillLayout());
-		getSite().getWorkbenchWindow().getActivePage().addPartListener(
-				trackRelevantEditorsPartListener);
+		getSite().getPage().addPartListener(trackRelevantEditorsPartListener);
 		tryConnectTo(getSite().getPage().getActiveEditor());
 	}
 
 	@Override
 	public void dispose() {
-		getSite().getWorkbenchWindow().getActivePage().removePartListener(
-				trackRelevantEditorsPartListener);
+		getSite().getPage().removePartListener(trackRelevantEditorsPartListener);
 		clearConnection();
 		super.dispose();
 	}
