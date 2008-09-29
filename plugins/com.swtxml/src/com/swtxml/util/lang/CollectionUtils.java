@@ -12,9 +12,13 @@ package com.swtxml.util.lang;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.commons.lang.ObjectUtils;
+import org.apache.commons.lang.StringUtils;
 
 import com.swtxml.util.reflector.ReflectorException;
 
@@ -69,6 +73,23 @@ public class CollectionUtils {
 			resultList.add(function.apply(a));
 		}
 		return resultList;
+	}
+
+	/**
+	 * Returns a comma-separated String of the collection values alphabetically
+	 * sorted by value.
+	 */
+	public static String sortedToString(Collection<?> collection) {
+		List<String> strings = new ArrayList<String>(collect(collection,
+				new IFunction<Object, String>() {
+
+					public String apply(Object obj) {
+						return ObjectUtils.toString(obj);
+					}
+
+				}));
+		Collections.sort(strings);
+		return StringUtils.join(strings, ", ");
 	}
 
 }

@@ -67,7 +67,7 @@ public class FormAttachmentType implements IType<FormAttachment> {
 						}
 						Control control = idResolver.getById(id, Control.class);
 						if (control == null) {
-							throw new ParseException("Control with id " + id + " not found");
+							throw new ParseException("Control with id \"" + id + "\" not found");
 						}
 						attachment.control = control;
 					}

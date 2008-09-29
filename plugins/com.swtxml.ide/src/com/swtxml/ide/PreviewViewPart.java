@@ -40,7 +40,7 @@ public class PreviewViewPart extends ViewPart {
 
 		public void propertyChanged(Object source, int propId) {
 			if (propId == IEditorPart.PROP_DIRTY) {
-				if (!((IEditorPart) source).isDirty()) {
+				if (!trackedPart.isDirty()) {
 					updatePreview();
 				}
 			}

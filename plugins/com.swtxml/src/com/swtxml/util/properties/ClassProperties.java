@@ -13,6 +13,7 @@ package com.swtxml.util.properties;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.reflector.IReflectorProperty;
 import com.swtxml.util.reflector.ReflectorBean;
 import com.swtxml.util.types.IType;
@@ -48,7 +49,9 @@ public class ClassProperties<A> {
 			public void setPropertyValue(String name, String value) {
 				Property property = properties.get(name);
 				if (property == null) {
-					throw new PropertiesException("Property " + name + " not found!");
+					throw new PropertiesException("Unknown property \"" + name
+							+ "\" (available are: "
+							+ CollectionUtils.sortedToString(properties.keySet()) + ")");
 				}
 				property.set(obj, value);
 			}

@@ -65,4 +65,8 @@ public class CollectionUtilsTest {
 		assertEquals("[]", CollectionUtils.collect(emptyList, plus1()).toString());
 	}
 
+	@Test
+	public void sortedToString() {
+		assertEquals("1, 3, 5, 7", CollectionUtils.sortedToString(oddNumbers));
+	}
 }

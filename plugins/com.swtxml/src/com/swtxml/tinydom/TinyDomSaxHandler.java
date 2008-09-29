@@ -24,6 +24,7 @@ import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.ITagDefinition;
+import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.parser.ParseException;
 
 public class TinyDomSaxHandler extends DefaultHandler {
@@ -80,7 +81,9 @@ public class TinyDomSaxHandler extends DefaultHandler {
 				IAttributeDefinition attributeDefinition = tagDefinition.getAttribute(name);
 				if (attributeDefinition == null) {
 					throw new ParseException("Unknown attribute \"" + name + "\" for tag "
-							+ tagDefinition.getName());
+							+ tagDefinition.getName() + " (available are: "
+							+ CollectionUtils.sortedToString(tagDefinition.getAttributeNames())
+							+ ")");
 				}
 				attributeList.put(name, value);
 
