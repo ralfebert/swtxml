@@ -41,7 +41,8 @@ public class SetAttributes implements ITagProcessor {
 		if (widget instanceof TabItem) {
 			List<Control> controlChildren = tag.adaptChildren(Control.class);
 			if (controlChildren.size() > 1) {
-				throw new ParseException("TabItems may have only one control inside!");
+				throw new ParseException("TabItems may have only one nested Control! (is: "
+						+ controlChildren + ")");
 			}
 			if (controlChildren.size() == 1) {
 				((TabItem) widget).setControl(controlChildren.get(0));
