@@ -24,7 +24,7 @@ import com.swtxml.util.types.IType;
 public class TagDefinition implements ITagDefinition {
 
 	private final String name;
-	private final Map<String, AttributeDefinition> attributes = new HashMap<String, AttributeDefinition>();
+	private final Map<String, IAttributeDefinition> attributes = new HashMap<String, IAttributeDefinition>();
 	private Set<ITagDefinition> allowedParentTags;
 
 	public TagDefinition(String name, ITagDefinition... allowedParentTags) {

@@ -1,8 +1,8 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SWT/XML Runtime
-Bundle-SymbolicName: com.swtxml
-Bundle-Version: 0.0.1
+Bundle-SymbolicName: com.swtxml;singleton:=true
+Bundle-Version: 0.0.2
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.swt,
  org.eclipse.jface,
@@ -10,12 +10,14 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.lang;bundle-version="2.3.0",
  org.junit4;resolution:=optional,
  easymock;bundle-version="1.0.0";resolution:=optional
-Export-Package: com.swtxml.definition,
+Export-Package: com.swtxml.contracts,
+ com.swtxml.definition,
+ com.swtxml.definition.impl,
+ com.swtxml.extensions,
  com.swtxml.swt,
  com.swtxml.swt.metadata,
  com.swtxml.swt.types,
  com.swtxml.tinydom,
- com.swtxml.contracts,
  com.swtxml.util.context,
  com.swtxml.util.lang,
  com.swtxml.util.parser,

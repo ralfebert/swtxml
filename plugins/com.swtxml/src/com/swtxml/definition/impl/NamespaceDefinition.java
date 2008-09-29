@@ -20,9 +20,9 @@ import com.swtxml.definition.ITagDefinition;
 
 public class NamespaceDefinition implements INamespaceDefinition {
 
-	private Map<String, TagDefinition> tags = new HashMap<String, TagDefinition>();
+	private Map<String, ITagDefinition> tags = new HashMap<String, ITagDefinition>();
 
-	public TagDefinition getTag(String name) {
+	public ITagDefinition getTag(String name) {
 		return tags.get(name);
 	}
 
@@ -35,4 +35,9 @@ public class NamespaceDefinition implements INamespaceDefinition {
 		tags.put(name, tagDefinition);
 		return tagDefinition;
 	}
+
+	public void defineTag(ITagDefinition tag) {
+		tags.put(tag.getName(), tag);
+	}
+
 }

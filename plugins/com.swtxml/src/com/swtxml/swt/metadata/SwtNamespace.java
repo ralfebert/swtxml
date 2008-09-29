@@ -24,6 +24,8 @@ import com.swtxml.swt.SwtInfo;
 
 public class SwtNamespace implements INamespaceDefinition {
 
+	public static final String URI = "http://www.swtxml.com/swt";
+
 	private Map<String, WidgetTag> tagsByName = new HashMap<String, WidgetTag>();
 
 	public SwtNamespace() {

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+   <extension-point id="com.swtxml.namespaces" name="SWT/XML Namespaces" schema="schema/com.swtxml.namespaces.exsd"/>
+   <extension
+         point="com.swtxml.namespaces">
+      <namespaceResolver
+            class="com.swtxml.extensions.DefaultNamespaceResolver">
+      </namespaceResolver>
+   </extension>
+
+</plugin>

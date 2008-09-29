@@ -11,7 +11,6 @@
 package com.swtxml.ide;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.eclipse.jface.text.contentassist.CompletionProposal;
@@ -28,12 +27,11 @@ import org.w3c.dom.Text;
 
 import com.swtxml.contracts.IAdaptable;
 import com.swtxml.definition.IAttributeDefinition;
+import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.swt.SwtInfo;
+import com.swtxml.extensions.ExtensionsNamespaceResolver;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.util.context.Context;
-import com.swtxml.util.lang.CollectionUtils;
-import com.swtxml.util.lang.IPredicate;
 import com.swtxml.util.parser.Strictness;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IContentAssistable;
@@ -52,16 +50,29 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
 		Match match = createMatch(contentAssistRequest);
 
-		// TODO: this should know nothing about swt
-		String parentTagName = contentAssistRequest.getNode().getParentNode().getNodeName();
-		final ITagDefinition parentTagDefinition = SwtInfo.NAMESPACE.getTag(parentTagName);
+		// TODO: cache this
+		DocumentNamespaceBrowser namespaces = getNamespaceBrowser(contentAssistRequest);
+
+		Node parentNode = contentAssistRequest.getNode().getParentNode();
+		INamespaceDefinition parentNamespace = namespaces.getByURI(parentNode.getNamespaceURI());
+		if (parentNamespace == null) {
+			return;
+		}
+		ITagDefinition parentTag = parentNamespace.getTag(parentNode.getNodeName());
+		if (parentTag == null) {
+			return;
+		}
+
 		// TODO: there should be a non-ide API for this
-		List<String> tags = new ArrayList<String>(SwtInfo.NAMESPACE.getTagNames());
-		Collection<String> filteredTags = CollectionUtils.select(tags, new IPredicate<String>() {
-			public boolean match(String tagName) {
-				return (SwtInfo.NAMESPACE.getTag(tagName).isAllowedIn(parentTagDefinition));
+		List<String> filteredTags = new ArrayList<String>();
+		for (INamespaceDefinition namespace : namespaces.getAllDefinitions()) {
+			for (String tagname : namespace.getTagNames()) {
+				ITagDefinition tag = namespace.getTag(tagname);
+				if (tag.isAllowedIn(parentTag)) {
+					filteredTags.add(namespaces.getPrefix(namespace) + tag.getName());
+				}
 			}
-		});
+		}
 
 		if (contentAssistRequest.getNode() instanceof Text) {
 			match = match.insertAroundMatch("", "/>");
@@ -71,9 +82,20 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		super.addTagNameProposals(contentAssistRequest, childPosition);
 	}
 
+	private DocumentNamespaceBrowser getNamespaceBrowser(
+			final ContentAssistRequest contentAssistRequest) {
+		return new DocumentNamespaceBrowser(contentAssistRequest.getNode().getOwnerDocument());
+	}
+
 	@Override
 	protected void addAttributeNameProposals(final ContentAssistRequest contentAssistRequest) {
-		ITagDefinition tag = SwtInfo.NAMESPACE.getTag(contentAssistRequest.getNode().getNodeName());
+		Node node = contentAssistRequest.getNode();
+		INamespaceDefinition namespace = getNamespace(node);
+		if (namespace == null) {
+			return;
+		}
+
+		ITagDefinition tag = namespace.getTag(node.getLocalName());
 		if (tag == null) {
 			return;
 		}
@@ -88,14 +110,23 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		addProposals(contentAssistRequest, proposals);
 	}
 
+	private INamespaceDefinition getNamespace(Node node) {
+		return new ExtensionsNamespaceResolver().resolveNamespace(node.getNamespaceURI());
+	}
+
 	@Override
 	protected void addAttributeValueProposals(final ContentAssistRequest contentAssistRequest) {
-		ITagDefinition tag = SwtInfo.NAMESPACE.getTag(contentAssistRequest.getNode().getNodeName());
-		if (tag == null) {
+		IDOMNode node = (IDOMNode) contentAssistRequest.getNode();
+
+		INamespaceDefinition namespace = getNamespace(node);
+		if (namespace == null) {
 			return;
 		}
 
-		IDOMNode node = (IDOMNode) contentAssistRequest.getNode();
+		ITagDefinition tag = namespace.getTag(node.getLocalName());
+		if (tag == null) {
+			return;
+		}
 
 		// Find the attribute region and name for which this position should
 		// have a value proposed

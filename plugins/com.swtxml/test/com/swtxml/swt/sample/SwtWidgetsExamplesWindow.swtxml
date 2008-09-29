@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Composite xmlns="swt"
-    layout="layout:fill;">
+<Composite xmlns="http://www.swtxml.com/swt" layout="layout:fill;">
     
     <TabFolder>
         <TabItem text="RowLayout">

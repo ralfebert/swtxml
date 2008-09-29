@@ -40,6 +40,16 @@ public class WidgetTag implements ITagDefinition {
 	private Map<String, IAttributeDefinition> attributes;
 
 	public WidgetTag(Class<? extends Widget> widgetClass) {
+		setWidgetClass(widgetClass);
+		addStyles(widgetClass);
+	}
+
+	public WidgetTag(Class<? extends Widget> widgetClass, String allowedStyles) {
+		setWidgetClass(widgetClass);
+		addStyles(SwtInfo.SWT.filter(allowedStyles));
+	}
+
+	private void setWidgetClass(Class<? extends Widget> widgetClass) {
 		this.widgetClass = widgetClass;
 
 		ClassProperties<? extends Widget> properties = SwtInfo.WIDGET_PROPERTIES
@@ -51,9 +61,14 @@ public class WidgetTag implements ITagDefinition {
 		}
 
 		attributes.put("id", new AttributeDefinition("id", SimpleTypes.STRING));
+	}
 
+	private void addStyles(Class<? extends Widget> widgetClass) {
 		Collection<String> allowedWidgetStyles = SwtInfo.WIDGETS.getAllowedStylesFor(widgetClass);
-		ConstantParser styles = SwtInfo.SWT.filter(allowedWidgetStyles);
+		addStyles(SwtInfo.SWT.filter(allowedWidgetStyles));
+	}
+
+	private void addStyles(ConstantParser styles) {
 		if (!styles.getConstants().isEmpty()) {
 			attributes.put("style", new AttributeDefinition("style", new StyleType(styles)));
 		}
