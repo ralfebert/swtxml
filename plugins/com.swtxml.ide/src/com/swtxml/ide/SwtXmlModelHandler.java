@@ -24,7 +24,7 @@ public class SwtXmlModelHandler extends AbstractModelHandler implements IModelHa
 
 	private static String modelHandlerID = "com.swtxml.ide.SwtXmlModelHandler";
 
-	private static String associatedContentTypeID = Activator.PLUGIN_ID + ".swtxml";
+	public static String associatedContentTypeID = Activator.PLUGIN_ID + ".swtxml";
 
 	public SwtXmlModelHandler() {
 		setId(modelHandlerID);
