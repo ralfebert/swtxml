@@ -34,7 +34,6 @@ import com.swtxml.util.types.SimpleTypes;
 
 public class WidgetTag implements ITagDefinition {
 
-	private String className;
 	private Class<? extends Widget> widgetClass;
 
 	private Map<String, IAttributeDefinition> attributes;
@@ -84,7 +83,7 @@ public class WidgetTag implements ITagDefinition {
 
 	@Override
 	public String toString() {
-		return "SwtTag[" + className + "]";
+		return "WidgetTag[" + widgetClass + "]";
 	}
 
 	public int compareTo(ITagDefinition o) {

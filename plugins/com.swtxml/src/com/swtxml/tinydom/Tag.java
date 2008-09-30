@@ -190,4 +190,9 @@ public class Tag implements IAdaptable {
 		}
 	}
 
+	@Override
+	public String toString() {
+		return "Tag[" + tagDefinition + "]";
+	}
+
 }
