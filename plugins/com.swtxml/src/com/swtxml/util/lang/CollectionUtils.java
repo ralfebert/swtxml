@@ -47,11 +47,11 @@ public class CollectionUtils {
 
 	@SuppressWarnings("unchecked")
 	private static Collection createCollection(Collection original) {
-		if (original instanceof List) {
-			return new ArrayList();
-		}
 		if (original instanceof Set) {
 			return new HashSet();
+		}
+		if (original instanceof Collection) {
+			return new ArrayList();
 		}
 		throw new ReflectorException("Unknown collection type: " + original.getClass());
 	}
@@ -90,6 +90,19 @@ public class CollectionUtils {
 				}));
 		Collections.sort(strings);
 		return StringUtils.join(strings, ", ");
+	}
+
+	public static <A> IPredicate<A> and(final Iterable<IPredicate<A>> predicates) {
+		return new IPredicate<A>() {
+			public boolean match(A obj) {
+				for (IPredicate<A> predicate : predicates) {
+					if (!predicate.match(obj)) {
+						return false;
+					}
+				}
+				return true;
+			}
+		};
 	}
 
 }

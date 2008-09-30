@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.swtxml.util.lang;
 
+import static com.swtxml.util.lang.CollectionUtils.and;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -45,6 +46,14 @@ public class CollectionUtilsTest {
 		};
 	}
 
+	private IPredicate<Number> is4Number() {
+		return new IPredicate<Number>() {
+			public boolean match(Number n) {
+				return n.longValue() == 4;
+			}
+		};
+	}
+
 	private IFunction<Number, Number> plus1() {
 		return new IFunction<Number, Number>() {
 			public Number apply(Number n) {
@@ -68,5 +77,14 @@ public class CollectionUtilsTest {
 	@Test
 	public void sortedToString() {
 		assertEquals("1, 3, 5, 7", CollectionUtils.sortedToString(oddNumbers));
+	}
+
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testAnd() {
+		assertEquals("[2, 4, 6]", CollectionUtils.select(numbers,
+				and(Arrays.asList(evenNumber(), evenNumber()))).toString());
+		assertEquals("[4]", CollectionUtils.select(numbers,
+				and(Arrays.asList(evenNumber(), is4Number()))).toString());
 	}
 }
