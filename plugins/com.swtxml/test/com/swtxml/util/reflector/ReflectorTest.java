@@ -22,6 +22,8 @@ import org.junit.Test;
 
 import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.lang.IPredicate;
+import com.swtxml.util.reflector.MethodQuery.Subclasses;
+import com.swtxml.util.reflector.MethodQuery.Visibility;
 
 public class ReflectorTest {
 
@@ -129,5 +131,33 @@ public class ReflectorTest {
 		assertEquals("123", text.get(test));
 		assertEquals(5, counter.get(test));
 		assertEquals("456", basePublicText.get(test));
+	}
+
+	@Test
+	public void testMethodQuery() {
+		assertEquals(
+				"public void com.swtxml.util.reflector.TestVO.doSomethingMore(java.lang.String,int)",
+				Reflector.findMethods(Visibility.PRIVATE, Subclasses.INCLUDE).name(
+						"doSomethingMore").parameters(String.class, Integer.TYPE).exactOne(
+						TestVO.class).toGenericString());
+	}
+
+	@Test
+	public void testMethodQueryPublicQueryDoesntSeeProtected() {
+		Collection<Method> methods = Reflector.findMethods(Visibility.PUBLIC, Subclasses.INCLUDE)
+				.name("doSomething").parameters(String.class).all(TestVO.class);
+		assertTrue(methods.toString(), methods.isEmpty());
+	}
+
+	@Test
+	public void testMethodQueryOverwrittenMethodsSeenCorrectly() {
+		MethodQuery query = Reflector.findMethods(Visibility.PRIVATE, Subclasses.INCLUDE).name(
+				"doSomething").parameters(String.class);
+		assertEquals(
+				"protected void com.swtxml.util.reflector.TestVO.doSomething(java.lang.String)",
+				query.exactOne(TestVO.class).toGenericString());
+		assertEquals(
+				"protected void com.swtxml.util.reflector.BaseTestVO.doSomething(java.lang.String)",
+				query.exactOne(BaseTestVO.class).toGenericString());
 	}
 }

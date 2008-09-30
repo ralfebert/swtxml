@@ -45,4 +45,14 @@ public class TestVO extends BaseTestVO {
 		this.counter = counter;
 	}
 
+	@Override
+	protected void doSomething(String test) {
+
+	}
+
+	@Override
+	public void doSomethingMore(String test, int x) {
+
+	}
+
 }

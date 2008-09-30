@@ -23,4 +23,12 @@ public class BaseTestVO {
 		this.baseText = baseText;
 	}
 
+	protected void doSomething(String test) {
+
+	}
+
+	public void doSomethingMore(String test, int x) {
+
+	}
+
 }

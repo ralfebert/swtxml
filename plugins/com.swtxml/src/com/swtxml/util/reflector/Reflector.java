@@ -18,19 +18,18 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import com.swtxml.util.lang.CollectionUtils;
-import com.swtxml.util.lang.IPredicate;
+import com.swtxml.util.reflector.MethodQuery.Subclasses;
+import com.swtxml.util.reflector.MethodQuery.Visibility;
 
 public class Reflector {
 
+	public static MethodQuery findMethods(Visibility visibility, Subclasses subclasses) {
+		return new MethodQuery(visibility, subclasses);
+	}
+
 	public static Collection<Method> findPublicSetters(Class<?> cl) {
-		return CollectionUtils.select(Arrays.asList(cl.getMethods()), new IPredicate<Method>() {
-
-			public boolean match(Method m) {
-				return m.getName().startsWith("set") && m.getParameterTypes().length == 1;
-			}
-
-		});
+		return findMethods(Visibility.PUBLIC, Subclasses.INCLUDE).nameStartsWith("set").parameters(
+				MethodQuery.ANY_TYPE).all(cl);
 	}
 
 	public static Collection<IReflectorProperty> findPublicProperties(Class<?> cl) {
@@ -42,16 +41,9 @@ public class Reflector {
 		Collection<IReflectorProperty> properties = new ArrayList<IReflectorProperty>();
 		Collection<Method> setters = findPublicSetters(cl);
 		for (final Method setter : setters) {
-			Collection<Method> getters = CollectionUtils.select(Arrays.asList(cl.getMethods()),
-					new IPredicate<Method>() {
-
-						public boolean match(Method m) {
-							return m.getName().equals("g" + setter.getName().substring(1))
-									&& m.getParameterTypes().length == 0
-									&& m.getReturnType() == setter.getParameterTypes()[0];
-						}
-
-					});
+			Collection<Method> getters = Reflector.findMethods(Visibility.PUBLIC,
+					Subclasses.INCLUDE).name("g" + setter.getName().substring(1)).parameters()
+					.returnType(setter.getParameterTypes()[0]).all(cl);
 			if (getters.size() == 1) {
 				properties.add(new ReflectorProperty(getters.iterator().next(), setter));
 			}
