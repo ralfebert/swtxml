@@ -64,7 +64,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			return;
 		}
 
-		// TODO: there should be a non-ide API for this
+		// TODO: there should be a non-ide API for find valid tags
 		List<String> filteredTags = new ArrayList<String>();
 		for (INamespaceDefinition namespace : namespaces.getAllDefinitions()) {
 			for (String tagname : namespace.getTagNames()) {
@@ -90,6 +90,9 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
 	@Override
 	protected void addAttributeNameProposals(final ContentAssistRequest contentAssistRequest) {
+		// TODO: cache this
+		DocumentNamespaceBrowser namespaces = getNamespaceBrowser(contentAssistRequest);
+
 		Node node = contentAssistRequest.getNode();
 		INamespaceDefinition namespace = getNamespace(node);
 		if (namespace == null) {
@@ -103,8 +106,26 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 
 		Match match = createMatch(contentAssistRequest);
 		match = match.insertAroundMatch("", "=\"\"");
-		// TODO: Create match API for this
+
 		List<Match> proposals = match.propose(tag.getAttributeNames());
+
+		// TODO: there should be a non-ide API for finding valid attribute names
+		List<String> foreignAttributeNames = new ArrayList<String>();
+		for (INamespaceDefinition ns : namespaces.getAllDefinitions()) {
+			for (String foreignAttributeName : ns.getForeignAttributeNames()) {
+				IAttributeDefinition foreignAttribute = ns
+						.getForeignAttribute(foreignAttributeName);
+				if ((foreignAttribute instanceof ITagScope)
+						&& !((ITagScope) foreignAttribute).isAllowedIn(tag)) {
+					continue;
+				}
+				foreignAttributeNames.add(namespaces.getPrefix(ns) + foreignAttribute.getName());
+			}
+
+		}
+		proposals.addAll(match.propose(foreignAttributeNames));
+
+		// TODO: Create match API suitable for xxx=""
 		for (Match proposal : proposals) {
 			proposal.moveCursor(2);
 		}
