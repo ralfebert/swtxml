@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<test xmlns="test" xmlns:f="attrs" f:hallo="namespace-welt" hallo="tag-welt"/>

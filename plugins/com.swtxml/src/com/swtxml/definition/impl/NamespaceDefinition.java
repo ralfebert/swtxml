@@ -15,29 +15,44 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.swtxml.definition.DefinitionException;
+import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;
 
 public class NamespaceDefinition implements INamespaceDefinition {
 
-	private Map<String, ITagDefinition> tags = new HashMap<String, ITagDefinition>();
+	private Map<String, ITagDefinition> tagsByName = new HashMap<String, ITagDefinition>();
+	private Map<String, IAttributeDefinition> foreignAttributes = new HashMap<String, IAttributeDefinition>();
 
 	public ITagDefinition getTag(String name) {
-		return tags.get(name);
+		return tagsByName.get(name);
 	}
 
 	public Set<String> getTagNames() {
-		return Collections.unmodifiableSet(tags.keySet());
-	}
-
-	public TagDefinition defineTag(String name, ITagDefinition... allowedParentTags) {
-		TagDefinition tagDefinition = new TagDefinition(name, allowedParentTags);
-		tags.put(name, tagDefinition);
-		return tagDefinition;
+		return Collections.unmodifiableSet(tagsByName.keySet());
 	}
 
 	public void defineTag(ITagDefinition tag) {
-		tags.put(tag.getName(), tag);
+		ITagDefinition existingTag = tagsByName.get(tag.getName());
+		if (existingTag != null) {
+			throw new DefinitionException("Tag naming conflict between " + tag + " and "
+					+ existingTag + "!");
+		}
+
+		tagsByName.put(tag.getName(), tag);
+	}
+
+	public void defineForeignAttribute(IAttributeDefinition attr) {
+		foreignAttributes.put(attr.getName(), attr);
+	}
+
+	public Set<String> getForeignAttributeNames() {
+		return Collections.unmodifiableSet(foreignAttributes.keySet());
+	}
+
+	public IAttributeDefinition getForeignAttribute(String name) {
+		return foreignAttributes.get(name);
 	}
 
 }

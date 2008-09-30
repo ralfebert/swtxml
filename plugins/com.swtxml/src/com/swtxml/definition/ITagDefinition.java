@@ -20,7 +20,5 @@ public interface ITagDefinition {
 
 	Set<String> getAttributeNames();
 
-	boolean isAllowedIn(ITagDefinition tagDefinition);
-
 	public IAttributeDefinition getAttribute(String name);
 }

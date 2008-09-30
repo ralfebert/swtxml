@@ -10,16 +10,11 @@
  *******************************************************************************/
 package com.swtxml.definition;
 
-import java.util.Set;
+/**
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
+public interface ITagScope {
 
-public interface INamespaceDefinition {
-
-	public Set<String> getTagNames();
-
-	public ITagDefinition getTag(String name);
-
-	public Set<String> getForeignAttributeNames();
-
-	public IAttributeDefinition getForeignAttribute(String name);
+	boolean isAllowedIn(ITagDefinition tagDefinition);
 
 }

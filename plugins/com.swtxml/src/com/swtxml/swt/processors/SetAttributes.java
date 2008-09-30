@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Widget;
 
+import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.tinydom.ITagProcessor;
 import com.swtxml.tinydom.Tag;
@@ -49,9 +50,9 @@ public class SetAttributes implements ITagProcessor {
 			}
 		}
 
-		for (String name : tag.getAttributes().keySet()) {
+		for (IAttributeDefinition attr : tag.getAttributes()) {
 			SwtInfo.WIDGET_PROPERTIES.getProperties(widget.getClass()).getInjector(widget)
-					.setPropertyValue(name, tag.getAttribute(name));
+					.setPropertyValue(attr.getName(), tag.getAttribute(attr));
 		}
 	}
 

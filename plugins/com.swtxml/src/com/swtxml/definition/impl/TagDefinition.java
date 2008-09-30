@@ -19,9 +19,9 @@ import java.util.Set;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.util.types.IType;
+import com.swtxml.definition.ITagScope;
 
-public class TagDefinition implements ITagDefinition {
+public class TagDefinition implements ITagDefinition, ITagScope {
 
 	private final String name;
 	private final Map<String, IAttributeDefinition> attributes = new HashMap<String, IAttributeDefinition>();
@@ -44,10 +44,8 @@ public class TagDefinition implements ITagDefinition {
 		return name;
 	}
 
-	public AttributeDefinition defineAttribute(String name, IType<?> type) {
-		AttributeDefinition attributeDefinition = new AttributeDefinition(name, type);
-		attributes.put(name, attributeDefinition);
-		return attributeDefinition;
+	public void defineAttribute(IAttributeDefinition attributeDefinition) {
+		attributes.put(attributeDefinition.getName(), attributeDefinition);
 	}
 
 	public boolean isAllowedIn(ITagDefinition parentTagDefinition) {

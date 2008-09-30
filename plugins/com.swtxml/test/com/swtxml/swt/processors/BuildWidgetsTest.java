@@ -13,13 +13,16 @@ package com.swtxml.swt.processors;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Map;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
+import com.swtxml.definition.IAttributeDefinition;
+import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.tinydom.Tag;
@@ -32,8 +35,10 @@ public class BuildWidgetsTest {
 		Shell shell = new Shell();
 		SwtNamespace swt = SwtInfo.NAMESPACE;
 
-		Tag root = new Tag(swt.getTag("Composite"), null, "-", new HashMap<String, String>());
-		Tag btn = new Tag(swt.getTag("Button"), root, "-", new HashMap<String, String>());
+		Map<INamespaceDefinition, Map<IAttributeDefinition, String>> noAttributes = Collections
+				.emptyMap();
+		Tag root = new Tag(swt, swt.getTag("Composite"), null, "-", noAttributes);
+		Tag btn = new Tag(swt, swt.getTag("Button"), root, "-", noAttributes);
 
 		BuildWidgets builder = new BuildWidgets(shell);
 		root.depthFirst(builder);

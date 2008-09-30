@@ -12,28 +12,35 @@ package com.swtxml.tinydom;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import com.swtxml.contracts.IAdaptable;
+import com.swtxml.definition.IAttributeDefinition;
+import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;
+import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.util.parser.ParseException;
 
 public class Tag implements IAdaptable {
 
-	private ITagDefinition tagDefinition;
+	private final INamespaceDefinition namespaceDefinition;
+	private final ITagDefinition tagDefinition;
 	private final Tag parent;
 	private final String locationInfo;
-	protected final Map<String, String> attributes;
+	protected final Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeMap;
 	private final List<Tag> children = new ArrayList<Tag>();
 	private final List<Object> adapterObjects;
 
-	public Tag(ITagDefinition tagDefinition, Tag parent, String locationInfo,
-			Map<String, String> attributes) {
+	public Tag(INamespaceDefinition namespaceDefinition, ITagDefinition tagDefinition, Tag parent,
+			String locationInfo,
+			Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeMap) {
+		this.namespaceDefinition = namespaceDefinition;
 		this.tagDefinition = tagDefinition;
 		this.parent = parent;
 		this.locationInfo = locationInfo;
-		this.attributes = attributes;
+		this.attributeMap = attributeMap;
 		this.adapterObjects = new ArrayList<Object>();
 		if (this.parent != null) {
 			this.parent.children.add(this);
@@ -82,20 +89,60 @@ public class Tag implements IAdaptable {
 		return null;
 	}
 
+	public INamespaceDefinition getNamespaceDefinition() {
+		return namespaceDefinition;
+	}
+
 	public ITagDefinition getTagDefinition() {
 		return tagDefinition;
 	}
 
-	public String getAttribute(String name) {
-		return attributes.get(name);
+	public String getAttribute(IAttributeDefinition attribute) {
+		return getAttribute(getNamespaceDefinition(), attribute);
 	}
 
-	public String slurpAttribute(String name) {
-		return attributes.remove(name);
+	public String getAttribute(String attributeName) {
+		return getAttribute(getNamespaceDefinition(), getTagDefinition()
+				.getAttribute(attributeName));
 	}
 
-	public Map<String, String> getAttributes() {
-		return attributes;
+	public String getAttribute(NamespaceDefinition namespace, String attributeName) {
+		if (getNamespaceDefinition().equals(namespace)) {
+			return getAttribute(attributeName);
+		} else {
+			return getAttribute(namespace, namespace.getForeignAttribute(attributeName));
+		}
+	}
+
+	public Collection<IAttributeDefinition> getAttributes() {
+		return getAttributes(getNamespaceDefinition());
+	}
+
+	public Collection<IAttributeDefinition> getAttributes(INamespaceDefinition namespace) {
+		Map<IAttributeDefinition, String> attributes = attributeMap.get(namespace);
+		if (attributes != null) {
+			return attributes.keySet();
+		} else {
+			return Collections.emptyList();
+		}
+	}
+
+	public String getAttribute(INamespaceDefinition namespace, IAttributeDefinition attribute) {
+		Map<IAttributeDefinition, String> attributes = attributeMap.get(namespace);
+		return attributes != null ? attributes.get(attribute) : null;
+	}
+
+	@Deprecated
+	public String slurpAttribute(String attributeName) {
+		Map<IAttributeDefinition, String> attributes = attributeMap.get(getNamespaceDefinition());
+		if (attributes == null) {
+			return null;
+		}
+		IAttributeDefinition attr = tagDefinition.getAttribute(attributeName);
+		if (attr == null) {
+			return null;
+		}
+		return attributes.remove(attr);
 	}
 
 	public Tag getParent() {

@@ -11,22 +11,15 @@
 package com.swtxml.swt.metadata;
 
 import java.lang.reflect.Modifier;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.definition.DefinitionException;
-import com.swtxml.definition.INamespaceDefinition;
+import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.swt.SwtInfo;
 
-public class SwtNamespace implements INamespaceDefinition {
+public class SwtNamespace extends NamespaceDefinition {
 
 	public static final String URI = "http://www.swtxml.com/swt";
-
-	private Map<String, WidgetTag> tagsByName = new HashMap<String, WidgetTag>();
 
 	public SwtNamespace() {
 		for (String className : SwtInfo.WIDGETS.getWidgetClassNames()) {
@@ -34,22 +27,13 @@ public class SwtNamespace implements INamespaceDefinition {
 			if (Modifier.isAbstract(widgetClass.getModifiers())) {
 				continue;
 			}
-			WidgetTag tag = new WidgetTag(widgetClass);
-			WidgetTag existingTag = tagsByName.get(tag.getName());
-			if (existingTag != null) {
-				throw new DefinitionException("Tag naming conflict between " + tag + " and "
-						+ existingTag + "!");
-			}
-			tagsByName.put(tag.getName(), tag);
+			defineTag(new WidgetTag(widgetClass));
 		}
 	}
 
+	@Override
 	public WidgetTag getTag(String name) {
-		return tagsByName.get(name);
-	}
-
-	public Set<String> getTagNames() {
-		return Collections.unmodifiableSet(tagsByName.keySet());
+		return (WidgetTag) super.getTag(name);
 	}
 
 }

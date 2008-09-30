@@ -25,6 +25,8 @@ import org.junit.Test;
 
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.ITagDefinition;
+import com.swtxml.definition.impl.AttributeDefinition;
+import com.swtxml.definition.impl.ForeignAttributeDefinition;
 import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.definition.impl.TagDefinition;
 import com.swtxml.util.parser.ParseException;
@@ -47,8 +49,9 @@ public class TinyDomParserTest {
 
 	private INamespaceResolver sampleNamespace() {
 		NamespaceDefinition testNamespace = new NamespaceDefinition();
-		TagDefinition tag = testNamespace.defineTag("test", ITagDefinition.ROOT).allowNested();
-		tag.defineAttribute("no", SimpleTypes.STRING);
+		TagDefinition tag = new TagDefinition("test", ITagDefinition.ROOT).allowNested();
+		testNamespace.defineTag(tag);
+		tag.defineAttribute(new AttributeDefinition("no", SimpleTypes.STRING));
 		return namespace("test", testNamespace);
 	}
 
@@ -79,6 +82,15 @@ public class TinyDomParserTest {
 
 	@Test
 	public void testAttributes() {
+		Tag root = parseNumbers();
+		assertEquals("1", root.getAttribute("no"));
+		assertEquals("1", root.getAttribute("no"));
+		assertEquals("1", root.slurpAttribute("no"));
+		assertEquals(null, root.getAttribute("no"));
+	}
+
+	@Test
+	public void testForeignAttributes() {
 		Tag root = parseNumbers();
 		assertEquals("1", root.getAttribute("no"));
 		assertEquals("1", root.getAttribute("no"));
@@ -183,8 +195,9 @@ public class TinyDomParserTest {
 	@Test
 	public void testInvalidScope() {
 		NamespaceDefinition testNamespace = new NamespaceDefinition();
-		TagDefinition test = testNamespace.defineTag("test", ITagDefinition.ROOT);
-		testNamespace.defineTag("yes", test);
+		TagDefinition test = new TagDefinition("test", ITagDefinition.ROOT);
+		testNamespace.defineTag(test);
+		testNamespace.defineTag(new TagDefinition("yes", test));
 
 		INamespaceResolver namespaceResolver = namespace("test", testNamespace);
 		TinyDomParser parser = new TinyDomParser(namespaceResolver);
@@ -193,6 +206,87 @@ public class TinyDomParserTest {
 			fail("expected exception");
 		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 4"));
+			assertTrue(e.getMessage().contains("test"));
+		}
+	}
+
+	@Test
+	public void testForeignAttribute() {
+		NamespaceDefinition testNamespace = new NamespaceDefinition();
+		TagDefinition test = new TagDefinition("test", ITagDefinition.ROOT);
+		test.defineAttribute(new AttributeDefinition("hallo", SimpleTypes.STRING));
+		testNamespace.defineTag(test);
+
+		NamespaceDefinition attrSpace = new NamespaceDefinition();
+
+		attrSpace.defineForeignAttribute(new ForeignAttributeDefinition("hallo",
+				SimpleTypes.STRING, test));
+
+		INamespaceResolver namespaceResolver = createMock(INamespaceResolver.class);
+		expect(namespaceResolver.resolveNamespace("test")).andReturn(testNamespace);
+		expect(namespaceResolver.resolveNamespace("attrs")).andReturn(attrSpace);
+		replay(namespaceResolver);
+
+		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+
+		Tag element = parser.parse("test", getClass().getResourceAsStream("foreignattributes.xml"));
+		assertEquals("tag-welt", element.getAttribute("hallo"));
+		assertEquals("tag-welt", element.getAttribute(testNamespace, "hallo"));
+		assertEquals("namespace-welt", element.getAttribute(attrSpace, "hallo"));
+	}
+
+	@Test
+	public void testInvalidForeignAttribute() {
+		NamespaceDefinition testNamespace = new NamespaceDefinition();
+		TagDefinition test = new TagDefinition("test", ITagDefinition.ROOT);
+		test.defineAttribute(new AttributeDefinition("hallo", SimpleTypes.STRING));
+		testNamespace.defineTag(test);
+
+		NamespaceDefinition attrSpace = new NamespaceDefinition();
+
+		INamespaceResolver namespaceResolver = createMock(INamespaceResolver.class);
+		expect(namespaceResolver.resolveNamespace("test")).andReturn(testNamespace);
+		expect(namespaceResolver.resolveNamespace("attrs")).andReturn(attrSpace);
+		replay(namespaceResolver);
+
+		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+
+		try {
+			parser.parse("test", getClass().getResourceAsStream("foreignattributes.xml"));
+			fail("expected exception");
+		} catch (ParseException e) {
+			assertTrue(e.getMessage().contains("line 2"));
+			assertTrue(e.getMessage().contains("f:hallo"));
+			assertTrue(e.getMessage().contains("test"));
+		}
+	}
+
+	@Test
+	public void testInvalidScopedForeignAttribute() {
+		NamespaceDefinition testNamespace = new NamespaceDefinition();
+		TagDefinition test = new TagDefinition("test", ITagDefinition.ROOT);
+		test.defineAttribute(new AttributeDefinition("hallo", SimpleTypes.STRING));
+		testNamespace.defineTag(test);
+		TagDefinition yes = new TagDefinition("yes", test);
+		testNamespace.defineTag(yes);
+
+		NamespaceDefinition attrSpace = new NamespaceDefinition();
+		attrSpace.defineForeignAttribute(new ForeignAttributeDefinition("hallo",
+				SimpleTypes.STRING, yes));
+
+		INamespaceResolver namespaceResolver = createMock(INamespaceResolver.class);
+		expect(namespaceResolver.resolveNamespace("test")).andReturn(testNamespace);
+		expect(namespaceResolver.resolveNamespace("attrs")).andReturn(attrSpace);
+		replay(namespaceResolver);
+
+		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+
+		try {
+			parser.parse("test", getClass().getResourceAsStream("foreignattributes.xml"));
+			fail("expected exception");
+		} catch (ParseException e) {
+			assertTrue(e.getMessage().contains("line 2"));
+			assertTrue(e.getMessage().contains("f:hallo"));
 			assertTrue(e.getMessage().contains("test"));
 		}
 	}

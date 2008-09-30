@@ -10,6 +10,7 @@
  *******************************************************************************/
 package com.swtxml.tinydom;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Stack;
@@ -24,6 +25,7 @@ import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.ITagDefinition;
+import com.swtxml.definition.ITagScope;
 import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.parser.ParseException;
 
@@ -43,23 +45,24 @@ public class TinyDomSaxHandler extends DefaultHandler {
 	private Stack<Tag> parserStack = new Stack<Tag>();
 
 	@Override
-	public void startElement(String namespaceUri, String localName, String qName,
-			Attributes attributes) throws SAXException {
-		INamespaceDefinition namespace = getNamespace(namespaceUri);
-		ITagDefinition tagDefinition = namespace.getTag(localName);
+	public void startElement(String namespace, String localName, String qName, Attributes attributes)
+			throws SAXException {
+		INamespaceDefinition namespaceDefinition = getNamespace(namespace);
+		ITagDefinition tagDefinition = namespaceDefinition.getTag(localName);
 		if (tagDefinition == null) {
 			throw new ParseException("Unknown tag \"" + localName + "\" for namespace "
-					+ namespaceUri);
+					+ namespaceDefinition);
 		}
-		Map<String, String> attributeList = processAttributes(namespaceUri, attributes,
-				tagDefinition);
+		Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeMap = processAttributes(
+				namespaceDefinition, tagDefinition, attributes);
 
-		Tag tag = new Tag(tagDefinition, parserStack.isEmpty() ? null : parserStack.peek(),
-				getLocationInfo(), attributeList);
+		Tag tag = new Tag(namespaceDefinition, tagDefinition, parserStack.isEmpty() ? null
+				: parserStack.peek(), getLocationInfo(), attributeMap);
 
 		ITagDefinition parentTag = tag.getParent() != null ? tag.getParent().getTagDefinition()
 				: ITagDefinition.ROOT;
-		if (!tagDefinition.isAllowedIn(parentTag)) {
+		if (tagDefinition instanceof ITagScope
+				&& !((ITagScope) tagDefinition).isAllowedIn(parentTag)) {
 			throw new ParseException("Tag " + tag.getTagName() + " is not allowed in "
 					+ parentTag.getName());
 		}
@@ -70,31 +73,45 @@ public class TinyDomSaxHandler extends DefaultHandler {
 		parserStack.push(tag);
 	}
 
-	private Map<String, String> processAttributes(String namespaceUri, Attributes attributes,
-			ITagDefinition tagDefinition) {
-		Map<String, String> attributeList = new HashMap<String, String>();
+	private Map<INamespaceDefinition, Map<IAttributeDefinition, String>> processAttributes(
+			INamespaceDefinition tagNamespace, ITagDefinition tagDefinition, Attributes attributes) {
+
+		Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeNsMap = new HashMap<INamespaceDefinition, Map<IAttributeDefinition, String>>();
 		for (int i = 0; i < attributes.getLength(); i++) {
 			String uri = attributes.getURI(i);
-			if (StringUtils.isEmpty(uri) || uri.equals(namespaceUri)) {
-				String name = attributes.getLocalName(i);
-				String value = attributes.getValue(i);
-				IAttributeDefinition attributeDefinition = tagDefinition.getAttribute(name);
-				if (attributeDefinition == null) {
-					throw new ParseException("Unknown attribute \"" + name + "\" for tag "
-							+ tagDefinition.getName() + " (available are: "
-							+ CollectionUtils.sortedToString(tagDefinition.getAttributeNames())
-							+ ")");
-				}
-				attributeList.put(name, value);
-
-			} else {
-				// TODO: reintroduce foreign attributes
-				// attributeList.add(new TagAttribute(parser,
-				// getTagLibrary(uri), attributes
-				// .getLocalName(i), attributes.getValue(i), false));
+			INamespaceDefinition attributeNamespace = !StringUtils.isEmpty(uri) ? getNamespace(uri)
+					: tagNamespace;
+			Map<IAttributeDefinition, String> attributeMap = attributeNsMap.get(attributeNamespace);
+			if (attributeMap == null) {
+				attributeMap = new HashMap<IAttributeDefinition, String>();
+				attributeNsMap.put(attributeNamespace, attributeMap);
 			}
+			String name = attributes.getLocalName(i);
+			String value = attributes.getValue(i);
+			IAttributeDefinition attributeDefinition;
+			if (attributeNamespace.equals(tagNamespace)) {
+				attributeDefinition = tagDefinition.getAttribute(name);
+			} else {
+				attributeDefinition = attributeNamespace.getForeignAttribute(name);
+				if (attributeDefinition instanceof ITagScope
+						&& !((ITagScope) attributeDefinition).isAllowedIn(tagDefinition)) {
+					throw new ParseException("Attribute " + attributes.getQName(i)
+							+ " is not allowed for tag \"" + tagDefinition.getName() + "\"");
+				}
+			}
+
+			if (attributeDefinition == null) {
+				throw new ParseException("Unknown attribute \"" + attributes.getQName(i)
+						+ "\" for tag \"" + tagDefinition.getName() + "\" (available are: "
+						+ CollectionUtils.sortedToString(tagDefinition.getAttributeNames()) + ")");
+			}
+			attributeMap.put(attributeDefinition, value);
+
 		}
-		return attributeList;
+		if (attributeNsMap.isEmpty()) {
+			return Collections.emptyMap();
+		}
+		return attributeNsMap;
 	}
 
 	private INamespaceDefinition getNamespace(String namespaceUri) {

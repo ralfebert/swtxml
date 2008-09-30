@@ -29,6 +29,7 @@ import com.swtxml.contracts.IAdaptable;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;
+import com.swtxml.definition.ITagScope;
 import com.swtxml.extensions.ExtensionsNamespaceResolver;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.util.context.Context;
@@ -68,7 +69,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		for (INamespaceDefinition namespace : namespaces.getAllDefinitions()) {
 			for (String tagname : namespace.getTagNames()) {
 				ITagDefinition tag = namespace.getTag(tagname);
-				if (tag.isAllowedIn(parentTag)) {
+				if (tag instanceof ITagScope && ((ITagScope) tag).isAllowedIn(parentTag)) {
 					filteredTags.add(namespaces.getPrefix(namespace) + tag.getName());
 				}
 			}

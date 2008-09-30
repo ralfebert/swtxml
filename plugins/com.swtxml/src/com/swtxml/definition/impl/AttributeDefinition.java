@@ -40,4 +40,9 @@ public class AttributeDefinition implements IAttributeDefinition {
 		this.type = type;
 	}
 
+	@Override
+	public String toString() {
+		return "AttributeDefinition[" + name + ", " + type + "]";
+	}
+
 }
