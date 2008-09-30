@@ -13,6 +13,7 @@ package com.swtxml.swt;
 import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.definition.INamespaceResolver;
+import com.swtxml.events.processors.CreateEventListenersProcessor;
 import com.swtxml.extensions.DefaultNamespaceResolver;
 import com.swtxml.extensions.ExtensionsNamespaceResolver;
 import com.swtxml.swt.byid.ByIdInjector;
@@ -65,6 +66,7 @@ public class SwtXmlParser extends TinyDomParser {
 		});
 
 		if (controller != null) {
+			root.depthFirst(new CreateEventListenersProcessor(controller));
 			new ByIdInjector().inject(controller, ids);
 		}
 	}

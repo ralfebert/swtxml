@@ -132,7 +132,7 @@ public class PreviewViewPart extends ViewPart {
 						.getAdapter(ILocationProvider.class);
 				String filename = (locationProvider != null) ? locationProvider
 						.getPath(editorInput).toFile().getName() : "unknown";
-				new SwtXmlParser(parent, this).parse(filename, new InputSource(new StringReader(doc
+				new SwtXmlParser(parent, null).parse(filename, new InputSource(new StringReader(doc
 						.get())));
 				for (Control c : children) {
 					c.dispose();

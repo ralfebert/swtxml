@@ -43,4 +43,8 @@ public class EventForeignAttribute implements IAttributeDefinition, ITagScope {
 				.isEventAvailableFor(name, ((WidgetTag) tagDefinition).getWidgetClass());
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[" + getName() + "]";
+	}
 }

@@ -5,7 +5,7 @@
         <TabItem text="RowLayout">
             <Composite layout="layout:row;type:vertical;spacing:5;">
                 <Button text="Sauber" style="CHECK" id="testButton"/>
-                <Button text="Kühl" style="CHECK" on:widgetSelected="test"/>
+                <Button text="Kühl" style="CHECK" on:widgetSelected="coolButtonClicked"/>
                 <Button text="Trocken" style="CHECK"/>
             </Composite>
         </TabItem>

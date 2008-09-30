@@ -42,4 +42,8 @@ public class SwtWidgetsExamplesWindow extends SwtXmlWindow {
 		return testButton;
 	}
 
+	protected void coolButtonClicked() {
+		System.err.println("Cool.");
+	}
+
 }

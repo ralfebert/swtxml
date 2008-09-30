@@ -15,6 +15,7 @@ import org.junit.runners.Suite;
 
 import com.swtxml.events.EventNamespaceDefinitionTest;
 import com.swtxml.events.EventsRegistryTest;
+import com.swtxml.events.processors.CreateEventListenersProcessorTest;
 import com.swtxml.swt.byid.ByIdInjectorTest;
 import com.swtxml.swt.injector.FormAttachmentTypeTest;
 import com.swtxml.swt.injector.SwtInjectorTest;
@@ -42,8 +43,8 @@ import com.swtxml.util.reflector.ReflectorTest;
 		PropertyRegistryTest.class, ConstantParserTest.class, KeyValueParserTest.class,
 		FormAttachmentTypeTest.class, ContextTest.class, SwtTypesTest.class, SwtInjectorTest.class,
 		SwtNamespaceTest.class, EventsRegistryTest.class, EventNamespaceDefinitionTest.class,
-		TinyDomParserTest.class, ByIdInjectorTest.class, BuildWidgetsTest.class,
-		ProcessingTest.class, SwtWidgetsTest.class })
+		CreateEventListenersProcessorTest.class, TinyDomParserTest.class, ByIdInjectorTest.class,
+		BuildWidgetsTest.class, ProcessingTest.class, SwtWidgetsTest.class })
 public class AllTests {
 
 }

@@ -26,7 +26,9 @@ import com.swtxml.swt.SwtInfo;
 public class EventsRegistry {
 
 	private Set<String> allEventNames = new HashSet<String>();
-	private Map<Class<?>, Set<String>> widgetClassToEventNameList = new HashMap<Class<?>, Set<String>>();
+	private Map<Class<?>, Set<String>> widgetClassToEventNamesList = new HashMap<Class<?>, Set<String>>();
+	private Map<String, Class<?>> eventNameToListenerTypeMap = new HashMap<String, Class<?>>();
+	private Map<String, Class<?>> eventNameToEventParamTypeMap = new HashMap<String, Class<?>>();
 
 	public EventsRegistry() {
 		for (String widgetClassName : SwtInfo.WIDGETS.getWidgetClassNames()) {
@@ -42,12 +44,16 @@ public class EventsRegistry {
 					Class<?> listenerType = listenerMethod.getParameterTypes()[0];
 
 					for (Method eventMethod : listenerType.getMethods()) {
-						eventNames.add(eventMethod.getName());
+						String eventName = eventMethod.getName();
+						eventNames.add(eventName);
+						eventNameToListenerTypeMap.put(eventName, listenerType);
+						eventNameToEventParamTypeMap.put(eventName,
+								eventMethod.getParameterTypes()[0]);
 					}
 				}
 			}
 			allEventNames.addAll(eventNames);
-			widgetClassToEventNameList.put(widgetClass, eventNames);
+			widgetClassToEventNamesList.put(widgetClass, eventNames);
 		}
 
 	}
@@ -57,7 +63,16 @@ public class EventsRegistry {
 	}
 
 	public boolean isEventAvailableFor(String eventName, Class<?> widgetClass) {
-		Set<String> events = widgetClassToEventNameList.get(widgetClass);
+		Set<String> events = widgetClassToEventNamesList.get(widgetClass);
 		return events != null && events.contains(eventName);
 	}
+
+	public Class<?> getEventInterface(String eventName) {
+		return eventNameToListenerTypeMap.get(eventName);
+	}
+
+	public Class<?> getEventParamType(String eventName) {
+		return eventNameToEventParamTypeMap.get(eventName);
+	}
+
 }

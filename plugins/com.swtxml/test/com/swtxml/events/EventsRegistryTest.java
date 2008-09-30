@@ -10,9 +10,12 @@
  *******************************************************************************/
 package com.swtxml.events;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.junit.Test;
@@ -31,6 +34,12 @@ public class EventsRegistryTest {
 		assertFalse(Events.EVENTS.isEventAvailableFor("widgetSelected", Control.class));
 		assertTrue(Events.EVENTS.isEventAvailableFor("focusGained", Button.class));
 		assertTrue(Events.EVENTS.isEventAvailableFor("focusGained", Control.class));
+	}
+
+	@Test
+	public void testGetEventInterface() {
+		assertEquals(SelectionListener.class, Events.EVENTS.getEventInterface("widgetSelected"));
+		assertEquals(FocusListener.class, Events.EVENTS.getEventInterface("focusGained"));
 	}
 
 }
