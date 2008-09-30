@@ -12,6 +12,8 @@ package com.swtxml.extensions;
 
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.INamespaceResolver;
+import com.swtxml.events.EventNamespaceDefinition;
+import com.swtxml.events.Events;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.metadata.SwtNamespace;
 
@@ -23,6 +25,9 @@ public class DefaultNamespaceResolver implements INamespaceResolver {
 	public INamespaceDefinition resolveNamespace(String uri) {
 		if (SwtNamespace.URI.equals(uri)) {
 			return SwtInfo.NAMESPACE;
+		}
+		if (EventNamespaceDefinition.URI.equals(uri)) {
+			return Events.NAMESPACE;
 		}
 		return null;
 	}

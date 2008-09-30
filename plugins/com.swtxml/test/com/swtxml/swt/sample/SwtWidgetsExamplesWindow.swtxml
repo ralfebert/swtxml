@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Composite xmlns="http://www.swtxml.com/swt" layout="layout:fill;">
+<Composite xmlns="http://www.swtxml.com/swt" xmlns:on="http://www.swtxml.com/events" layout="layout:fill;">
     
     <TabFolder>
         <TabItem text="RowLayout">
             <Composite layout="layout:row;type:vertical;spacing:5;">
                 <Button text="Sauber" style="CHECK" id="testButton"/>
-                <Button text="Kühl" style="CHECK"/>
+                <Button text="Kühl" style="CHECK" on:widgetSelected="test"/>
                 <Button text="Trocken" style="CHECK"/>
             </Composite>
         </TabItem>

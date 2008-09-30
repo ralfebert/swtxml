@@ -62,7 +62,7 @@ public class WidgetRegistry {
 	@SuppressWarnings("unchecked")
 	public Class<? extends Widget> getWidgetClass(String className) {
 		try {
-			return (Class<Widget>) Class.forName(className);
+			return (Class<? extends Widget>) Class.forName(className);
 		} catch (ClassNotFoundException e) {
 			throw new DefinitionException(e);
 		}

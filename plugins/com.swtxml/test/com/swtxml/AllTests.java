@@ -13,6 +13,8 @@ package com.swtxml;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
+import com.swtxml.events.EventNamespaceDefinitionTest;
+import com.swtxml.events.EventsRegistryTest;
 import com.swtxml.swt.byid.ByIdInjectorTest;
 import com.swtxml.swt.injector.FormAttachmentTypeTest;
 import com.swtxml.swt.injector.SwtInjectorTest;
@@ -39,8 +41,9 @@ import com.swtxml.util.reflector.ReflectorTest;
 		MatchTest.class, ReflectorTest.class, PropertyMatcherTest.class, BaseConvertersTest.class,
 		PropertyRegistryTest.class, ConstantParserTest.class, KeyValueParserTest.class,
 		FormAttachmentTypeTest.class, ContextTest.class, SwtTypesTest.class, SwtInjectorTest.class,
-		SwtNamespaceTest.class, TinyDomParserTest.class, ByIdInjectorTest.class,
-		BuildWidgetsTest.class, ProcessingTest.class, SwtWidgetsTest.class })
+		SwtNamespaceTest.class, EventsRegistryTest.class, EventNamespaceDefinitionTest.class,
+		TinyDomParserTest.class, ByIdInjectorTest.class, BuildWidgetsTest.class,
+		ProcessingTest.class, SwtWidgetsTest.class })
 public class AllTests {
 
 }
