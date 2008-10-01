@@ -8,37 +8,49 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.container;
+package com.swtxml.views;
 
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Shell;
 
 import com.swtxml.swt.SwtXmlParser;
 
-public class SwtXmlViewPart extends ViewPart {
+/**
+ * Extend this class to implement JFace Windows with SWT/XML. It will parse the
+ * co-located .swtxml file (same package, same name).
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ * @version %version: %
+ */
+public abstract class SwtXmlWindow extends Window {
 
-	public SwtXmlViewPart() {
-
+	public SwtXmlWindow(Shell parentShell) {
+		super(parentShell);
 	}
 
 	@Override
-	public final void createPartControl(Composite parent) {
-		parent.setLayout(new FillLayout());
-
+	protected final Control createContents(final Composite parent) {
 		Composite composite = new Composite(parent, SWT.NONE);
 		SwtXmlParser parser = new SwtXmlParser(composite, this);
 		parser.parse();
-
 		setupView();
+		return composite;
 	}
 
 	@Override
-	public void setFocus() {
-
+	protected Layout getLayout() {
+		return new FillLayout();
 	}
 
+	/**
+	 * Override setupView to implement custom logic which is to be executed
+	 * after the widgets have been created.
+	 */
 	protected void setupView() {
 
 	}

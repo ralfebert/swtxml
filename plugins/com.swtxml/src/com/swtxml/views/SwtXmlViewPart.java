@@ -8,18 +8,25 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.container;
+package com.swtxml.views;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.EditorPart;
+import org.eclipse.ui.part.ViewPart;
 
 import com.swtxml.swt.SwtXmlParser;
 
-public abstract class SwtXmlEditorPart extends EditorPart {
+/**
+ * Extend this class to implement RCP ViewParts with SWT/XML. It will parse the
+ * co-located .swtxml file (same package, same name).
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ * @version %version: %
+ */
+public class SwtXmlViewPart extends ViewPart {
 
-	public SwtXmlEditorPart() {
+	public SwtXmlViewPart() {
 
 	}
 
@@ -34,23 +41,16 @@ public abstract class SwtXmlEditorPart extends EditorPart {
 		setupView();
 	}
 
-	protected void setupView() {
-
-	}
-
 	@Override
 	public void setFocus() {
 
 	}
 
-	@Override
-	public void doSaveAs() {
-		throw new UnsupportedOperationException();
-	}
+	/**
+	 * Override setupView to implement custom logic which is to be executed
+	 * after the widgets have been created.
+	 */
+	protected void setupView() {
 
-	@Override
-	public boolean isSaveAsAllowed() {
-		return false;
 	}
-
 }

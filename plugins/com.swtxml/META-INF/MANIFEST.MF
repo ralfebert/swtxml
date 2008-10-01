@@ -11,7 +11,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.junit4;resolution:=optional,
  easymock;bundle-version="1.0.0";resolution:=optional
 Export-Package: com.swtxml.adapter,
- com.swtxml.container,
  com.swtxml.definition,
  com.swtxml.definition.impl,
  com.swtxml.extensions,
@@ -24,7 +23,8 @@ Export-Package: com.swtxml.adapter,
  com.swtxml.util.lang,
  com.swtxml.util.parser,
  com.swtxml.util.proposals,
- com.swtxml.util.types
+ com.swtxml.util.types,
+ com.swtxml.views
 Bundle-Vendor: Ralf Ebert, info@ralfebert.de
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ClassPath: .

@@ -10,6 +10,14 @@
  *******************************************************************************/
 package com.swtxml.adapter;
 
+/**
+ * Classes implementing this interface can adapt themselves to a required class
+ * or interface. Same as {@link org.eclipse.core.runtime.IAdaptable} with
+ * generic types.
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ * @version %version: %
+ */
 public interface IAdaptable {
 
 	public <A> A adaptTo(Class<A> adapterClass);

@@ -10,6 +10,13 @@
  *******************************************************************************/
 package com.swtxml.adapter;
 
+/**
+ * IIdResolver implementations resolve objects by their id and adapt them to a
+ * required class.
+ * 
+ * @author Ralf Ebert <ebert@ralfebert.de>
+ * @version %version: %
+ */
 public interface IIdResolver {
 
 	public <T> T getById(String id, Class<T> clazz);

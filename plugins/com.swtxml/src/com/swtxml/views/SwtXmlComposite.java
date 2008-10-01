@@ -8,12 +8,19 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.container;
+package com.swtxml.views;
 
 import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.swt.SwtXmlParser;
 
+/**
+ * Extend this class to implement SWT Composites with SWT/XML. It will parse the
+ * co-located .swtxml file (same package, same name).
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ * @version %version: %
+ */
 public abstract class SwtXmlComposite extends Composite {
 
 	public SwtXmlComposite(Composite parent, int style) {
@@ -25,6 +32,10 @@ public abstract class SwtXmlComposite extends Composite {
 		setupView();
 	}
 
+	/**
+	 * Override setupView to implement custom logic which is to be executed
+	 * after the widgets have been created.
+	 */
 	protected void setupView() {
 
 	}

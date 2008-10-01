@@ -12,11 +12,11 @@ package com.swtxml.adapter;
 
 
 
-public class SimpleAdapter implements IAdaptable {
+public class MockAdapter implements IAdaptable {
 
 	private Object obj;
 
-	public SimpleAdapter(Object obj) {
+	public MockAdapter(Object obj) {
 		this.obj = obj;
 	}
 

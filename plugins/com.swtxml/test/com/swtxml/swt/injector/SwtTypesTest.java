@@ -30,7 +30,7 @@ import org.eclipse.swt.layout.RowLayout;
 import org.junit.After;
 import org.junit.Test;
 
-import com.swtxml.adapter.SimpleAdapter;
+import com.swtxml.adapter.MockAdapter;
 import com.swtxml.i18n.ILabelTranslator;
 import com.swtxml.i18n.LabelType;
 import com.swtxml.swt.SwtInfo;
@@ -134,7 +134,7 @@ public class SwtTypesTest {
 
 	@Test
 	public void testLayoutDataSetter() {
-		Context.addAdapter(new SimpleAdapter(new GridLayout()));
+		Context.addAdapter(new MockAdapter(new GridLayout()));
 		LayoutDataType layoutDataType = new LayoutDataType();
 		GridData data = (GridData) layoutDataType.convert("widthHint:120");
 		assertEquals(120, data.widthHint);
@@ -142,7 +142,7 @@ public class SwtTypesTest {
 
 	@Test
 	public void testLayoutDataContentAssist() {
-		Context.addAdapter(new SimpleAdapter(new GridLayout()));
+		Context.addAdapter(new MockAdapter(new GridLayout()));
 		LayoutDataType type = new LayoutDataType();
 		assertEquals("widthHint:§;", type.getProposals(new Match("wi§")).get(0).toString());
 		assertEquals("verticalAlignment:CENTER;§", type.getProposals(
@@ -152,7 +152,7 @@ public class SwtTypesTest {
 
 	@Test
 	public void testGridLayoutDataAttributesBug() {
-		Context.addAdapter(new SimpleAdapter(new GridLayout()));
+		Context.addAdapter(new MockAdapter(new GridLayout()));
 		LayoutDataType type = new LayoutDataType();
 		List<String> proposals = getProposalsAsSeenByUser(type.getProposals(new Match("§")));
 		assertTrue(proposals.contains("verticalSpan:"));
@@ -173,7 +173,7 @@ public class SwtTypesTest {
 
 	@Test
 	public void testLayoutDataFillLayout() {
-		Context.addAdapter(new SimpleAdapter(new FillLayout()));
+		Context.addAdapter(new MockAdapter(new FillLayout()));
 		LayoutDataType type = new LayoutDataType();
 		assertEquals(0, type.getProposals(new Match("§")).size());
 	}
@@ -200,7 +200,7 @@ public class SwtTypesTest {
 	@Test
 	public void testLabelTypeTest() {
 		ILabelTranslator translator = createMock(ILabelTranslator.class);
-		Context.addAdapter(new SimpleAdapter(translator));
+		Context.addAdapter(new MockAdapter(translator));
 		expect(translator.translate("test")).andReturn("123");
 
 		EasyMock.replay(translator);

@@ -8,39 +8,60 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.container;
+package com.swtxml.views;
 
-import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Layout;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.part.EditorPart;
 
 import com.swtxml.swt.SwtXmlParser;
 
-public abstract class SwtXmlWindow extends Window {
+/**
+ * Extend this class to implement RCP EditorParts with SWT/XML. It will parse
+ * the co-located .swtxml file (same package, same name).
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ * @version %version: %
+ */
+public abstract class SwtXmlEditorPart extends EditorPart {
 
-	public SwtXmlWindow(Shell parentShell) {
-		super(parentShell);
+	public SwtXmlEditorPart() {
+
 	}
 
 	@Override
-	protected final Control createContents(final Composite parent) {
+	public final void createPartControl(Composite parent) {
+		parent.setLayout(new FillLayout());
+
 		Composite composite = new Composite(parent, SWT.NONE);
 		SwtXmlParser parser = new SwtXmlParser(composite, this);
 		parser.parse();
+
 		setupView();
-		return composite;
 	}
 
-	@Override
-	protected Layout getLayout() {
-		return new FillLayout();
-	}
-
+	/**
+	 * Override setupView to implement custom logic which is to be executed
+	 * after the widgets have been created.
+	 */
 	protected void setupView() {
 
 	}
+
+	@Override
+	public void setFocus() {
+
+	}
+
+	@Override
+	public void doSaveAs() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean isSaveAsAllowed() {
+		return false;
+	}
+
 }
