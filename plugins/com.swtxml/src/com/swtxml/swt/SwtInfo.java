@@ -20,11 +20,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Widget;
 
+import com.swtxml.i18n.LabelType;
 import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.metadata.WidgetRegistry;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.FormAttachmentType;
-import com.swtxml.swt.types.LabelType;
 import com.swtxml.swt.types.LayoutDataType;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.swt.types.PointType;

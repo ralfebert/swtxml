@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.swtxml.swt.injector;
 
+import static org.easymock.EasyMock.createMock;
+import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -17,6 +19,7 @@ import static org.junit.Assert.fail;
 
 import java.util.List;
 
+import org.easymock.EasyMock;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
@@ -28,6 +31,8 @@ import org.junit.After;
 import org.junit.Test;
 
 import com.swtxml.contracts.MockAdapter;
+import com.swtxml.i18n.ILabelTranslator;
+import com.swtxml.i18n.LabelType;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.LayoutDataType;
@@ -190,5 +195,17 @@ public class SwtTypesTest {
 		assertEquals(SWT.BORDER | SWT.COLOR_RED, type.convert("border|color_red"));
 		assertEquals("border|BORDER_DASH§", type.getProposals(new Match("border|border_da§xxxx"))
 				.get(0).toString());
+	}
+
+	@Test
+	public void testLabelTypeTest() {
+		ILabelTranslator translator = createMock(ILabelTranslator.class);
+		Context.addAdapter(new MockAdapter(translator));
+		expect(translator.translate("test")).andReturn("123");
+
+		EasyMock.replay(translator);
+
+		assertEquals("test", new LabelType().convert("test"));
+		assertEquals("123", new LabelType().convert("%test"));
 	}
 }

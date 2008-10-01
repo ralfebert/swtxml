@@ -20,8 +20,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.junit.Test;
 
+import com.swtxml.i18n.LabelType;
 import com.swtxml.swt.SwtInfo;
-import com.swtxml.swt.types.LabelType;
 import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.IInjector;
 
@@ -41,4 +41,5 @@ public class SwtInjectorTest {
 		ClassProperties<Text> properties = SwtInfo.WIDGET_PROPERTIES.getProperties(Text.class);
 		assertTrue(properties.getProperties().get("text").getType() instanceof LabelType);
 	}
+
 }

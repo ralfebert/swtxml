@@ -8,17 +8,16 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.swt.types;
+package com.swtxml.i18n;
 
-import com.swtxml.util.parser.ParseException;
-import com.swtxml.util.types.IType;
+/**
+ * Implementations of ILabelTranslator are able to provide translated Strings
+ * for keys for the current locale.
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
+public interface ILabelTranslator {
 
-public class LabelType implements IType<String> {
-	public String convert(String value) {
-		// TODO: i18n
-		if (value.startsWith("%")) {
-			throw new ParseException("i18n for string properties is currently unsupported");
-		}
-		return value;
-	}
+	public String translate(String key);
+
 }
