@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.rcp;
+package com.swtxml.container;
 
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
@@ -26,8 +26,7 @@ public class SwtXmlTitleAreaDialog extends TitleAreaDialog {
 	}
 
 	@Override
-	protected Control createDialogArea(final Composite parent) {
-
+	protected final Control createDialogArea(final Composite parent) {
 		// TitleAreaDialog is a bit picky about the Composite you add to the
 		// provided parent. It needs to have a GridData layout attachment and
 		// beware to change anything about that! Safest and most convenient way
@@ -37,13 +36,11 @@ public class SwtXmlTitleAreaDialog extends TitleAreaDialog {
 		xmlComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
 		SwtXmlParser parser = new SwtXmlParser(xmlComposite, this);
 		parser.parse();
+		setupView();
 		return composite;
+	}
 
-		// Layout Debug-by-color snippet
-		// composite.setBackground(Display.getDefault().getSystemColor(SWT.
-		// COLOR_BLUE));
-		// xmlComposite.setBackground(Display.getDefault().getSystemColor(SWT.
-		// COLOR_RED));
+	protected void setupView() {
 
 	}
 

@@ -34,12 +34,12 @@ import com.swtxml.util.eclipse.EclipseEnvironment;
 
 public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 
+	private Composite rootComposite;
 	private Object view;
-	private Composite parent;
 
-	public SwtXmlParser(Composite parent, Object view) {
+	public SwtXmlParser(Composite rootComposite, Object view) {
 		super(getSwtNamespaceResolver());
-		this.parent = parent;
+		this.rootComposite = rootComposite;
 		this.view = view;
 	}
 
@@ -75,7 +75,7 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 	@Override
 	protected void onParseCompleted(final Tag root) {
 		final CollectIds ids = new CollectIds();
-		final ITagProcessor buildWidgets = new TagContextProcessor(new BuildWidgets(parent));
+		final ITagProcessor buildWidgets = new TagContextProcessor(new BuildWidgets(rootComposite));
 		final ITagProcessor setAttributes = new TagContextProcessor(new SetAttributes());
 
 		root.depthFirst(ids);

@@ -8,33 +8,24 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.rcp;
+package com.swtxml.container;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.ViewPart;
 
 import com.swtxml.swt.SwtXmlParser;
 
-public class SwtXmlViewPart extends ViewPart {
+public abstract class SwtXmlComposite extends Composite {
 
-	public SwtXmlViewPart() {
+	public SwtXmlComposite(Composite parent, int style) {
+		super(parent, style);
 
-	}
-
-	@Override
-	public void createPartControl(Composite parent) {
-		parent.setLayout(new FillLayout());
-
-		Composite composite = new Composite(parent, SWT.NONE);
-		SwtXmlParser parser = new SwtXmlParser(composite, this);
+		SwtXmlParser parser = new SwtXmlParser(this, this);
 		parser.parse();
 
+		setupView();
 	}
 
-	@Override
-	public void setFocus() {
+	protected void setupView() {
 
 	}
 

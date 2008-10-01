@@ -8,30 +8,39 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.rcp;
+package com.swtxml.container;
 
-import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Layout;
+import org.eclipse.swt.widgets.Shell;
 
 import com.swtxml.swt.SwtXmlParser;
 
-public class SwtXmlWizardPage extends WizardPage {
+public abstract class SwtXmlWindow extends Window {
 
-	public SwtXmlWizardPage() {
-		super("");
+	public SwtXmlWindow(Shell parentShell) {
+		super(parentShell);
 	}
 
-	public SwtXmlWizardPage(String pageName) {
-		super(pageName);
-	}
-
-	public void createControl(Composite parent) {
-		final Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+	@Override
+	protected final Control createContents(final Composite parent) {
+		Composite composite = new Composite(parent, SWT.NONE);
 		SwtXmlParser parser = new SwtXmlParser(composite, this);
 		parser.parse();
-		setControl(composite);
+		setupView();
+		return composite;
+	}
+
+	@Override
+	protected Layout getLayout() {
+		return new FillLayout();
+	}
+
+	protected void setupView() {
+
 	}
 }

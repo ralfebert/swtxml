@@ -24,12 +24,12 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import com.swtxml.rcp.SwtXmlComposite;
-import com.swtxml.rcp.SwtXmlEditorPart;
-import com.swtxml.rcp.SwtXmlTitleAreaDialog;
-import com.swtxml.rcp.SwtXmlViewPart;
-import com.swtxml.rcp.SwtXmlWindow;
-import com.swtxml.rcp.SwtXmlWizardPage;
+import com.swtxml.container.SwtXmlComposite;
+import com.swtxml.container.SwtXmlEditorPart;
+import com.swtxml.container.SwtXmlTitleAreaDialog;
+import com.swtxml.container.SwtXmlViewPart;
+import com.swtxml.container.SwtXmlWindow;
+import com.swtxml.container.SwtXmlWizardPage;
 
 public class SwtXmlNewPage extends NewTypeWizardPage {
 

@@ -8,19 +8,35 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.rcp;
+package com.swtxml.container;
 
+import org.eclipse.jface.wizard.WizardPage;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.swt.SwtXmlParser;
 
-public abstract class SwtXmlComposite extends Composite {
+public class SwtXmlWizardPage extends WizardPage {
 
-	public SwtXmlComposite(Composite parent, int style) {
-		super(parent, style);
-
-		SwtXmlParser parser = new SwtXmlParser(this, this);
-		parser.parse();
+	public SwtXmlWizardPage() {
+		super("");
 	}
 
+	public SwtXmlWizardPage(String pageName) {
+		super(pageName);
+	}
+
+	public final void createControl(Composite parent) {
+		final Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+		SwtXmlParser parser = new SwtXmlParser(composite, this);
+		parser.parse();
+		setControl(composite);
+		setupView();
+	}
+
+	protected void setupView() {
+
+	}
 }

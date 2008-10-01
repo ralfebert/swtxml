@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.rcp;
+package com.swtxml.container;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
@@ -24,18 +24,33 @@ public abstract class SwtXmlEditorPart extends EditorPart {
 	}
 
 	@Override
-	public void createPartControl(Composite parent) {
+	public final void createPartControl(Composite parent) {
 		parent.setLayout(new FillLayout());
 
 		Composite composite = new Composite(parent, SWT.NONE);
 		SwtXmlParser parser = new SwtXmlParser(composite, this);
 		parser.parse();
 
+		setupView();
+	}
+
+	protected void setupView() {
+
 	}
 
 	@Override
 	public void setFocus() {
 
+	}
+
+	@Override
+	public void doSaveAs() {
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean isSaveAsAllowed() {
+		return false;
 	}
 
 }
