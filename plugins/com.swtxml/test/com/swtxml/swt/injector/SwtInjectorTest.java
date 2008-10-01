@@ -11,14 +11,18 @@
 package com.swtxml.swt.injector;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 import org.junit.Test;
 
 import com.swtxml.swt.SwtInfo;
+import com.swtxml.swt.types.LabelType;
+import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.IInjector;
 
 public class SwtInjectorTest {
@@ -32,4 +36,9 @@ public class SwtInjectorTest {
 		assertEquals(2, ((GridLayout) composite.getLayout()).numColumns);
 	}
 
+	@Test
+	public void testStringPropertiesAreLabels() {
+		ClassProperties<Text> properties = SwtInfo.WIDGET_PROPERTIES.getProperties(Text.class);
+		assertTrue(properties.getProperties().get("text").getType() instanceof LabelType);
+	}
 }

@@ -24,6 +24,7 @@ import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.metadata.WidgetRegistry;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.FormAttachmentType;
+import com.swtxml.swt.types.LabelType;
 import com.swtxml.swt.types.LayoutDataType;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.swt.types.PointType;
@@ -52,6 +53,7 @@ public class SwtInfo {
 		props.add(new PropertyMatcher(Color.class), new ColorType());
 		props.add(new PropertyMatcher(Point.class), new PointType());
 		props.add(new PropertyMatcher(Control.class, "layoutData"), new LayoutDataType());
+		props.add(new PropertyMatcher(String.class), new LabelType());
 		SimpleTypes.addSimpleTypes(props);
 		return props;
 	}

@@ -14,7 +14,6 @@ import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
 
-import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.properties.PropertyMatcher;
 import com.swtxml.util.properties.PropertyRegistry;
 import com.swtxml.util.proposals.Match;
@@ -39,10 +38,6 @@ public class SimpleTypes {
 
 	private static class StringType implements IType<String> {
 		public String convert(String value) {
-			// TODO: i18n
-			if (value.startsWith("%")) {
-				throw new ParseException("i18n for string properties is currently unsupported");
-			}
 			return value;
 		}
 	}
