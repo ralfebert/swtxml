@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.ITagDefinition;
+import com.swtxml.definition.ITagScope;
 import com.swtxml.definition.impl.AttributeDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.types.StyleType;
@@ -32,7 +33,7 @@ import com.swtxml.util.properties.ClassProperties;
 import com.swtxml.util.properties.Property;
 import com.swtxml.util.types.SimpleTypes;
 
-public class WidgetTag implements ITagDefinition {
+public class WidgetTag implements ITagDefinition, ITagScope {
 
 	private Class<? extends Widget> widgetClass;
 

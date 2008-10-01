@@ -69,7 +69,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		for (INamespaceDefinition namespace : namespaces.getAllDefinitions()) {
 			for (String tagname : namespace.getTagNames()) {
 				ITagDefinition tag = namespace.getTag(tagname);
-				if (tag instanceof ITagScope && ((ITagScope) tag).isAllowedIn(parentTag)) {
+				if (!(tag instanceof ITagScope) || ((ITagScope) tag).isAllowedIn(parentTag)) {
 					filteredTags.add(namespaces.getPrefix(namespace) + tag.getName());
 				}
 			}
@@ -115,8 +115,8 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			for (String foreignAttributeName : ns.getForeignAttributeNames()) {
 				IAttributeDefinition foreignAttribute = ns
 						.getForeignAttribute(foreignAttributeName);
-				if ((foreignAttribute instanceof ITagScope)
-						&& !((ITagScope) foreignAttribute).isAllowedIn(tag)) {
+				if (!(foreignAttribute instanceof ITagScope)
+						|| ((ITagScope) foreignAttribute).isAllowedIn(tag)) {
 					continue;
 				}
 				foreignAttributeNames.add(namespaces.getPrefix(ns) + foreignAttribute.getName());

@@ -55,4 +55,9 @@ public class NamespaceDefinition implements INamespaceDefinition {
 		return foreignAttributes.get(name);
 	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[" + tagsByName + ", " + foreignAttributes + "]";
+	}
+
 }
