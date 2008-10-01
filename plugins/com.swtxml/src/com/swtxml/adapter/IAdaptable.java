@@ -8,20 +8,10 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.extensions;
+package com.swtxml.adapter;
 
-import static org.junit.Assert.assertEquals;
+public interface IAdaptable {
 
-import org.junit.Test;
+	public <A> A adaptTo(Class<A> adapterClass);
 
-import com.swtxml.swt.SwtInfo;
-import com.swtxml.swt.metadata.SwtNamespace;
-
-public class ExtensionsNamespaceResolverTest {
-
-	@Test
-	public void testResolveNamespace() {
-		assertEquals(SwtInfo.NAMESPACE, new ExtensionsNamespaceResolver()
-				.resolveNamespace(SwtNamespace.URI));
-	}
 }

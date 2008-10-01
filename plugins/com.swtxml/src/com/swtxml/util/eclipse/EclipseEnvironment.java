@@ -8,20 +8,17 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.extensions;
+package com.swtxml.util.eclipse;
 
-import static org.junit.Assert.assertEquals;
+import org.eclipse.core.runtime.Platform;
 
-import org.junit.Test;
+public class EclipseEnvironment {
 
-import com.swtxml.swt.SwtInfo;
-import com.swtxml.swt.metadata.SwtNamespace;
-
-public class ExtensionsNamespaceResolverTest {
-
-	@Test
-	public void testResolveNamespace() {
-		assertEquals(SwtInfo.NAMESPACE, new ExtensionsNamespaceResolver()
-				.resolveNamespace(SwtNamespace.URI));
+	public static boolean isAvailable() {
+		try {
+			return Platform.isRunning();
+		} catch (Throwable e) {
+			return false;
+		}
 	}
 }

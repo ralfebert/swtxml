@@ -8,34 +8,25 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.util.context;
+package com.swtxml.i18n;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.Locale;
+
 import org.junit.Test;
 
-import com.swtxml.adapter.IAdaptable;
-
-public class ContextTest {
+public class ResourceBundleLabelTranslatorTest {
 
 	@Test
-	public void testAdaptTo() {
-		assertNull(Context.adaptTo(String.class));
-		Context.addAdapter(new IAdaptable() {
-
-			@SuppressWarnings("unchecked")
-			public <A> A adaptTo(Class<A> adapter) {
-				if (adapter.isAssignableFrom(String.class)) {
-					return (A) "test";
-				}
-				return null;
-			}
-
-		});
-		assertEquals("test", Context.adaptTo(String.class));
-		Context.clear();
-		assertNull(Context.adaptTo(String.class));
+	public void testTranslate() {
+		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(
+				ResourceBundleLabelTranslatorTest.class);
+		Locale.setDefault(Locale.GERMAN);
+		assertEquals("Hallo", translator.translate("hello"));
+		Locale.setDefault(Locale.ENGLISH);
+		assertEquals("Hello", translator.translate("hello"));
+		assertNull(translator.translate("xxx"));
 	}
-
 }

@@ -37,6 +37,10 @@ import com.swtxml.util.properties.PropertyRegistryTest;
 import com.swtxml.util.proposals.MatchTest;
 import com.swtxml.util.reflector.ReflectorTest;
 
+/**
+ * Test suite containing all tests which can run independent from the
+ * environment.
+ */
 @RunWith(Suite.class)
 @Suite.SuiteClasses( { CollectionUtilsTest.class, IOUtilsTest.class, SplitterTest.class,
 		MatchTest.class, ReflectorTest.class, PropertyMatcherTest.class, BaseConvertersTest.class,

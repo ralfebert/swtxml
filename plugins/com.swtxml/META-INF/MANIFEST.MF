@@ -10,7 +10,7 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.lang;bundle-version="2.3.0",
  org.junit4;resolution:=optional,
  easymock;bundle-version="1.0.0";resolution:=optional
-Export-Package: com.swtxml.contracts,
+Export-Package: com.swtxml.adapter,
  com.swtxml.definition,
  com.swtxml.definition.impl,
  com.swtxml.extensions,

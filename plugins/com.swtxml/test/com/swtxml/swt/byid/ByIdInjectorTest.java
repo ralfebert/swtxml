@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.swtxml.contracts.IIdResolver;
+import com.swtxml.adapter.IIdResolver;
 
 public class ByIdInjectorTest {
 

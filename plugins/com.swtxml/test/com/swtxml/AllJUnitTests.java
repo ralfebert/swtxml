@@ -13,17 +13,14 @@ package com.swtxml;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-import com.swtxml.extensions.ExtensionsNamespaceResolverTest;
-import com.swtxml.i18n.EclipsePluginLabelTranslatorTest;
-import com.swtxml.util.eclipse.EclipseEnvironmentPluginTest;
+import com.swtxml.util.eclipse.EclipseEnvironmentJUnitTest;
 
 /**
- * Test suite containing all tests which should be run in a plugin environment
- * (Run via PDE as JUnit Plugin test)
+ * Test suite containing all tests which should be run in non-plugin environment
+ * (Run as plain JUnit test)
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { EclipseEnvironmentPluginTest.class, AllTests.class,
-		ExtensionsNamespaceResolverTest.class, EclipsePluginLabelTranslatorTest.class })
-public class AllPluginTests {
+@Suite.SuiteClasses( { EclipseEnvironmentJUnitTest.class, AllTests.class })
+public class AllJUnitTests {
 
 }

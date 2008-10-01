@@ -8,10 +8,17 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.contracts;
+package com.swtxml.util.eclipse;
 
-public interface IAdaptable {
+import static org.junit.Assert.assertFalse;
 
-	public <A> A adaptTo(Class<A> adapterClass);
+import org.junit.Test;
+
+public class EclipseEnvironmentJUnitTest {
+
+	@Test
+	public void testIsAvailable() {
+		assertFalse(EclipseEnvironment.isAvailable());
+	}
 
 }

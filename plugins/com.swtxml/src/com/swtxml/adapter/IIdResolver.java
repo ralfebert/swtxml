@@ -8,23 +8,10 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.contracts;
+package com.swtxml.adapter;
 
+public interface IIdResolver {
 
-public class MockAdapter implements IAdaptable {
-
-	private Object obj;
-
-	public MockAdapter(Object obj) {
-		this.obj = obj;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <A> A adaptTo(Class<A> adapterClass) {
-		if (adapterClass.isAssignableFrom(obj.getClass())) {
-			return (A) obj;
-		}
-		return null;
-	}
+	public <T> T getById(String id, Class<T> clazz);
 
 }

@@ -12,7 +12,7 @@ package com.swtxml.swt.byid;
 
 import java.lang.reflect.Field;
 
-import com.swtxml.contracts.IIdResolver;
+import com.swtxml.adapter.IIdResolver;
 import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.reflector.ReflectorException;
 

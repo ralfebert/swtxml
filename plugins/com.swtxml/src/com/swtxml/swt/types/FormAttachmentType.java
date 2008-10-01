@@ -17,7 +17,7 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.widgets.Control;
 
-import com.swtxml.contracts.IIdResolver;
+import com.swtxml.adapter.IIdResolver;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.ConstantParser;

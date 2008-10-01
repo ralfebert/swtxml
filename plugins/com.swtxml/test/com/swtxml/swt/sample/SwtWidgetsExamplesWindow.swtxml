@@ -6,7 +6,7 @@
             <Composite layout="layout:row;type:vertical;spacing:5;">
                 <Button text="Sauber" style="CHECK" id="testButton"/>
                 <Button text="Kühl" style="CHECK" on:widgetSelected="coolButtonClicked"/>
-                <Button text="Trocken" style="CHECK"/>
+                <Button text="%hello" style="CHECK"/>
             </Composite>
         </TabItem>
         

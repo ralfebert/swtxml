@@ -16,7 +16,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.swtxml.contracts.IAdaptable;
+import com.swtxml.adapter.IAdaptable;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;

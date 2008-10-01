@@ -13,7 +13,7 @@ package com.swtxml.util.context;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.swtxml.contracts.IAdaptable;
+import com.swtxml.adapter.IAdaptable;
 
 public class Context {
 

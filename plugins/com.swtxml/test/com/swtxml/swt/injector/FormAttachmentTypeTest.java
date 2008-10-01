@@ -24,8 +24,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.swtxml.contracts.IIdResolver;
-import com.swtxml.contracts.MockAdapter;
+import com.swtxml.adapter.IIdResolver;
+import com.swtxml.adapter.SimpleAdapter;
 import com.swtxml.swt.types.FormAttachmentType;
 import com.swtxml.util.context.Context;
 
@@ -43,7 +43,7 @@ public class FormAttachmentTypeTest {
 	@Before
 	public void setUp() throws Exception {
 		idResolver = createMock(IIdResolver.class);
-		Context.addAdapter(new MockAdapter(idResolver));
+		Context.addAdapter(new SimpleAdapter(idResolver));
 		test = new Button(new Shell(), SWT.NONE);
 		expect(idResolver.getById("test", Control.class)).andReturn(test);
 		type = new FormAttachmentType();

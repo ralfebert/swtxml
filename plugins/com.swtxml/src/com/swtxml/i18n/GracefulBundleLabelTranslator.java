@@ -8,20 +8,24 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.extensions;
+package com.swtxml.i18n;
 
-import static org.junit.Assert.assertEquals;
+public class GracefulBundleLabelTranslator implements ILabelTranslator {
 
-import org.junit.Test;
+	private ILabelTranslator[] delegates;
 
-import com.swtxml.swt.SwtInfo;
-import com.swtxml.swt.metadata.SwtNamespace;
+	public GracefulBundleLabelTranslator(ILabelTranslator... delegates) {
+		super();
+		this.delegates = delegates;
+	}
 
-public class ExtensionsNamespaceResolverTest {
-
-	@Test
-	public void testResolveNamespace() {
-		assertEquals(SwtInfo.NAMESPACE, new ExtensionsNamespaceResolver()
-				.resolveNamespace(SwtNamespace.URI));
+	public String translate(String key) {
+		for (ILabelTranslator delegate : delegates) {
+			String value = delegate.translate(key);
+			if (value != null) {
+				return value;
+			}
+		}
+		return "??? " + key + " ???";
 	}
 }

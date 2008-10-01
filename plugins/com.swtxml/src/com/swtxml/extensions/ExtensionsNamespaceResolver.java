@@ -49,14 +49,6 @@ public class ExtensionsNamespaceResolver implements INamespaceResolver {
 		return null;
 	}
 
-	public static boolean isAvailable() {
-		try {
-			return (Platform.getExtensionRegistry() != null);
-		} catch (Throwable e) {
-			return false;
-		}
-	}
-
 	private INamespaceResolver getNamespaceResolver(IConfigurationElement configurationElement) {
 		try {
 			return (INamespaceResolver) configurationElement.createExecutableExtension("class");

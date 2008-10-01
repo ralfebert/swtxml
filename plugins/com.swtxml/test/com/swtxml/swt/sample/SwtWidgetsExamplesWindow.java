@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.swtxml.swt.sample;
 
+import java.util.Locale;
+
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -24,12 +26,12 @@ public class SwtWidgetsExamplesWindow extends SwtXmlWindow {
 
 	public SwtWidgetsExamplesWindow(Shell parentShell) {
 		super(parentShell);
+		Locale.setDefault(Locale.ENGLISH);
 	}
 
 	public static void main(String[] args) {
 		try {
 			Display.getCurrent();
-
 			SwtWidgetsExamplesWindow window = new SwtWidgetsExamplesWindow(null);
 			window.setBlockOnOpen(true);
 			window.open();

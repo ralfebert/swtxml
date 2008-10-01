@@ -25,7 +25,7 @@ import org.eclipse.wst.xml.ui.internal.contentassist.XMLContentAssistProcessor;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
-import com.swtxml.contracts.IAdaptable;
+import com.swtxml.adapter.IAdaptable;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;

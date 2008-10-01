@@ -13,8 +13,8 @@ package com.swtxml.swt.processors;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.swtxml.contracts.IAdaptable;
-import com.swtxml.contracts.IIdResolver;
+import com.swtxml.adapter.IAdaptable;
+import com.swtxml.adapter.IIdResolver;
 import com.swtxml.tinydom.ITagProcessor;
 import com.swtxml.tinydom.Tag;
 
