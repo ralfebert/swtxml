@@ -115,11 +115,11 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			for (String foreignAttributeName : ns.getForeignAttributeNames()) {
 				IAttributeDefinition foreignAttribute = ns
 						.getForeignAttribute(foreignAttributeName);
-				if (foreignAttribute instanceof ITagScope
+				if (!(foreignAttribute instanceof ITagScope)
 						|| ((ITagScope) foreignAttribute).isAllowedIn(tag)) {
-					continue;
+					foreignAttributeNames
+							.add(namespaces.getPrefix(ns) + foreignAttribute.getName());
 				}
-				foreignAttributeNames.add(namespaces.getPrefix(ns) + foreignAttribute.getName());
 			}
 
 		}
