@@ -2,7 +2,7 @@
 <feature
       id="com.swtxml.feature"
       label="SWT/XML IDE"
-      version="0.0.3"
+      version="0.0.4"
       provider-name="Ralf Ebert, info@ralfebert.de">
 
    <description url="http://www.swtxml.com/">
