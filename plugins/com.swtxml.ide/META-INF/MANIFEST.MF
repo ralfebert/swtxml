@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: SWT/XML IDE
 Bundle-SymbolicName: com.swtxml.ide;singleton:=true
-Bundle-Version: 0.0.4
+Bundle-Version: 0.0.5
 Bundle-Activator: com.swtxml.ide.Activator
 Bundle-Vendor: Ralf Ebert, info@ralfebert.de
 Require-Bundle: org.eclipse.ui,
@@ -13,7 +13,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.wst.xml.ui;bundle-version="1.0.0",
  org.eclipse.wst.sse.ui;bundle-version="1.1.0",
  org.eclipse.ui.navigator;bundle-version="3.3.0",
- com.swtxml;bundle-version="0.0.4",
+ com.swtxml;bundle-version="0.0.5",
  org.eclipse.ui.ide;bundle-version="3.4.0",
  org.eclipse.core.resources;bundle-version="3.4.0",
  org.eclipse.jdt.ui;bundle-version="3.4.0",
