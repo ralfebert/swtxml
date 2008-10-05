@@ -24,21 +24,15 @@ public class ClassProperties<A> {
 
 	ClassProperties(ReflectorBean bean, Map<PropertyMatcher, IType<?>> propertyTypes) {
 		for (IReflectorProperty prop : bean.getProperties()) {
-			// System.out.println("\n\n\n======== " + prop.getName());
 			Property property = null;
 			for (PropertyMatcher matcher : propertyTypes.keySet()) {
 				if (matcher.match(bean.getType(), prop.getName(), prop.getType())) {
 					property = new Property(prop, propertyTypes.get(matcher));
-					// System.out.println("  > " + matcher);
 					break;
 				}
-				// System.out.println("    " + matcher);
 			}
 			if (property != null) {
 				properties.put(property.getName(), property);
-			} else {
-				// System.out.println("No type found for: " + prop +
-				// ", ignored");
 			}
 		}
 	}

@@ -21,25 +21,16 @@ public class Context {
 
 	private final List<IAdaptable> adapters;
 
-	public Context() {
+	Context() {
 		this.adapters = new ArrayList<IAdaptable>();
 	}
 
-	public Context(Context ctx) {
+	Context(Context ctx) {
 		this.adapters = new ArrayList<IAdaptable>(ctx.adapters);
 	}
 
 	public static void dump() {
 		System.out.println(context.get());
-	}
-
-	private static Context getOrCreate() {
-		Context ctx = context.get();
-		if (ctx == null) {
-			ctx = new Context();
-			context.set(ctx);
-		}
-		return ctx;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -58,16 +49,12 @@ public class Context {
 	}
 
 	public static void addAdapter(IAdaptable adapter) {
-		Context ctx = getOrCreate();
-		ctx.adapters.add(adapter);
-	}
-
-	public static void removeAdapter(IAdaptable adapter) {
 		Context ctx = context.get();
-		if (!ctx.adapters.remove(adapter)) {
-			throw new ContextException("Could not remove: " + adapter
-					+ " from Context adapter list!");
+		if (ctx == null) {
+			ctx = new Context();
+			context.set(ctx);
 		}
+		ctx.adapters.add(adapter);
 	}
 
 	public static void clear() {
