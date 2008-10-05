@@ -91,6 +91,8 @@
                     </List>
                 </Group>
                 
+                <DateTime style="DATE"/>
+                
             </Composite>
         </TabItem>
         <TabItem text="SashForm">
