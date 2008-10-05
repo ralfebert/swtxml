@@ -178,11 +178,11 @@ public class Tag implements IAdaptable {
 		return contents;
 	}
 
-	public void depthFirst(ITagProcessor... processors) {
+	public void depthFirst(ITagVisitor... visitors) {
 		for (Tag tag : depthFirst()) {
-			for (ITagProcessor processor : processors) {
+			for (ITagVisitor visitor : visitors) {
 				try {
-					processor.process(tag);
+					visitor.visit(tag);
 				} catch (Exception e) {
 					throw new ParseException(tag.getLocationInfo() + e.getMessage(), e);
 				}

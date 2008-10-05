@@ -25,6 +25,7 @@ import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.metadata.SwtNamespace;
+import com.swtxml.swt.visitor.BuildWidgets;
 import com.swtxml.tinydom.Tag;
 
 public class BuildWidgetsTest {

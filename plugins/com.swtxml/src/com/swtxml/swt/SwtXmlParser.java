@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.adapter.IAdaptable;
 import com.swtxml.definition.INamespaceResolver;
-import com.swtxml.events.processors.CreateEventListenersProcessor;
+import com.swtxml.events.visitor.CreateEventListeners;
 import com.swtxml.extensions.DefaultNamespaceResolver;
 import com.swtxml.extensions.ExtensionsNamespaceResolver;
 import com.swtxml.i18n.EclipsePluginLabelTranslator;
@@ -22,11 +22,11 @@ import com.swtxml.i18n.GracefulBundleLabelTranslator;
 import com.swtxml.i18n.ILabelTranslator;
 import com.swtxml.i18n.ResourceBundleLabelTranslator;
 import com.swtxml.swt.byid.ByIdInjector;
-import com.swtxml.swt.processors.BuildWidgets;
-import com.swtxml.swt.processors.CollectIds;
-import com.swtxml.swt.processors.SetAttributes;
-import com.swtxml.swt.processors.TagContextProcessor;
-import com.swtxml.tinydom.ITagProcessor;
+import com.swtxml.swt.visitor.BuildWidgets;
+import com.swtxml.swt.visitor.CollectIds;
+import com.swtxml.swt.visitor.SetAttributes;
+import com.swtxml.swt.visitor.TagContextVisitor;
+import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.tinydom.TinyDomParser;
 import com.swtxml.util.context.Context;
@@ -75,8 +75,8 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 	@Override
 	protected void onParseCompleted(final Tag root) {
 		final CollectIds ids = new CollectIds();
-		final ITagProcessor buildWidgets = new TagContextProcessor(new BuildWidgets(rootComposite));
-		final ITagProcessor setAttributes = new TagContextProcessor(new SetAttributes());
+		final ITagVisitor buildWidgets = new TagContextVisitor(new BuildWidgets(rootComposite));
+		final ITagVisitor setAttributes = new TagContextVisitor(new SetAttributes());
 
 		root.depthFirst(ids);
 
@@ -90,7 +90,7 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 		});
 
 		if (view != null) {
-			root.depthFirst(new CreateEventListenersProcessor(view));
+			root.depthFirst(new CreateEventListeners(view));
 			new ByIdInjector().inject(view, ids);
 		}
 	}

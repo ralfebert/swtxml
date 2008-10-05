@@ -8,21 +8,21 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.swt.processors;
+package com.swtxml.swt.visitor;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import com.swtxml.adapter.IAdaptable;
 import com.swtxml.adapter.IIdResolver;
-import com.swtxml.tinydom.ITagProcessor;
+import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 
-public class CollectIds implements ITagProcessor, IIdResolver, IAdaptable {
+public class CollectIds implements ITagVisitor, IIdResolver, IAdaptable {
 
 	private Map<String, Tag> tagsById = new HashMap<String, Tag>();
 
-	public void process(Tag tag) {
+	public void visit(Tag tag) {
 		String id = tag.slurpAttribute("id");
 		if (id != null) {
 			tagsById.put(id, tag);

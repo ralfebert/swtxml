@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.events.processors;
+package com.swtxml.events.visitor;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Widget;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.events.Events;
 import com.swtxml.swt.metadata.WidgetTag;
-import com.swtxml.tinydom.ITagProcessor;
+import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.util.reflector.Reflector;
 import com.swtxml.util.reflector.ReflectorException;
@@ -27,21 +27,21 @@ import com.swtxml.util.reflector.MethodQuery.Subclasses;
 import com.swtxml.util.reflector.MethodQuery.Visibility;
 
 /**
- * CreateEventListenersProcessor processes attributes like
+ * CreateEventListenersVisitor processes attributes like
  * on:<eventName>="<viewMethod>" and delegates the event to a method
  * <viewObject>.<viewMethod>.
  * 
  * @author Ralf Ebert <info@ralfebert.de>
  */
-public class CreateEventListenersProcessor implements ITagProcessor {
+public class CreateEventListeners implements ITagVisitor {
 
 	private Object viewObject;
 
-	public CreateEventListenersProcessor(Object viewObject) {
+	public CreateEventListeners(Object viewObject) {
 		this.viewObject = viewObject;
 	}
 
-	public void process(Tag tag) {
+	public void visit(Tag tag) {
 		if (!(tag.getTagDefinition() instanceof WidgetTag)) {
 			return;
 		}

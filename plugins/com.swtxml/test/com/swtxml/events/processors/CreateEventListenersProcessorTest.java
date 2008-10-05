@@ -25,6 +25,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
+import com.swtxml.events.visitor.CreateEventListeners;
+
 public class CreateEventListenersProcessorTest {
 
 	public static interface ISomeView {
@@ -42,13 +44,13 @@ public class CreateEventListenersProcessorTest {
 	@Test
 	public void testWireViewMethodListener() {
 		ISomeView view = createStrictMock(ISomeView.class);
-		CreateEventListenersProcessor processor = new CreateEventListenersProcessor(view);
+		CreateEventListeners visitor = new CreateEventListeners(view);
 		Shell shell = new Shell();
 		Button btn = new Button(shell, SWT.NONE);
-		processor.wireViewMethodListener("testKeyPressed", btn, "keyPressed");
-		processor.wireViewMethodListener("testFocusGained", btn, "focusGained");
-		processor.wireViewMethodListener("testMouseScrolled", btn, "mouseScrolled");
-		processor.wireViewMethodListener("testWidgetSelected", btn, "widgetSelected");
+		visitor.wireViewMethodListener("testKeyPressed", btn, "keyPressed");
+		visitor.wireViewMethodListener("testFocusGained", btn, "focusGained");
+		visitor.wireViewMethodListener("testMouseScrolled", btn, "mouseScrolled");
+		visitor.wireViewMethodListener("testWidgetSelected", btn, "widgetSelected");
 
 		view.testKeyPressed();
 		view.testFocusGained((FocusEvent) anyObject());
@@ -69,7 +71,7 @@ public class CreateEventListenersProcessorTest {
 	@Test
 	public void testViewExceptionMethod() {
 		ISomeView view = createStrictMock(ISomeView.class);
-		CreateEventListenersProcessor processor = new CreateEventListenersProcessor(view);
+		CreateEventListeners processor = new CreateEventListeners(view);
 		Shell shell = new Shell();
 		Button btn = new Button(shell, SWT.NONE);
 		processor.wireViewMethodListener("testKeyPressed", btn, "keyPressed");

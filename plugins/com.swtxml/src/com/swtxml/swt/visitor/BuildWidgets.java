@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.swt.processors;
+package com.swtxml.swt.visitor;
 
 import java.lang.reflect.Constructor;
 
@@ -18,12 +18,12 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.metadata.WidgetTag;
-import com.swtxml.tinydom.ITagProcessor;
+import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.reflector.ReflectorException;
 
-public class BuildWidgets implements ITagProcessor {
+public class BuildWidgets implements ITagVisitor {
 
 	private Composite parent;
 
@@ -31,7 +31,7 @@ public class BuildWidgets implements ITagProcessor {
 		this.parent = parent;
 	}
 
-	public void process(Tag tag) {
+	public void visit(Tag tag) {
 		if (!(tag.getTagDefinition() instanceof WidgetTag)) {
 			return;
 		}

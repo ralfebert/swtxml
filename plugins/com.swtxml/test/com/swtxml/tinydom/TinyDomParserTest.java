@@ -34,7 +34,7 @@ import com.swtxml.util.types.SimpleTypes;
 
 public class TinyDomParserTest {
 
-	public static class CollectNumbers implements ITagProcessor {
+	public static class CollectNumbers implements ITagVisitor {
 
 		private String numbers = "";
 
@@ -42,7 +42,7 @@ public class TinyDomParserTest {
 			return numbers;
 		}
 
-		public void process(Tag tag) {
+		public void visit(Tag tag) {
 			numbers += tag.getAttribute("no");
 		}
 	}
@@ -175,16 +175,16 @@ public class TinyDomParserTest {
 
 	@Test
 	public void testProcessingError() {
-		ITagProcessor tagProcessor = createMock(ITagProcessor.class);
-		tagProcessor.process((Tag) anyObject());
+		ITagVisitor visitor = createMock(ITagVisitor.class);
+		visitor.visit((Tag) anyObject());
 		expectLastCall().andThrow(new ParseException("NO"));
-		replay(tagProcessor);
+		replay(visitor);
 
 		INamespaceResolver namespaceResolver = sampleNamespace();
 		TinyDomParser parser = new TinyDomParser(namespaceResolver);
 		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
 		try {
-			root.depthFirst(tagProcessor);
+			root.depthFirst(visitor);
 			fail("expected");
 		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));

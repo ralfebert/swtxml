@@ -8,10 +8,28 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.tinydom;
+package com.swtxml.swt.visitor;
 
-public interface ITagProcessor {
+import com.swtxml.tinydom.ITagVisitor;
+import com.swtxml.tinydom.Tag;
+import com.swtxml.util.context.Context;
 
-	void process(Tag tag);
+public class TagContextVisitor implements ITagVisitor {
+
+	private ITagVisitor processor;
+
+	public TagContextVisitor(ITagVisitor processor) {
+		super();
+		this.processor = processor;
+	}
+
+	public void visit(final Tag tag) {
+		Context.runWith(new Runnable() {
+			public void run() {
+				Context.addAdapter(tag);
+				processor.visit(tag);
+			}
+		});
+	}
 
 }

@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.swt.processors;
+package com.swtxml.swt.visitor;
 
 import java.util.List;
 
@@ -19,13 +19,13 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.swt.SwtInfo;
-import com.swtxml.tinydom.ITagProcessor;
+import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.util.parser.ParseException;
 
-public class SetAttributes implements ITagProcessor {
+public class SetAttributes implements ITagVisitor {
 
-	public void process(Tag tag) {
+	public void visit(Tag tag) {
 		Widget widget = tag.adaptTo(Widget.class);
 		if (widget == null) {
 			return;
