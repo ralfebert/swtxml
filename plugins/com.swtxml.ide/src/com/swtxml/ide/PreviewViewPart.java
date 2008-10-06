@@ -32,6 +32,7 @@ import org.xml.sax.InputSource;
 
 import com.swtxml.swt.SwtXmlParser;
 
+@SuppressWarnings("restriction")
 public class PreviewViewPart extends ViewPart {
 
 	private IEditorPart trackedPart;
@@ -89,7 +90,6 @@ public class PreviewViewPart extends ViewPart {
 		super.dispose();
 	}
 
-	@SuppressWarnings("restriction")
 	private void tryConnectTo(IWorkbenchPart part) {
 		if (part != trackedPart && part instanceof IEditorPart) {
 			IStructuredModel model = (IStructuredModel) part.getAdapter(IStructuredModel.class);

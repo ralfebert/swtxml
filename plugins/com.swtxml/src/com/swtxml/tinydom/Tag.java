@@ -21,6 +21,7 @@ import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;
 import com.swtxml.definition.impl.NamespaceDefinition;
+import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.parser.ParseException;
 
 public final class Tag implements IAdaptable {
@@ -175,12 +176,10 @@ public final class Tag implements IAdaptable {
 		return null;
 	}
 
-	public void makeAdaptable(Object obj) {
-		if (obj == null) {
-			throw new ParseException("makeAdaptable may not be called with null");
-		}
+	public void makeAdaptable(Object adapterObject) {
+		ContractProof.notNull(adapterObject, "adapterObject");
 		// TODO: check for conflicts
-		this.adapterObjects.add(obj);
+		this.adapterObjects.add(adapterObject);
 	}
 
 	/**

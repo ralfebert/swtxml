@@ -31,11 +31,7 @@ public class CollectIds implements ITagVisitor, IIdResolver, IAdaptable {
 
 	public <T> T getById(String id, Class<T> clazz) {
 		Tag node = tagsById.get(id);
-		if (node == null) {
-			return null;
-		}
-
-		return node.adaptTo(clazz);
+		return (node != null) ? node.adaptTo(clazz) : null;
 	}
 
 	@SuppressWarnings("unchecked")
