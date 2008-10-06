@@ -54,6 +54,8 @@ public class SwtInfo {
 		props.add(new PropertyMatcher(Point.class), new PointType());
 		props.add(new PropertyMatcher(Control.class, "layoutData"), new LayoutDataType());
 		props.add(new PropertyMatcher(String.class), new LabelType());
+		props.add(new PropertyMatcher(Composite.class, "backgroundMode", Integer.TYPE),
+				new StyleType(SWT.filter("INHERIT_NONE|INHERIT_DEFAULT|INHERIT_FORCE")));
 		SimpleTypes.addSimpleTypes(props);
 		return props;
 	}
