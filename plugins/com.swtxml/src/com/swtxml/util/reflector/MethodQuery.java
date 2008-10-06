@@ -57,6 +57,15 @@ public class MethodQuery {
 		return this;
 	}
 
+	public MethodQuery nameMatches(final String regex) {
+		predicates.add(new IPredicate<Method>() {
+			public boolean match(Method method) {
+				return method.getName().matches(regex);
+			}
+		});
+		return this;
+	}
+
 	public MethodQuery parameters(final Class<?>... signature) {
 		predicates.add(new IPredicate<Method>() {
 			public boolean match(Method method) {
@@ -157,4 +166,5 @@ public class MethodQuery {
 
 		return s.toString();
 	}
+
 }

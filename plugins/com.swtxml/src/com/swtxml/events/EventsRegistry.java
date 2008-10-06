@@ -22,6 +22,9 @@ import java.util.Set;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.swt.SwtInfo;
+import com.swtxml.util.reflector.Reflector;
+import com.swtxml.util.reflector.Subclasses;
+import com.swtxml.util.reflector.Visibility;
 
 public class EventsRegistry {
 
@@ -34,24 +37,21 @@ public class EventsRegistry {
 		for (String widgetClassName : SwtInfo.WIDGETS.getWidgetClassNames()) {
 			Class<? extends Widget> widgetClass = SwtInfo.WIDGETS.getWidgetClass(widgetClassName);
 			Set<String> eventNames = new HashSet<String>();
-			for (Method listenerMethod : widgetClass.getMethods()) {
-				String name = listenerMethod.getName();
-				if (listenerMethod.getParameterTypes().length == 1
-						&& EventListener.class
-								.isAssignableFrom(listenerMethod.getParameterTypes()[0])
-						&& name.startsWith("add") && name.endsWith("Listener")
-						&& !name.equals("addListener")) {
-					Class<?> listenerType = listenerMethod.getParameterTypes()[0];
 
-					for (Method eventMethod : listenerType.getMethods()) {
-						String eventName = eventMethod.getName();
-						eventNames.add(eventName);
-						eventNameToListenerTypeMap.put(eventName, listenerType);
-						eventNameToEventParamTypeMap.put(eventName,
-								eventMethod.getParameterTypes()[0]);
-					}
+			Collection<Method> listenerMethods = Reflector.findMethods(Visibility.PUBLIC,
+					Subclasses.INCLUDE).parameters(EventListener.class)
+					.nameMatches("add.+Listener").all(widgetClass);
+
+			for (Method listenerMethod : listenerMethods) {
+				Class<?> listenerType = listenerMethod.getParameterTypes()[0];
+				for (Method eventMethod : listenerType.getMethods()) {
+					String eventName = eventMethod.getName();
+					eventNames.add(eventName);
+					eventNameToListenerTypeMap.put(eventName, listenerType);
+					eventNameToEventParamTypeMap.put(eventName, eventMethod.getParameterTypes()[0]);
 				}
 			}
+
 			allEventNames.addAll(eventNames);
 			widgetClassToEventNamesList.put(widgetClass, eventNames);
 		}
