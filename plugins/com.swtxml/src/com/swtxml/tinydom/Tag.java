@@ -101,11 +101,18 @@ public class Tag implements IAdaptable {
 		return getAttribute(getNamespaceDefinition(), attribute);
 	}
 
+	/**
+	 * Returns the attribute value by name for attributes having the same
+	 * namespace as the tag.
+	 */
 	public String getAttribute(String attributeName) {
 		return getAttribute(getNamespaceDefinition(), getTagDefinition()
 				.getAttribute(attributeName));
 	}
 
+	/**
+	 * Returns the attribute value by namespace and attribute name.
+	 */
 	public String getAttribute(NamespaceDefinition namespace, String attributeName) {
 		if (getNamespaceDefinition().equals(namespace)) {
 			return getAttribute(attributeName);
@@ -114,10 +121,18 @@ public class Tag implements IAdaptable {
 		}
 	}
 
+	/**
+	 * Returns a list of all attribute definitions from the tag's namespace
+	 * which are given for this tag.
+	 */
 	public Collection<IAttributeDefinition> getAttributes() {
 		return getAttributes(getNamespaceDefinition());
 	}
 
+	/**
+	 * Returns a list of all attribute definitions from the given namespace
+	 * which are set for this tag.
+	 */
 	public Collection<IAttributeDefinition> getAttributes(INamespaceDefinition namespace) {
 		Map<IAttributeDefinition, String> attributes = attributeMap.get(namespace);
 		if (attributes != null) {
@@ -127,6 +142,10 @@ public class Tag implements IAdaptable {
 		}
 	}
 
+	/**
+	 * Returns the attribute value by namespace and attribute attribute
+	 * definition.
+	 */
 	public String getAttribute(INamespaceDefinition namespace, IAttributeDefinition attribute) {
 		Map<IAttributeDefinition, String> attributes = attributeMap.get(namespace);
 		return attributes != null ? attributes.get(attribute) : null;
@@ -153,6 +172,10 @@ public class Tag implements IAdaptable {
 		return children;
 	}
 
+	/**
+	 * Returns a list containing all adapted objects from child nodes which were
+	 * adaptable to the given type.
+	 */
 	public <A> List<A> adaptChildren(Class<A> type) {
 		List<A> results = new ArrayList<A>();
 		for (Tag tag : children) {
@@ -168,6 +191,10 @@ public class Tag implements IAdaptable {
 		return getParent() == null;
 	}
 
+	/**
+	 * Calls the given visitors for this node and its children elements. All
+	 * children elements are visited before going up again (Depth first).
+	 */
 	public void visitDepthFirst(ITagVisitor... visitors) {
 		for (ITagVisitor visitor : visitors) {
 			try {
