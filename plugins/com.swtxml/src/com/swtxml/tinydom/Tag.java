@@ -51,8 +51,7 @@ public class Tag implements IAdaptable {
 		return locationInfo;
 	}
 
-	// TODO: rename to getname
-	public String getTagName() {
+	public String getName() {
 		return tagDefinition.getName();
 	}
 

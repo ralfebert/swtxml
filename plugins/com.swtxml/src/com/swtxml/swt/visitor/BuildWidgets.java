@@ -37,8 +37,8 @@ public class BuildWidgets implements ITagVisitor {
 		}
 
 		if (tag.isRoot()) {
-			if (!tag.getTagName().equals(Composite.class.getSimpleName())) {
-				throw new ParseException("Invalid root tag " + tag.getTagName() + ", expected <"
+			if (!tag.getName().equals(Composite.class.getSimpleName())) {
+				throw new ParseException("Invalid root tag " + tag.getName() + ", expected <"
 						+ Composite.class.getSimpleName() + ">");
 			}
 			tag.makeAdaptable(parent);

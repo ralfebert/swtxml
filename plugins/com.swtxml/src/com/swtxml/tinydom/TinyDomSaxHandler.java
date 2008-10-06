@@ -63,7 +63,7 @@ public class TinyDomSaxHandler extends DefaultHandler {
 				: ITagDefinition.ROOT;
 		if (tagDefinition instanceof ITagScope
 				&& !((ITagScope) tagDefinition).isAllowedIn(parentTag)) {
-			throw new ParseException("Tag " + tag.getTagName() + " is not allowed in "
+			throw new ParseException("Tag " + tag.getName() + " is not allowed in "
 					+ parentTag.getName());
 		}
 

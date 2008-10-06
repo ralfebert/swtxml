@@ -77,7 +77,7 @@ public class TinyDomParserTest {
 		assertNull(root.getParent());
 		assertEquals(2, root.getChildren().size());
 		assertEquals(root, root.getChildren().get(0).getParent());
-		assertEquals("test", root.getTagName());
+		assertEquals("test", root.getName());
 	}
 
 	@Test
