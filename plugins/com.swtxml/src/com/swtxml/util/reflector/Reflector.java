@@ -12,19 +12,17 @@ package com.swtxml.util.reflector;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-
-import com.swtxml.util.reflector.MethodQuery.Subclasses;
-import com.swtxml.util.reflector.MethodQuery.Visibility;
 
 public class Reflector {
 
 	public static MethodQuery findMethods(Visibility visibility, Subclasses subclasses) {
 		return new MethodQuery(visibility, subclasses);
+	}
+
+	public static FieldQuery findFields(Visibility visibility, Subclasses subclasses) {
+		return new FieldQuery(visibility, subclasses);
 	}
 
 	public static Collection<Method> findPublicSetters(Class<?> cl) {
@@ -50,11 +48,10 @@ public class Reflector {
 		}
 
 		if (includePublicFields) {
-			List<Field> fields = Arrays.asList(cl.getFields());
+			Collection<Field> fields = Reflector.findFields(Visibility.PUBLIC, Subclasses.INCLUDE)
+					.isStatic(false).all(cl);
 			for (Field f : fields) {
-				if (!Modifier.isStatic(f.getModifiers())) {
-					properties.add(new ReflectorField(f));
-				}
+				properties.add(new ReflectorField(f));
 			}
 		}
 

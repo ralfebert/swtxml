@@ -20,10 +20,10 @@ import java.util.Collection;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.swtxml.swt.byid.ById;
+import com.swtxml.swt.byid.ByIdView;
 import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.lang.IPredicate;
-import com.swtxml.util.reflector.MethodQuery.Subclasses;
-import com.swtxml.util.reflector.MethodQuery.Visibility;
 
 public class ReflectorTest {
 
@@ -131,6 +131,18 @@ public class ReflectorTest {
 		assertEquals("123", text.get(test));
 		assertEquals(5, counter.get(test));
 		assertEquals("456", basePublicText.get(test));
+	}
+
+	@Test
+	public void testFieldQuery() {
+		assertEquals(
+				"[private java.lang.String com.swtxml.swt.byid.ByIdView.test, private java.lang.String com.swtxml.swt.byid.ByIdView.otherField, private java.lang.Integer com.swtxml.swt.byid.ByIdBaseView.baseNumber, private java.lang.Integer com.swtxml.swt.byid.ByIdBaseView.baseOtherField]",
+				Reflector.findFields(Visibility.PRIVATE, Subclasses.INCLUDE).all(ByIdView.class)
+						.toString());
+		assertEquals(
+				"[private java.lang.String com.swtxml.swt.byid.ByIdView.test, private java.lang.Integer com.swtxml.swt.byid.ByIdBaseView.baseNumber]",
+				Reflector.findFields(Visibility.PRIVATE, Subclasses.INCLUDE).annotatedWith(
+						ById.class).all(ByIdView.class).toString());
 	}
 
 	@Test

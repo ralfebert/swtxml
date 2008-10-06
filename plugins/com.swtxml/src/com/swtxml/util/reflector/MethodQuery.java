@@ -38,14 +38,6 @@ public class MethodQuery {
 		this.subclasses = subclasses;
 	}
 
-	public static enum Visibility {
-		PUBLIC, PRIVATE
-	};
-
-	public static enum Subclasses {
-		INCLUDE, NONE
-	}
-
 	private Collection<Method> getMethods(Class<?> type) {
 		if (visibility == Visibility.PUBLIC && subclasses == Subclasses.INCLUDE) {
 			return Arrays.asList(type.getMethods());
@@ -58,8 +50,8 @@ public class MethodQuery {
 
 	public MethodQuery nameStartsWith(final String str) {
 		predicates.add(new IPredicate<Method>() {
-			public boolean match(Method obj) {
-				return obj.getName().startsWith(str);
+			public boolean match(Method method) {
+				return method.getName().startsWith(str);
 			}
 		});
 		return this;
@@ -67,14 +59,14 @@ public class MethodQuery {
 
 	public MethodQuery parameters(final Class<?>... signature) {
 		predicates.add(new IPredicate<Method>() {
-			public boolean match(Method obj) {
-				if (obj.getParameterTypes().length != signature.length) {
+			public boolean match(Method method) {
+				if (method.getParameterTypes().length != signature.length) {
 					return false;
 				}
 				for (int i = 0; i < signature.length; i++) {
 					if (AnyType.class.isAssignableFrom(signature[i])) {
 						continue;
-					} else if (!signature[i].isAssignableFrom(obj.getParameterTypes()[i])) {
+					} else if (!signature[i].isAssignableFrom(method.getParameterTypes()[i])) {
 						return false;
 					}
 				}
@@ -90,8 +82,8 @@ public class MethodQuery {
 
 	public MethodQuery name(final String name) {
 		predicates.add(new IPredicate<Method>() {
-			public boolean match(Method m) {
-				return m.getName().equals(name);
+			public boolean match(Method method) {
+				return method.getName().equals(name);
 			}
 		});
 		return this;
@@ -111,9 +103,10 @@ public class MethodQuery {
 
 	public MethodQuery optionalParameter(final Class<?> type) {
 		predicates.add(new IPredicate<Method>() {
-			public boolean match(Method m) {
-				return m.getParameterTypes().length == 0
-						|| (m.getParameterTypes().length == 1 && type == m.getParameterTypes()[0]);
+			public boolean match(Method method) {
+				return method.getParameterTypes().length == 0
+						|| (method.getParameterTypes().length == 1 && type == method
+								.getParameterTypes()[0]);
 
 			}
 		});
@@ -122,28 +115,29 @@ public class MethodQuery {
 
 	public MethodQuery returnType(final Class<?> type) {
 		predicates.add(new IPredicate<Method>() {
-			public boolean match(Method m) {
-				return type.equals(m.getReturnType());
+			public boolean match(Method method) {
+				return type.equals(method.getReturnType());
 			}
 		});
 		return this;
 	}
 
 	/**
-	 * Returns all methods of <type>, overwritten methods are included only
-	 * once. Same as Class.getMethods() only with private methods included.
+	 * Same as Class.getMethods() but with private methods included. Returns all
+	 * methods of <type> and its superclasses, overwritten superclass methods
+	 * are not included.
 	 */
 	private Collection<Method> getAllMethods(Class<?> type) {
 		Map<String, Method> signatureToMethod = new HashMap<String, Method>();
 		while (type != null) {
-			for (Method currentMethod : type.getDeclaredMethods()) {
-				if (currentMethod.isBridge()) {
+			for (Method method : type.getDeclaredMethods()) {
+				if (method.isBridge() || method.isSynthetic()) {
 					continue;
 				}
 
-				String signature = getSignature(currentMethod);
+				String signature = getSignature(method);
 				if (!signatureToMethod.containsKey(signature)) {
-					signatureToMethod.put(signature, currentMethod);
+					signatureToMethod.put(signature, method);
 				}
 			}
 			type = type.getSuperclass();

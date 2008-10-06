@@ -23,8 +23,8 @@ import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.util.reflector.Reflector;
 import com.swtxml.util.reflector.ReflectorException;
-import com.swtxml.util.reflector.MethodQuery.Subclasses;
-import com.swtxml.util.reflector.MethodQuery.Visibility;
+import com.swtxml.util.reflector.Subclasses;
+import com.swtxml.util.reflector.Visibility;
 
 /**
  * CreateEventListenersVisitor processes attributes like

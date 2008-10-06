@@ -11,7 +11,6 @@
 package com.swtxml.util.parser;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,7 +21,10 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
+import com.swtxml.util.reflector.Reflector;
 import com.swtxml.util.reflector.ReflectorException;
+import com.swtxml.util.reflector.Subclasses;
+import com.swtxml.util.reflector.Visibility;
 
 public class ConstantParser {
 
@@ -45,13 +47,10 @@ public class ConstantParser {
 	private Map<String, Integer> extractConstants(Class<?> cl) {
 		Map<String, Integer> constants = new HashMap<String, Integer>();
 		try {
-			Field[] fields = cl.getFields();
+			Collection<Field> fields = Reflector.findFields(Visibility.PUBLIC, Subclasses.NONE)
+					.isStatic(true).type(Integer.TYPE).all(cl);
 			for (Field field : fields) {
-				if (Modifier.isPublic(field.getModifiers())
-						&& Modifier.isStatic(field.getModifiers())
-						&& field.getType() == Integer.TYPE) {
-					constants.put(field.getName(), field.getInt(cl));
-				}
+				constants.put(field.getName(), field.getInt(cl));
 			}
 		} catch (Exception e) {
 			throw new ReflectorException(e);

@@ -11,10 +11,14 @@
 package com.swtxml.swt.byid;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 
 import com.swtxml.adapter.IIdResolver;
 import com.swtxml.util.lang.ContractProof;
+import com.swtxml.util.reflector.Reflector;
 import com.swtxml.util.reflector.ReflectorException;
+import com.swtxml.util.reflector.Subclasses;
+import com.swtxml.util.reflector.Visibility;
 
 /**
  * ByIdInjector injects values in annotated Object fields.
@@ -35,29 +39,26 @@ public class ByIdInjector {
 	public void inject(Object object, IIdResolver idResolver) throws ReflectorException {
 		ContractProof.notNull(object, "object");
 		ContractProof.notNull(idResolver, "idResolver");
-		// TODO: use reflector api for finding these methods
-		Class<? extends Object> clazz = object.getClass();
-		do {
-			for (Field field : clazz.getDeclaredFields()) {
-				if (field.isAnnotationPresent(ById.class)) {
-					try {
-						Object value = idResolver.getById(field.getName(), field.getType());
-						if (value == null) {
-							throw new ReflectorException("No element with id \"" + field.getName()
-									+ "\" found for injecting @ById " + object.getClass() + "."
-									+ field.getName());
-						}
-						boolean oldAccess = field.isAccessible();
-						field.setAccessible(true);
-						field.set(object, value);
-						field.setAccessible(oldAccess);
-					} catch (Exception e) {
-						throw new ReflectorException(e);
-					}
+
+		Collection<Field> fields = Reflector.findFields(Visibility.PRIVATE, Subclasses.INCLUDE)
+				.annotatedWith(ById.class).all(object.getClass());
+
+		for (Field field : fields) {
+			try {
+				Object value = idResolver.getById(field.getName(), field.getType());
+				if (value == null) {
+					throw new ReflectorException("No element with id \"" + field.getName()
+							+ "\" found for injecting @ById " + object.getClass() + "."
+							+ field.getName());
 				}
+				boolean oldAccess = field.isAccessible();
+				field.setAccessible(true);
+				field.set(object, value);
+				field.setAccessible(oldAccess);
+			} catch (Exception e) {
+				throw new ReflectorException(e);
 			}
-			clazz = clazz.getSuperclass();
-		} while (clazz != null && !Object.class.equals(clazz));
+		}
 	}
 
 }
