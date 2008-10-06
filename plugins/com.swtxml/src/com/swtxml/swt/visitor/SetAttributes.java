@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.swt.SwtInfo;
+import com.swtxml.swt.metadata.PropertyAttribute;
 import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.util.parser.ParseException;
@@ -51,8 +52,10 @@ public class SetAttributes implements ITagVisitor {
 		}
 
 		for (IAttributeDefinition attr : tag.getAttributes()) {
-			SwtInfo.WIDGET_PROPERTIES.getProperties(widget.getClass()).getInjector(widget)
-					.setPropertyValue(attr.getName(), tag.getAttribute(attr));
+			if (attr instanceof PropertyAttribute) {
+				SwtInfo.WIDGET_PROPERTIES.getProperties(widget.getClass()).getInjector(widget)
+						.setPropertyValue(attr.getName(), tag.getAttribute(attr));
+			}
 		}
 	}
 

@@ -52,7 +52,7 @@ public class BuildWidgets implements ITagVisitor {
 		Class<?> parentClass = constructor.getParameterTypes()[0];
 
 		Composite parent = (Composite) tag.parentRecursiveAdaptTo(parentClass);
-		Integer style = SwtInfo.SWT.getIntValue(tag.slurpAttribute("style"));
+		Integer style = SwtInfo.SWT.getIntValue(tag.getAttribute("style"));
 
 		Widget widget = build(constructor, parent, style == null ? SWT.NONE : style);
 		tag.makeAdaptable(widget);

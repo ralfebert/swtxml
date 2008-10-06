@@ -56,7 +56,7 @@ public class WidgetTag implements ITagDefinition, ITagScope {
 				.getProperties(widgetClass);
 		attributes = new HashMap<String, IAttributeDefinition>();
 		for (Property property : properties.getProperties().values()) {
-			WidgetAttribute attribute = new WidgetAttribute(property);
+			PropertyAttribute attribute = new PropertyAttribute(property);
 			attributes.put(attribute.getName(), attribute);
 		}
 
@@ -84,11 +84,7 @@ public class WidgetTag implements ITagDefinition, ITagScope {
 
 	@Override
 	public String toString() {
-		return "WidgetTag[" + widgetClass + "]";
-	}
-
-	public int compareTo(ITagDefinition o) {
-		return this.getName().compareTo(o.getName());
+		return getClass().getSimpleName() + "[" + widgetClass + "]";
 	}
 
 	public IAttributeDefinition getAttribute(String name) {

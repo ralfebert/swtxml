@@ -42,7 +42,7 @@ public class AttributeDefinition implements IAttributeDefinition {
 
 	@Override
 	public String toString() {
-		return "AttributeDefinition[" + name + ", " + type + "]";
+		return getClass().getSimpleName() + "[" + name + ", " + type + "]";
 	}
 
 }

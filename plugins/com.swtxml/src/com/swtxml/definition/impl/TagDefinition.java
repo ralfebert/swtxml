@@ -56,4 +56,9 @@ public class TagDefinition implements ITagDefinition, ITagScope {
 		allowedParentTags.add(this);
 		return this;
 	}
+
+	@Override
+	public String toString() {
+		return getClass().getSimpleName() + "[" + name + "]";
+	}
 }

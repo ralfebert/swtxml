@@ -118,19 +118,6 @@ public final class Tag implements IAdaptable {
 		return attributes != null ? attributes.get(attribute) : null;
 	}
 
-	@Deprecated
-	public String slurpAttribute(String attributeName) {
-		Map<IAttributeDefinition, String> attributes = attributeMap.get(getNamespaceDefinition());
-		if (attributes == null) {
-			return null;
-		}
-		IAttributeDefinition attr = tagDefinition.getAttribute(attributeName);
-		if (attr == null) {
-			return null;
-		}
-		return attributes.remove(attr);
-	}
-
 	public Tag getParent() {
 		return parent;
 	}

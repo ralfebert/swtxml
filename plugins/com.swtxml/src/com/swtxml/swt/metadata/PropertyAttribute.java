@@ -14,11 +14,11 @@ import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.util.properties.Property;
 import com.swtxml.util.types.IType;
 
-public class WidgetAttribute implements IAttributeDefinition {
+public class PropertyAttribute implements IAttributeDefinition {
 
 	private Property property;
 
-	public WidgetAttribute(Property property) {
+	public PropertyAttribute(Property property) {
 		this.property = property;
 	}
 
@@ -28,11 +28,7 @@ public class WidgetAttribute implements IAttributeDefinition {
 
 	@Override
 	public String toString() {
-		return "SwtTagAttribute[" + property.getName() + "]";
-	}
-
-	public int compareTo(IAttributeDefinition o) {
-		return getName().compareTo(o.getName());
+		return getClass().getSimpleName() + "[" + property.getName() + "]";
 	}
 
 	public IType<?> getType() {

@@ -84,18 +84,12 @@ public class TinyDomParserTest {
 	public void testAttributes() {
 		Tag root = parseNumbers();
 		assertEquals("1", root.getAttribute("no"));
-		assertEquals("1", root.getAttribute("no"));
-		assertEquals("1", root.slurpAttribute("no"));
-		assertEquals(null, root.getAttribute("no"));
 	}
 
 	@Test
 	public void testForeignAttributes() {
 		Tag root = parseNumbers();
 		assertEquals("1", root.getAttribute("no"));
-		assertEquals("1", root.getAttribute("no"));
-		assertEquals("1", root.slurpAttribute("no"));
-		assertEquals(null, root.getAttribute("no"));
 	}
 
 	@Test
