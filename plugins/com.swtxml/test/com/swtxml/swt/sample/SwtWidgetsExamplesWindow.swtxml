@@ -88,7 +88,7 @@
                 <Button text="Trocken" style="RADIO"/>
                 <ProgressBar maximum="100" selection="70"/>
                 <Slider/>
-                <Browser url="http://www.google.de/" layoutData="height:100;width:100;"/>
+                <Browser layoutData="height:100;width:100;"/>
                 <Canvas/>
                 <Link text="Link"/>
                 <Scale minimum="-10" maximum="10"/>
