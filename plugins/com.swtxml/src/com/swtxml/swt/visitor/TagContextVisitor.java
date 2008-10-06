@@ -14,20 +14,26 @@ import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.util.context.Context;
 
+/**
+ * A TagContextVisitor proxies another ITagVisitor and establishes the context
+ * for the tag before calling visitor.visit().
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
 public class TagContextVisitor implements ITagVisitor {
 
-	private ITagVisitor processor;
+	private ITagVisitor visitor;
 
-	public TagContextVisitor(ITagVisitor processor) {
+	public TagContextVisitor(ITagVisitor visitor) {
 		super();
-		this.processor = processor;
+		this.visitor = visitor;
 	}
 
 	public void visit(final Tag tag) {
 		Context.runWith(new Runnable() {
 			public void run() {
 				Context.addAdapter(tag);
-				processor.visit(tag);
+				visitor.visit(tag);
 			}
 		});
 	}

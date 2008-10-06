@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.swt.processors;
+package com.swtxml.swt.visitor;
 
 import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;

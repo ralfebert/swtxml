@@ -15,15 +15,15 @@ import org.junit.runners.Suite;
 
 import com.swtxml.events.EventNamespaceDefinitionTest;
 import com.swtxml.events.EventsRegistryTest;
-import com.swtxml.events.processors.CreateEventListenersProcessorTest;
+import com.swtxml.events.visitor.CreateEventListenersTest;
 import com.swtxml.swt.byid.ByIdInjectorTest;
 import com.swtxml.swt.injector.FormAttachmentTypeTest;
 import com.swtxml.swt.injector.SwtInjectorTest;
 import com.swtxml.swt.injector.SwtTypesTest;
 import com.swtxml.swt.metadata.SwtNamespaceTest;
-import com.swtxml.swt.processors.BuildWidgetsTest;
-import com.swtxml.swt.processors.ProcessingTest;
 import com.swtxml.swt.sample.SwtWidgetsTest;
+import com.swtxml.swt.visitor.BuildWidgetsTest;
+import com.swtxml.swt.visitor.ProcessingTest;
 import com.swtxml.tinydom.TinyDomParserTest;
 import com.swtxml.util.context.ContextTest;
 import com.swtxml.util.lang.CollectionUtilsTest;
@@ -47,7 +47,7 @@ import com.swtxml.util.reflector.ReflectorTest;
 		PropertyRegistryTest.class, ConstantParserTest.class, KeyValueParserTest.class,
 		FormAttachmentTypeTest.class, ContextTest.class, SwtTypesTest.class, SwtInjectorTest.class,
 		SwtNamespaceTest.class, EventsRegistryTest.class, EventNamespaceDefinitionTest.class,
-		CreateEventListenersProcessorTest.class, TinyDomParserTest.class, ByIdInjectorTest.class,
+		CreateEventListenersTest.class, TinyDomParserTest.class, ByIdInjectorTest.class,
 		BuildWidgetsTest.class, ProcessingTest.class, SwtWidgetsTest.class })
 public class AllTests {
 

@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.swt.processors;
+package com.swtxml.swt.visitor;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;

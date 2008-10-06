@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.events.processors;
+package com.swtxml.events.visitor;
 
 import static org.easymock.EasyMock.anyObject;
 import static org.easymock.EasyMock.createStrictMock;
@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import com.swtxml.events.visitor.CreateEventListeners;
 
-public class CreateEventListenersProcessorTest {
+public class CreateEventListenersTest {
 
 	public static interface ISomeView {
 
