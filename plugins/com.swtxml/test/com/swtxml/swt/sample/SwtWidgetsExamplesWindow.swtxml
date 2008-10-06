@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Composite xmlns="http://www.swtxml.com/swt" xmlns:on="http://www.swtxml.com/events" layout="layout:fill;">
-    
+<Composite xmlns="http://www.swtxml.com/swt" xmlns:on="http://www.swtxml.com/events"
+    layout="layout:fill;">
+
     <TabFolder>
         <TabItem text="RowLayout">
             <Composite layout="layout:row;type:vertical;spacing:5;">
@@ -9,8 +10,8 @@
                 <Button text="%hello" style="CHECK"/>
             </Composite>
         </TabItem>
-        
-        
+
+
         <TabItem text="FillLayout">
             <Composite layout="layout:fill;">
                 <Button text="Sauber"/>
@@ -18,27 +19,29 @@
             </Composite>
         </TabItem>
 
-        
+
         <TabItem text="GridLayout">
             <Composite layout="layout:grid;numColumns:2;horizontalSpacing:10;verticalSpacing:10;">
 
                 <Label text="Test:" layoutData="widthHint:120  ;  " toolTipText="test"/>
                 <Combo style="READ_ONLY" toolTipText="whatever">
-<!--                    <pt:list values="Red|Green|Blue|Yellow|Black|Grey"/>-->
+                    <!--<pt:list values="Red|Green|Blue|Yellow|Black|Grey"/>-->
                 </Combo>
-                
-                
-                <Label text="horizontal span! horizontal span! horizontal span! horizontal span!" layoutData="horizontalSpan:2;"/>
-                
+
+
+                <Label text="horizontal span! horizontal span! horizontal span! horizontal span!"
+                    layoutData="horizontalSpan:2;"/>
+
                 <Label text="Mineralien:" layoutData="verticalAlignment:beginning;"/>
-                <Table id="waterTable" headerVisible="true" layoutData="grabExcessHorizontalSpace:true;horizontalAlignment:fill;grabExcessVerticalSpace:true;verticalAlignment:fill;">
+                <Table id="waterTable" headerVisible="true"
+                    layoutData="grabExcessHorizontalSpace:true;horizontalAlignment:fill;grabExcessVerticalSpace:true;verticalAlignment:fill;">
                     <TableColumn text="Mineral" width="80"/>
                     <TableColumn text="Mineralisierung (mg/l)" width="200"/>
-                    
+
                     <!--<pt:table>
                         <pt:row values="Kalcium|10"/>
                         <pt:row values="Natrium|0.001"/>
-                    </pt:table>-->
+                        </pt:table>-->
                 </Table>
 
 
@@ -46,28 +49,31 @@
                 <Label text="2"/>
                 <Label text="3"/>
 
-                                
+
             </Composite>
         </TabItem>
 
         <TabItem text="FormLayout">
             <Composite layout="layout:form;spacing:3;">
-                
+
                 <Label id="test" text="Bla:" layoutData="top:10;left:10;"/>
-                <Text id="testText" style="BORDER" text="weg ewgew gweg" layoutData="top:test; left:test.left; right:100%-10; bottom:20%;"/>
+                <Text id="testText" style="BORDER" text="weg ewgew gweg"
+                    layoutData="top:test; left:test.left; right:100%-10; bottom:20%;"/>
 
                 <Label id="test2" text="Fetzt:" layoutData="top:testText+50; left:testText.left;"/>
-                <Text id="testText2" style="BORDER" text="wegewg ewgew gew" layoutData="top:test2; left:test2.left; right:50%-10; bottom:100%-10;"/>
+                <Text id="testText2" style="BORDER" text="wegewg ewgew gew"
+                    layoutData="top:test2; left:test2.left; right:50%-10; bottom:100%-10;"/>
 
                 <Label id="test3" text="Test:" layoutData="top:test2.top;left:testText2.right+10;"/>
-                <Text id="testText3" style="MULTI|BORDER" text="ewg egew gewg ew" layoutData="top:test3; left:test3.left; right:testText.right; bottom:testText2.bottom;"/>
-                
+                <Text id="testText3" style="MULTI|BORDER" text="ewg egew gewg ew"
+                    layoutData="top:test3; left:test3.left; right:testText.right; bottom:testText2.bottom;"/>
+
             </Composite>
         </TabItem>
-                
+
         <TabItem text="Widget Fun">
             <Composite layout="layout:row;type:vertical;spacing:7;marginBottom:10;">
-                
+
                 <Label text="Frische, die hilft" foreground="red"/>
                 <Label text="Hilfe, die erfrischt!" background="#0000ff" foreground="white"/>
                 <Composite style="BORDER" layout="layout:fill;type:vertical;">
@@ -78,30 +84,36 @@
                 <Button text="Trink!"/>
                 <Button text="Sauber" style="CHECK"/>
                 <Button text="Kühl" style="CHECK"/>
+                <DateTime style="DATE"/>
                 <Button text="Trocken" style="RADIO"/>
                 <ProgressBar maximum="100" selection="70"/>
                 <Slider/>
+                <Browser url="http://www.google.de/" layoutData="height:100;width:100;"/>
+                <Canvas/>
+                <Link text="Link"/>
+                <Scale minimum="-10" maximum="10"/>
+                <StyledText style="BORDER,WRAP,MULTI"/>
                 <Text style="SINGLE,BORDER" text="Ohne Kohlensäure"/>
-                <Text style="V_SCROLL,BORDER" text="Neue Brunnen verbessern die Lebensbedingungen komplett" layoutData="width:200;height:200;"/>
-                
+                <Text style="V_SCROLL,BORDER"
+                    text="Neue Brunnen verbessern die Lebensbedingungen komplett"
+                    layoutData="width:200;height:200;"/>
+
                 <Group text="Hallo" style="BORDER" layout="layout:row;">
                     <Tree layoutData="width:150;height:200;"/>
                     <List style="FULL_SELECTION" layoutData="width:150;height:200;">
                         <!--<pt:list values="Red|Green|Blue|Yellow|Black|Grey"/>-->
                     </List>
                 </Group>
-                
-                <DateTime style="DATE"/>
-                
+
             </Composite>
         </TabItem>
         <TabItem text="SashForm">
-        	<SashForm style="VERTICAL" weights="20,30,50">
-        		<Composite background="red"/>
-        		<Composite background="green"/>
-        		<Composite background="blue"/>
-        	</SashForm>
+            <SashForm style="VERTICAL" weights="20,30,50">
+                <Composite background="red"/>
+                <Composite background="green"/>
+                <Composite background="blue"/>
+            </SashForm>
         </TabItem>
     </TabFolder>
-    
+
 </Composite>
