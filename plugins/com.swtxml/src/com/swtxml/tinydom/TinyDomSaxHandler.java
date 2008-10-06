@@ -56,8 +56,8 @@ public class TinyDomSaxHandler extends DefaultHandler {
 		Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeMap = processAttributes(
 				namespaceDefinition, tagDefinition, attributes);
 
-		Tag tag = new Tag(namespaceDefinition, tagDefinition, parserStack.isEmpty() ? null
-				: parserStack.peek(), getLocationInfo(), attributeMap);
+		Tag tag = new Tag(namespaceDefinition, tagDefinition, attributeMap, parserStack.isEmpty() ? null
+						: parserStack.peek(), getLocationInfo());
 
 		ITagDefinition parentTag = tag.getParent() != null ? tag.getParent().getTagDefinition()
 				: ITagDefinition.ROOT;

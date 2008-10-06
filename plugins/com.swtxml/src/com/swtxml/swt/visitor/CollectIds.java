@@ -39,9 +39,9 @@ public class CollectIds implements ITagVisitor, IIdResolver, IAdaptable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <A> A adaptTo(Class<A> type) {
+	public <T> T adaptTo(Class<T> type) {
 		if (type.isAssignableFrom(IIdResolver.class)) {
-			return (A) this;
+			return (T) this;
 		}
 		return null;
 	}

@@ -181,12 +181,13 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		if ("layoutData".equals(attributeName)) {
 			Context.addAdapter(new IAdaptable() {
 
-				public <A> A adaptTo(Class<A> adapterClass) {
+				@SuppressWarnings("unchecked")
+				public <T> T adaptTo(Class<T> adapterClass) {
 					if (adapterClass == Layout.class) {
 						Node layoutNode = contentAssistRequest.getNode().getParentNode()
 								.getAttributes().getNamedItem("layout");
 						if (layoutNode != null) {
-							return (A) new LayoutType().convert(layoutNode.getNodeValue(),
+							return (T) new LayoutType().convert(layoutNode.getNodeValue(),
 									Strictness.NICE);
 						}
 					}

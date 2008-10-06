@@ -38,8 +38,8 @@ public class BuildWidgetsTest {
 
 		Map<INamespaceDefinition, Map<IAttributeDefinition, String>> noAttributes = Collections
 				.emptyMap();
-		Tag root = new Tag(swt, swt.getTag("Composite"), null, "-", noAttributes);
-		Tag btn = new Tag(swt, swt.getTag("Button"), root, "-", noAttributes);
+		Tag root = new Tag(swt, swt.getTag("Composite"), noAttributes, null, "-");
+		Tag btn = new Tag(swt, swt.getTag("Button"), noAttributes, root, "-");
 
 		BuildWidgets builder = new BuildWidgets(shell);
 		root.visitDepthFirst(builder);

@@ -10,8 +10,6 @@
  *******************************************************************************/
 package com.swtxml.adapter;
 
-
-
 public class MockAdapter implements IAdaptable {
 
 	private Object obj;
@@ -21,9 +19,9 @@ public class MockAdapter implements IAdaptable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <A> A adaptTo(Class<A> adapterClass) {
+	public <T> T adaptTo(Class<T> adapterClass) {
 		if (adapterClass.isAssignableFrom(obj.getClass())) {
-			return (A) obj;
+			return (T) obj;
 		}
 		return null;
 	}

@@ -23,69 +23,32 @@ import com.swtxml.definition.ITagDefinition;
 import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.util.parser.ParseException;
 
-public class Tag implements IAdaptable {
+public final class Tag implements IAdaptable {
 
 	private final INamespaceDefinition namespaceDefinition;
 	private final ITagDefinition tagDefinition;
-	private final Tag parent;
-	private final String locationInfo;
-	protected final Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeMap;
-	private final List<Tag> children = new ArrayList<Tag>();
-	private final List<Object> adapterObjects;
+	private final Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeMap;
 
-	public Tag(INamespaceDefinition namespaceDefinition, ITagDefinition tagDefinition, Tag parent,
-			String locationInfo,
-			Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeMap) {
+	private final Tag parent;
+	private List<Tag> children;
+
+	private final String locationInfo;
+	private final List<Object> adapterObjects = new ArrayList<Object>();
+
+	public Tag(INamespaceDefinition namespaceDefinition, ITagDefinition tagDefinition,
+			Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeMap, Tag parent,
+			String locationInfo) {
 		this.namespaceDefinition = namespaceDefinition;
 		this.tagDefinition = tagDefinition;
 		this.parent = parent;
 		this.locationInfo = locationInfo;
 		this.attributeMap = attributeMap;
-		this.adapterObjects = new ArrayList<Object>();
-		if (this.parent != null) {
+		if (!isRoot()) {
+			if (this.parent.children == null) {
+				this.parent.children = new ArrayList<Tag>();
+			}
 			this.parent.children.add(this);
 		}
-	}
-
-	public String getLocationInfo() {
-		return locationInfo;
-	}
-
-	public String getName() {
-		return tagDefinition.getName();
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> T adaptTo(Class<T> type) {
-		for (Object adapterObject : adapterObjects) {
-			if (type.isAssignableFrom(adapterObject.getClass())) {
-				return (T) adapterObject;
-			}
-		}
-		return (T) (type.isAssignableFrom(getClass()) ? this : null);
-	}
-
-	public void makeAdaptable(Object obj) {
-		if (obj == null) {
-			throw new ParseException("makeAdaptable may not be called with null");
-		}
-		// TODO: check for conflicts
-		this.adapterObjects.add(obj);
-	}
-
-	public final <T> T parentAdaptTo(Class<T> type) {
-		return (parent != null) ? parent.adaptTo(type) : null;
-	}
-
-	public final <T> T parentRecursiveAdaptTo(Class<T> type) {
-		T match = parentAdaptTo(type);
-		if (match != null) {
-			return match;
-		}
-		if (parent != null) {
-			return parent.parentAdaptTo(type);
-		}
-		return null;
 	}
 
 	public INamespaceDefinition getNamespaceDefinition() {
@@ -94,6 +57,10 @@ public class Tag implements IAdaptable {
 
 	public ITagDefinition getTagDefinition() {
 		return tagDefinition;
+	}
+
+	public String getName() {
+		return tagDefinition.getName();
 	}
 
 	public String getAttribute(IAttributeDefinition attribute) {
@@ -168,26 +135,67 @@ public class Tag implements IAdaptable {
 	}
 
 	public List<Tag> getChildren() {
-		return children;
+		if (children != null) {
+			return children;
+		} else {
+			return Collections.emptyList();
+		}
+	}
+
+	public boolean isRoot() {
+		return getParent() == null;
+	}
+
+	public String getLocationInfo() {
+		return locationInfo;
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T adaptTo(Class<T> type) {
+		for (Object adapterObject : adapterObjects) {
+			if (type.isAssignableFrom(adapterObject.getClass())) {
+				return (T) adapterObject;
+			}
+		}
+		return (T) (type.isAssignableFrom(getClass()) ? this : null);
+	}
+
+	public final <T> T parentAdaptTo(Class<T> type) {
+		return (parent != null) ? parent.adaptTo(type) : null;
+	}
+
+	public final <T> T parentRecursiveAdaptTo(Class<T> type) {
+		T match = parentAdaptTo(type);
+		if (match != null) {
+			return match;
+		}
+		if (parent != null) {
+			return parent.parentAdaptTo(type);
+		}
+		return null;
+	}
+
+	public void makeAdaptable(Object obj) {
+		if (obj == null) {
+			throw new ParseException("makeAdaptable may not be called with null");
+		}
+		// TODO: check for conflicts
+		this.adapterObjects.add(obj);
 	}
 
 	/**
 	 * Returns a list containing all adapted objects from child nodes which were
 	 * adaptable to the given type.
 	 */
-	public <A> List<A> adaptChildren(Class<A> type) {
-		List<A> results = new ArrayList<A>();
-		for (Tag tag : children) {
-			A adapted = tag.adaptTo(type);
+	public <T> List<T> adaptChildren(Class<T> type) {
+		List<T> results = new ArrayList<T>();
+		for (Tag tag : getChildren()) {
+			T adapted = tag.adaptTo(type);
 			if (adapted != null) {
 				results.add(adapted);
 			}
 		}
 		return results;
-	}
-
-	public boolean isRoot() {
-		return getParent() == null;
 	}
 
 	/**
@@ -202,7 +210,7 @@ public class Tag implements IAdaptable {
 				throw new ParseException(this.getLocationInfo() + e.getMessage(), e);
 			}
 		}
-		for (Tag child : children) {
+		for (Tag child : getChildren()) {
 			child.visitDepthFirst(visitors);
 		}
 	}
