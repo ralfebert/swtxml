@@ -168,18 +168,18 @@ public class Tag implements IAdaptable {
 		return getParent() == null;
 	}
 
-	public Collection<Tag> depthFirst() {
+	private Collection<Tag> getElementsDepthFirst() {
 		// TODO: iteration without creating lists?
 		List<Tag> contents = new ArrayList<Tag>();
 		contents.add(this);
 		for (Tag tag : children) {
-			contents.addAll(tag.depthFirst());
+			contents.addAll(tag.getElementsDepthFirst());
 		}
 		return contents;
 	}
 
-	public void depthFirst(ITagVisitor... visitors) {
-		for (Tag tag : depthFirst()) {
+	public void visitDepthFirst(ITagVisitor... visitors) {
+		for (Tag tag : getElementsDepthFirst()) {
 			for (ITagVisitor visitor : visitors) {
 				try {
 					visitor.visit(tag);

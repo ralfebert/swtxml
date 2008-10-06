@@ -15,6 +15,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Reflector is a helper component to inspect classes using Java Reflection more
+ * conveniently.
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
 public class Reflector {
 
 	public static MethodQuery findMethods(Visibility visibility, Subclasses subclasses) {
@@ -25,7 +31,7 @@ public class Reflector {
 		return new FieldQuery(visibility, subclasses);
 	}
 
-	public static Collection<Method> findPublicSetters(Class<?> cl) {
+	static Collection<Method> findPublicSetters(Class<?> cl) {
 		return findMethods(Visibility.PUBLIC, Subclasses.INCLUDE).nameStartsWith("set").parameters(
 				MethodQuery.ANY_TYPE).all(cl);
 	}

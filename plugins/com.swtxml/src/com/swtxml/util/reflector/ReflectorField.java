@@ -12,7 +12,7 @@ package com.swtxml.util.reflector;
 
 import java.lang.reflect.Field;
 
-public class ReflectorField implements IReflectorProperty {
+class ReflectorField implements IReflectorProperty {
 
 	private Field field;
 

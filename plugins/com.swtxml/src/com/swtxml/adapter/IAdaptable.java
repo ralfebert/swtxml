@@ -16,7 +16,6 @@ package com.swtxml.adapter;
  * generic types.
  * 
  * @author Ralf Ebert <info@ralfebert.de>
- * @version %version: %
  */
 public interface IAdaptable {
 

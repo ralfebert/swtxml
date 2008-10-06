@@ -78,19 +78,19 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 		final ITagVisitor buildWidgets = new TagContextVisitor(new BuildWidgets(rootComposite));
 		final ITagVisitor setAttributes = new TagContextVisitor(new SetAttributes());
 
-		root.depthFirst(ids);
+		root.visitDepthFirst(ids);
 
 		Context.runWith(new Runnable() {
 			public void run() {
 				Context.addAdapter(ids);
 				Context.addAdapter(SwtXmlParser.this);
-				root.depthFirst(buildWidgets);
-				root.depthFirst(setAttributes);
+				root.visitDepthFirst(buildWidgets);
+				root.visitDepthFirst(setAttributes);
 			}
 		});
 
 		if (view != null) {
-			root.depthFirst(new CreateEventListeners(view));
+			root.visitDepthFirst(new CreateEventListeners(view));
 			new ByIdInjector().inject(view, ids);
 		}
 	}

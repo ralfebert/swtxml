@@ -22,7 +22,6 @@ import com.swtxml.swt.SwtXmlParser;
  * the co-located .swtxml file (same package, same name).
  * 
  * @author Ralf Ebert <info@ralfebert.de>
- * @version %version: %
  */
 public class SwtXmlWizardPage extends WizardPage {
 

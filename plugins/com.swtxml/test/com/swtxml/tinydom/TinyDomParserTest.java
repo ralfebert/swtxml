@@ -66,7 +66,7 @@ public class TinyDomParserTest {
 	public void testDepthFirstTagProcessing() {
 		Tag root = parseNumbers();
 		CollectNumbers collectNumbers = new CollectNumbers();
-		root.depthFirst(collectNumbers, collectNumbers);
+		root.visitDepthFirst(collectNumbers, collectNumbers);
 		assertEquals("112233445566", collectNumbers.getNumbers());
 	}
 
@@ -184,7 +184,7 @@ public class TinyDomParserTest {
 		TinyDomParser parser = new TinyDomParser(namespaceResolver);
 		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
 		try {
-			root.depthFirst(visitor);
+			root.visitDepthFirst(visitor);
 			fail("expected");
 		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));

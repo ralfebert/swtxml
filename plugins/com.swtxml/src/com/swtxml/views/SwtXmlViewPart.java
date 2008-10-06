@@ -22,7 +22,6 @@ import com.swtxml.swt.SwtXmlParser;
  * co-located .swtxml file (same package, same name).
  * 
  * @author Ralf Ebert <info@ralfebert.de>
- * @version %version: %
  */
 public class SwtXmlViewPart extends ViewPart {
 

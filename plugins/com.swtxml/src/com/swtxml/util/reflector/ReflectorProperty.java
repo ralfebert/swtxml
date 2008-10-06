@@ -12,7 +12,7 @@ package com.swtxml.util.reflector;
 
 import java.lang.reflect.Method;
 
-public class ReflectorProperty implements IReflectorProperty {
+class ReflectorProperty implements IReflectorProperty {
 
 	private final Method getter;
 	private final Method setter;

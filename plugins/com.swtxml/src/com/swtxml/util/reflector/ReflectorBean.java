@@ -15,6 +15,12 @@ import java.util.Collections;
 
 import com.swtxml.util.lang.ContractProof;
 
+/**
+ * ReflectorBean represents all properties (getter+setter or public field) of a
+ * java bean class.
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
 public class ReflectorBean {
 
 	private Collection<IReflectorProperty> properties;

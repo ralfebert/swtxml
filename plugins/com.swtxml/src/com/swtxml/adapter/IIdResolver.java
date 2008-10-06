@@ -15,7 +15,6 @@ package com.swtxml.adapter;
  * required class.
  * 
  * @author Ralf Ebert <ebert@ralfebert.de>
- * @version %version: %
  */
 public interface IIdResolver {
 

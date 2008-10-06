@@ -24,7 +24,6 @@ import com.swtxml.swt.SwtXmlParser;
  * parse the co-located .swtxml file (same package, same name).
  * 
  * @author Ralf Ebert <info@ralfebert.de>
- * @version %version: %
  */
 public class SwtXmlTitleAreaDialog extends TitleAreaDialog {
 

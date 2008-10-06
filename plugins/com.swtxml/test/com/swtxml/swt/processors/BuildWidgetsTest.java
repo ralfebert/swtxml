@@ -42,7 +42,7 @@ public class BuildWidgetsTest {
 		Tag btn = new Tag(swt, swt.getTag("Button"), root, "-", noAttributes);
 
 		BuildWidgets builder = new BuildWidgets(shell);
-		root.depthFirst(builder);
+		root.visitDepthFirst(builder);
 
 		assertEquals(shell, root.adaptTo(Control.class));
 		assertTrue(btn.adaptTo(Control.class) instanceof Button);

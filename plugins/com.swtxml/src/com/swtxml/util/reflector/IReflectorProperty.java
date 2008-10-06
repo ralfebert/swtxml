@@ -10,6 +10,14 @@
  *******************************************************************************/
 package com.swtxml.util.reflector;
 
+/**
+ * IReflectorProperty implementations represent a bean property.
+ * IReflectorProperty instances are managed by {@link ReflectorBean}. Was
+ * introduced to represent public fields ( {@link ReflectorField}) in the same
+ * way as getter+setter properties ( {@link ReflectorProperty}).
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
 public interface IReflectorProperty {
 
 	public abstract String getName();
