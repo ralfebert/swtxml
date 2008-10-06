@@ -168,25 +168,16 @@ public class Tag implements IAdaptable {
 		return getParent() == null;
 	}
 
-	private Collection<Tag> getElementsDepthFirst() {
-		// TODO: iteration without creating lists?
-		List<Tag> contents = new ArrayList<Tag>();
-		contents.add(this);
-		for (Tag tag : children) {
-			contents.addAll(tag.getElementsDepthFirst());
-		}
-		return contents;
-	}
-
 	public void visitDepthFirst(ITagVisitor... visitors) {
-		for (Tag tag : getElementsDepthFirst()) {
-			for (ITagVisitor visitor : visitors) {
-				try {
-					visitor.visit(tag);
-				} catch (Exception e) {
-					throw new ParseException(tag.getLocationInfo() + e.getMessage(), e);
-				}
+		for (ITagVisitor visitor : visitors) {
+			try {
+				visitor.visit(this);
+			} catch (Exception e) {
+				throw new ParseException(this.getLocationInfo() + e.getMessage(), e);
 			}
+		}
+		for (Tag child : children) {
+			child.visitDepthFirst(visitors);
 		}
 	}
 
