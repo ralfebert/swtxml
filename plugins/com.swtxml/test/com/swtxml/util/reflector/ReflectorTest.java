@@ -73,7 +73,8 @@ public class ReflectorTest {
 
 	@Test
 	public void findPublicProperties() {
-		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class, false);
+		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class,
+				PublicFields.NONE);
 		assertTrue(CollectionUtils.find(properties, getReflectorPropertyNameFilter("text")) != null);
 		assertTrue("superclass property", CollectionUtils.find(properties,
 				getReflectorPropertyNameFilter("baseText")) != null);
@@ -88,7 +89,7 @@ public class ReflectorTest {
 	@Test
 	public void findPublicPropertiesIncludingPublicFields() {
 		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class,
-				true);
+				PublicFields.INCLUDE);
 		assertTrue(CollectionUtils.find(properties, getReflectorPropertyNameFilter("text")) != null);
 		assertTrue("superclass property", CollectionUtils.find(properties,
 				getReflectorPropertyNameFilter("baseText")) != null);
@@ -105,7 +106,7 @@ public class ReflectorTest {
 	@Test
 	public void testPropertyGetSet() {
 		TestVO test = new TestVO();
-		ReflectorBean bean = new ReflectorBean(TestVO.class, true);
+		ReflectorBean bean = new ReflectorBean(TestVO.class, PublicFields.INCLUDE);
 		IReflectorProperty text = bean.getProperty("text");
 		IReflectorProperty counter = bean.getProperty("counter");
 		IReflectorProperty basePublicText = bean.getProperty("basePublicText");

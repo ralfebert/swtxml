@@ -32,6 +32,7 @@ import com.swtxml.swt.types.StyleType;
 import com.swtxml.util.parser.ConstantParser;
 import com.swtxml.util.properties.PropertyMatcher;
 import com.swtxml.util.properties.PropertyRegistry;
+import com.swtxml.util.reflector.PublicFields;
 import com.swtxml.util.types.SimpleTypes;
 
 public class SwtInfo {
@@ -47,7 +48,7 @@ public class SwtInfo {
 	public final static SwtNamespace NAMESPACE = new SwtNamespace();
 
 	private static PropertyRegistry createWidgetProperties() {
-		PropertyRegistry props = new PropertyRegistry(false);
+		PropertyRegistry props = new PropertyRegistry(PublicFields.NONE);
 		props.add(new PropertyMatcher(Widget.class, "style", Integer.TYPE), new StyleType(SWT));
 		props.add(new PropertyMatcher(Composite.class, "layout", Layout.class), new LayoutType());
 		props.add(new PropertyMatcher(Color.class), new ColorType());
@@ -61,7 +62,7 @@ public class SwtInfo {
 	}
 
 	private static PropertyRegistry createLayoutProperties() {
-		PropertyRegistry props = new PropertyRegistry(true);
+		PropertyRegistry props = new PropertyRegistry(PublicFields.INCLUDE);
 
 		props.add(new PropertyMatcher(Layout.class, "type", Integer.TYPE), new StyleType(SWT
 				.filter("HORIZONTAL|VERTICAL")));

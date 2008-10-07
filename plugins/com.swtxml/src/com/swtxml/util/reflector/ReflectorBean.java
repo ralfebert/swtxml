@@ -29,10 +29,11 @@ public class ReflectorBean {
 		return type;
 	}
 
-	public ReflectorBean(Class<?> type, boolean includePublicFields) {
+	public ReflectorBean(Class<?> type, PublicFields publicFields) {
 		ContractProof.notNull(type, "type");
 		this.type = type;
-		this.properties = Reflector.findPublicProperties(type, includePublicFields);
+		this.properties = Collections.unmodifiableCollection(Reflector.findPublicProperties(type,
+				publicFields));
 	}
 
 	public IReflectorProperty getProperty(String propertyName) {
@@ -45,7 +46,7 @@ public class ReflectorBean {
 	}
 
 	public Collection<IReflectorProperty> getProperties() {
-		return Collections.unmodifiableCollection(properties);
+		return properties;
 	}
 
 	@Override

@@ -22,6 +22,7 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.swtxml.util.reflector.PublicFields;
 import com.swtxml.util.reflector.TestVO;
 import com.swtxml.util.types.IType;
 
@@ -32,7 +33,7 @@ public class PropertyRegistryTest {
 	public void testPropertyRegistry() {
 		TestVO test = new TestVO();
 
-		PropertyRegistry propertyRegistry = new PropertyRegistry(true);
+		PropertyRegistry propertyRegistry = new PropertyRegistry(PublicFields.INCLUDE);
 
 		IType intType = createMock(IType.class);
 		IType typeForTestVO = createMock(IType.class);

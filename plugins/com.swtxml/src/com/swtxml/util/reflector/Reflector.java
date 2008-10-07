@@ -37,7 +37,7 @@ public class Reflector {
 	}
 
 	public static Collection<IReflectorProperty> findPublicProperties(Class<?> cl,
-			boolean includePublicFields) {
+			PublicFields publicFields) {
 		Collection<IReflectorProperty> properties = new ArrayList<IReflectorProperty>();
 		Collection<Method> setters = findPublicSetters(cl);
 		for (final Method setter : setters) {
@@ -49,7 +49,7 @@ public class Reflector {
 			}
 		}
 
-		if (includePublicFields) {
+		if (PublicFields.INCLUDE == publicFields) {
 			Collection<Field> fields = Reflector.findFields(Visibility.PUBLIC, Subclasses.INCLUDE)
 					.isStatic(false).all(cl);
 			for (Field f : fields) {
