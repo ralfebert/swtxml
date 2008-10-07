@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Widget;
 import com.swtxml.definition.DefinitionException;
 import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.lang.IOUtils;
-import com.swtxml.util.lang.IPredicate;
+import com.swtxml.util.lang.IFilter;
 import com.swtxml.util.parser.ParseException;
 
 public class WidgetRegistry {
@@ -71,7 +71,7 @@ public class WidgetRegistry {
 	@SuppressWarnings("unchecked")
 	public Constructor getWidgetConstructor(Class<? extends Widget> widgetClass) {
 		return CollectionUtils.find(Arrays.asList(widgetClass.getConstructors()),
-				new IPredicate<Constructor>() {
+				new IFilter<Constructor>() {
 
 					public boolean match(Constructor constructor) {
 						return (constructor.getParameterTypes().length == 2 && constructor

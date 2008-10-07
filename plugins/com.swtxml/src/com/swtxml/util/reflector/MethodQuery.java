@@ -19,13 +19,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.swtxml.util.lang.CollectionUtils;
-import com.swtxml.util.lang.IPredicate;
+import com.swtxml.util.lang.Filters;
+import com.swtxml.util.lang.IFilter;
 
 public class MethodQuery {
 
 	private Visibility visibility;
 	private Subclasses subclasses;
-	private List<IPredicate<Method>> predicates = new ArrayList<IPredicate<Method>>();
+	private List<IFilter<Method>> filters = new ArrayList<IFilter<Method>>();
 
 	private static class AnyType {
 
@@ -49,7 +50,7 @@ public class MethodQuery {
 	};
 
 	public MethodQuery nameStartsWith(final String str) {
-		predicates.add(new IPredicate<Method>() {
+		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				return method.getName().startsWith(str);
 			}
@@ -58,7 +59,7 @@ public class MethodQuery {
 	}
 
 	public MethodQuery nameMatches(final String regex) {
-		predicates.add(new IPredicate<Method>() {
+		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				return method.getName().matches(regex);
 			}
@@ -67,7 +68,7 @@ public class MethodQuery {
 	}
 
 	public MethodQuery parameters(final Class<?>... signature) {
-		predicates.add(new IPredicate<Method>() {
+		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				if (method.getParameterTypes().length != signature.length) {
 					return false;
@@ -86,11 +87,11 @@ public class MethodQuery {
 	}
 
 	public Collection<Method> all(Class<?> type) {
-		return CollectionUtils.select(getMethods(type), CollectionUtils.and(predicates));
+		return CollectionUtils.select(getMethods(type), Filters.and(filters));
 	}
 
 	public MethodQuery name(final String name) {
-		predicates.add(new IPredicate<Method>() {
+		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				return method.getName().equals(name);
 			}
@@ -111,7 +112,7 @@ public class MethodQuery {
 	}
 
 	public MethodQuery optionalParameter(final Class<?> type) {
-		predicates.add(new IPredicate<Method>() {
+		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				return method.getParameterTypes().length == 0
 						|| (method.getParameterTypes().length == 1 && type == method
@@ -123,7 +124,7 @@ public class MethodQuery {
 	}
 
 	public MethodQuery returnType(final Class<?> type) {
-		predicates.add(new IPredicate<Method>() {
+		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				return type.equals(method.getReturnType());
 			}

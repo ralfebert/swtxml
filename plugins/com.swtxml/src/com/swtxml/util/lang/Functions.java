@@ -10,8 +10,21 @@
  *******************************************************************************/
 package com.swtxml.util.lang;
 
-public interface IPredicate<T> {
+import org.apache.commons.lang.ObjectUtils;
 
-	public boolean match(T obj);
+/**
+ * Common Collection Functions.
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
+public class Functions {
+
+	public static final IFunction<Object, String> TO_STRING = new IFunction<Object, String>() {
+
+		public String apply(Object obj) {
+			return ObjectUtils.toString(obj);
+		}
+
+	};
 
 }

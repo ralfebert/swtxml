@@ -8,24 +8,26 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.util.context;
+package com.swtxml.util.lang;
 
-public class ContextException extends RuntimeException {
+/**
+ * Common Collection Filters.
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
+public class Filters {
 
-	public ContextException() {
-		super();
-	}
-
-	public ContextException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	public ContextException(String message) {
-		super(message);
-	}
-
-	public ContextException(Throwable cause) {
-		super(cause);
+	public static <A> IFilter<A> and(final Iterable<IFilter<A>> filters) {
+		return new IFilter<A>() {
+			public boolean match(A obj) {
+				for (IFilter<A> filter : filters) {
+					if (!filter.match(obj)) {
+						return false;
+					}
+				}
+				return true;
+			}
+		};
 	}
 
 }

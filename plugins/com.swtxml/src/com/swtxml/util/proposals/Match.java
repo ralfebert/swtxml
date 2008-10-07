@@ -19,7 +19,7 @@ import java.util.List;
 import org.apache.commons.lang.StringUtils;
 
 import com.swtxml.util.lang.CollectionUtils;
-import com.swtxml.util.lang.IPredicate;
+import com.swtxml.util.lang.IFilter;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.parser.Splitter;
 
@@ -171,7 +171,7 @@ public class Match {
 	public List<Match> propose(Collection<String> values) {
 		final String textBeforeCursor = getTextBeforeCursor().toLowerCase().trim();
 		List<String> filteredValues = new ArrayList<String>(CollectionUtils.select(values,
-				new IPredicate<String>() {
+				new IFilter<String>() {
 
 					public boolean match(String value) {
 						return value.toLowerCase().startsWith(textBeforeCursor);

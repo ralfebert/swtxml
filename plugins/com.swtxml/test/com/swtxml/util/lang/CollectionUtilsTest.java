@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.swtxml.util.lang;
 
-import static com.swtxml.util.lang.CollectionUtils.and;
+import static com.swtxml.util.lang.Filters.and;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -38,16 +38,16 @@ public class CollectionUtilsTest {
 		assertEquals(null, CollectionUtils.find(oddNumbers, evenNumber()));
 	}
 
-	private IPredicate<Number> evenNumber() {
-		return new IPredicate<Number>() {
+	private IFilter<Number> evenNumber() {
+		return new IFilter<Number>() {
 			public boolean match(Number n) {
 				return n.longValue() % 2 == 0;
 			}
 		};
 	}
 
-	private IPredicate<Number> is4Number() {
-		return new IPredicate<Number>() {
+	private IFilter<Number> is4Number() {
+		return new IFilter<Number>() {
 			public boolean match(Number n) {
 				return n.longValue() == 4;
 			}

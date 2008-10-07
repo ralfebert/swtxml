@@ -23,12 +23,12 @@ import org.junit.Test;
 import com.swtxml.swt.byid.ById;
 import com.swtxml.swt.byid.ByIdView;
 import com.swtxml.util.lang.CollectionUtils;
-import com.swtxml.util.lang.IPredicate;
+import com.swtxml.util.lang.IFilter;
 
 public class ReflectorTest {
 
-	private final static IPredicate<Method> getMethodNamePredicate(final String name) {
-		return new IPredicate<Method>() {
+	private final static IFilter<Method> getMethodNameFilter(final String name) {
+		return new IFilter<Method>() {
 
 			public boolean match(Method m) {
 				return m.getName().equals(name);
@@ -37,9 +37,9 @@ public class ReflectorTest {
 		};
 	}
 
-	private final static IPredicate<IReflectorProperty> getReflectorPropertyNamePredicate(
+	private final static IFilter<IReflectorProperty> getReflectorPropertyNameFilter(
 			final String name) {
-		return new IPredicate<IReflectorProperty>() {
+		return new IFilter<IReflectorProperty>() {
 
 			public boolean match(IReflectorProperty prop) {
 				return prop.getName().equals(name);
@@ -57,51 +57,49 @@ public class ReflectorTest {
 
 	@Test
 	public void testFindPublicSetters() {
-		assertTrue(CollectionUtils.find(testVoSetters, getMethodNamePredicate("setText")) != null);
+		assertTrue(CollectionUtils.find(testVoSetters, getMethodNameFilter("setText")) != null);
 		assertTrue("superclass setter", CollectionUtils.find(testVoSetters,
-				getMethodNamePredicate("setBaseText")) != null);
+				getMethodNameFilter("setBaseText")) != null);
 	}
 
 	public void testFindPublicSettersContainNoProtectedSetters() {
-		assertNull(CollectionUtils.find(testVoSetters,
-				getMethodNamePredicate("setProtectedProperty")));
+		assertNull(CollectionUtils.find(testVoSetters, getMethodNameFilter("setProtectedProperty")));
 	}
 
 	@Test
 	public void testFindPublicSettersContainNoMultiArgumentSetMethods() {
-		assertTrue(CollectionUtils.select(testVoSetters, getMethodNamePredicate("setMulti"))
-				.isEmpty());
+		assertTrue(CollectionUtils.select(testVoSetters, getMethodNameFilter("setMulti")).isEmpty());
 	}
 
 	@Test
 	public void findPublicProperties() {
 		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class);
-		assertTrue(CollectionUtils.find(properties, getReflectorPropertyNamePredicate("text")) != null);
+		assertTrue(CollectionUtils.find(properties, getReflectorPropertyNameFilter("text")) != null);
 		assertTrue("superclass property", CollectionUtils.find(properties,
-				getReflectorPropertyNamePredicate("baseText")) != null);
+				getReflectorPropertyNameFilter("baseText")) != null);
 		assertTrue("public fields not included", CollectionUtils.select(properties,
-				getReflectorPropertyNamePredicate("publicText")).isEmpty());
+				getReflectorPropertyNameFilter("publicText")).isEmpty());
 		assertTrue("protected property not included", CollectionUtils.select(properties,
-				getReflectorPropertyNamePredicate("publicText")).isEmpty());
+				getReflectorPropertyNameFilter("publicText")).isEmpty());
 		assertTrue("base protected field not included", CollectionUtils.select(properties,
-				getReflectorPropertyNamePredicate("protectedProperty")).isEmpty());
+				getReflectorPropertyNameFilter("protectedProperty")).isEmpty());
 	}
 
 	@Test
 	public void findPublicPropertiesIncludingPublicFields() {
 		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class,
 				true);
-		assertTrue(CollectionUtils.find(properties, getReflectorPropertyNamePredicate("text")) != null);
+		assertTrue(CollectionUtils.find(properties, getReflectorPropertyNameFilter("text")) != null);
 		assertTrue("superclass property", CollectionUtils.find(properties,
-				getReflectorPropertyNamePredicate("baseText")) != null);
+				getReflectorPropertyNameFilter("baseText")) != null);
 		assertTrue("public field", CollectionUtils.select(properties,
-				getReflectorPropertyNamePredicate("publicText")) != null);
+				getReflectorPropertyNameFilter("publicText")) != null);
 		assertTrue("base public field", CollectionUtils.select(properties,
-				getReflectorPropertyNamePredicate("basePublicText")) != null);
+				getReflectorPropertyNameFilter("basePublicText")) != null);
 		assertTrue("protected field not included", CollectionUtils.select(properties,
-				getReflectorPropertyNamePredicate("protectedText")).isEmpty());
+				getReflectorPropertyNameFilter("protectedText")).isEmpty());
 		assertTrue("static constants are not found", CollectionUtils.select(properties,
-				getReflectorPropertyNamePredicate("SOME_CONSTANT")).isEmpty());
+				getReflectorPropertyNameFilter("SOME_CONSTANT")).isEmpty());
 	}
 
 	@Test

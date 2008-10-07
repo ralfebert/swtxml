@@ -17,32 +17,75 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.apache.commons.lang.StringUtils;
 
 import com.swtxml.util.reflector.ReflectorException;
 
 public class CollectionUtils {
 
-	public static <A> A find(Iterable<? extends A> iterable, IPredicate<A> predicate) {
+	/**
+	 * Returns the first element from iterable for which filter.match(element)
+	 * returned true.
+	 */
+	public static <A> A find(Iterable<? extends A> iterable, IFilter<A> filter) {
 		for (A a : iterable) {
-			if (predicate.match(a)) {
+			if (filter.match(a)) {
 				return a;
 			}
 		}
 		return null;
 	}
 
+	/**
+	 * Returns a new collection containing all elements from collection for
+	 * which filter.match(element) returned true.
+	 */
 	@SuppressWarnings("unchecked")
-	public static <A> Collection<A> select(Collection<? extends A> collection,
-			IPredicate<A> predicate) {
+	public static <A> Collection<A> select(Collection<? extends A> collection, IFilter<A> filter) {
 		Collection<A> resultList = createCollection(collection);
 		for (A a : collection) {
-			if (predicate.match(a)) {
+			if (filter.match(a)) {
 				resultList.add(a);
 			}
 		}
 		return resultList;
+	}
+
+	/**
+	 * Returns a new collection containing the result from
+	 * function.apply(element) for all elements from collection.
+	 */
+	@SuppressWarnings("unchecked")
+	public static <FROM, TO> Collection<TO> collect(Collection<? extends FROM> collection,
+			IFunction<FROM, TO> function) {
+		Collection<TO> resultList = createCollection(collection);
+		for (FROM a : collection) {
+			resultList.add(function.apply(a));
+		}
+		return resultList;
+	}
+
+	/**
+	 * Returns a new list containing the result from function.apply(element) for
+	 * all elements from list.
+	 */
+	public static <FROM, TO> List<TO> collect(List<? extends FROM> list,
+			IFunction<FROM, TO> function) {
+		List<TO> resultList = new ArrayList<TO>();
+		for (FROM a : list) {
+			resultList.add(function.apply(a));
+		}
+		return resultList;
+	}
+
+	/**
+	 * Returns a comma-separated String of the collection toString values
+	 * alphabetically sorted by value.
+	 */
+	public static String sortedToString(Collection<?> collection) {
+		List<String> strings = new ArrayList<String>(collect(collection, Functions.TO_STRING));
+		Collections.sort(strings);
+		return StringUtils.join(strings, ", ");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -54,55 +97,6 @@ public class CollectionUtils {
 			return new ArrayList();
 		}
 		throw new ReflectorException("Unknown collection type: " + original.getClass());
-	}
-
-	@SuppressWarnings("unchecked")
-	public static <FROM, TO> Collection<TO> collect(Collection<? extends FROM> collection,
-			IFunction<FROM, TO> function) {
-		Collection<TO> resultList = createCollection(collection);
-		for (FROM a : collection) {
-			resultList.add(function.apply(a));
-		}
-		return resultList;
-	}
-
-	public static <FROM, TO> List<TO> collect(List<? extends FROM> list,
-			IFunction<FROM, TO> function) {
-		List<TO> resultList = new ArrayList<TO>();
-		for (FROM a : list) {
-			resultList.add(function.apply(a));
-		}
-		return resultList;
-	}
-
-	/**
-	 * Returns a comma-separated String of the collection values alphabetically
-	 * sorted by value.
-	 */
-	public static String sortedToString(Collection<?> collection) {
-		List<String> strings = new ArrayList<String>(collect(collection,
-				new IFunction<Object, String>() {
-
-					public String apply(Object obj) {
-						return ObjectUtils.toString(obj);
-					}
-
-				}));
-		Collections.sort(strings);
-		return StringUtils.join(strings, ", ");
-	}
-
-	public static <A> IPredicate<A> and(final Iterable<IPredicate<A>> predicates) {
-		return new IPredicate<A>() {
-			public boolean match(A obj) {
-				for (IPredicate<A> predicate : predicates) {
-					if (!predicate.match(obj)) {
-						return false;
-					}
-				}
-				return true;
-			}
-		};
 	}
 
 }

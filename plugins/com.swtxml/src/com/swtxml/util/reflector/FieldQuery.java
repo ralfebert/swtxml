@@ -20,13 +20,14 @@ import java.util.Iterator;
 import java.util.List;
 
 import com.swtxml.util.lang.CollectionUtils;
-import com.swtxml.util.lang.IPredicate;
+import com.swtxml.util.lang.Filters;
+import com.swtxml.util.lang.IFilter;
 
 public class FieldQuery {
 
 	private Visibility visibility;
 	private Subclasses subclasses;
-	private List<IPredicate<Field>> predicates = new ArrayList<IPredicate<Field>>();
+	private List<IFilter<Field>> filters = new ArrayList<IFilter<Field>>();
 
 	FieldQuery(Visibility visibility, Subclasses subclasses) {
 		this.visibility = visibility;
@@ -53,7 +54,7 @@ public class FieldQuery {
 	};
 
 	public FieldQuery name(final String name) {
-		predicates.add(new IPredicate<Field>() {
+		filters.add(new IFilter<Field>() {
 			public boolean match(Field field) {
 				return field.getName().equals(name);
 			}
@@ -62,7 +63,7 @@ public class FieldQuery {
 	}
 
 	public FieldQuery nameStartsWith(final String str) {
-		predicates.add(new IPredicate<Field>() {
+		filters.add(new IFilter<Field>() {
 			public boolean match(Field field) {
 				return field.getName().startsWith(str);
 			}
@@ -71,7 +72,7 @@ public class FieldQuery {
 	}
 
 	public FieldQuery annotatedWith(final Class<? extends Annotation> annotationClass) {
-		predicates.add(new IPredicate<Field>() {
+		filters.add(new IFilter<Field>() {
 			public boolean match(Field field) {
 				return field.isAnnotationPresent(annotationClass);
 			}
@@ -80,7 +81,7 @@ public class FieldQuery {
 	}
 
 	public FieldQuery type(final Class<?> type) {
-		predicates.add(new IPredicate<Field>() {
+		filters.add(new IFilter<Field>() {
 			public boolean match(Field field) {
 				return type.equals(field.getType());
 			}
@@ -89,7 +90,7 @@ public class FieldQuery {
 	}
 
 	public FieldQuery isStatic(final boolean isStatic) {
-		predicates.add(new IPredicate<Field>() {
+		filters.add(new IFilter<Field>() {
 			public boolean match(Field field) {
 				return isStatic == Modifier.isStatic(field.getModifiers());
 			}
@@ -98,7 +99,7 @@ public class FieldQuery {
 	}
 
 	public Collection<Field> all(Class<?> type) {
-		return CollectionUtils.select(getFields(type), CollectionUtils.and(predicates));
+		return CollectionUtils.select(getFields(type), Filters.and(filters));
 	}
 
 	public Field exactOne(Class<?> type) {
