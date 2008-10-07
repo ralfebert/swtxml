@@ -36,10 +36,6 @@ public class Reflector {
 				MethodQuery.ANY_TYPE).all(cl);
 	}
 
-	public static Collection<IReflectorProperty> findPublicProperties(Class<?> cl) {
-		return findPublicProperties(cl, false);
-	}
-
 	public static Collection<IReflectorProperty> findPublicProperties(Class<?> cl,
 			boolean includePublicFields) {
 		Collection<IReflectorProperty> properties = new ArrayList<IReflectorProperty>();

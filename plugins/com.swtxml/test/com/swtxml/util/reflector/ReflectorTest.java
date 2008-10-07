@@ -73,7 +73,7 @@ public class ReflectorTest {
 
 	@Test
 	public void findPublicProperties() {
-		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class);
+		Collection<IReflectorProperty> properties = Reflector.findPublicProperties(TestVO.class, false);
 		assertTrue(CollectionUtils.find(properties, getReflectorPropertyNameFilter("text")) != null);
 		assertTrue("superclass property", CollectionUtils.find(properties,
 				getReflectorPropertyNameFilter("baseText")) != null);

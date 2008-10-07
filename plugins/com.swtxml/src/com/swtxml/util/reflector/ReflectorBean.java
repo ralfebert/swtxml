@@ -29,10 +29,6 @@ public class ReflectorBean {
 		return type;
 	}
 
-	public ReflectorBean(Class<?> type) {
-		this(type, false);
-	}
-
 	public ReflectorBean(Class<?> type, boolean includePublicFields) {
 		ContractProof.notNull(type, "type");
 		this.type = type;
