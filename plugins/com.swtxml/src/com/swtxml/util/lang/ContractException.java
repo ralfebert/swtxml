@@ -8,15 +8,27 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.events;
+package com.swtxml.util.lang;
 
-import com.swtxml.definition.INamespaceDefinition;
-import com.swtxml.events.registry.EventsRegistry;
+/**
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
+public class ContractException extends RuntimeException {
 
-public class Events {
+	public ContractException() {
+		super();
+	}
 
-	public final static EventsRegistry EVENTS = new EventsRegistry();
+	public ContractException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-	public final static INamespaceDefinition NAMESPACE = new EventNamespaceDefinition();
+	public ContractException(String message) {
+		super(message);
+	}
+
+	public ContractException(Throwable cause) {
+		super(cause);
+	}
 
 }

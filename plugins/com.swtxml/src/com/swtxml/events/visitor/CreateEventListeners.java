@@ -18,9 +18,11 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.events.Events;
+import com.swtxml.events.registry.WidgetEvent;
 import com.swtxml.swt.metadata.WidgetTag;
 import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
+import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.reflector.Reflector;
 import com.swtxml.util.reflector.ReflectorException;
 import com.swtxml.util.reflector.Subclasses;
@@ -61,11 +63,13 @@ public class CreateEventListeners implements ITagVisitor {
 	 */
 	public void wireViewMethodListener(String viewMethodName, Widget widget, final String eventName) {
 
-		final Method viewMethod = Reflector.findMethods(Visibility.PRIVATE, Subclasses.INCLUDE)
-				.name(viewMethodName.trim()).optionalParameter(
-						Events.EVENTS.getEventParamType(eventName)).exactOne(viewObject.getClass());
+		WidgetEvent event = Events.EVENTS.getWidgetEvent(widget.getClass(), eventName);
+		ContractProof.notNull(event, "event");
 
-		Class<?> listenerType = Events.EVENTS.getEventInterface(eventName);
+		final Method viewMethod = Reflector.findMethods(Visibility.PRIVATE, Subclasses.INCLUDE)
+				.name(viewMethodName.trim()).optionalParameter(event.getEventParamType()).exactOne(
+						viewObject.getClass());
+
 		InvocationHandler handler = new InvocationHandler() {
 
 			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
@@ -85,6 +89,8 @@ public class CreateEventListeners implements ITagVisitor {
 			}
 
 		};
+
+		Class<?> listenerType = event.getListenerType();
 		Object listenerProxy = Proxy.newProxyInstance(viewObject.getClass().getClassLoader(),
 				new Class[] { listenerType }, handler);
 

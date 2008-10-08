@@ -10,12 +10,30 @@
  *******************************************************************************/
 package com.swtxml.util.lang;
 
+import java.util.Map;
+
+import org.apache.commons.lang.ObjectUtils;
+
 public class ContractProof {
 
+	/**
+	 * Throws a ContractException if obj is null.
+	 */
 	public static void notNull(Object obj, String name) {
 		if (obj == null) {
-			throw new IllegalArgumentException(name + " may not be null");
+			throw new ContractException(name + " may not be null");
 		}
 	}
 
+	/**
+	 * Puts key => value in map. If the key is already in the list with another
+	 * value, a ContractException is thrown.
+	 */
+	public static <K, V> void safePut(Map<K, V> map, K key, V value) {
+		V previousValue = map.put(key, value);
+		if (previousValue != null && !ObjectUtils.equals(previousValue, value)) {
+			throw new ContractException("May not overwrite " + key + " => " + previousValue
+					+ " with " + value);
+		}
+	}
 }

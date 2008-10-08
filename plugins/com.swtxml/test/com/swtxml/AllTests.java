@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 import com.swtxml.events.EventNamespaceDefinitionTest;
-import com.swtxml.events.EventsRegistryTest;
+import com.swtxml.events.registry.EventsRegistryTest;
 import com.swtxml.events.visitor.CreateEventListenersTest;
 import com.swtxml.swt.byid.ByIdInjectorTest;
 import com.swtxml.swt.injector.FormAttachmentTypeTest;
@@ -27,6 +27,7 @@ import com.swtxml.swt.visitor.ProcessingTest;
 import com.swtxml.tinydom.TinyDomParserTest;
 import com.swtxml.util.context.ContextTest;
 import com.swtxml.util.lang.CollectionUtilsTest;
+import com.swtxml.util.lang.ContractProofTest;
 import com.swtxml.util.lang.IOUtilsTest;
 import com.swtxml.util.parser.ConstantParserTest;
 import com.swtxml.util.parser.KeyValueParserTest;
@@ -42,11 +43,12 @@ import com.swtxml.util.reflector.ReflectorTest;
  * environment.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { CollectionUtilsTest.class, IOUtilsTest.class, SplitterTest.class,
-		MatchTest.class, ReflectorTest.class, PropertyMatcherTest.class, BaseConvertersTest.class,
-		PropertyRegistryTest.class, ConstantParserTest.class, KeyValueParserTest.class,
-		FormAttachmentTypeTest.class, ContextTest.class, SwtTypesTest.class, SwtInjectorTest.class,
-		SwtNamespaceTest.class, EventsRegistryTest.class, EventNamespaceDefinitionTest.class,
+@Suite.SuiteClasses( { ContractProofTest.class, CollectionUtilsTest.class, IOUtilsTest.class,
+		SplitterTest.class, MatchTest.class, ReflectorTest.class, PropertyMatcherTest.class,
+		BaseConvertersTest.class, PropertyRegistryTest.class, ConstantParserTest.class,
+		KeyValueParserTest.class, FormAttachmentTypeTest.class, ContextTest.class,
+		SwtTypesTest.class, SwtInjectorTest.class, SwtNamespaceTest.class,
+		EventsRegistryTest.class, EventNamespaceDefinitionTest.class,
 		CreateEventListenersTest.class, TinyDomParserTest.class, ByIdInjectorTest.class,
 		BuildWidgetsTest.class, ProcessingTest.class, SwtWidgetsTest.class })
 public class AllTests {
