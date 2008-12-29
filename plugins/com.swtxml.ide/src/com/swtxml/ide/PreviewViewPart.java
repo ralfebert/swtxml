@@ -18,7 +18,6 @@ import org.eclipse.jface.text.IDocumentExtension4;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
@@ -72,13 +71,16 @@ public class PreviewViewPart extends ViewPart {
 
 	};
 
-	private Composite parent;
 	private long lastPreviewModificationStamp;
+	private Composite content;
+
+	private Composite parent;
 
 	@Override
 	public void createPartControl(Composite parent) {
 		this.parent = parent;
-		parent.setLayout(new FillLayout());
+		content = new Composite(parent, SWT.None);
+		content.setLayout(new FillLayout());
 		getSite().getPage().addPartListener(trackRelevantEditorsPartListener);
 		tryConnectTo(getSite().getPage().getActiveEditor());
 	}
@@ -116,9 +118,7 @@ public class PreviewViewPart extends ViewPart {
 	}
 
 	private void clearPreview() {
-		for (Control c : parent.getChildren()) {
-			c.dispose();
-		}
+		content.dispose();
 	}
 
 	private void updatePreview() {
@@ -126,17 +126,17 @@ public class PreviewViewPart extends ViewPart {
 		IDocumentExtension4 document = (IDocumentExtension4) doc;
 		if (document.getModificationStamp() != lastPreviewModificationStamp) {
 			try {
-				Control[] children = parent.getChildren();
+				Composite oldContent = content;
+				content = new Composite(parent, SWT.None);
+				content.setLayout(new FillLayout());
 				IEditorInput editorInput = trackedPart.getEditorInput();
 				ILocationProvider locationProvider = (ILocationProvider) editorInput
 						.getAdapter(ILocationProvider.class);
 				String filename = (locationProvider != null) ? locationProvider
 						.getPath(editorInput).toFile().getName() : "unknown";
-				new SwtXmlParser(parent, null).parse(filename, new InputSource(new StringReader(doc
-						.get())));
-				for (Control c : children) {
-					c.dispose();
-				}
+				new SwtXmlParser(content, null).parse(filename, new InputSource(new StringReader(
+						doc.get())));
+				oldContent.dispose();
 			} catch (Exception e) {
 				Activator.getDefault().getLog().log(
 						new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
