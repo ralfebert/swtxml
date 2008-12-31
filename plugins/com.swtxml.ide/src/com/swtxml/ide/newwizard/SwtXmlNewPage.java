@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.swtxml.views.SwtXmlComposite;
+import com.swtxml.views.SwtXmlDialog;
 import com.swtxml.views.SwtXmlEditorPart;
 import com.swtxml.views.SwtXmlTitleAreaDialog;
 import com.swtxml.views.SwtXmlViewPart;
@@ -33,7 +34,7 @@ import com.swtxml.views.SwtXmlWizardPage;
 
 public class SwtXmlNewPage extends NewTypeWizardPage {
 
-	private Class<?>[] swtXmlClasses = new Class<?>[] { SwtXmlComposite.class,
+	private Class<?>[] swtXmlClasses = new Class<?>[] { SwtXmlComposite.class, SwtXmlDialog.class,
 			SwtXmlEditorPart.class, SwtXmlTitleAreaDialog.class, SwtXmlViewPart.class,
 			SwtXmlWindow.class, SwtXmlWizardPage.class };
 
