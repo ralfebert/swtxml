@@ -13,12 +13,17 @@ package com.swtxml.ide;
 import java.io.File;
 
 import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.ToolBarManager;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IDocumentExtension4;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IEditorPart;
 import org.eclipse.ui.IPartListener;
@@ -40,7 +45,7 @@ public class PreviewViewPart extends ViewPart {
 		public void propertyChanged(Object source, int propId) {
 			if (propId == IEditorPart.PROP_DIRTY) {
 				if (!trackedPart.isDirty()) {
-					updatePreview();
+					updatePreview(false);
 				}
 			}
 		}
@@ -71,11 +76,36 @@ public class PreviewViewPart extends ViewPart {
 	};
 
 	private long lastPreviewModificationStamp;
-	private Composite parent;
+	private Composite container;
+
+	private Action resizeAction;
 
 	@Override
-	public void createPartControl(Composite parent) {
-		this.parent = parent;
+	public void createPartControl(final Composite parent) {
+		resizeAction = new Action("Resize", SWT.TOGGLE) {
+
+			@Override
+			public void run() {
+				updatePreview(true);
+			}
+		};
+		resizeAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+				"/icons/resize.png"));
+
+		GridLayoutFactory.fillDefaults().numColumns(2).spacing(0, 0).applyTo(parent);
+		ToolBar toolbar = new ToolBar(parent, SWT.VERTICAL | SWT.FLAT);
+		toolbar.setBackground(toolbar.getDisplay().getSystemColor(SWT.COLOR_GRAY));
+		ToolBarManager toolbarManager = new ToolBarManager(toolbar);
+		toolbarManager.add(resizeAction);
+		GridDataFactory.fillDefaults().grab(false, true).align(SWT.BEGINNING, SWT.FILL).applyTo(
+				toolbar);
+		toolbarManager.update(true);
+
+		container = new Composite(parent, SWT.NONE);
+		container.setLayout(new FillLayout());
+		GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.FILL)
+				.applyTo(container);
+
 		getSite().getPage().addPartListener(trackRelevantEditorsPartListener);
 		tryConnectTo(getSite().getPage().getActiveEditor());
 	}
@@ -104,7 +134,7 @@ public class PreviewViewPart extends ViewPart {
 		}
 		trackedPart = (IEditorPart) part;
 		part.addPropertyListener(updatePreviewOnSave);
-		updatePreview();
+		updatePreview(false);
 	}
 
 	public void clearConnection() {
@@ -112,30 +142,44 @@ public class PreviewViewPart extends ViewPart {
 		setContent(null);
 	}
 
-	private void updatePreview() {
+	private void updatePreview(boolean force) {
 		IDocument doc = (IDocument) trackedPart.getAdapter(IDocument.class);
 		IDocumentExtension4 document = (IDocumentExtension4) doc;
-		if (document.getModificationStamp() != lastPreviewModificationStamp) {
+		if (document.getModificationStamp() != lastPreviewModificationStamp || force) {
 			try {
-				Composite newContent = new Composite(parent, SWT.None);
-				newContent.setLayout(new FillLayout());
+				ResizableComposite resizableComposite = null;
+				Composite newComposite;
+				Composite swtXmlComposite;
+
+				if (resizeAction.isChecked()) {
+					resizableComposite = new ResizableComposite(container);
+					newComposite = resizableComposite;
+					swtXmlComposite = resizableComposite.getResizeableComposite();
+				} else {
+					newComposite = swtXmlComposite = new Composite(container, SWT.None);
+				}
+
 				IEditorInput editorInput = trackedPart.getEditorInput();
 				ILocationProvider locationProvider = (ILocationProvider) editorInput
 						.getAdapter(ILocationProvider.class);
 				File file = (locationProvider == null) ? null : locationProvider.getPath(
 						editorInput).toFile();
 
-				SwtXmlParser parser = new SwtXmlParser(newContent, new PreviewResource(file, doc),
-						null);
+				SwtXmlParser parser = new SwtXmlParser(swtXmlComposite, new PreviewResource(file,
+						doc), null);
 				parser.parse();
-				setContent(newContent);
+				setContent(newComposite);
+
+				if (resizableComposite != null) {
+					resizableComposite.resetSize();
+				}
 			} catch (Exception e) {
 				Activator.getDefault().getLog().log(
 						new Status(Status.ERROR, Activator.PLUGIN_ID, e.getMessage(), e));
-				setContent(new ErrorComposite(parent, SWT.NONE, e));
+				setContent(new ErrorComposite(container, SWT.NONE, e));
 			} finally {
 				lastPreviewModificationStamp = document.getModificationStamp();
-				parent.layout();
+				container.layout();
 			}
 		}
 	}
@@ -145,7 +189,7 @@ public class PreviewViewPart extends ViewPart {
 	 * clear preview.
 	 */
 	private void setContent(Composite content) {
-		for (Control c : parent.getChildren()) {
+		for (Control c : container.getChildren()) {
 			if (c != content) {
 				c.dispose();
 			}
