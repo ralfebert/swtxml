@@ -12,11 +12,31 @@ package com.swtxml.ide;
 
 import org.eclipse.jface.text.contentassist.IContentAssistProcessor;
 import org.eclipse.jface.text.source.ISourceViewer;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.wst.sse.core.text.IStructuredPartitions;
 import org.eclipse.wst.xml.core.text.IXMLPartitions;
 import org.eclipse.wst.xml.ui.StructuredTextViewerConfigurationXML;
 
 public class SwtXmlStructuredTextViewerConfiguration extends StructuredTextViewerConfigurationXML {
+
+	public SwtXmlStructuredTextViewerConfiguration() {
+		// Open preview as soon as a SWT/XML document is created
+		Display.getDefault().asyncExec(new Runnable() {
+
+			public void run() {
+				try {
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+							PreviewViewPart.VIEW_ID, null, IWorkbenchPage.VIEW_VISIBLE);
+				} catch (Exception e) {
+					// ignore
+				}
+			}
+
+		});
+	}
+
 	@Override
 	public IContentAssistProcessor[] getContentAssistProcessors(ISourceViewer sourceViewer,
 			String partitionType) {

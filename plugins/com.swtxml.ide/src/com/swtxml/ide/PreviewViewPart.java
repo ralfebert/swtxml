@@ -38,6 +38,8 @@ import com.swtxml.swt.SwtXmlParser;
 @SuppressWarnings("restriction")
 public class PreviewViewPart extends ViewPart {
 
+	public static final String VIEW_ID = PreviewViewPart.class.getName();
+
 	private IEditorPart trackedPart;
 
 	private final IPropertyListener updatePreviewOnSave = new IPropertyListener() {
@@ -198,7 +200,9 @@ public class PreviewViewPart extends ViewPart {
 
 	@Override
 	public void setFocus() {
-
+		if (container != null) {
+			container.setFocus();
+		}
 	}
 
 }
