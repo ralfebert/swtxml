@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Composite
+	xmlns="http://www.swtxml.com/swt"
+	xmlns:on="http://www.swtxml.com/events"
+	layout="layout:grid;numColumns:3;marginWidth:8;marginHeight:8;horizontalSpacing:8;verticalSpacing:8;"
+	background="LIST_BACKGROUND">
+	
+	<Label id="imageLabel" text="image" background="LIST_BACKGROUND" layoutData="horizontalAlignment:CENTER;verticalAlignment:BEGINNING;"/>
+	
+	<Text id="text" text="error message" background="LIST_BACKGROUND" style="MULTI|READ_ONLY|WRAP" layoutData="horizontalAlignment:FILL;verticalAlignment:CENTER;grabExcessHorizontalSpace:true;"/>
+	
+	<Button style="PUSH" text="Show Details" id="toggleDetails" on:widgetSelected="toggleDetails" layoutData="horizontalAlignment:BEGINNING;verticalAlignment:CENTER;"/>
+
+	<Composite id="detailsArea" background="LIST_BACKGROUND" layoutData="horizontalAlignment:FILL;verticalAlignment:FILL;grabExcessHorizontalSpace:true;grabExcessVerticalSpace:true;horizontalSpan:3;" layout="layout:fill;" visible="false">
+		<Text id="detailsText" style="BORDER|H_SCROLL|V_SCROLL|MULTI|READ_ONLY"/>
+	</Composite>
+        	
+</Composite>
