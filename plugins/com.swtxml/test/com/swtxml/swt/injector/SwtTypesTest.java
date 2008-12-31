@@ -14,6 +14,7 @@ import static org.easymock.EasyMock.createMock;
 import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -75,6 +76,7 @@ public class SwtTypesTest {
 		assertEquals(255, color.getRed());
 		assertEquals(171, color.getGreen());
 		assertEquals(205, color.getBlue());
+		assertSame("colors are cached", color, colorType.convert("#FFabCD"));
 
 		color = colorType.convert("black");
 		assertEquals(0, color.getRed());
@@ -98,6 +100,7 @@ public class SwtTypesTest {
 				.convert("ICON_WARNING"));
 		Image image = imageType.convert("someimage.png");
 		assertEquals(new Rectangle(0, 0, 9, 5), image.getBounds());
+		assertSame(image, imageType.convert("someimage.png"));
 	}
 
 	@Test
