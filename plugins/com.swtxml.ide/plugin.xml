@@ -8,8 +8,8 @@
             default-charset="UTF-8"
             file-extensions="swtxml"
             id="swtxml"
-            name="SwtXml Markup File"
-            priority="normal">
+            name="SWT/XML Markup File"
+            priority="high">
          <describer
                class="org.eclipse.core.runtime.content.XMLRootElementContentDescriber">
             <parameter
@@ -38,6 +38,7 @@
     <view
           category="com.swtxml.viewcategory"
           class="com.swtxml.ide.PreviewViewPart"
+          icon="icons/preview.png"
           id="com.swtxml.ide.PreviewViewPart"
           name="SWT/XML Preview"
           restorable="true">
@@ -50,9 +51,15 @@
  <extension
        point="org.eclipse.ui.newWizards">
     <wizard
+          category="com.swtxml.newcategory"
           class="com.swtxml.ide.newwizard.SwtXmlNewWizard"
+          icon="icons/new.png"
           id="com.swtxml.ide.SwtXmlNewWizard"
           name="SWT/XML Class">
     </wizard>
+    <category
+          id="com.swtxml.newcategory"
+          name="SWT/XML">
+    </category>
  </extension>
 </plugin>
