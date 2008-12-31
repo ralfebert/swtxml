@@ -5,7 +5,7 @@
 	layout="layout:grid;numColumns:3;marginWidth:8;marginHeight:8;horizontalSpacing:8;verticalSpacing:8;"
 	background="LIST_BACKGROUND">
 	
-	<Label id="imageLabel" text="image" background="LIST_BACKGROUND" layoutData="horizontalAlignment:CENTER;verticalAlignment:BEGINNING;"/>
+	<Label id="imageLabel" image="ICON_ERROR" background="LIST_BACKGROUND" layoutData="horizontalAlignment:CENTER;verticalAlignment:BEGINNING;"/>
 	
 	<Text id="text" text="error message" background="LIST_BACKGROUND" style="MULTI|READ_ONLY|WRAP" layoutData="horizontalAlignment:FILL;verticalAlignment:CENTER;grabExcessHorizontalSpace:true;"/>
 	

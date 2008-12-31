@@ -11,10 +11,8 @@
 package com.swtxml.ide;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import com.swtxml.swt.byid.ById;
@@ -29,8 +27,6 @@ import com.swtxml.views.SwtXmlComposite;
 public class ErrorComposite extends SwtXmlComposite {
 
 	@ById
-	private Label imageLabel;
-	@ById
 	private Text text;
 	@ById
 	private Button toggleDetails;
@@ -41,7 +37,6 @@ public class ErrorComposite extends SwtXmlComposite {
 
 	public ErrorComposite(Composite parent, int style, Exception e) {
 		super(parent, style);
-		imageLabel.setImage(parent.getDisplay().getSystemImage(SWT.ICON_ERROR));
 		text.setText(e.getMessage());
 		detailsText.setText(ExceptionUtils.getFullStackTrace(e));
 	}
