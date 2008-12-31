@@ -19,6 +19,7 @@ org.eclipse.swt.widgets.Table=SINGLE, MULTI, CHECK, FULL_SELECTION, HIDE_SELECTI
 org.eclipse.swt.widgets.TableColumn=LEFT, RIGHT, CENTER
 org.eclipse.swt.widgets.Text=CANCEL, CENTER, LEFT, MULTI, PASSWORD, SEARCH, SINGLE, RIGHT, READ_ONLY, WRAP
 org.eclipse.swt.widgets.Tree=SINGLE, MULTI, CHECK, FULL_SELECTION, VIRTUAL, NO_SCROLL
+org.eclipse.swt.widgets.TreeColumn=LEFT, RIGHT, CENTER
 org.eclipse.swt.custom.SashForm=HORIZONTAL, VERTICAL, SMOOTH
 org.eclipse.swt.widgets.Control=BORDER, LEFT_TO_RIGHT, RIGHT_TO_LEFT
 org.eclipse.swt.widgets.Widget=

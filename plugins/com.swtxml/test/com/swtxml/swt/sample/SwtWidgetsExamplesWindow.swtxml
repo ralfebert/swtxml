@@ -99,7 +99,9 @@
                     layoutData="width:200;height:200;"/>
 
                 <Group text="Hallo" style="BORDER" layout="layout:row;">
-                    <Tree layoutData="width:150;height:200;"/>
+                    <Tree layoutData="width:150;height:200;" headerVisible="true">
+                        <TreeColumn width="100" text="tree column"/>
+                    </Tree>
                     <List style="FULL_SELECTION" layoutData="width:150;height:200;">
                         <!--<pt:list values="Red|Green|Blue|Yellow|Black|Grey"/>-->
                     </List>
