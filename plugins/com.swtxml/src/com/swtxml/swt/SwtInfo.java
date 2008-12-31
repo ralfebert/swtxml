@@ -12,6 +12,7 @@ package com.swtxml.swt;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.GridData;
@@ -25,6 +26,7 @@ import com.swtxml.swt.metadata.SwtNamespace;
 import com.swtxml.swt.metadata.WidgetRegistry;
 import com.swtxml.swt.types.ColorType;
 import com.swtxml.swt.types.FormAttachmentType;
+import com.swtxml.swt.types.ImageType;
 import com.swtxml.swt.types.LayoutDataType;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.swt.types.PointType;
@@ -52,6 +54,7 @@ public class SwtInfo {
 		props.add(new PropertyMatcher(Widget.class, "style", Integer.TYPE), new StyleType(SWT));
 		props.add(new PropertyMatcher(Composite.class, "layout", Layout.class), new LayoutType());
 		props.add(new PropertyMatcher(Color.class), new ColorType());
+		props.add(new PropertyMatcher(Image.class), new ImageType());
 		props.add(new PropertyMatcher(Point.class), new PointType());
 		props.add(new PropertyMatcher(Control.class, "layoutData"), new LayoutDataType());
 		props.add(new PropertyMatcher(String.class), new LabelType());
