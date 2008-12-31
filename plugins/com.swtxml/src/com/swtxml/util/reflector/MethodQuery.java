@@ -18,7 +18,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.ObjectUtils;
+
 import com.swtxml.util.lang.CollectionUtils;
+import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.lang.Filters;
 import com.swtxml.util.lang.IFilter;
 
@@ -54,6 +57,11 @@ public class MethodQuery {
 			public boolean match(Method method) {
 				return method.getName().startsWith(str);
 			}
+
+			@Override
+			public String toString() {
+				return "name starts with \"" + str + "\"";
+			}
 		});
 		return this;
 	}
@@ -62,6 +70,11 @@ public class MethodQuery {
 		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				return method.getName().matches(regex);
+			}
+
+			@Override
+			public String toString() {
+				return "name matches \"" + regex + "\"";
 			}
 		});
 		return this;
@@ -82,18 +95,32 @@ public class MethodQuery {
 				}
 				return true;
 			}
+
+			@Override
+			public String toString() {
+				return "parameters=\"" + Arrays.toString(signature) + "\"";
+			}
 		});
 		return this;
 	}
 
 	public Collection<Method> all(Class<?> type) {
-		return CollectionUtils.select(getMethods(type), Filters.and(filters));
+		return CollectionUtils.select(getMethods(type), getFilter());
+	}
+
+	private IFilter<Method> getFilter() {
+		return Filters.and(filters);
 	}
 
 	public MethodQuery name(final String name) {
 		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				return method.getName().equals(name);
+			}
+
+			@Override
+			public String toString() {
+				return "name=\"" + name + "\"";
 			}
 		});
 		return this;
@@ -103,21 +130,27 @@ public class MethodQuery {
 		Collection<Method> results = all(type);
 		if (results.size() == 1) {
 			return results.iterator().next();
-			// TODO: explain filter criteria in exception
 		} else if (results.isEmpty()) {
-			throw new ReflectorException("No suitable method found for query!");
+			throw new ReflectorException("No method " + getFilter() + " found in " + type + "!");
 		} else {
-			throw new ReflectorException("Ambiguous methods found for query!");
+			throw new ReflectorException("Ambiguous methods found for " + getFilter() + " in "
+					+ type + ": " + results);
 		}
 	}
 
 	public MethodQuery optionalParameter(final Class<?> type) {
+		ContractProof.notNull(type, "type");
 		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				return method.getParameterTypes().length == 0
 						|| (method.getParameterTypes().length == 1 && type == method
 								.getParameterTypes()[0]);
 
+			}
+
+			@Override
+			public String toString() {
+				return "optional parameter \"" + type.getSimpleName() + "\"";
 			}
 		});
 		return this;
@@ -126,7 +159,12 @@ public class MethodQuery {
 	public MethodQuery returnType(final Class<?> type) {
 		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
-				return type.equals(method.getReturnType());
+				return ObjectUtils.equals(type, method.getReturnType());
+			}
+
+			@Override
+			public String toString() {
+				return "return type \"" + (type != null ? type.getSimpleName() : "null") + "\"";
 			}
 		});
 		return this;

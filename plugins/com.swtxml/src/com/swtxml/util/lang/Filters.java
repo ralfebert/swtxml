@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.swtxml.util.lang;
 
+import org.apache.commons.lang.StringUtils;
+
 /**
  * Common Collection Filters.
  * 
@@ -27,7 +29,11 @@ public class Filters {
 				}
 				return true;
 			}
+
+			@Override
+			public String toString() {
+				return "(" + StringUtils.join(filters.iterator(), " and ") + ")";
+			}
 		};
 	}
-
 }

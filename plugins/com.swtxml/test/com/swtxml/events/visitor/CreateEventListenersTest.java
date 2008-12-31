@@ -15,6 +15,7 @@ import static org.easymock.EasyMock.createStrictMock;
 import static org.easymock.EasyMock.expectLastCall;
 import static org.easymock.EasyMock.replay;
 import static org.easymock.EasyMock.verify;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import org.eclipse.swt.SWT;
@@ -25,7 +26,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
-import com.swtxml.events.visitor.CreateEventListeners;
+import com.swtxml.util.reflector.ReflectorException;
 
 public class CreateEventListenersTest {
 
@@ -88,5 +89,21 @@ public class CreateEventListenersTest {
 		}
 
 		verify(view);
+	}
+
+	@Test
+	public void testException() {
+		ISomeView view = createStrictMock(ISomeView.class);
+		CreateEventListeners processor = new CreateEventListeners(view);
+		Shell shell = new Shell();
+		Button btn = new Button(shell, SWT.NONE);
+		try {
+			processor.wireViewMethodListener("doesntExist", btn, "keyPressed");
+			fail("expected exception");
+		} catch (ReflectorException e) {
+			assertTrue("exception contains classname", e.getMessage().contains(
+					view.getClass().getSimpleName()));
+			assertTrue("exception contains method name", e.getMessage().contains("doesntExist"));
+		}
 	}
 }
