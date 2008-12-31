@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.swtxml.swt;
 
+import java.util.Locale;
+
 import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.adapter.IAdaptable;
@@ -17,8 +19,6 @@ import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.events.visitor.CreateEventListeners;
 import com.swtxml.extensions.DefaultNamespaceResolver;
 import com.swtxml.extensions.ExtensionsNamespaceResolver;
-import com.swtxml.i18n.EclipsePluginLabelTranslator;
-import com.swtxml.i18n.GracefulBundleLabelTranslator;
 import com.swtxml.i18n.ILabelTranslator;
 import com.swtxml.i18n.ResourceBundleLabelTranslator;
 import com.swtxml.resources.ClassResource;
@@ -39,6 +39,7 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 	private Composite rootComposite;
 	private Object view;
 	private SwtResourceManager resourceManager;
+	private ResourceBundleLabelTranslator labelTranslator;
 
 	public SwtXmlParser(Composite rootComposite, IDocumentResource resource, Object view) {
 		super(getSwtNamespaceResolver(), resource);
@@ -74,16 +75,11 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 		}
 
 		if (ILabelTranslator.class.isAssignableFrom(adapterClass)) {
-			if (view != null) {
-				if (EclipseEnvironment.isAvailable()) {
-					return (A) new GracefulBundleLabelTranslator(new EclipsePluginLabelTranslator(
-							view.getClass()));
-				} else {
-					return (A) new GracefulBundleLabelTranslator(new ResourceBundleLabelTranslator(
-							view.getClass()));
-				}
+			if (this.labelTranslator == null) {
+				this.labelTranslator = new ResourceBundleLabelTranslator(view != null ? view
+						.getClass() : null, Locale.getDefault());
 			}
-			return (A) new GracefulBundleLabelTranslator();
+			return (A) this.labelTranslator;
 		}
 
 		return null;

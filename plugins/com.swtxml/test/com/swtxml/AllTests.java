@@ -28,7 +28,7 @@ import com.swtxml.tinydom.TinyDomParserTest;
 import com.swtxml.util.context.ContextTest;
 import com.swtxml.util.lang.CollectionUtilsTest;
 import com.swtxml.util.lang.ContractProofTest;
-import com.swtxml.util.lang.IOUtilsTest;
+import com.swtxml.util.lang.ResourceUtilsTest;
 import com.swtxml.util.parser.ConstantParserTest;
 import com.swtxml.util.parser.KeyValueParserTest;
 import com.swtxml.util.parser.SplitterTest;
@@ -43,7 +43,7 @@ import com.swtxml.util.reflector.ReflectorTest;
  * environment.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { ContractProofTest.class, CollectionUtilsTest.class, IOUtilsTest.class,
+@Suite.SuiteClasses( { ContractProofTest.class, CollectionUtilsTest.class, ResourceUtilsTest.class,
 		SplitterTest.class, MatchTest.class, ReflectorTest.class, PropertyMatcherTest.class,
 		BaseConvertersTest.class, PropertyRegistryTest.class, ConstantParserTest.class,
 		KeyValueParserTest.class, FormAttachmentTypeTest.class, ContextTest.class,

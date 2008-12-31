@@ -22,7 +22,7 @@ public class PreviewResource implements IDocumentResource {
 		this.document = document;
 	}
 
-	public String getDocumentInfoName() {
+	public String getDocumentName() {
 		return file == null ? "unknown" : file.getName();
 	}
 
@@ -44,4 +44,5 @@ public class PreviewResource implements IDocumentResource {
 			return null;
 		}
 	}
+
 }

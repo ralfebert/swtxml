@@ -11,25 +11,33 @@
 package com.swtxml.i18n;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
 import java.util.Locale;
 
 import org.junit.Test;
 
+import com.swtxml.adapter.MockAdapter;
+import com.swtxml.resources.ClassResource;
+import com.swtxml.util.context.Context;
+
 public class EclipsePluginLabelTranslatorTest {
 
 	@Test
-	public void testTranslate() {
-		EclipsePluginLabelTranslator translator = new EclipsePluginLabelTranslator(
-				ResourceBundleLabelTranslatorTest.class);
-		Locale.setDefault(Locale.GERMAN);
+	public void testTranslateEclipsePlugin() {
+		Context.addAdapter(new MockAdapter(new ClassResource(
+				ResourceBundleLabelTranslatorTest.class, ResourceBundleLabelTranslatorTest.class
+						.getSimpleName()
+						+ ".swtxml")));
+
+		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(
+				ResourceBundleLabelTranslatorTest.class, Locale.GERMAN);
 		assertEquals("Hallo", translator.translate("hello"));
 		assertEquals("Hallo", translator.translate("plugin_hello"));
-		Locale.setDefault(Locale.ENGLISH);
+		translator = new ResourceBundleLabelTranslator(ResourceBundleLabelTranslatorTest.class,
+				Locale.ENGLISH);
 		assertEquals("Hello", translator.translate("hello"));
 		assertEquals("Hello", translator.translate("plugin_hello"));
-		assertNull(translator.translate("xxx"));
+		assertEquals("??? xxx ???", translator.translate("xxx"));
 	}
 
 }

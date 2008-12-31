@@ -19,7 +19,6 @@ import org.xml.sax.SAXException;
 import com.swtxml.adapter.IAdaptable;
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.resources.IDocumentResource;
-import com.swtxml.resources.IRelativeResourceResolver;
 import com.swtxml.util.parser.ParseException;
 
 public class TinyDomParser implements IAdaptable {
@@ -35,7 +34,7 @@ public class TinyDomParser implements IAdaptable {
 
 	@SuppressWarnings("unchecked")
 	public <A> A adaptTo(Class<A> adapterClass) {
-		if (IRelativeResourceResolver.class.isAssignableFrom(adapterClass)) {
+		if (IDocumentResource.class.isAssignableFrom(adapterClass)) {
 			return (A) document;
 		}
 		return null;
@@ -48,7 +47,7 @@ public class TinyDomParser implements IAdaptable {
 		SAXParser parser = createSaxParser(parserFactory);
 
 		TinyDomSaxHandler saxHandler = new TinyDomSaxHandler(namespaceResolver, document
-				.getDocumentInfoName());
+				.getDocumentName());
 		try {
 			parser.parse(document.getInputSource(), saxHandler);
 		} catch (Exception e) {

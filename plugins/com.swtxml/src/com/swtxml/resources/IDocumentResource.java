@@ -10,6 +10,8 @@
  *******************************************************************************/
 package com.swtxml.resources;
 
+import java.io.InputStream;
+
 import org.xml.sax.InputSource;
 
 /**
@@ -20,9 +22,12 @@ import org.xml.sax.InputSource;
  * 
  * @author Ralf Ebert <info@ralfebert.de>
  */
-public interface IDocumentResource extends IRelativeResourceResolver {
+public interface IDocumentResource {
 
-	public String getDocumentInfoName();
+	public String getDocumentName();
 
 	public InputSource getInputSource();
+
+	public InputStream resolve(String path);
+
 }

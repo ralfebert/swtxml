@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 
-public class IOUtils {
+public class ResourceUtils {
 
 	public static String toString(InputStream input) {
 		try {

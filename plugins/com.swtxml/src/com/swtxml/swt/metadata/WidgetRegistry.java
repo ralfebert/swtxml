@@ -23,8 +23,8 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.DefinitionException;
 import com.swtxml.util.lang.CollectionUtils;
-import com.swtxml.util.lang.IOUtils;
 import com.swtxml.util.lang.IFilter;
+import com.swtxml.util.lang.ResourceUtils;
 import com.swtxml.util.parser.ParseException;
 
 public class WidgetRegistry {
@@ -32,7 +32,8 @@ public class WidgetRegistry {
 	private Map<String, String[]> widgetStylesByClassName = new HashMap<String, String[]>();
 
 	public WidgetRegistry() {
-		String widgetClasses = IOUtils.toString(IOUtils.getClassResource(this.getClass(), "txt"));
+		String widgetClasses = ResourceUtils.toString(ResourceUtils.getClassResource(this
+				.getClass(), "txt"));
 		for (String line : StringUtils.split(widgetClasses, "\n")) {
 			String[] parts = StringUtils.split(line, '=');
 			String className = parts[0].trim();

@@ -14,6 +14,8 @@ import java.io.InputStream;
 
 import org.xml.sax.InputSource;
 
+import com.swtxml.util.lang.FilenameUtils;
+
 /**
  * DocumentResource which loads SWT/XML documents from the classpath.
  * 
@@ -33,7 +35,11 @@ public class ClassResource implements IDocumentResource {
 		return new ClassResource(clazz, clazz.getSimpleName() + "." + extension);
 	}
 
-	public String getDocumentInfoName() {
+	public String getDocumentBaseName() {
+		return FilenameUtils.getBaseName(filename);
+	}
+
+	public String getDocumentName() {
 		return filename;
 	}
 

@@ -11,22 +11,44 @@
 package com.swtxml.i18n;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
 
+import java.io.InputStream;
 import java.util.Locale;
 
+import org.easymock.EasyMock;
 import org.junit.Test;
+
+import com.swtxml.adapter.MockAdapter;
+import com.swtxml.resources.IDocumentResource;
+import com.swtxml.util.context.Context;
 
 public class ResourceBundleLabelTranslatorTest {
 
 	@Test
 	public void testTranslate() {
-		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(
-				ResourceBundleLabelTranslatorTest.class);
-		Locale.setDefault(Locale.GERMAN);
+		String name = "ResourceBundleLabelTranslatorTest";
+		String de_name = name + "_de.properties";
+		String en_name = name + "_en.properties";
+		String default_name = name + ".properties";
+
+		Class<?> clazz = ResourceBundleLabelTranslatorTest.class;
+		InputStream de_resource = clazz.getResourceAsStream(de_name);
+		InputStream default_resource = clazz.getResourceAsStream(default_name);
+
+		IDocumentResource resolver = EasyMock.createMock(IDocumentResource.class);
+		EasyMock.expect(resolver.getDocumentName()).andReturn(name + ".swtxml").anyTimes();
+		EasyMock.expect(resolver.resolve(de_name)).andReturn(de_resource).anyTimes();
+		EasyMock.expect(resolver.resolve(en_name)).andReturn(null).anyTimes();
+		EasyMock.expect(resolver.resolve(default_name)).andReturn(default_resource).anyTimes();
+		EasyMock.replay(resolver);
+
+		Context.addAdapter(new MockAdapter(resolver));
+
+		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(clazz,
+				Locale.GERMAN);
 		assertEquals("Hallo", translator.translate("hello"));
-		Locale.setDefault(Locale.ENGLISH);
+		translator = new ResourceBundleLabelTranslator(clazz, Locale.ENGLISH);
 		assertEquals("Hello", translator.translate("hello"));
-		assertNull(translator.translate("xxx"));
+		assertEquals("??? xxx ???", translator.translate("xxx"));
 	}
 }

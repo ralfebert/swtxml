@@ -38,7 +38,7 @@ import org.junit.Test;
 import com.swtxml.adapter.MockAdapter;
 import com.swtxml.i18n.ILabelTranslator;
 import com.swtxml.i18n.LabelType;
-import com.swtxml.resources.IRelativeResourceResolver;
+import com.swtxml.resources.IDocumentResource;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.SwtResourceManager;
 import com.swtxml.swt.sample.SwtWidgetsExamplesWindow;
@@ -87,7 +87,7 @@ public class SwtTypesTest {
 	@Test
 	public void testImage() {
 		InputStream resource = SwtWidgetsExamplesWindow.class.getResourceAsStream("someimage.png");
-		IRelativeResourceResolver resolver = EasyMock.createMock(IRelativeResourceResolver.class);
+		IDocumentResource resolver = EasyMock.createMock(IDocumentResource.class);
 		EasyMock.expect(resolver.resolve("someimage.png")).andReturn(resource);
 		EasyMock.replay(resolver);
 

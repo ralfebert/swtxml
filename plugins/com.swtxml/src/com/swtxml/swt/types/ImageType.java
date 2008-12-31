@@ -18,7 +18,7 @@ import java.util.Map;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
-import com.swtxml.resources.IRelativeResourceResolver;
+import com.swtxml.resources.IDocumentResource;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.SwtResourceManager;
 import com.swtxml.util.context.Context;
@@ -61,12 +61,12 @@ public class ImageType implements IType<Image>, IContentAssistable {
 			return image;
 		}
 
-		IRelativeResourceResolver resolver = Context.adaptTo(IRelativeResourceResolver.class);
-		if (resolver == null) {
+		IDocumentResource document = Context.adaptTo(IDocumentResource.class);
+		if (document == null) {
 			throw new ParseException("No resolver available to resolve \"" + value + "\"!");
 		}
 
-		InputStream stream = resolver.resolve(value);
+		InputStream stream = document.resolve(value);
 		if (stream == null) {
 			throw new ParseException("Resource \"" + value + "\" not found!");
 		}

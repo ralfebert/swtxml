@@ -15,16 +15,16 @@ import static org.junit.Assert.assertEquals;
 import org.apache.commons.lang.StringUtils;
 import org.junit.Test;
 
-public class IOUtilsTest {
+public class ResourceUtilsTest {
 
 	@Test
 	public void testToStringInputStream() {
-		String text = IOUtils.toString(getClass().getResourceAsStream("sometext.txt"));
+		String text = ResourceUtils.toString(getClass().getResourceAsStream("sometext.txt"));
 		assertEquals(StringUtils.repeat(StringUtils.repeat("10", 56) + "\n", 142).trim(), text);
 	}
 
 	@Test
 	public void testGetClassResource() {
-		assertEquals("hallo", IOUtils.toString(IOUtils.getClassResource(IOUtilsTest.class, "txt")));
+		assertEquals("hallo", ResourceUtils.toString(ResourceUtils.getClassResource(ResourceUtilsTest.class, "txt")));
 	}
 }

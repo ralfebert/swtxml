@@ -51,7 +51,7 @@ public class SwtResourceManager {
 		});
 	}
 
-	protected void dispose() {
+	public void dispose() {
 		for (Image image : images.values()) {
 			image.dispose();
 		}
