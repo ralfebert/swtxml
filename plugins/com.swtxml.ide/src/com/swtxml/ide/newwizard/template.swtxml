@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Composite xmlns="http://www.swtxml.com/swt" xmlns:on="http://www.swtxml.com/events">
+<Composite
+    xmlns="http://www.swtxml.com/swt"
+    xmlns:on="http://www.swtxml.com/events"
+    layout="layout:fill;">
 	
 </Composite>
