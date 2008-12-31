@@ -8,6 +8,7 @@
                 <Button text="Sauber" style="CHECK" id="testButton"/>
                 <Button text="Kühl" style="CHECK" on:widgetSelected="coolButtonClicked"/>
                 <Button text="%hello" style="CHECK"/>
+                <Label image="someimage.png" id="someImageLabel"/>
             </Composite>
         </TabItem>
 

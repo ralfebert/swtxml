@@ -11,8 +11,11 @@
 package com.swtxml.swt.sample;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
@@ -21,6 +24,7 @@ import org.eclipse.swt.widgets.TabItem;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.swtxml.resources.ClassResource;
 import com.swtxml.swt.SwtXmlParser;
 
 public class SwtWidgetsTest {
@@ -42,16 +46,18 @@ public class SwtWidgetsTest {
 	@Test
 	public void testParseFromStream() {
 		Shell parent = new Shell();
-		SwtXmlParser parser = new SwtXmlParser(parent, null);
-		parser.parse(SAMPLE_SWTXML, getClass().getResourceAsStream(SAMPLE_SWTXML));
+		SwtXmlParser parser = new SwtXmlParser(parent,
+				new ClassResource(getClass(), SAMPLE_SWTXML), null);
+		parser.parse();
 		assertWindowHierarchy(parent);
 	}
 
 	@Test
 	public void testParseByColocatedXml() {
 		Shell parent = new Shell();
-		SwtXmlParser parser = new SwtXmlParser(parent, null);
-		parser.parse(SwtWidgetsExamplesWindow.class, "swtxml");
+		SwtXmlParser parser = new SwtXmlParser(parent, ClassResource.coLocated(
+				SwtWidgetsExamplesWindow.class, "swtxml"), null);
+		parser.parse();
 		assertWindowHierarchy(parent);
 	}
 
@@ -63,6 +69,15 @@ public class SwtWidgetsTest {
 		RowLayout tabItem1CompositeLayout = (RowLayout) tabItem1Composite.getLayout();
 		assertEquals(SWT.VERTICAL, tabItem1CompositeLayout.type);
 		assertEquals(5, tabItem1CompositeLayout.spacing);
+	}
+
+	@Test
+	public void testImage() {
+		setupShell();
+		Image image = window.getSomeImageLabel().getImage();
+		assertNotNull(image);
+		window.getShell().dispose();
+		assertTrue(image.isDisposed());
 	}
 
 	@Test

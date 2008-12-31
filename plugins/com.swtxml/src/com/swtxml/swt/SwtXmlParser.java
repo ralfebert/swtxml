@@ -21,6 +21,8 @@ import com.swtxml.i18n.EclipsePluginLabelTranslator;
 import com.swtxml.i18n.GracefulBundleLabelTranslator;
 import com.swtxml.i18n.ILabelTranslator;
 import com.swtxml.i18n.ResourceBundleLabelTranslator;
+import com.swtxml.resources.ClassResource;
+import com.swtxml.resources.IDocumentResource;
 import com.swtxml.swt.byid.ByIdInjector;
 import com.swtxml.swt.visitor.BuildWidgets;
 import com.swtxml.swt.visitor.CollectIds;
@@ -36,11 +38,16 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 
 	private Composite rootComposite;
 	private Object view;
+	private SwtResourceManager resourceManager;
 
-	public SwtXmlParser(Composite rootComposite, Object view) {
-		super(getSwtNamespaceResolver());
+	public SwtXmlParser(Composite rootComposite, IDocumentResource resource, Object view) {
+		super(getSwtNamespaceResolver(), resource);
 		this.rootComposite = rootComposite;
 		this.view = view;
+	}
+
+	public SwtXmlParser(Composite rootComposite, Object view) {
+		this(rootComposite, ClassResource.coLocated(view.getClass(), "swtxml"), view);
 	}
 
 	private static INamespaceResolver getSwtNamespaceResolver() {
@@ -51,8 +58,21 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 		}
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public <A> A adaptTo(Class<A> adapterClass) {
+		Object result = super.adaptTo(adapterClass);
+		if (result != null) {
+			return (A) result;
+		}
+
+		if (SwtResourceManager.class.isAssignableFrom(adapterClass)) {
+			if (this.resourceManager == null) {
+				this.resourceManager = new SwtResourceManager(rootComposite);
+			}
+			return (A) this.resourceManager;
+		}
+
 		if (ILabelTranslator.class.isAssignableFrom(adapterClass)) {
 			if (view != null) {
 				if (EclipseEnvironment.isAvailable()) {
@@ -65,11 +85,8 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 			}
 			return (A) new GracefulBundleLabelTranslator();
 		}
-		return null;
-	}
 
-	public Tag parse() {
-		return super.parse(view.getClass(), "swtxml");
+		return null;
 	}
 
 	@Override

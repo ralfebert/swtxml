@@ -44,6 +44,6 @@ public class ProcessingTest {
 		expect(namespaceResolver.resolveNamespace("test")).andReturn(testNsDef);
 		EasyMock.replay(namespaceResolver);
 
-		new SwtXmlParser(shell, null).parse(getClass());
+		new SwtXmlParser(shell, this).parse();
 	}
 }

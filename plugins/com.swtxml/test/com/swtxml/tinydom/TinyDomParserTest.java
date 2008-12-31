@@ -29,6 +29,7 @@ import com.swtxml.definition.impl.AttributeDefinition;
 import com.swtxml.definition.impl.ForeignAttributeDefinition;
 import com.swtxml.definition.impl.NamespaceDefinition;
 import com.swtxml.definition.impl.TagDefinition;
+import com.swtxml.resources.ClassResource;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.types.SimpleTypes;
 
@@ -128,8 +129,9 @@ public class TinyDomParserTest {
 
 	private Tag parseNumbers() {
 		INamespaceResolver namespaceResolver = sampleNamespace();
-		TinyDomParser parser = new TinyDomParser(namespaceResolver);
-		Tag root = parser.parse("numbers.xml", getClass().getResourceAsStream("numbers.xml"));
+		TinyDomParser parser = new TinyDomParser(namespaceResolver, new ClassResource(getClass(),
+				"numbers.xml"));
+		Tag root = parser.parse();
 		return root;
 	}
 
@@ -142,9 +144,10 @@ public class TinyDomParserTest {
 	@Test
 	public void testWrongTag() {
 		INamespaceResolver namespaceResolver = sampleNamespace();
-		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver, new ClassResource(getClass(),
+				"wrongtag.xml"));
 		try {
-			parser.parse("test", getClass().getResourceAsStream("wrongtag.xml"));
+			parser.parse();
 			fail("expected exception");
 		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));
@@ -156,9 +159,10 @@ public class TinyDomParserTest {
 	@Test
 	public void testWrongAttribute() {
 		INamespaceResolver namespaceResolver = sampleNamespace();
-		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver, new ClassResource(getClass(),
+				"wrongattribute.xml"));
 		try {
-			parser.parse("test", getClass().getResourceAsStream("wrongattribute.xml"));
+			parser.parse();
 			fail("expected exception");
 		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));
@@ -175,8 +179,9 @@ public class TinyDomParserTest {
 		replay(visitor);
 
 		INamespaceResolver namespaceResolver = sampleNamespace();
-		TinyDomParser parser = new TinyDomParser(namespaceResolver);
-		Tag root = parser.parse("test", getClass().getResourceAsStream("numbers.xml"));
+		TinyDomParser parser = new TinyDomParser(namespaceResolver, new ClassResource(getClass(),
+				"numbers.xml"));
+		Tag root = parser.parse();
 		try {
 			root.visitDepthFirst(visitor);
 			fail("expected");
@@ -194,9 +199,10 @@ public class TinyDomParserTest {
 		testNamespace.defineTag(new TagDefinition("yes", test));
 
 		INamespaceResolver namespaceResolver = namespace("test", testNamespace);
-		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver, new ClassResource(getClass(),
+				"invalidscope.xml"));
 		try {
-			parser.parse("test", getClass().getResourceAsStream("invalidscope.xml"));
+			parser.parse();
 			fail("expected exception");
 		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 4"));
@@ -221,9 +227,10 @@ public class TinyDomParserTest {
 		expect(namespaceResolver.resolveNamespace("attrs")).andReturn(attrSpace);
 		replay(namespaceResolver);
 
-		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver, new ClassResource(getClass(),
+				"foreignattributes.xml"));
 
-		Tag element = parser.parse("test", getClass().getResourceAsStream("foreignattributes.xml"));
+		Tag element = parser.parse();
 		assertEquals("tag-welt", element.getAttribute("hallo"));
 		assertEquals("tag-welt", element.getAttribute(testNamespace, "hallo"));
 		assertEquals("namespace-welt", element.getAttribute(attrSpace, "hallo"));
@@ -243,10 +250,11 @@ public class TinyDomParserTest {
 		expect(namespaceResolver.resolveNamespace("attrs")).andReturn(attrSpace);
 		replay(namespaceResolver);
 
-		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver, new ClassResource(getClass(),
+				"foreignattributes.xml"));
 
 		try {
-			parser.parse("test", getClass().getResourceAsStream("foreignattributes.xml"));
+			parser.parse();
 			fail("expected exception");
 		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));
@@ -273,10 +281,11 @@ public class TinyDomParserTest {
 		expect(namespaceResolver.resolveNamespace("attrs")).andReturn(attrSpace);
 		replay(namespaceResolver);
 
-		TinyDomParser parser = new TinyDomParser(namespaceResolver);
+		TinyDomParser parser = new TinyDomParser(namespaceResolver, new ClassResource(getClass(),
+				"foreignattributes.xml"));
 
 		try {
-			parser.parse("test", getClass().getResourceAsStream("foreignattributes.xml"));
+			parser.parse();
 			fail("expected exception");
 		} catch (ParseException e) {
 			assertTrue(e.getMessage().contains("line 2"));

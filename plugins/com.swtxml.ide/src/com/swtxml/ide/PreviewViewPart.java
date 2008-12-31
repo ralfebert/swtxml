@@ -10,7 +10,7 @@
  *******************************************************************************/
 package com.swtxml.ide;
 
-import java.io.StringReader;
+import java.io.File;
 
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.text.IDocument;
@@ -27,7 +27,6 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.editors.text.ILocationProvider;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
-import org.xml.sax.InputSource;
 
 import com.swtxml.swt.SwtXmlParser;
 
@@ -123,10 +122,12 @@ public class PreviewViewPart extends ViewPart {
 				IEditorInput editorInput = trackedPart.getEditorInput();
 				ILocationProvider locationProvider = (ILocationProvider) editorInput
 						.getAdapter(ILocationProvider.class);
-				String filename = (locationProvider != null) ? locationProvider
-						.getPath(editorInput).toFile().getName() : "unknown";
-				new SwtXmlParser(newContent, null).parse(filename, new InputSource(
-						new StringReader(doc.get())));
+				File file = (locationProvider == null) ? null : locationProvider.getPath(
+						editorInput).toFile();
+
+				SwtXmlParser parser = new SwtXmlParser(newContent, new PreviewResource(file, doc),
+						null);
+				parser.parse();
 				setContent(newContent);
 			} catch (Exception e) {
 				Activator.getDefault().getLog().log(

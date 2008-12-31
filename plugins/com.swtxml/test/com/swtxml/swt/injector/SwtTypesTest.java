@@ -17,24 +17,32 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.easymock.EasyMock;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Display;
 import org.junit.After;
 import org.junit.Test;
 
 import com.swtxml.adapter.MockAdapter;
 import com.swtxml.i18n.ILabelTranslator;
 import com.swtxml.i18n.LabelType;
+import com.swtxml.resources.IRelativeResourceResolver;
 import com.swtxml.swt.SwtInfo;
+import com.swtxml.swt.SwtResourceManager;
+import com.swtxml.swt.sample.SwtWidgetsExamplesWindow;
 import com.swtxml.swt.types.ColorType;
+import com.swtxml.swt.types.ImageType;
 import com.swtxml.swt.types.LayoutDataType;
 import com.swtxml.swt.types.LayoutType;
 import com.swtxml.swt.types.PointType;
@@ -54,6 +62,8 @@ public class SwtTypesTest {
 
 	@Test
 	public void testColor() {
+		Context.addAdapter(new MockAdapter(new SwtResourceManager()));
+
 		IType<Color> colorType = new ColorType();
 
 		Color color = colorType.convert("#010203");
@@ -70,6 +80,24 @@ public class SwtTypesTest {
 		assertEquals(0, color.getRed());
 		assertEquals(0, color.getGreen());
 		assertEquals(0, color.getBlue());
+	}
+
+	@Test
+	public void testImage() {
+		InputStream resource = SwtWidgetsExamplesWindow.class.getResourceAsStream("someimage.png");
+		IRelativeResourceResolver resolver = EasyMock.createMock(IRelativeResourceResolver.class);
+		EasyMock.expect(resolver.resolve("someimage.png")).andReturn(resource);
+		EasyMock.replay(resolver);
+
+		Context.addAdapter(new MockAdapter(resolver));
+		Context.addAdapter(new MockAdapter(new SwtResourceManager()));
+
+		IType<Image> imageType = new ImageType();
+
+		assertEquals(Display.getDefault().getSystemImage(SWT.ICON_WARNING), imageType
+				.convert("ICON_WARNING"));
+		Image image = imageType.convert("someimage.png");
+		assertEquals(new Rectangle(0, 0, 9, 5), image.getBounds());
 	}
 
 	@Test

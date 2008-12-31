@@ -12,12 +12,15 @@ package com.swtxml.swt.types;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Display;
 
 import com.swtxml.swt.SwtInfo;
+import com.swtxml.swt.SwtResourceManager;
+import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IContentAssistable;
@@ -47,10 +50,21 @@ public class ColorType implements IType<Color>, IContentAssistable {
 					+ "constants like 'red' as defined in SWT.COLOR_RED)");
 		}
 
-		// TODO: use color registries
+		SwtResourceManager resourceManager = Context.adaptTo(SwtResourceManager.class);
+		if (resourceManager == null) {
+			throw new ParseException("No SWT resource manager available!");
+		}
+		Map<String, Color> colorRegistry = resourceManager.getColors();
+		Color color = colorRegistry.get(value);
+		if (color != null) {
+			return color;
+		}
+
 		int i = Integer.parseInt(value.substring(1), 16);
-		return new Color(Display.getDefault(), new RGB((i & 0xff0000) >> 16, (i & 0xff00) >> 8,
+		color = new Color(Display.getDefault(), new RGB((i & 0xff0000) >> 16, (i & 0xff00) >> 8,
 				i & 0xff));
+		colorRegistry.put(value, color);
+		return color;
 	}
 
 	public List<Match> getProposals(Match match) {

@@ -10,13 +10,18 @@
  *******************************************************************************/
 package com.swtxml.swt.types;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
+import com.swtxml.resources.IRelativeResourceResolver;
 import com.swtxml.swt.SwtInfo;
+import com.swtxml.swt.SwtResourceManager;
+import com.swtxml.util.context.Context;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.proposals.Match;
 import com.swtxml.util.types.IContentAssistable;
@@ -45,8 +50,30 @@ public class ImageType implements IType<Image>, IContentAssistable {
 					+ " (allowed are constants as defined in SWT.ICON_*)");
 		}
 
-		return null;
+		SwtResourceManager resourceManager = Context.adaptTo(SwtResourceManager.class);
+		if (resourceManager == null) {
+			throw new ParseException("No SWT resource manager available!");
+		}
+		Map<String, Image> imageRegistry = resourceManager.getImages();
 
+		Image image = imageRegistry.get(value);
+		if (image != null) {
+			return image;
+		}
+
+		IRelativeResourceResolver resolver = Context.adaptTo(IRelativeResourceResolver.class);
+		if (resolver == null) {
+			throw new ParseException("No resolver available to resolve \"" + value + "\"!");
+		}
+
+		InputStream stream = resolver.resolve(value);
+		if (stream == null) {
+			throw new ParseException("Resource \"" + value + "\" not found!");
+		}
+
+		image = new Image(Display.getDefault(), stream);
+		imageRegistry.put(value, image);
+		return image;
 	}
 
 	public List<Match> getProposals(Match match) {

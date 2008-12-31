@@ -10,50 +10,47 @@
  *******************************************************************************/
 package com.swtxml.tinydom;
 
-import java.io.InputStream;
-
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import com.swtxml.adapter.IAdaptable;
 import com.swtxml.definition.INamespaceResolver;
-import com.swtxml.util.lang.IOUtils;
+import com.swtxml.resources.IDocumentResource;
+import com.swtxml.resources.IRelativeResourceResolver;
 import com.swtxml.util.parser.ParseException;
 
-public class TinyDomParser {
+public class TinyDomParser implements IAdaptable {
 
 	private INamespaceResolver namespaceResolver;
+	private IDocumentResource document;
 
-	public TinyDomParser(INamespaceResolver namespaceResolver) {
+	public TinyDomParser(INamespaceResolver namespaceResolver, IDocumentResource document) {
 		super();
 		this.namespaceResolver = namespaceResolver;
+		this.document = document;
 	}
 
-	public final Tag parse(Class<?> clazz) {
-		return parse(clazz, "xml");
+	@SuppressWarnings("unchecked")
+	public <A> A adaptTo(Class<A> adapterClass) {
+		if (IRelativeResourceResolver.class.isAssignableFrom(adapterClass)) {
+			return (A) document;
+		}
+		return null;
 	}
 
-	public final Tag parse(Class<?> clazz, String extension) {
-		return parse(clazz.getSimpleName() + "." + extension, IOUtils.getClassResource(clazz,
-				extension));
-	}
-
-	public final <T> Tag parse(String filename, InputStream inputStream) {
-		return parse(filename, new InputSource(inputStream));
-	}
-
-	public final <T> Tag parse(String filename, InputSource source) {
+	public final <T> Tag parse() {
 		SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 		parserFactory.setNamespaceAware(true);
 
 		SAXParser parser = createSaxParser(parserFactory);
 
-		TinyDomSaxHandler saxHandler = new TinyDomSaxHandler(namespaceResolver, filename);
+		TinyDomSaxHandler saxHandler = new TinyDomSaxHandler(namespaceResolver, document
+				.getDocumentInfoName());
 		try {
-			parser.parse(source, saxHandler);
+			parser.parse(document.getInputSource(), saxHandler);
 		} catch (Exception e) {
 			throw new ParseException(saxHandler.getLocationInfo() + e.getMessage(), e);
 		}

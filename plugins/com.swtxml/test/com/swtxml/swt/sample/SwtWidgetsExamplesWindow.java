@@ -14,6 +14,7 @@ import java.util.Locale;
 
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 
 import com.swtxml.swt.byid.ById;
@@ -23,6 +24,9 @@ public class SwtWidgetsExamplesWindow extends SwtXmlWindow {
 
 	@ById
 	private Button testButton;
+
+	@ById
+	private Label someImageLabel;
 
 	public SwtWidgetsExamplesWindow(Shell parentShell) {
 		super(parentShell);
@@ -46,6 +50,10 @@ public class SwtWidgetsExamplesWindow extends SwtXmlWindow {
 
 	protected void coolButtonClicked() {
 		System.err.println("Cool.");
+	}
+
+	public Label getSomeImageLabel() {
+		return someImageLabel;
 	}
 
 }

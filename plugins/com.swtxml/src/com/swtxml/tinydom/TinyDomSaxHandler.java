@@ -128,7 +128,7 @@ public class TinyDomSaxHandler extends DefaultHandler {
 	}
 
 	public String getLocationInfo() {
-		return xmlFilename + " [line " + locator.getLineNumber() + "] ";
+		return xmlFilename + ((locator != null) ? " [line " + locator.getLineNumber() + "] " : "");
 	}
 
 	@Override
