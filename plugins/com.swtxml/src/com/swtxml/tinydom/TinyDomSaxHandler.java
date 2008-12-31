@@ -50,8 +50,9 @@ public class TinyDomSaxHandler extends DefaultHandler {
 		INamespaceDefinition namespaceDefinition = getNamespace(namespace);
 		ITagDefinition tagDefinition = namespaceDefinition.getTag(localName);
 		if (tagDefinition == null) {
-			throw new ParseException("Unknown tag \"" + localName + "\" for namespace "
-					+ namespaceDefinition);
+			throw new ParseException("Unknown tag \"" + localName + "\" for namespace \""
+					+ namespace + "\", allowed are: "
+					+ CollectionUtils.sortedToString(namespaceDefinition.getTagNames()));
 		}
 		Map<INamespaceDefinition, Map<IAttributeDefinition, String>> attributeMap = processAttributes(
 				namespaceDefinition, tagDefinition, attributes);
