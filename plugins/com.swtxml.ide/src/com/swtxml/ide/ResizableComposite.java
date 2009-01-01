@@ -12,12 +12,13 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Sash;
 
 public class ResizableComposite extends Composite {
 
-	private static final int HORIZONTAL_SASH_HEIGHT = 30;
+	private static final int HORIZONTAL_SASH_HEIGHT = 60;
 	private static final int VERTICAL_SASH_WIDTH = 60;
 
 	private Composite innerComposite;
@@ -34,7 +35,6 @@ public class ResizableComposite extends Composite {
 
 		Sash verticalSash = new Sash(this, SWT.SMOOTH | SWT.VERTICAL);
 		GridDataFactory.fillDefaults().hint(VERTICAL_SASH_WIDTH, 0).applyTo(verticalSash);
-		verticalSash.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
 		verticalSash.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -49,12 +49,11 @@ public class ResizableComposite extends Composite {
 		Sash horizontalSash = new Sash(this, SWT.SMOOTH);
 		GridDataFactory.fillDefaults().span(2, 1).hint(0, HORIZONTAL_SASH_HEIGHT).applyTo(
 				horizontalSash);
-		horizontalSash.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_DARK_GRAY));
 		horizontalSash.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				innerCompositeLayoutData.heightHint = e.y;
-				ResizableComposite.this.layout();
+				checkLayout();
 			}
 		});
 		horizontalSash.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
@@ -79,6 +78,10 @@ public class ResizableComposite extends Composite {
 				.getBounds().height
 				- HORIZONTAL_SASH_HEIGHT);
 		layout();
+		Control[] children = getChildren();
+		for (Control control : children) {
+			control.redraw();
+		}
 	}
 
 	protected void resetSize() {
@@ -96,26 +99,27 @@ public class ResizableComposite extends Composite {
 				if (w == 0) {
 					return;
 				}
-				int xStart = 3;
-				int yStart = 5;
+				int xStart = 0;
+				int yStart = 15;
 				int oldAntialias = e.gc.getAntialias();
 				e.gc.setAntialias(SWT.ON);
 
 				// Line
-				e.gc.drawLine(xStart, yStart, xStart + w - 2, yStart);
+				e.gc.drawLine(xStart, yStart, xStart + w, yStart);
 
 				// Arrow left
-				e.gc.drawLine(xStart, 0, xStart, 10);
+				e.gc.drawLine(xStart, yStart - 5, xStart, yStart + 5);
 				e.gc.drawLine(xStart, yStart, xStart + 8, yStart + 4);
 				e.gc.drawLine(xStart, yStart, xStart + 8, yStart - 4);
 
 				// // Arrow right
-				e.gc.drawLine(xStart + w - 2, 0, xStart + w - 2, 10);
-				e.gc.drawLine(xStart + w - 2, yStart, xStart + w - 10, yStart + 4);
-				e.gc.drawLine(xStart + w - 2, yStart, xStart + w - 10, yStart - 4);
+				e.gc.drawLine(xStart + w, yStart - 5, xStart + w, yStart + 5);
+				e.gc.drawLine(xStart + w, yStart, xStart + w - 8, yStart + 4);
+				e.gc.drawLine(xStart + w, yStart, xStart + w - 8, yStart - 4);
 
 				// // text: 123 px
-				e.gc.drawText(xStart + w + " px", (xStart + w / 2) - 13, 7);
+				e.gc.setFont(Display.getDefault().getSystemFont());
+				e.gc.drawString(w + " px", (xStart + w / 2) - 13, 8);
 				e.gc.setAntialias(oldAntialias);
 			}
 		};
@@ -128,8 +132,8 @@ public class ResizableComposite extends Composite {
 				if (h == 0) {
 					return;
 				}
-				int xStart = 5;
-				int yStart = 2;
+				int xStart = 15;
+				int yStart = 0;
 				int oldAntialias = e.gc.getAntialias();
 				e.gc.setAntialias(SWT.ON);
 
@@ -137,17 +141,17 @@ public class ResizableComposite extends Composite {
 				e.gc.drawLine(xStart, yStart, xStart, yStart + h - 1);
 
 				// Arrow up
-				e.gc.drawLine(0, yStart, 10, yStart);
+				e.gc.drawLine(xStart - 5, yStart, xStart + 5, yStart);
 				e.gc.drawLine(xStart, yStart, xStart + 4, yStart + 8);
 				e.gc.drawLine(xStart, yStart, xStart - 4, yStart + 8);
-
 				// Arrow down
-				e.gc.drawLine(0, yStart + h - 1, 10, yStart + h - 1);
+				e.gc.drawLine(xStart - 5, yStart + h - 1, xStart + 5, yStart + h - 1);
 				e.gc.drawLine(xStart, yStart + h - 1, xStart + 4, yStart + h - 9);
 				e.gc.drawLine(xStart, yStart + h - 1, xStart - 4, yStart + h - 9);
 
 				// text: 123 px
-				e.gc.drawText(h + " px", 10, yStart + (h / 2) - 8);
+				e.gc.setFont(Display.getDefault().getSystemFont());
+				e.gc.drawText(h + " px", 7, yStart + (h / 2) - 6);
 				e.gc.setAntialias(oldAntialias);
 			}
 		};
