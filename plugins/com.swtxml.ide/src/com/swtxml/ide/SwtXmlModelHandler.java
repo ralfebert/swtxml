@@ -10,6 +10,9 @@
  *******************************************************************************/
 package com.swtxml.ide;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.wst.sse.core.internal.document.IDocumentCharsetDetector;
 import org.eclipse.wst.sse.core.internal.document.IDocumentLoader;
 import org.eclipse.wst.sse.core.internal.ltk.modelhandler.AbstractModelHandler;
@@ -18,6 +21,7 @@ import org.eclipse.wst.sse.core.internal.provisional.IModelLoader;
 import org.eclipse.wst.xml.core.internal.encoding.XMLDocumentCharsetDetector;
 import org.eclipse.wst.xml.core.internal.encoding.XMLDocumentLoader;
 import org.eclipse.wst.xml.core.internal.modelhandler.XMLModelLoader;
+import org.eclipse.wst.xml.ui.internal.contentoutline.JFaceNodeAdapterFactory;
 
 @SuppressWarnings("restriction")
 public class SwtXmlModelHandler extends AbstractModelHandler implements IModelHandler {
@@ -41,6 +45,14 @@ public class SwtXmlModelHandler extends AbstractModelHandler implements IModelHa
 	}
 
 	public IModelLoader getModelLoader() {
-		return new XMLModelLoader();
+		return new XMLModelLoader() {
+			@SuppressWarnings("unchecked")
+			@Override
+			public List getAdapterFactories() {
+				ArrayList adapterFactories = new ArrayList(super.getAdapterFactories());
+				adapterFactories.add(new JFaceNodeAdapterFactory());
+				return adapterFactories;
+			}
+		};
 	}
 }
