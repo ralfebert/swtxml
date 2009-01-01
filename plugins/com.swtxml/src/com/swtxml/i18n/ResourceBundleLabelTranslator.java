@@ -50,15 +50,31 @@ public class ResourceBundleLabelTranslator implements ILabelTranslator {
 	}
 
 	private String translateFromCoLocatedResourceBundles(String key) {
-		try {
-			ResourceBundle bundle = getResourceBundle();
-			if (bundle == null) {
-				return null;
-			}
-			return bundle.getString(key);
-		} catch (MissingResourceException e) {
-			return null;
+		IDocumentResource document = Context.adaptTo(IDocumentResource.class);
+		if (document == null) {
+			throw new ParseException("No resolver available to resolve bundle resources!");
 		}
+
+		List<String> names = getResourceBundleNames(FilenameUtils.getBaseName(document
+				.getDocumentName()));
+		for (String name : names) {
+			InputStream resource = document.resolve(name + ".properties");
+			if (resource != null) {
+				try {
+					PropertyResourceBundle resourceBundle = new PropertyResourceBundle(resource);
+					String value = resourceBundle.getString(key);
+					if (value != null) {
+						return value;
+					}
+				} catch (MissingResourceException e) {
+					// ignore missing resources
+				} catch (IOException e) {
+					// ignore invalid resource bundles
+				}
+			}
+		}
+
+		return null;
 	}
 
 	private String translateFromEclipseResourceBundles(String key) {
@@ -74,28 +90,6 @@ public class ResourceBundleLabelTranslator implements ILabelTranslator {
 		} catch (MissingResourceException e) {
 			return null;
 		}
-	}
-
-	private ResourceBundle getResourceBundle() {
-		IDocumentResource document = Context.adaptTo(IDocumentResource.class);
-		if (document == null) {
-			throw new ParseException("No resolver available to resolve bundle resources!");
-		}
-
-		List<String> names = getResourceBundleNames(FilenameUtils.getBaseName(document
-				.getDocumentName()));
-		for (String name : names) {
-			InputStream resource = document.resolve(name + ".properties");
-			if (resource != null) {
-				try {
-					return new PropertyResourceBundle(resource);
-				} catch (IOException e) {
-					throw new ParseException(e.getMessage(), e);
-				}
-			}
-		}
-
-		return null;
 	}
 
 	private List<String> getResourceBundleNames(String baseName) {
