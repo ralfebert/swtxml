@@ -22,8 +22,8 @@ import org.apache.commons.lang.StringUtils;
 
 import com.swtxml.resources.IDocumentResource;
 import com.swtxml.util.context.Context;
+import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.lang.FilenameUtils;
-import com.swtxml.util.parser.ParseException;
 
 public class ResourceBundleLabelTranslator implements ILabelTranslator {
 
@@ -35,18 +35,16 @@ public class ResourceBundleLabelTranslator implements ILabelTranslator {
 	}
 
 	public String translate(String key) {
-		String value = translateFromCoLocatedResourceBundles(key);
+		String value = translateFromResourceBundles(key);
 		if (value == null) {
 			return "??? " + key + " ???";
 		}
 		return value;
 	}
 
-	private String translateFromCoLocatedResourceBundles(String key) {
+	private String translateFromResourceBundles(String key) {
 		IDocumentResource document = Context.adaptTo(IDocumentResource.class);
-		if (document == null) {
-			throw new ParseException("No resolver available to resolve bundle resources!");
-		}
+		ContractProof.notNull(document, "document");
 
 		List<String> names = getResourceBundleNames(FilenameUtils.getBaseName(document
 				.getDocumentName()));
