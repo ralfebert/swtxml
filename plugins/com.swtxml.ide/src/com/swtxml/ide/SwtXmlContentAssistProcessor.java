@@ -59,7 +59,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		if (parentNamespace == null) {
 			return;
 		}
-		ITagDefinition parentTag = parentNamespace.getTag(parentNode.getNodeName());
+		ITagDefinition parentTag = parentNamespace.getTag(parentNode.getLocalName());
 		if (parentTag == null) {
 			return;
 		}
@@ -69,7 +69,9 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 		for (INamespaceDefinition namespace : namespaces.getAllDefinitions()) {
 			for (String tagname : namespace.getTagNames()) {
 				ITagDefinition tag = namespace.getTag(tagname);
-				if (!(tag instanceof ITagScope) || ((ITagScope) tag).isAllowedIn(parentTag)) {
+				boolean allowedInContext = !(tag instanceof ITagScope)
+						|| ((ITagScope) tag).isAllowedIn(parentTag);
+				if (allowedInContext) {
 					filteredTags.add(namespaces.getPrefix(namespace) + tag.getName());
 				}
 			}
