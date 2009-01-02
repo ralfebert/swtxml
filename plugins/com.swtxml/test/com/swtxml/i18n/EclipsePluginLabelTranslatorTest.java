@@ -25,16 +25,13 @@ public class EclipsePluginLabelTranslatorTest {
 	@Test
 	public void testTranslateEclipsePlugin() {
 		Context.addAdapter(new MockAdapter(new ClassResource(
-				ResourceBundleLabelTranslatorTest.class, ResourceBundleLabelTranslatorTest.class
-						.getSimpleName()
-						+ ".swtxml")));
+				ResourceBundleLabelTranslatorTest.class, "SomeFile.swtxml")));
 
-		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(
-				ResourceBundleLabelTranslatorTest.class, Locale.GERMAN);
+		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(Locale.GERMAN);
 		assertEquals("Hallo", translator.translate("hello"));
 		assertEquals("Hallo", translator.translate("plugin_hello"));
-		translator = new ResourceBundleLabelTranslator(ResourceBundleLabelTranslatorTest.class,
-				Locale.ENGLISH);
+
+		translator = new ResourceBundleLabelTranslator(Locale.ENGLISH);
 		assertEquals("Hello", translator.translate("hello"));
 		assertEquals("Hello", translator.translate("plugin_hello"));
 		assertEquals("??? xxx ???", translator.translate("xxx"));

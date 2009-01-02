@@ -41,30 +41,40 @@ public class PreviewViewPart extends ViewPart {
 
 	public static final String VIEW_ID = PreviewViewPart.class.getName();
 
-	private IEditorPart trackedPart;
+	private IEditorPart swtXmlEditorPart;
+	private IEditorPart propertiesFileEditorPart;
 
-	private IEditorPart activePropertiesFilePart;
-
+	/**
+	 * Updates preview when opened property file is saved (so you see i18n
+	 * changes)
+	 */
 	private final IPropertyListener updatePreviewOnSavePropertiesFile = new IPropertyListener() {
 		public void propertyChanged(Object source, int propId) {
 			if (propId == IEditorPart.PROP_DIRTY) {
-				if (source == activePropertiesFilePart && !activePropertiesFilePart.isDirty()) {
+				if (source == propertiesFileEditorPart && !propertiesFileEditorPart.isDirty()) {
 					updatePreview(true);
 				}
 			}
 		}
 	};
 
-	private final IPropertyListener updatePreviewOnSaveSWTXML = new IPropertyListener() {
+	/**
+	 * Updates preview when opened SWT/XML editor saved
+	 */
+	private final IPropertyListener updatePreviewOnSaveSwtXml = new IPropertyListener() {
 		public void propertyChanged(Object source, int propId) {
 			if (propId == IEditorPart.PROP_DIRTY) {
-				if (source == trackedPart && !trackedPart.isDirty()) {
+				if (source == swtXmlEditorPart && !swtXmlEditorPart.isDirty()) {
 					updatePreview(false);
 				}
 			}
 		}
 	};
 
+	/**
+	 * Tracks currently opened editor and attaches / removes property listeners
+	 * as needed to get preview updated on save events of relevant files.
+	 */
 	private final IPartListener trackRelevantEditorsPartListener = new IPartListener() {
 
 		public void partActivated(IWorkbenchPart part) {
@@ -75,13 +85,14 @@ public class PreviewViewPart extends ViewPart {
 		}
 
 		public void partClosed(IWorkbenchPart part) {
-			if (part == trackedPart) {
+			partDeactivated(part);
+			if (part == swtXmlEditorPart) {
 				clearSWTXMLConnection();
 			}
 		}
 
 		public void partDeactivated(IWorkbenchPart part) {
-			if (part == activePropertiesFilePart) {
+			if (part == propertiesFileEditorPart) {
 				clearPropertiesFileConnection();
 			}
 		}
@@ -99,7 +110,6 @@ public class PreviewViewPart extends ViewPart {
 	@Override
 	public void createPartControl(final Composite parent) {
 		resizeAction = new Action("Resize", SWT.TOGGLE) {
-
 			@Override
 			public void run() {
 				updatePreview(true);
@@ -129,19 +139,15 @@ public class PreviewViewPart extends ViewPart {
 	@Override
 	public void dispose() {
 		getSite().getPage().removePartListener(trackRelevantEditorsPartListener);
-		if (trackedPart != null) {
-			clearSWTXMLConnection();
-		}
-		if (activePropertiesFilePart != null) {
-			clearPropertiesFileConnection();
-		}
+		clearSWTXMLConnection();
+		clearPropertiesFileConnection();
 		super.dispose();
 	}
 
 	private void tryConnectTo(IWorkbenchPart part) {
 		if (part instanceof IEditorPart) {
 			IStructuredModel model = (IStructuredModel) part.getAdapter(IStructuredModel.class);
-			if (part != trackedPart
+			if (part != swtXmlEditorPart
 					&& model != null
 					&& SwtXmlModelHandler.associatedContentTypeID.equals(model
 							.getContentTypeIdentifier())) {
@@ -149,38 +155,45 @@ public class PreviewViewPart extends ViewPart {
 			} else if (((IEditorPart) part).getEditorInput() instanceof FileEditorInput) {
 				if (((FileEditorInput) (((IEditorPart) part).getEditorInput())).getFile()
 						.toString().endsWith(".properties")) {
-					activePropertiesFilePart = (IEditorPart) part;
-					activePropertiesFilePart.addPropertyListener(updatePreviewOnSavePropertiesFile);
+					propertiesFileEditorPart = (IEditorPart) part;
+					propertiesFileEditorPart.addPropertyListener(updatePreviewOnSavePropertiesFile);
 				}
 			}
 		}
 	}
 
 	private void connectTo(IWorkbenchPart part) {
-		if (trackedPart != null) {
-			clearSWTXMLConnection();
-		}
-		if (activePropertiesFilePart != null) {
-			clearPropertiesFileConnection();
-		}
-		trackedPart = (IEditorPart) part;
-		part.addPropertyListener(updatePreviewOnSaveSWTXML);
+		clearSWTXMLConnection();
+		clearPropertiesFileConnection();
+		swtXmlEditorPart = (IEditorPart) part;
+		part.addPropertyListener(updatePreviewOnSaveSwtXml);
 		updatePreview(false);
 	}
 
 	private void clearPropertiesFileConnection() {
-		activePropertiesFilePart.removePropertyListener(updatePreviewOnSavePropertiesFile);
+		if (propertiesFileEditorPart != null) {
+			propertiesFileEditorPart.removePropertyListener(updatePreviewOnSavePropertiesFile);
+			propertiesFileEditorPart = null;
+		}
 	}
 
 	public void clearSWTXMLConnection() {
-		trackedPart.removePropertyListener(updatePreviewOnSaveSWTXML);
-		setContent(null);
+		if (swtXmlEditorPart != null) {
+			swtXmlEditorPart.removePropertyListener(updatePreviewOnSaveSwtXml);
+			setContent(null);
+			swtXmlEditorPart = null;
+		}
 	}
 
 	private void updatePreview(boolean force) {
-		IDocument doc = (IDocument) trackedPart.getAdapter(IDocument.class);
+		if (swtXmlEditorPart == null) {
+			setContent(null);
+			return;
+		}
+
+		IDocument doc = (IDocument) swtXmlEditorPart.getAdapter(IDocument.class);
 		IDocumentExtension4 document = (IDocumentExtension4) doc;
-		if (document.getModificationStamp() != lastPreviewModificationStamp || force) {
+		if (force || document.getModificationStamp() != lastPreviewModificationStamp) {
 			try {
 				ResizableComposite resizableComposite = null;
 				Composite newComposite;
@@ -194,7 +207,7 @@ public class PreviewViewPart extends ViewPart {
 					newComposite = swtXmlComposite = new Composite(container, SWT.None);
 				}
 
-				IEditorInput editorInput = trackedPart.getEditorInput();
+				IEditorInput editorInput = swtXmlEditorPart.getEditorInput();
 				ILocationProvider locationProvider = (ILocationProvider) editorInput
 						.getAdapter(ILocationProvider.class);
 

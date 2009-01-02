@@ -24,10 +24,18 @@ import org.xml.sax.InputSource;
  */
 public interface IDocumentResource {
 
+	public static final String SCHEME_BUNDLE = "bundle:";
+
 	public String getDocumentName();
 
 	public InputSource getInputSource();
 
+	/**
+	 * Resolves a resource relative to the document. path can be prefixed with a
+	 * url-like scheme to specify where to look for resources. schemes declared
+	 * in this interface should be supported. Should return null if the resource
+	 * was not found.
+	 */
 	public InputStream resolve(String path);
 
 }

@@ -42,7 +42,10 @@ public class ClassResource implements IDocumentResource {
 	}
 
 	public InputStream resolve(String path) {
+		if (path.startsWith(IDocumentResource.SCHEME_BUNDLE)) {
+			return clazz.getClassLoader().getResourceAsStream(
+					"/" + path.substring(IDocumentResource.SCHEME_BUNDLE.length()));
+		}
 		return clazz.getResourceAsStream(path);
 	}
-
 }

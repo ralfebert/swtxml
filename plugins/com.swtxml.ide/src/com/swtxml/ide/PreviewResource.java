@@ -10,7 +10,6 @@ import org.eclipse.jface.text.IDocument;
 import org.xml.sax.InputSource;
 
 import com.swtxml.resources.IDocumentResource;
-import com.swtxml.util.parser.ParseException;
 
 public class PreviewResource implements IDocumentResource {
 
@@ -33,23 +32,22 @@ public class PreviewResource implements IDocumentResource {
 	}
 
 	public InputStream resolve(String path) {
-		if (file == null) {
-			throw new ParseException("No file was available for locating resources!");
+		File f = null;
+
+		if (path.startsWith(IDocumentResource.SCHEME_BUNDLE)) {
+			f = new File(rootOfProject, path.substring(IDocumentResource.SCHEME_BUNDLE.length()));
+		} else if (file != null) {
+			f = new File(file.getParent(), path);
 		}
 
-		// try Current folder
-		File f = new File(file.getParent(), path);
-		if (!f.exists()) {
-			// try root of project folder
-			f = new File(rootOfProject, path);
-		}
-		if (f.exists()) {
+		if (f != null && f.exists()) {
 			try {
 				return new FileInputStream(f);
 			} catch (FileNotFoundException e) {
 				return null;
 			}
 		}
+
 		return null;
 	}
 

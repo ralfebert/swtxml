@@ -76,8 +76,7 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 
 		if (ILabelTranslator.class.isAssignableFrom(adapterClass)) {
 			if (this.labelTranslator == null) {
-				this.labelTranslator = new ResourceBundleLabelTranslator(view != null ? view
-						.getClass() : null, Locale.getDefault());
+				this.labelTranslator = new ResourceBundleLabelTranslator(Locale.getDefault());
 			}
 			return (A) this.labelTranslator;
 		}
