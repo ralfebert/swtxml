@@ -73,7 +73,6 @@ public class SwtWidgetsTest {
 
 	@Test
 	public void testImage() {
-		setupShell();
 		Image image = window.getSomeImageLabel().getImage();
 		assertNotNull(image);
 		window.getShell().dispose();
