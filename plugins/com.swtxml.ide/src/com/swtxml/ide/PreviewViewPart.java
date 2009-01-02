@@ -30,6 +30,7 @@ import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.editors.text.ILocationProvider;
+import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.wst.sse.core.internal.provisional.IStructuredModel;
 
@@ -42,16 +43,26 @@ public class PreviewViewPart extends ViewPart {
 
 	private IEditorPart trackedPart;
 
-	private final IPropertyListener updatePreviewOnSave = new IPropertyListener() {
+	private IEditorPart activePropertiesFilePart;
 
+	private final IPropertyListener updatePreviewOnSavePropertiesFile = new IPropertyListener() {
 		public void propertyChanged(Object source, int propId) {
 			if (propId == IEditorPart.PROP_DIRTY) {
-				if (!trackedPart.isDirty()) {
+				if (source == activePropertiesFilePart && !activePropertiesFilePart.isDirty()) {
+					updatePreview(true);
+				}
+			}
+		}
+	};
+
+	private final IPropertyListener updatePreviewOnSaveSWTXML = new IPropertyListener() {
+		public void propertyChanged(Object source, int propId) {
+			if (propId == IEditorPart.PROP_DIRTY) {
+				if (source == trackedPart && !trackedPart.isDirty()) {
 					updatePreview(false);
 				}
 			}
 		}
-
 	};
 
 	private final IPartListener trackRelevantEditorsPartListener = new IPartListener() {
@@ -65,11 +76,14 @@ public class PreviewViewPart extends ViewPart {
 
 		public void partClosed(IWorkbenchPart part) {
 			if (part == trackedPart) {
-				clearConnection();
+				clearSWTXMLConnection();
 			}
 		}
 
 		public void partDeactivated(IWorkbenchPart part) {
+			if (part == activePropertiesFilePart) {
+				clearPropertiesFileConnection();
+			}
 		}
 
 		public void partOpened(IWorkbenchPart part) {
@@ -115,32 +129,51 @@ public class PreviewViewPart extends ViewPart {
 	@Override
 	public void dispose() {
 		getSite().getPage().removePartListener(trackRelevantEditorsPartListener);
-		clearConnection();
+		if (trackedPart != null) {
+			clearSWTXMLConnection();
+		}
+		if (activePropertiesFilePart != null) {
+			clearPropertiesFileConnection();
+		}
 		super.dispose();
 	}
 
 	private void tryConnectTo(IWorkbenchPart part) {
-		if (part != trackedPart && part instanceof IEditorPart) {
+		if (part instanceof IEditorPart) {
 			IStructuredModel model = (IStructuredModel) part.getAdapter(IStructuredModel.class);
-			if (model != null
+			if (part != trackedPart
+					&& model != null
 					&& SwtXmlModelHandler.associatedContentTypeID.equals(model
 							.getContentTypeIdentifier())) {
 				connectTo(part);
+			} else if (((IEditorPart) part).getEditorInput() instanceof FileEditorInput) {
+				if (((FileEditorInput) (((IEditorPart) part).getEditorInput())).getFile()
+						.toString().endsWith(".properties")) {
+					activePropertiesFilePart = (IEditorPart) part;
+					activePropertiesFilePart.addPropertyListener(updatePreviewOnSavePropertiesFile);
+				}
 			}
 		}
 	}
 
 	private void connectTo(IWorkbenchPart part) {
 		if (trackedPart != null) {
-			clearConnection();
+			clearSWTXMLConnection();
+		}
+		if (activePropertiesFilePart != null) {
+			clearPropertiesFileConnection();
 		}
 		trackedPart = (IEditorPart) part;
-		part.addPropertyListener(updatePreviewOnSave);
+		part.addPropertyListener(updatePreviewOnSaveSWTXML);
 		updatePreview(false);
 	}
 
-	public void clearConnection() {
-		trackedPart.removePropertyListener(updatePreviewOnSave);
+	private void clearPropertiesFileConnection() {
+		activePropertiesFilePart.removePropertyListener(updatePreviewOnSavePropertiesFile);
+	}
+
+	public void clearSWTXMLConnection() {
+		trackedPart.removePropertyListener(updatePreviewOnSaveSWTXML);
 		setContent(null);
 	}
 
@@ -164,11 +197,12 @@ public class PreviewViewPart extends ViewPart {
 				IEditorInput editorInput = trackedPart.getEditorInput();
 				ILocationProvider locationProvider = (ILocationProvider) editorInput
 						.getAdapter(ILocationProvider.class);
+
 				File file = (locationProvider == null) ? null : locationProvider.getPath(
 						editorInput).toFile();
-
-				SwtXmlParser parser = new SwtXmlParser(swtXmlComposite, new PreviewResource(file,
-						doc), null);
+				FileEditorInput input = (FileEditorInput) editorInput;
+				SwtXmlParser parser = new SwtXmlParser(swtXmlComposite, new PreviewResource(
+						getProjectRootDir(input), file, doc), null);
 				parser.parse();
 				setContent(newComposite);
 
@@ -184,6 +218,12 @@ public class PreviewViewPart extends ViewPart {
 				container.layout();
 			}
 		}
+	}
+
+	private File getProjectRootDir(FileEditorInput input) {
+		return new File(input.getFile().getProject().getWorkspace().getRoot().getLocation()
+				.toString()
+				+ input.getFile().getProject().getFullPath().makeAbsolute().toFile().toString());
 	}
 
 	/**

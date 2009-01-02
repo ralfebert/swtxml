@@ -57,6 +57,9 @@ public class ResourceBundleLabelTranslator implements ILabelTranslator {
 
 		List<String> names = getResourceBundleNames(FilenameUtils.getBaseName(document
 				.getDocumentName()));
+
+		names.addAll(getResourceBundleNames("plugin"));
+		names.addAll(getResourceBundleNames("messages"));
 		for (String name : names) {
 			InputStream resource = document.resolve(name + ".properties");
 			if (resource != null) {

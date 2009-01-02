@@ -16,8 +16,10 @@ public class PreviewResource implements IDocumentResource {
 
 	private File file;
 	private IDocument document;
+	private final File rootOfProject;
 
-	public PreviewResource(File file, IDocument document) {
+	public PreviewResource(File rootOfProject, File file, IDocument document) {
+		this.rootOfProject = rootOfProject;
 		this.file = file;
 		this.document = document;
 	}
@@ -34,15 +36,21 @@ public class PreviewResource implements IDocumentResource {
 		if (file == null) {
 			throw new ParseException("No file was available for locating resources!");
 		}
+
+		// try Current folder
 		File f = new File(file.getParent(), path);
 		if (!f.exists()) {
-			return null;
+			// try root of project folder
+			f = new File(rootOfProject, path);
 		}
-		try {
-			return new FileInputStream(f);
-		} catch (FileNotFoundException e) {
-			return null;
+		if (f.exists()) {
+			try {
+				return new FileInputStream(f);
+			} catch (FileNotFoundException e) {
+				return null;
+			}
 		}
+		return null;
 	}
 
 }
