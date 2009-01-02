@@ -15,26 +15,35 @@ import java.io.InputStream;
 import org.xml.sax.InputSource;
 
 /**
- * IDocumentResource represents an input document which can be parsed by
- * SWT/XML. Needs to be able to provide a informal document name (for error
- * messages), SAX input source and needs to be able to resolve resource path
- * which are specified by relative paths in this document.
+ * IDocumentResource represents an input document which can be processed by
+ * SWT/XML.
  * 
  * @author Ralf Ebert <info@ralfebert.de>
  */
 public interface IDocumentResource {
 
+	/**
+	 * Scheme to resolve resources relative to the root of the bundle in which
+	 * this document is located.
+	 */
 	public static final String SCHEME_BUNDLE = "bundle:";
 
+	/**
+	 * Returns the name of this document. Should be the filename without path.
+	 */
 	public String getDocumentName();
 
+	/**
+	 * Returns a SAX InputSource for this document.
+	 */
 	public InputSource getInputSource();
 
 	/**
-	 * Resolves a resource relative to the document. path can be prefixed with a
-	 * url-like scheme to specify where to look for resources. schemes declared
-	 * in this interface should be supported. Should return null if the resource
-	 * was not found.
+	 * Resolves a resource specified in this document. path can be prefixed with
+	 * a url-like scheme to specify where to look for resources. schemes
+	 * declared in this interface should be supported. If no scheme is given, it
+	 * should be resolved relative to the document. Should return null if the
+	 * resource was not found.
 	 */
 	public InputStream resolve(String path);
 
