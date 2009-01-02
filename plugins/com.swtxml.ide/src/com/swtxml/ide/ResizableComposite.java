@@ -10,6 +10,7 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -18,8 +19,8 @@ import org.eclipse.swt.widgets.Sash;
 
 public class ResizableComposite extends Composite {
 
-	private static final int HORIZONTAL_SASH_HEIGHT = 60;
-	private static final int VERTICAL_SASH_WIDTH = 60;
+	private static final int HORIZONTAL_SASH_HEIGHT = 30;
+	private static final int VERTICAL_SASH_WIDTH = 30;
 
 	private Composite innerComposite;
 	private GridData innerCompositeLayoutData;
@@ -42,7 +43,7 @@ public class ResizableComposite extends Composite {
 				checkLayout();
 			}
 		});
-		verticalSash.addPaintListener(getRightVerticalRulerPaintListener());
+		verticalSash.addPaintListener(createVerticalRulerPainter());
 		verticalSash.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		verticalSash.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
 
@@ -58,7 +59,7 @@ public class ResizableComposite extends Composite {
 		});
 		horizontalSash.setBackground(Display.getDefault().getSystemColor(SWT.COLOR_WHITE));
 		horizontalSash.setForeground(Display.getDefault().getSystemColor(SWT.COLOR_BLUE));
-		horizontalSash.addPaintListener(getBottomHorizontalRulerPaintListener());
+		horizontalSash.addPaintListener(createHorizontalRulerPainter());
 
 		this.addControlListener(new ControlAdapter() {
 
@@ -92,7 +93,7 @@ public class ResizableComposite extends Composite {
 		checkLayout();
 	}
 
-	private PaintListener getBottomHorizontalRulerPaintListener() {
+	private PaintListener createHorizontalRulerPainter() {
 		return new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				int w = innerComposite.getBounds().width;
@@ -112,20 +113,21 @@ public class ResizableComposite extends Composite {
 				e.gc.drawLine(xStart, yStart, xStart + 8, yStart + 4);
 				e.gc.drawLine(xStart, yStart, xStart + 8, yStart - 4);
 
-				// // Arrow right
+				// Arrow right
 				e.gc.drawLine(xStart + w, yStart - 5, xStart + w, yStart + 5);
 				e.gc.drawLine(xStart + w, yStart, xStart + w - 8, yStart + 4);
 				e.gc.drawLine(xStart + w, yStart, xStart + w - 8, yStart - 4);
 
-				// // text: 123 px
+				// text: 123 px
 				e.gc.setFont(Display.getDefault().getSystemFont());
-				e.gc.drawString(w + " px", (xStart + w / 2) - 13, 8);
+				String text = " " + w + " px ";
+				e.gc.drawString(text, xStart + w / 2 - e.gc.stringExtent(text).x / 2, 8);
 				e.gc.setAntialias(oldAntialias);
 			}
 		};
 	}
 
-	private PaintListener getRightVerticalRulerPaintListener() {
+	private PaintListener createVerticalRulerPainter() {
 		return new PaintListener() {
 			public void paintControl(PaintEvent e) {
 				int h = innerComposite.getBounds().height;
@@ -150,8 +152,15 @@ public class ResizableComposite extends Composite {
 				e.gc.drawLine(xStart, yStart + h - 1, xStart - 4, yStart + h - 9);
 
 				// text: 123 px
+				String text = " " + h + " px ";
 				e.gc.setFont(Display.getDefault().getSystemFont());
-				e.gc.drawText(h + " px", 7, yStart + (h / 2) - 6);
+				Transform transform = new Transform(e.gc.getDevice());
+				transform.translate(7, yStart + (h / 2) + e.gc.stringExtent(text).x / 2);
+				transform.rotate(-90);
+				e.gc.setTransform(transform);
+				e.gc.drawText(text, 0, 0);
+				e.gc.setTransform(null);
+				transform.dispose();
 				e.gc.setAntialias(oldAntialias);
 			}
 		};
