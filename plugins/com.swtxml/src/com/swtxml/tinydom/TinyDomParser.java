@@ -24,7 +24,7 @@ import com.swtxml.util.parser.ParseException;
 public class TinyDomParser implements IAdaptable {
 
 	private INamespaceResolver namespaceResolver;
-	private IDocumentResource document;
+	protected IDocumentResource document;
 
 	public TinyDomParser(INamespaceResolver namespaceResolver, IDocumentResource document) {
 		super();

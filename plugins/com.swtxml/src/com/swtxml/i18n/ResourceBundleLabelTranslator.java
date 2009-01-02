@@ -17,62 +17,79 @@ import java.util.List;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.PropertyResourceBundle;
+import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
 
 import com.swtxml.resources.IDocumentResource;
-import com.swtxml.util.context.Context;
 import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.lang.FilenameUtils;
 
+/**
+ * ResourceBundleLabelTranslator translates label keys for the given document
+ * and locale.
+ * 
+ * It looks up resource bundles which are co-located with the document first
+ * (same name, same package). So if you have a document "SomeFile.swtxml", it
+ * looks for "SomeFile_[locale].properties". Then it looks for a file
+ * "messages_[locale].properties" in the same package as the document. Then it
+ * looks for "messages_[locale].properties" and "plugin_[locale].properties" in
+ * the root of the bundle from which the document was loaded.
+ * 
+ * Locales are resolved in the same way as Java resolves ResourceBundles, i.e.
+ * for locale "en_US" it looks for: "messages_en_US.properties", then
+ * "messages_en.properties", then "messages.properties"
+ * 
+ * Should be created only when needed, as it loads and caches all relevant
+ * resource bundle contents immediately.
+ * 
+ * @author Ralf Ebert <info@ralfebert.de>
+ */
 public class ResourceBundleLabelTranslator implements ILabelTranslator {
 
-	private Locale locale;
+	private final List<ResourceBundle> resourceBundles;
 
-	public ResourceBundleLabelTranslator(Locale locale) {
-		super();
-		this.locale = locale;
-	}
-
-	public String translate(String key) {
-		String value = translateFromResourceBundles(key);
-		if (value == null) {
-			return "??? " + key + " ???";
-		}
-		return value;
-	}
-
-	private String translateFromResourceBundles(String key) {
-		IDocumentResource document = Context.adaptTo(IDocumentResource.class);
+	public ResourceBundleLabelTranslator(IDocumentResource document, Locale locale) {
 		ContractProof.notNull(document, "document");
 
-		List<String> names = getResourceBundleNames(FilenameUtils.getBaseName(document
-				.getDocumentName()));
-		names.addAll(getResourceBundleNames("messages"));
-		names.addAll(getResourceBundleNames("bundle:messages"));
-		names.addAll(getResourceBundleNames("bundle:plugin"));
+		String documentName = FilenameUtils.getBaseName(document.getDocumentName());
+		List<String> resourceBundleNames = getResourceBundleNames(documentName, locale);
+		resourceBundleNames.addAll(getResourceBundleNames("messages", locale));
+		resourceBundleNames.addAll(getResourceBundleNames("bundle:messages", locale));
+		resourceBundleNames.addAll(getResourceBundleNames("bundle:plugin", locale));
 
-		for (String name : names) {
-			InputStream resource = document.resolve(name + ".properties");
-			if (resource != null) {
-				try {
-					PropertyResourceBundle resourceBundle = new PropertyResourceBundle(resource);
-					String value = resourceBundle.getString(key);
-					if (value != null) {
-						return value;
-					}
-				} catch (MissingResourceException e) {
-					// ignore missing resources
-				} catch (IOException e) {
-					// ignore invalid resource bundles
+		this.resourceBundles = new ArrayList<ResourceBundle>();
+		for (String name : resourceBundleNames) {
+			try {
+				InputStream resource = document.resolve(name + ".properties");
+				if (resource != null) {
+					resourceBundles.add(new PropertyResourceBundle(resource));
 				}
+			} catch (MissingResourceException e) {
+				// ignore missing resources
+			} catch (IOException e) {
+				// ignore invalid resource bundles
 			}
 		}
 
-		return null;
 	}
 
-	private List<String> getResourceBundleNames(String baseName) {
+	public String translate(String key) {
+		for (ResourceBundle resourceBundle : resourceBundles) {
+			try {
+				String value = resourceBundle.getString(key);
+				if (value != null) {
+					return value;
+				}
+			} catch (MissingResourceException e) {
+				// ignore missing resources
+			}
+		}
+
+		return "??? " + key + " ???";
+	}
+
+	private List<String> getResourceBundleNames(String baseName, Locale locale) {
 		List<String> results = new ArrayList<String>(4);
 		if (StringUtils.isNotEmpty(locale.getLanguage())) {
 			if (StringUtils.isNotEmpty(locale.getCountry())) {

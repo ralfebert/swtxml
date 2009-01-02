@@ -53,70 +53,68 @@ public class ResourceBundleLabelTranslatorTest {
 
 		final Class<?> clazz = ResourceBundleLabelTranslatorTest.class;
 
-		IDocumentResource resolver = EasyMock.createMock(IDocumentResource.class);
+		IDocumentResource doc = EasyMock.createMock(IDocumentResource.class);
 
-		EasyMock.expect(resolver.getDocumentName()).andReturn(NAME_SWTXML).anyTimes();
+		EasyMock.expect(doc.getDocumentName()).andReturn(NAME_SWTXML).anyTimes();
 
-		EasyMock.expect(resolver.resolve(NAME + "_de.properties")).andAnswer(
+		EasyMock.expect(doc.resolve(NAME + "_de.properties")).andAnswer(
 				classResourceAnswer(clazz, NAME + "_de.properties")).anyTimes();
-		EasyMock.expect(resolver.resolve(NAME + "_en.properties")).andReturn(null).anyTimes();
-		EasyMock.expect(resolver.resolve(NAME + ".properties")).andAnswer(
+		EasyMock.expect(doc.resolve(NAME + "_en.properties")).andReturn(null).anyTimes();
+		EasyMock.expect(doc.resolve(NAME + ".properties")).andAnswer(
 				classResourceAnswer(clazz, NAME + ".properties")).anyTimes();
 
-		EasyMock.expect(resolver.resolve(MESSAGES + "_en.properties")).andReturn(null).anyTimes();
-		EasyMock.expect(resolver.resolve(MESSAGES + "_de.properties")).andReturn(null).anyTimes();
-		EasyMock.expect(resolver.resolve(MESSAGES + ".properties")).andReturn(null).anyTimes();
+		EasyMock.expect(doc.resolve(MESSAGES + "_en.properties")).andReturn(null).anyTimes();
+		EasyMock.expect(doc.resolve(MESSAGES + "_de.properties")).andReturn(null).anyTimes();
+		EasyMock.expect(doc.resolve(MESSAGES + ".properties")).andReturn(null).anyTimes();
 
-		EasyMock.expect(resolver.resolve(BUNDLE_MESSAGES + "_en.properties")).andReturn(null)
-				.anyTimes();
-		EasyMock.expect(resolver.resolve(BUNDLE_MESSAGES + "_de.properties")).andReturn(null)
-				.anyTimes();
-		EasyMock.expect(resolver.resolve(BUNDLE_MESSAGES + ".properties")).andReturn(null)
-				.anyTimes();
+		EasyMock.expect(doc.resolve(BUNDLE_MESSAGES + "_en.properties")).andReturn(null).anyTimes();
+		EasyMock.expect(doc.resolve(BUNDLE_MESSAGES + "_de.properties")).andReturn(null).anyTimes();
+		EasyMock.expect(doc.resolve(BUNDLE_MESSAGES + ".properties")).andReturn(null).anyTimes();
 
-		EasyMock.replay(resolver);
+		EasyMock.replay(doc);
 
-		Context.addAdapter(new MockAdapter(resolver));
+		Context.addAdapter(new MockAdapter(doc));
 
-		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(Locale.GERMAN);
+		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(doc,
+				Locale.GERMAN);
 		assertEquals("Hallo", translator.translate("hello"));
 		assertEquals("123", translator.translate("only_in_default"));
 
-		translator = new ResourceBundleLabelTranslator(Locale.ENGLISH);
+		translator = new ResourceBundleLabelTranslator(doc, Locale.ENGLISH);
 		assertEquals("Hello", translator.translate("hello"));
 		assertEquals("123", translator.translate("only_in_default"));
 	}
 
 	@Test
 	public void testTranslatationOrder() {
-		IDocumentResource resolver = EasyMock.createStrictMock(IDocumentResource.class);
+		IDocumentResource doc = EasyMock.createStrictMock(IDocumentResource.class);
 
-		EasyMock.expect(resolver.getDocumentName()).andReturn(NAME_SWTXML);
+		EasyMock.expect(doc.getDocumentName()).andReturn(NAME_SWTXML);
 
-		EasyMock.expect(resolver.resolve(NAME + "_en_US.properties")).andReturn(null);
-		EasyMock.expect(resolver.resolve(NAME + "_en.properties")).andReturn(null);
-		EasyMock.expect(resolver.resolve(NAME + ".properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(NAME + "_en_US.properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(NAME + "_en.properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(NAME + ".properties")).andReturn(null);
 
-		EasyMock.expect(resolver.resolve(MESSAGES + "_en_US.properties")).andReturn(null);
-		EasyMock.expect(resolver.resolve(MESSAGES + "_en.properties")).andReturn(null);
-		EasyMock.expect(resolver.resolve(MESSAGES + ".properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(MESSAGES + "_en_US.properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(MESSAGES + "_en.properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(MESSAGES + ".properties")).andReturn(null);
 
-		EasyMock.expect(resolver.resolve(BUNDLE_MESSAGES + "_en_US.properties")).andReturn(null);
-		EasyMock.expect(resolver.resolve(BUNDLE_MESSAGES + "_en.properties")).andReturn(null);
-		EasyMock.expect(resolver.resolve(BUNDLE_MESSAGES + ".properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(BUNDLE_MESSAGES + "_en_US.properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(BUNDLE_MESSAGES + "_en.properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(BUNDLE_MESSAGES + ".properties")).andReturn(null);
 
-		EasyMock.expect(resolver.resolve(BUNDLE_PLUGIN + "_en_US.properties")).andReturn(null);
-		EasyMock.expect(resolver.resolve(BUNDLE_PLUGIN + "_en.properties")).andReturn(null);
-		EasyMock.expect(resolver.resolve(BUNDLE_PLUGIN + ".properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(BUNDLE_PLUGIN + "_en_US.properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(BUNDLE_PLUGIN + "_en.properties")).andReturn(null);
+		EasyMock.expect(doc.resolve(BUNDLE_PLUGIN + ".properties")).andReturn(null);
 
-		EasyMock.replay(resolver);
+		EasyMock.replay(doc);
 
-		Context.addAdapter(new MockAdapter(resolver));
+		Context.addAdapter(new MockAdapter(doc));
 
-		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(Locale.US);
+		ResourceBundleLabelTranslator translator = new ResourceBundleLabelTranslator(doc, Locale.US);
 
 		assertEquals("??? xxx ???", translator.translate("xxx"));
 
-		EasyMock.verify(resolver);
+		EasyMock.verify(doc);
 	}
 }
