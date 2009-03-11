@@ -2,7 +2,7 @@
 <feature
       id="com.swtxml.feature"
       label="SWT/XML IDE"
-      version="0.0.6"
+      version="0.0.7"
       provider-name="Ralf Ebert, info@ralfebert.de">
 
    <description url="http://www.swtxml.com/">
@@ -127,6 +127,10 @@ This Agreement is governed by the laws of the State of New York and the intellec
          version="0.0.0"
          unpack="false"/>
 
-   <plugin id="com.swtxml.source" version="0.0.0"/>
+   <plugin
+         id="com.swtxml.source"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
 
 </feature>
