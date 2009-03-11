@@ -11,6 +11,7 @@
 package com.swtxml.events.visitor;
 
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
@@ -84,8 +85,13 @@ public class CreateEventListeners implements ITagVisitor {
 				}
 				try {
 					return viewMethod.invoke(viewObject, parameters);
-				} catch (RuntimeException e) {
-					throw e;
+				} catch (InvocationTargetException e) {
+					Throwable targetException = e.getTargetException();
+					if (targetException instanceof RuntimeException) {
+						throw targetException;
+					} else {
+						throw new EventListenerException(e);
+					}
 				} catch (Exception e) {
 					throw new EventListenerException(e);
 				}
