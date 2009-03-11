@@ -17,7 +17,8 @@ import java.lang.reflect.Proxy;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
-import com.swtxml.events.Events;
+import com.swtxml.events.EventListenerException;
+import com.swtxml.events.impl.Events;
 import com.swtxml.events.registry.WidgetEvent;
 import com.swtxml.swt.metadata.WidgetTag;
 import com.swtxml.tinydom.ITagVisitor;
@@ -83,8 +84,10 @@ public class CreateEventListeners implements ITagVisitor {
 				}
 				try {
 					return viewMethod.invoke(viewObject, parameters);
+				} catch (RuntimeException e) {
+					throw e;
 				} catch (Exception e) {
-					throw new ReflectorException(e);
+					throw new EventListenerException(e);
 				}
 			}
 

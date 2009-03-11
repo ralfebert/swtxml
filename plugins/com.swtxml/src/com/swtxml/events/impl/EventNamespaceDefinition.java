@@ -8,15 +8,17 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.events;
+package com.swtxml.events.impl;
 
-import com.swtxml.definition.INamespaceDefinition;
-import com.swtxml.events.registry.EventsRegistry;
+import com.swtxml.definition.impl.NamespaceDefinition;
 
-public class Events {
+public class EventNamespaceDefinition extends NamespaceDefinition {
 
-	public final static EventsRegistry EVENTS = new EventsRegistry();
+	public static final String URI = "http://www.swtxml.com/events";
 
-	public final static INamespaceDefinition NAMESPACE = new EventNamespaceDefinition();
-
+	public EventNamespaceDefinition() {
+		for (String eventName : Events.EVENTS.getAllEventNames()) {
+			defineForeignAttribute(new EventForeignAttribute(eventName));
+		}
+	}
 }

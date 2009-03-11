@@ -10,15 +10,22 @@
  *******************************************************************************/
 package com.swtxml.events;
 
-import com.swtxml.definition.impl.NamespaceDefinition;
+public class EventListenerException extends RuntimeException {
 
-public class EventNamespaceDefinition extends NamespaceDefinition {
-
-	public static final String URI = "http://www.swtxml.com/events";
-
-	public EventNamespaceDefinition() {
-		for (String eventName : Events.EVENTS.getAllEventNames()) {
-			defineForeignAttribute(new EventForeignAttribute(eventName));
-		}
+	public EventListenerException() {
+		super();
 	}
+
+	public EventListenerException(String message, Throwable cause) {
+		super(message, cause);
+	}
+
+	public EventListenerException(String message) {
+		super(message);
+	}
+
+	public EventListenerException(Throwable cause) {
+		super(cause);
+	}
+
 }

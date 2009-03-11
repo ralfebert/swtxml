@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.junit.Test;
 
-import com.swtxml.events.Events;
+import com.swtxml.events.impl.Events;
 
 public class EventsRegistryTest {
 
