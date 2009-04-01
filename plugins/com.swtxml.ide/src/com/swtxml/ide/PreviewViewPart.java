@@ -234,9 +234,7 @@ public class PreviewViewPart extends ViewPart {
 	}
 
 	private File getProjectRootDir(FileEditorInput input) {
-		return new File(input.getFile().getProject().getWorkspace().getRoot().getLocation()
-				.toString()
-				+ input.getFile().getProject().getFullPath().makeAbsolute().toFile().toString());
+		return new File(input.getFile().getProject().getLocationURI());
 	}
 
 	/**
