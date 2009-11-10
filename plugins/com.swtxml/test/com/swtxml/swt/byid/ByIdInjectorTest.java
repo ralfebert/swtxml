@@ -34,7 +34,7 @@ public class ByIdInjectorTest {
 		replay(idResolver);
 		new ByIdInjector().inject(view, idResolver);
 
-		assertEquals(5, view.getBaseNumberX());
+		assertEquals(new Integer(5), view.getBaseNumberX());
 		assertEquals("Hallo", view.getTestX());
 		verify(idResolver);
 	}

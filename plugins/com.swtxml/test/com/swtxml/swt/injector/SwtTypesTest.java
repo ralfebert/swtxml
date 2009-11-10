@@ -223,7 +223,7 @@ public class SwtTypesTest {
 	@Test
 	public void testStyleType() {
 		StyleType type = new StyleType(SwtInfo.SWT);
-		assertEquals(SWT.BORDER | SWT.COLOR_RED, type.convert("border|color_red"));
+		assertEquals(new Integer(SWT.BORDER | SWT.COLOR_RED), type.convert("border|color_red"));
 		assertEquals("border|BORDER_DASH§", type.getProposals(new Match("border|border_da§xxxx"))
 				.get(0).toString());
 	}
