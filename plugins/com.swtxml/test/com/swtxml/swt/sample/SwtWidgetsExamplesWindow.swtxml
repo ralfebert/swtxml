@@ -111,7 +111,7 @@
             </Composite>
         </TabItem>
         <TabItem text="SashForm">
-            <SashForm style="VERTICAL" weights="20,30,50">
+            <SashForm style="VERTICAL" weights="20,30,50" orientation="VERTICAL">
                 <Composite background="red"/>
                 <Composite background="green"/>
                 <Composite background="blue"/>

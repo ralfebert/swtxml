@@ -11,6 +11,7 @@
 package com.swtxml.swt;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -60,6 +61,8 @@ public class SwtInfo {
 		props.add(new PropertyMatcher(String.class), new LabelType());
 		props.add(new PropertyMatcher(Composite.class, "backgroundMode", Integer.TYPE),
 				new StyleType(SWT.filter("INHERIT_NONE|INHERIT_DEFAULT|INHERIT_FORCE")));
+		props.add(new PropertyMatcher(SashForm.class, "orientation", Integer.TYPE), new StyleType(
+				SWT.filter("VERTICAL|HORIZONTAL")));
 		SimpleTypes.addSimpleTypes(props);
 		return props;
 	}
