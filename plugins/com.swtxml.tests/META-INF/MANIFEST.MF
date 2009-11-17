@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Tests
+Bundle-SymbolicName: com.swtxml.tests
+Bundle-Version: 0.0.7.qualifier
+Bundle-Vendor: Ralf Ebert
+Fragment-Host: com.swtxml;bundle-version="0.0.7"
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Require-Bundle: org.junit4;resolution:=optional,
+ easymock;bundle-version="1.0.0";resolution:=optional
