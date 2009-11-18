@@ -44,7 +44,7 @@ public class TinyDomParserTest {
 		}
 
 		public void visit(Tag tag) {
-			numbers += tag.getAttribute("no");
+			numbers += tag.getAttributeValue("no");
 		}
 	}
 
@@ -84,13 +84,13 @@ public class TinyDomParserTest {
 	@Test
 	public void testAttributes() {
 		Tag root = parseNumbers();
-		assertEquals("1", root.getAttribute("no"));
+		assertEquals("1", root.getAttributeValue("no"));
 	}
 
 	@Test
 	public void testForeignAttributes() {
 		Tag root = parseNumbers();
-		assertEquals("1", root.getAttribute("no"));
+		assertEquals("1", root.getAttributeValue("no"));
 	}
 
 	@Test
@@ -111,20 +111,20 @@ public class TinyDomParserTest {
 		assertEquals(str2, no2.getAdapter(String.class));
 		assertEquals(str1, no1.getAdapter(String.class));
 
-		assertEquals(0, no4.adaptChildren(String.class).size());
-		assertEquals(0, no3.adaptChildren(String.class).size());
-		assertEquals(0, no2.adaptChildren(String.class).size());
-		assertArrayEquals(new Object[] { str2 }, no1.adaptChildren(String.class).toArray());
+		assertEquals(0, no4.getAdapterChildren(String.class).size());
+		assertEquals(0, no3.getAdapterChildren(String.class).size());
+		assertEquals(0, no2.getAdapterChildren(String.class).size());
+		assertArrayEquals(new Object[] { str2 }, no1.getAdapterChildren(String.class).toArray());
 
-		assertEquals(null, no4.parentAdaptTo(String.class));
-		assertEquals(str2, no3.parentAdaptTo(String.class));
-		assertEquals(str1, no2.parentAdaptTo(String.class));
-		assertEquals(null, no1.parentAdaptTo(String.class));
+		assertEquals(null, no4.getAdapterParent(String.class));
+		assertEquals(str2, no3.getAdapterParent(String.class));
+		assertEquals(str1, no2.getAdapterParent(String.class));
+		assertEquals(null, no1.getAdapterParent(String.class));
 
-		assertEquals(str2, no4.parentRecursiveAdaptTo(String.class));
-		assertEquals(str2, no3.parentRecursiveAdaptTo(String.class));
-		assertEquals(str1, no2.parentRecursiveAdaptTo(String.class));
-		assertEquals(null, no1.parentRecursiveAdaptTo(String.class));
+		assertEquals(str2, no4.getAdapterParentRecursive(String.class));
+		assertEquals(str2, no3.getAdapterParentRecursive(String.class));
+		assertEquals(str1, no2.getAdapterParentRecursive(String.class));
+		assertEquals(null, no1.getAdapterParentRecursive(String.class));
 	}
 
 	private Tag parseNumbers() {
@@ -231,9 +231,9 @@ public class TinyDomParserTest {
 				"foreignattributes.xml"));
 
 		Tag element = parser.parse();
-		assertEquals("tag-welt", element.getAttribute("hallo"));
-		assertEquals("tag-welt", element.getAttribute(testNamespace, "hallo"));
-		assertEquals("namespace-welt", element.getAttribute(attrSpace, "hallo"));
+		assertEquals("tag-welt", element.getAttributeValue("hallo"));
+		assertEquals("tag-welt", element.getAttributeValue(testNamespace, "hallo"));
+		assertEquals("namespace-welt", element.getAttributeValue(attrSpace, "hallo"));
 	}
 
 	@Test

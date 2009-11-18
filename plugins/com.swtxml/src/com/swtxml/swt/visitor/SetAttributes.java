@@ -41,7 +41,7 @@ public class SetAttributes implements ITagVisitor {
 		}
 
 		if (widget instanceof TabItem) {
-			List<Control> controlChildren = tag.adaptChildren(Control.class);
+			List<Control> controlChildren = tag.getAdapterChildren(Control.class);
 			if (controlChildren.size() > 1) {
 				throw new ParseException("TabItems may have only one nested Control! (is: "
 						+ controlChildren + ")");
@@ -51,10 +51,11 @@ public class SetAttributes implements ITagVisitor {
 			}
 		}
 
-		for (IAttributeDefinition attr : tag.getAttributes()) {
+		for (IAttributeDefinition attr : tag.getAttributes(tag.getNamespaceDefinition())) {
 			if (attr instanceof PropertyAttribute) {
 				SwtInfo.WIDGET_PROPERTIES.getProperties(widget.getClass()).getInjector(widget)
-						.setPropertyValue(attr.getName(), tag.getAttribute(attr));
+						.setPropertyValue(attr.getName(),
+								tag.getAttributeValue(tag.getNamespaceDefinition(), attr));
 			}
 		}
 	}

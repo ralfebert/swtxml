@@ -65,58 +65,12 @@ public final class Tag implements IAdaptable {
 		return tagDefinition.getName();
 	}
 
-	public String getAttribute(IAttributeDefinition attribute) {
-		return getAttribute(getNamespaceDefinition(), attribute);
+	public String getLocationInfo() {
+		return locationInfo;
 	}
 
-	/**
-	 * Returns the attribute value by name for attributes having the same
-	 * namespace as the tag.
-	 */
-	public String getAttribute(String attributeName) {
-		return getAttribute(getNamespaceDefinition(), getTagDefinition()
-				.getAttribute(attributeName));
-	}
-
-	/**
-	 * Returns the attribute value by namespace and attribute name.
-	 */
-	public String getAttribute(NamespaceDefinition namespace, String attributeName) {
-		if (getNamespaceDefinition().equals(namespace)) {
-			return getAttribute(attributeName);
-		} else {
-			return getAttribute(namespace, namespace.getForeignAttribute(attributeName));
-		}
-	}
-
-	/**
-	 * Returns a list of all attribute definitions from the tag's namespace
-	 * which are given for this tag.
-	 */
-	public Collection<IAttributeDefinition> getAttributes() {
-		return getAttributes(getNamespaceDefinition());
-	}
-
-	/**
-	 * Returns a list of all attribute definitions from the given namespace
-	 * which are set for this tag.
-	 */
-	public Collection<IAttributeDefinition> getAttributes(INamespaceDefinition namespace) {
-		Map<IAttributeDefinition, String> attributes = attributeMap.get(namespace);
-		if (attributes != null) {
-			return attributes.keySet();
-		} else {
-			return Collections.emptyList();
-		}
-	}
-
-	/**
-	 * Returns the attribute value by namespace and attribute attribute
-	 * definition.
-	 */
-	public String getAttribute(INamespaceDefinition namespace, IAttributeDefinition attribute) {
-		Map<IAttributeDefinition, String> attributes = attributeMap.get(namespace);
-		return attributes != null ? attributes.get(attribute) : null;
+	public boolean isRoot() {
+		return getParent() == null;
 	}
 
 	public Tag getParent() {
@@ -129,60 +83,6 @@ public final class Tag implements IAdaptable {
 		} else {
 			return Collections.emptyList();
 		}
-	}
-
-	public boolean isRoot() {
-		return getParent() == null;
-	}
-
-	public String getLocationInfo() {
-		return locationInfo;
-	}
-
-	@SuppressWarnings("unchecked")
-	public <T> T getAdapter(Class<T> type) {
-		for (Object adapterObject : adapterObjects) {
-			if (type.isAssignableFrom(adapterObject.getClass())) {
-				return (T) adapterObject;
-			}
-		}
-		return (T) (type.isAssignableFrom(getClass()) ? this : null);
-	}
-
-	public final <T> T parentAdaptTo(Class<T> type) {
-		return (parent != null) ? parent.getAdapter(type) : null;
-	}
-
-	public final <T> T parentRecursiveAdaptTo(Class<T> type) {
-		T match = parentAdaptTo(type);
-		if (match != null) {
-			return match;
-		}
-		if (parent != null) {
-			return parent.parentAdaptTo(type);
-		}
-		return null;
-	}
-
-	public void addAdapter(Object adapterObject) {
-		Assert.isNotNull(adapterObject, "adapterObject");
-		// TODO: check for conflicts
-		this.adapterObjects.add(adapterObject);
-	}
-
-	/**
-	 * Returns a list containing all adapted objects from child nodes which were
-	 * adaptable to the given type.
-	 */
-	public <T> List<T> adaptChildren(Class<T> type) {
-		List<T> results = new ArrayList<T>();
-		for (Tag tag : getChildren()) {
-			T adapted = tag.getAdapter(type);
-			if (adapted != null) {
-				results.add(adapted);
-			}
-		}
-		return results;
 	}
 
 	/**
@@ -200,6 +100,89 @@ public final class Tag implements IAdaptable {
 		for (Tag child : getChildren()) {
 			child.visitDepthFirst(visitors);
 		}
+	}
+
+	/**
+	 * Returns the attribute value by name for attributes having the same
+	 * namespace as the tag.
+	 */
+	public String getAttributeValue(String attributeName) {
+		return getAttributeValue(getNamespaceDefinition(), getTagDefinition().getAttribute(
+				attributeName));
+	}
+
+	/**
+	 * Returns the attribute value by namespace and attribute name.
+	 */
+	public String getAttributeValue(NamespaceDefinition namespace, String attributeName) {
+		if (getNamespaceDefinition().equals(namespace)) {
+			return getAttributeValue(attributeName);
+		} else {
+			return getAttributeValue(namespace, namespace.getForeignAttribute(attributeName));
+		}
+	}
+
+	/**
+	 * Returns the attribute value by namespace and attribute definition.
+	 */
+	public String getAttributeValue(INamespaceDefinition namespace, IAttributeDefinition attribute) {
+		Map<IAttributeDefinition, String> attributes = attributeMap.get(namespace);
+		return attributes != null ? attributes.get(attribute) : null;
+	}
+
+	/**
+	 * Returns a list of all definitions from the given namespace which
+	 * specified set for this tag.
+	 */
+	public Collection<IAttributeDefinition> getAttributes(INamespaceDefinition namespace) {
+		Map<IAttributeDefinition, String> attributes = attributeMap.get(namespace);
+		if (attributes != null) {
+			return attributes.keySet();
+		} else {
+			return Collections.emptyList();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public <T> T getAdapter(Class<T> type) {
+		for (Object adapterObject : adapterObjects) {
+			if (type.isAssignableFrom(adapterObject.getClass())) {
+				return (T) adapterObject;
+			}
+		}
+		return (T) (type.isAssignableFrom(getClass()) ? this : null);
+	}
+
+	public void addAdapter(Object adapterObject) {
+		Assert.isNotNull(adapterObject, "adapterObject");
+		// TODO: check for conflicts
+		this.adapterObjects.add(adapterObject);
+	}
+
+	public final <T> T getAdapterParent(Class<T> type) {
+		return (parent != null) ? parent.getAdapter(type) : null;
+	}
+
+	public final <T> T getAdapterParentRecursive(Class<T> type) {
+		T match = getAdapterParent(type);
+		if (match != null) {
+			return match;
+		}
+		if (parent != null) {
+			return parent.getAdapterParent(type);
+		}
+		return null;
+	}
+
+	public <T> List<T> getAdapterChildren(Class<T> type) {
+		List<T> results = new ArrayList<T>();
+		for (Tag tag : getChildren()) {
+			T adapted = tag.getAdapter(type);
+			if (adapted != null) {
+				results.add(adapted);
+			}
+		}
+		return results;
 	}
 
 	@Override

@@ -51,10 +51,10 @@ public class BuildWidgets implements ITagVisitor {
 				.getWidgetClass());
 		Class<?> parentClass = constructor.getParameterTypes()[0];
 
-		Composite parent = (Composite) tag.parentRecursiveAdaptTo(parentClass);
+		Composite parent = (Composite) tag.getAdapterParentRecursive(parentClass);
 		// TODO: exception "allowed are" should show only allowed styles, not
 		// all from SWT
-		Integer style = SwtInfo.SWT.getIntValue(tag.getAttribute("style"));
+		Integer style = SwtInfo.SWT.getIntValue(tag.getAttributeValue("style"));
 
 		Widget widget = build(constructor, parent, style == null ? SWT.NONE : style);
 		tag.addAdapter(widget);

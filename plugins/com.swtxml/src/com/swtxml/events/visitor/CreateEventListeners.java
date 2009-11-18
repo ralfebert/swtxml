@@ -51,7 +51,7 @@ public class CreateEventListeners implements ITagVisitor {
 					"Tag %s has event attributes %s, but is not a Widget!", tag.getName(), events));
 
 			for (IAttributeDefinition eventAttribute : events) {
-				String responderMethodName = tag.getAttribute(Events.NAMESPACE, eventAttribute);
+				String responderMethodName = tag.getAttributeValue(Events.NAMESPACE, eventAttribute);
 				setupListener(widget, eventAttribute.getName(), responderMethodName);
 			}
 

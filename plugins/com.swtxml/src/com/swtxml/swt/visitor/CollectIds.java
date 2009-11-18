@@ -23,7 +23,7 @@ public class CollectIds implements ITagVisitor, IIdResolver, IAdaptable {
 	private Map<String, Tag> tagsById = new HashMap<String, Tag>();
 
 	public void visit(Tag tag) {
-		String id = tag.getAttribute("id");
+		String id = tag.getAttributeValue("id");
 		if (id != null) {
 			tagsById.put(id, tag);
 		}
