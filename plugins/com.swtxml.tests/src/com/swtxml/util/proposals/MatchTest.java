@@ -27,46 +27,46 @@ public class MatchTest {
 	@Before
 	public void setup() {
 		m = new Match("123456", 3);
-		m2 = new Match("\"123§456\"");
+		m2 = new Match("\"123Â§456\"");
 	}
 
 	@Test
 	public void testMatch() {
-		assertEquals("123§456", m.toString());
-		assertEquals("123§456", new Match(m.toString()).toString());
+		assertEquals("123Â§456", m.toString());
+		assertEquals("123Â§456", new Match(m.toString()).toString());
 	}
 
 	@Test
 	public void testReplaceBeforeCursor() {
-		assertEquals("1xxx3§456", m.replace("xxx", 1, 1).toString());
+		assertEquals("1xxx3Â§456", m.replace("xxx", 1, 1).toString());
 	}
 
 	@Test
 	public void testReplaceAfterCursor() {
-		assertEquals("123§4xxx6", m.replace("xxx", 4, 1).toString());
+		assertEquals("123Â§4xxx6", m.replace("xxx", 4, 1).toString());
 	}
 
 	@Test
 	public void testInsertBeforeCursor() {
-		assertEquals("1xxx23§456", m.insert("xxx", 1).toString());
+		assertEquals("1xxx23Â§456", m.insert("xxx", 1).toString());
 	}
 
 	@Test
 	public void testInsertAfterCursor() {
-		assertEquals("123§4xxx56", m.insert("xxx", 4).toString());
+		assertEquals("123Â§4xxx56", m.insert("xxx", 4).toString());
 	}
 
 	@Test
 	public void testInsertAroundMatch() {
 		m = m.insertAroundMatch("yy", "xxx");
-		assertEquals("yy123§456xxx", m.toString());
+		assertEquals("yy123Â§456xxx", m.toString());
 		assertEquals("123456", m.getText());
 	}
 
 	@Test
 	public void handleQuotes() {
-		assertEquals("\"123§456\"", m.handleQuotes().toString());
-		assertEquals("\"123§456\"", m2.handleQuotes().toString());
+		assertEquals("\"123Â§456\"", m.handleQuotes().toString());
+		assertEquals("\"123Â§456\"", m2.handleQuotes().toString());
 		assertEquals("123456", m.handleQuotes().getText());
 		assertEquals("123456", m2.handleQuotes().getText());
 		assertEquals("\"123456\"", m.handleQuotes().getReplacementText());
@@ -76,64 +76,64 @@ public class MatchTest {
 	@Test
 	public void testInsertAroundMatchWithQuotes() {
 		m = m.handleQuotes().insertAroundMatch("yy", "xxx");
-		assertEquals("\"yy123§456xxx\"", m.toString());
+		assertEquals("\"yy123Â§456xxx\"", m.toString());
 		assertEquals("123456", m.getText());
 	}
 
 	@Test
 	public void insertWorksWithOffsets() {
-		assertEquals("\"12xxx3§456\"", m2.handleQuotes().insert("xxx", 2).toString());
+		assertEquals("\"12xxx3Â§456\"", m2.handleQuotes().insert("xxx", 2).toString());
 	}
 
 	@Test
 	public void restrict() {
-		m = new Match("123,456.7§89,012");
+		m = new Match("123,456.7Â§89,012");
 		m = m.restrict(new Splitter(",."));
 		assertEquals("789", m.getText());
 		m = m.replace("xxx");
 		assertEquals("xxx", m.getText());
-		assertEquals("123,456.xxx§,012", m.toString());
+		assertEquals("123,456.xxxÂ§,012", m.toString());
 	}
 
 	@Test
 	public void getTextBeforeCursor() {
-		assertEquals("7", new Match("123,456.7§89,012").restrict(new Splitter(",."))
+		assertEquals("7", new Match("123,456.7Â§89,012").restrict(new Splitter(",."))
 				.getTextBeforeCursor());
-		assertEquals("", new Match("123,456.§789,012").restrict(new Splitter(",."))
+		assertEquals("", new Match("123,456.Â§789,012").restrict(new Splitter(",."))
 				.getTextBeforeCursor());
 	}
 
 	@Test
 	public void testProposeNoResults() {
-		m = new Match("123,456.7§89,012").restrict(new Splitter(",."));
+		m = new Match("123,456.7Â§89,012").restrict(new Splitter(",."));
 		List<Match> proposals = m.propose("red", "green", "blue");
 		assertEquals(0, proposals.size());
 	}
 
 	@Test
 	public void testProposeFiltered() {
-		m = new Match("123,456.r§89,012").restrict(new Splitter(",."));
+		m = new Match("123,456.rÂ§89,012").restrict(new Splitter(",."));
 		List<Match> proposals = m.propose("red", "green", "blue");
 		assertEquals(1, proposals.size());
 		assertEquals("red", proposals.get(0).getText());
-		assertEquals("123,456.red§,012", proposals.get(0).toString());
+		assertEquals("123,456.redÂ§,012", proposals.get(0).toString());
 	}
 
 	@Test
 	public void testProposeAll() {
-		m = new Match("123,456.§89,012").restrict(new Splitter(",."));
+		m = new Match("123,456.Â§89,012").restrict(new Splitter(",."));
 		List<Match> proposals = m.propose("red", "green", "blue");
 		assertEquals(3, proposals.size());
 		assertEquals("blue", proposals.get(0).getText());
-		assertEquals("123,456.blue§,012", proposals.get(0).toString());
+		assertEquals("123,456.blueÂ§,012", proposals.get(0).toString());
 	}
 
 	@Test
 	public void testCursorAfterReplacement() {
-		assertEquals("test§", new Match("§").replace("test").toString());
-		assertEquals("test§", new Match("t§").replace("test").toString());
-		assertEquals("\"test§\"", new Match("\"§\"").handleQuotes().replace("test").toString());
-		assertEquals("\"test§\"", new Match("\"t§\"").handleQuotes().replace("test").toString());
+		assertEquals("testÂ§", new Match("Â§").replace("test").toString());
+		assertEquals("testÂ§", new Match("tÂ§").replace("test").toString());
+		assertEquals("\"testÂ§\"", new Match("\"Â§\"").handleQuotes().replace("test").toString());
+		assertEquals("\"testÂ§\"", new Match("\"tÂ§\"").handleQuotes().replace("test").toString());
 	}
 
 }

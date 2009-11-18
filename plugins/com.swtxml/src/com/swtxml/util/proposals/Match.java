@@ -38,9 +38,9 @@ public class Match {
 	}
 
 	public Match(String str) {
-		this.cursorPos = str.indexOf('ง');
+		this.cursorPos = str.indexOf('ยง');
 		if (this.cursorPos < 0) {
-			throw new ParseException("No cursor char ง given");
+			throw new ParseException("No cursor char ยง given");
 		}
 		this.text = str.substring(0, cursorPos) + str.substring(cursorPos + 1);
 		this.start = 0;
@@ -68,7 +68,7 @@ public class Match {
 
 	@Override
 	public String toString() {
-		return text.substring(0, cursorPos) + "ง" + text.substring(cursorPos);
+		return text.substring(0, cursorPos) + "ยง" + text.substring(cursorPos);
 	}
 
 	private void _handleQuotes() {

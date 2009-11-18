@@ -124,27 +124,27 @@ public class SwtTypesTest {
 	@Test
 	public void testLayoutCompletion() {
 		LayoutType layoutType = new LayoutType();
-		assertEquals("layout:§;", layoutType.getProposals(new Match("la§")).get(0).toString());
-		assertEquals("layout:§;", layoutType.getProposals(new Match("§")).get(0).toString());
-		assertEquals("type:§;layout:row;", layoutType.getProposals(new Match("ty§;layout:row;"))
+		assertEquals("layout:Â§;", layoutType.getProposals(new Match("laÂ§")).get(0).toString());
+		assertEquals("layout:Â§;", layoutType.getProposals(new Match("Â§")).get(0).toString());
+		assertEquals("type:Â§;layout:row;", layoutType.getProposals(new Match("tyÂ§;layout:row;"))
 				.get(0).toString());
-		assertEquals("layout:row;type:§;", layoutType.getProposals(new Match("layout:row;ty§"))
+		assertEquals("layout:row;type:Â§;", layoutType.getProposals(new Match("layout:row;tyÂ§"))
 				.get(0).toString());
-		assertEquals("type:vertical;center:§;layout:row;", layoutType.getProposals(
-				new Match("type:vertical;c§;layout:row;")).get(0).toString());
-		assertEquals("type:vertical;center:§;layout:row;", layoutType.getProposals(
-				new Match("type:vertical;c§layout:row;")).get(0).toString());
-		assertEquals("layout:row;center:§;", layoutType.getProposals(new Match("layout:row; c§"))
+		assertEquals("type:vertical;center:Â§;layout:row;", layoutType.getProposals(
+				new Match("type:vertical;cÂ§;layout:row;")).get(0).toString());
+		assertEquals("type:vertical;center:Â§;layout:row;", layoutType.getProposals(
+				new Match("type:vertical;cÂ§layout:row;")).get(0).toString());
+		assertEquals("layout:row;center:Â§;", layoutType.getProposals(new Match("layout:row; cÂ§"))
 				.get(0).toString());
-		assertEquals("layout:row;center:true;§", layoutType.getProposals(
-				new Match("layout:row;center:  t§")).get(0).toString());
-		assertTrue(layoutType.getProposals(new Match("§;layout:row;")).size() > 0);
-		assertEquals("type:VERTICAL;§layout:row;", layoutType.getProposals(
-				new Match("type:v§;layout:row;")).get(0).toString());
-		assertEquals(2, layoutType.getProposals(new Match("type:§;layout:row;")).size());
+		assertEquals("layout:row;center:true;Â§", layoutType.getProposals(
+				new Match("layout:row;center:  tÂ§")).get(0).toString());
+		assertTrue(layoutType.getProposals(new Match("Â§;layout:row;")).size() > 0);
+		assertEquals("type:VERTICAL;Â§layout:row;", layoutType.getProposals(
+				new Match("type:vÂ§;layout:row;")).get(0).toString());
+		assertEquals(2, layoutType.getProposals(new Match("type:Â§;layout:row;")).size());
 
 		List<String> proposals = getProposalsAsSeenByUser(layoutType.getProposals(new Match(
-				"layout:§")));
+				"layout:Â§")));
 		assertTrue(proposals + " does not contain grid", proposals.contains("grid"));
 
 	}
@@ -152,7 +152,7 @@ public class SwtTypesTest {
 	@Test
 	public void testLayoutCompletionDoesNotContainAlreadySetProperties() {
 		LayoutType layoutType = new LayoutType();
-		List<Match> proposals = layoutType.getProposals(new Match("type:vertical;layout:row;§"));
+		List<Match> proposals = layoutType.getProposals(new Match("type:vertical;layout:row;Â§"));
 		List<String> proposalTexts = CollectionUtils.collect(proposals,
 				new IFunction<Match, String>() {
 					public String apply(Match m) {
@@ -175,9 +175,9 @@ public class SwtTypesTest {
 	public void testLayoutDataContentAssist() {
 		Context.addAdapter(new MockAdapter(new GridLayout()));
 		LayoutDataType type = new LayoutDataType();
-		assertEquals("widthHint:§;", type.getProposals(new Match("wi§")).get(0).toString());
-		assertEquals("verticalAlignment:CENTER;§", type.getProposals(
-				new Match("verticalAlignment:c§")).get(0).toString());
+		assertEquals("widthHint:Â§;", type.getProposals(new Match("wiÂ§")).get(0).toString());
+		assertEquals("verticalAlignment:CENTER;Â§", type.getProposals(
+				new Match("verticalAlignment:cÂ§")).get(0).toString());
 
 	}
 
@@ -185,7 +185,7 @@ public class SwtTypesTest {
 	public void testGridLayoutDataAttributesBug() {
 		Context.addAdapter(new MockAdapter(new GridLayout()));
 		LayoutDataType type = new LayoutDataType();
-		List<String> proposals = getProposalsAsSeenByUser(type.getProposals(new Match("§")));
+		List<String> proposals = getProposalsAsSeenByUser(type.getProposals(new Match("Â§")));
 		assertTrue(proposals.contains("verticalSpan:"));
 		for (String p : proposals) {
 			if (p.contains("GRAB_VERTICAL")) {
@@ -206,13 +206,13 @@ public class SwtTypesTest {
 	public void testLayoutDataFillLayout() {
 		Context.addAdapter(new MockAdapter(new FillLayout()));
 		LayoutDataType type = new LayoutDataType();
-		assertEquals(0, type.getProposals(new Match("§")).size());
+		assertEquals(0, type.getProposals(new Match("Â§")).size());
 	}
 
 	@Test
 	public void testLayoutDataWithoutLayoutContentAssist() {
 		LayoutDataType type = new LayoutDataType();
-		assertEquals(0, type.getProposals(new Match("§")).size());
+		assertEquals(0, type.getProposals(new Match("Â§")).size());
 	}
 
 	@Test
@@ -224,7 +224,7 @@ public class SwtTypesTest {
 	public void testStyleType() {
 		StyleType type = new StyleType(SwtInfo.SWT);
 		assertEquals(new Integer(SWT.BORDER | SWT.COLOR_RED), type.convert("border|color_red"));
-		assertEquals("border|BORDER_DASH§", type.getProposals(new Match("border|border_da§xxxx"))
+		assertEquals("border|BORDER_DASHÂ§", type.getProposals(new Match("border|border_daÂ§xxxx"))
 				.get(0).toString());
 	}
 
