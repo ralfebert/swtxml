@@ -23,7 +23,6 @@ import org.apache.commons.lang.StringUtils;
 import org.eclipse.core.runtime.Assert;
 
 import com.swtxml.resources.IDocumentResource;
-import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.lang.FilenameUtils;
 
 /**

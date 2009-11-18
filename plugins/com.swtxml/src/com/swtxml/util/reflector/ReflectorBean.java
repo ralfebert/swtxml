@@ -15,8 +15,6 @@ import java.util.Collections;
 
 import org.eclipse.core.runtime.Assert;
 
-import com.swtxml.util.lang.ContractProof;
-
 /**
  * ReflectorBean represents all properties (getter+setter or public field) of a
  * java bean class.

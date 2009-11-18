@@ -22,7 +22,6 @@ import org.apache.commons.lang.ObjectUtils;
 import org.eclipse.core.runtime.Assert;
 
 import com.swtxml.util.lang.CollectionUtils;
-import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.lang.Filters;
 import com.swtxml.util.lang.IFilter;
 

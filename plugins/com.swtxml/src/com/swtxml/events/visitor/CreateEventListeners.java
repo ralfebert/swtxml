@@ -25,7 +25,6 @@ import com.swtxml.events.registry.WidgetEvent;
 import com.swtxml.swt.metadata.WidgetTag;
 import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
-import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.reflector.Reflector;
 import com.swtxml.util.reflector.ReflectorException;
 import com.swtxml.util.reflector.Subclasses;

@@ -28,7 +28,6 @@ import com.swtxml.swt.visitor.ProcessingTest;
 import com.swtxml.tinydom.TinyDomParserTest;
 import com.swtxml.util.context.ContextTest;
 import com.swtxml.util.lang.CollectionUtilsTest;
-import com.swtxml.util.lang.ContractProofTest;
 import com.swtxml.util.lang.ResourceUtilsTest;
 import com.swtxml.util.parser.ConstantParserTest;
 import com.swtxml.util.parser.KeyValueParserTest;
@@ -44,12 +43,11 @@ import com.swtxml.util.reflector.ReflectorTest;
  * environment.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses( { ContractProofTest.class, CollectionUtilsTest.class, ResourceUtilsTest.class,
-		SplitterTest.class, MatchTest.class, ReflectorTest.class, PropertyMatcherTest.class,
-		BaseConvertersTest.class, PropertyRegistryTest.class, ConstantParserTest.class,
-		KeyValueParserTest.class, FormAttachmentTypeTest.class, ContextTest.class,
-		SwtTypesTest.class, SwtInjectorTest.class, SwtNamespaceTest.class,
-		EventsRegistryTest.class, EventNamespaceDefinitionTest.class,
+@Suite.SuiteClasses( { CollectionUtilsTest.class, ResourceUtilsTest.class, SplitterTest.class,
+		MatchTest.class, ReflectorTest.class, PropertyMatcherTest.class, BaseConvertersTest.class,
+		PropertyRegistryTest.class, ConstantParserTest.class, KeyValueParserTest.class,
+		FormAttachmentTypeTest.class, ContextTest.class, SwtTypesTest.class, SwtInjectorTest.class,
+		SwtNamespaceTest.class, EventsRegistryTest.class, EventNamespaceDefinitionTest.class,
 		CreateEventListenersTest.class, TinyDomParserTest.class, ByIdInjectorTest.class,
 		BuildWidgetsTest.class, ProcessingTest.class, SwtWidgetsTest.class, ClassResourceTest.class })
 public class AllTests {

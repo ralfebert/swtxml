@@ -16,7 +16,6 @@ import java.util.Collection;
 import org.eclipse.core.runtime.Assert;
 
 import com.swtxml.adapter.IIdResolver;
-import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.reflector.Reflector;
 import com.swtxml.util.reflector.ReflectorException;
 import com.swtxml.util.reflector.Subclasses;

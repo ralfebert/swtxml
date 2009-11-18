@@ -22,7 +22,6 @@ import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.reflector.Reflector;
 import com.swtxml.util.reflector.Subclasses;
 import com.swtxml.util.reflector.Visibility;
@@ -42,8 +41,14 @@ class WidgetEvents {
 			for (Method eventMethod : listenerType.getMethods()) {
 				String eventName = getEventName(listenerMethod, eventMethod, listenerType);
 				Class<?> eventParamType = eventMethod.getParameterTypes()[0];
-				ContractProof.safePut(events, eventName, new WidgetEvent(listenerType,
-						eventParamType));
+				WidgetEvent widgetEvent = new WidgetEvent(listenerType, eventParamType);
+				WidgetEvent oldValue = events.put(eventName, widgetEvent);
+				if (oldValue != null) {
+					String msg = String.format(
+							"Event %s from %s causes conflicting event attributes for widget %s!",
+							eventName, listenerType, widgetClass.getName());
+					throw new IllegalStateException(msg);
+				}
 			}
 		}
 	}

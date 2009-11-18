@@ -23,7 +23,6 @@ import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;
 import com.swtxml.definition.impl.NamespaceDefinition;
-import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.parser.ParseException;
 
 public final class Tag implements IAdaptable {
