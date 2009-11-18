@@ -17,15 +17,16 @@ import static org.junit.Assert.fail;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
 import org.junit.Test;
 
 public class ContractProofTest {
 
 	@Test
 	public void testNotNull() {
-		ContractProof.notNull("test", "test");
+		Assert.isNotNull("test", "test");
 		try {
-			ContractProof.notNull(null, "test");
+			Assert.isNotNull(null, "test");
 			fail("expected exception");
 		} catch (ContractException e) {
 			assertTrue(e.getMessage().contains("test"));

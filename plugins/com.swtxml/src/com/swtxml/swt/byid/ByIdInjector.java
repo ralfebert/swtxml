@@ -13,6 +13,8 @@ package com.swtxml.swt.byid;
 import java.lang.reflect.Field;
 import java.util.Collection;
 
+import org.eclipse.core.runtime.Assert;
+
 import com.swtxml.adapter.IIdResolver;
 import com.swtxml.util.lang.ContractProof;
 import com.swtxml.util.reflector.Reflector;
@@ -37,8 +39,8 @@ public class ByIdInjector {
 	 *             reflection errors.
 	 */
 	public void inject(Object object, IIdResolver idResolver) throws ReflectorException {
-		ContractProof.notNull(object, "object");
-		ContractProof.notNull(idResolver, "idResolver");
+		Assert.isNotNull(object, "object");
+		Assert.isNotNull(idResolver, "idResolver");
 
 		Collection<Field> fields = Reflector.findFields(Visibility.PRIVATE, Subclasses.INCLUDE)
 				.annotatedWith(ById.class).all(object.getClass());

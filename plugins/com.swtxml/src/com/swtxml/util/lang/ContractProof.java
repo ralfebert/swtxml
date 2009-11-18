@@ -13,17 +13,9 @@ package com.swtxml.util.lang;
 import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.eclipse.core.runtime.Assert;
 
 public class ContractProof {
-
-	/**
-	 * Throws a ContractException if obj is null.
-	 */
-	public static void notNull(Object obj, String name) {
-		if (obj == null) {
-			throw new ContractException(name + " may not be null");
-		}
-	}
 
 	/**
 	 * Puts key => value in map. If the key is already in the list with another

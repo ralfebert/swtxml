@@ -20,6 +20,7 @@ import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.core.runtime.Assert;
 
 import com.swtxml.resources.IDocumentResource;
 import com.swtxml.util.lang.ContractProof;
@@ -50,7 +51,7 @@ public class ResourceBundleLabelTranslator implements ILabelTranslator {
 	private final List<ResourceBundle> resourceBundles;
 
 	public ResourceBundleLabelTranslator(IDocumentResource document, Locale locale) {
-		ContractProof.notNull(document, "document");
+		Assert.isNotNull(document, "document");
 
 		String documentName = FilenameUtils.getBaseName(document.getDocumentName());
 		List<String> resourceBundleNames = getResourceBundleNames(documentName, locale);

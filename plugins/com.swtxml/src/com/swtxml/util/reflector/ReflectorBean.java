@@ -13,6 +13,8 @@ package com.swtxml.util.reflector;
 import java.util.Collection;
 import java.util.Collections;
 
+import org.eclipse.core.runtime.Assert;
+
 import com.swtxml.util.lang.ContractProof;
 
 /**
@@ -30,7 +32,7 @@ public class ReflectorBean {
 	}
 
 	public ReflectorBean(Class<?> type, PublicFields publicFields) {
-		ContractProof.notNull(type, "type");
+		Assert.isNotNull(type, "type");
 		this.type = type;
 		this.properties = Collections.unmodifiableCollection(Reflector.findPublicProperties(type,
 				publicFields));

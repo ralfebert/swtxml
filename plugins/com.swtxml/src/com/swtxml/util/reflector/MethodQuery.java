@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.ObjectUtils;
+import org.eclipse.core.runtime.Assert;
 
 import com.swtxml.util.lang.CollectionUtils;
 import com.swtxml.util.lang.ContractProof;
@@ -139,7 +140,7 @@ public class MethodQuery {
 	}
 
 	public MethodQuery optionalParameter(final Class<?> type) {
-		ContractProof.notNull(type, "type");
+		Assert.isNotNull(type, "type");
 		filters.add(new IFilter<Method>() {
 			public boolean match(Method method) {
 				return method.getParameterTypes().length == 0

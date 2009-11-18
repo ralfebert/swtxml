@@ -16,6 +16,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
+
 import com.swtxml.adapter.IAdaptable;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
@@ -164,7 +166,7 @@ public final class Tag implements IAdaptable {
 	}
 
 	public void addAdapter(Object adapterObject) {
-		ContractProof.notNull(adapterObject, "adapterObject");
+		Assert.isNotNull(adapterObject, "adapterObject");
 		// TODO: check for conflicts
 		this.adapterObjects.add(adapterObject);
 	}

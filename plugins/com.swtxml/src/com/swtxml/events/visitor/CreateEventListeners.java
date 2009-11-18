@@ -15,6 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
@@ -66,7 +67,7 @@ public class CreateEventListeners implements ITagVisitor {
 	public void wireViewMethodListener(String viewMethodName, Widget widget, final String eventName) {
 
 		WidgetEvent event = Events.EVENTS.getWidgetEvent(widget.getClass(), eventName);
-		ContractProof.notNull(event, "event");
+		Assert.isNotNull(event, "event");
 
 		final Method viewMethod = Reflector.findMethods(Visibility.PRIVATE, Subclasses.INCLUDE)
 				.name(viewMethodName.trim()).optionalParameter(event.getEventParamType()).exactOne(
