@@ -11,104 +11,77 @@
 package com.swtxml.events.visitor;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Collection;
 
 import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
-import com.swtxml.events.EventListenerException;
 import com.swtxml.events.impl.Events;
 import com.swtxml.events.registry.WidgetEvent;
-import com.swtxml.swt.metadata.WidgetTag;
 import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.util.reflector.Reflector;
-import com.swtxml.util.reflector.ReflectorException;
 import com.swtxml.util.reflector.Subclasses;
 import com.swtxml.util.reflector.Visibility;
 
 /**
- * CreateEventListenersVisitor processes attributes like
- * on:<eventName>="<viewMethod>" and delegates the event to a method
- * <viewObject>.<viewMethod>.
+ * CreateEventListeners processes on:eventName="responderMethod" attribute
+ * values by adding a listener to the widget that delegates the event to a
+ * method "responder"."responderMethod"().
  * 
  * @author Ralf Ebert <info@ralfebert.de>
  */
 public class CreateEventListeners implements ITagVisitor {
 
-	private Object viewObject;
+	private Object responder;
 
-	public CreateEventListeners(Object viewObject) {
-		this.viewObject = viewObject;
+	public CreateEventListeners(Object responder) {
+		this.responder = responder;
 	}
 
 	public void visit(Tag tag) {
-		if (!(tag.getTagDefinition() instanceof WidgetTag)) {
-			return;
-		}
+		Collection<IAttributeDefinition> events = tag.getAttributes(Events.NAMESPACE);
+		if (!events.isEmpty()) {
 
-		Class<? extends Widget> widgetClass = ((WidgetTag) tag.getTagDefinition()).getWidgetClass();
+			Widget widget = tag.getAdapter(Widget.class);
+			Assert.isNotNull(widget, String.format(
+					"Tag %s has event attributes %s, but is not a Widget!", tag.getName(), events));
 
-		for (IAttributeDefinition event : tag.getAttributes(Events.NAMESPACE)) {
-			wireViewMethodListener(tag.getAttribute(Events.NAMESPACE, event), tag
-					.getAdapter(widgetClass), event.getName());
+			for (IAttributeDefinition eventAttribute : events) {
+				String responderMethodName = tag.getAttribute(Events.NAMESPACE, eventAttribute);
+				setupListener(widget, eventAttribute.getName(), responderMethodName);
+			}
+
 		}
 	}
 
 	/**
-	 * Creates and adds a <listenerProxy> object implementing the SWT listener
-	 * interface to <widget> which calls this.viewObject.<viewMethodName> when
-	 * listener.<eventName> is called.
+	 * setupListener finds a suitable event handling method named
+	 * responderMethodName in the responder class. It then creates a SWT
+	 * listener proxy object that delegates to this responder method whenever
+	 * listener.<eventName> is called. This listener is added to the widget.
 	 */
-	public void wireViewMethodListener(String viewMethodName, Widget widget, final String eventName) {
+	public void setupListener(Widget widget, final String eventName, String responderMethodName) {
 
 		WidgetEvent event = Events.EVENTS.getWidgetEvent(widget.getClass(), eventName);
-		Assert.isNotNull(event, "event");
+		Assert.isNotNull(event, String.format("No event %s in %s found!", eventName, widget
+				.getClass()));
 
-		final Method viewMethod = Reflector.findMethods(Visibility.PRIVATE, Subclasses.INCLUDE)
-				.name(viewMethodName.trim()).optionalParameter(event.getEventParamType()).exactOne(
-						viewObject.getClass());
+		Method responderMethod = Reflector.findMethods(Visibility.PRIVATE, Subclasses.INCLUDE)
+				.name(responderMethodName.trim()).optionalParameter(event.getEventParamType())
+				.exactOne(responder.getClass());
 
-		InvocationHandler handler = new InvocationHandler() {
-
-			public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-				if (!method.getName().equals(eventName)) {
-					return null;
-				}
-				viewMethod.setAccessible(true);
-				Object[] parameters = args;
-				if (viewMethod.getParameterTypes().length == 0) {
-					parameters = new Object[0];
-				}
-				try {
-					return viewMethod.invoke(viewObject, parameters);
-				} catch (InvocationTargetException e) {
-					Throwable targetException = e.getTargetException();
-					if (targetException instanceof RuntimeException) {
-						throw targetException;
-					} else {
-						throw new EventListenerException(e);
-					}
-				} catch (Exception e) {
-					throw new EventListenerException(e);
-				}
-			}
-
-		};
+		InvocationHandler handler = new ListenerDelegatingInvocationHandler(eventName, responder,
+				responderMethod);
 
 		Class<?> listenerType = event.getListenerType();
-		Object listenerProxy = Proxy.newProxyInstance(viewObject.getClass().getClassLoader(),
+		Object listener = Proxy.newProxyInstance(responder.getClass().getClassLoader(),
 				new Class[] { listenerType }, handler);
 
-		Method addMethod = Reflector.findMethods(Visibility.PUBLIC, Subclasses.INCLUDE)
-				.nameStartsWith("add").parameters(listenerType).exactOne(widget.getClass());
-		try {
-			addMethod.invoke(widget, listenerProxy);
-		} catch (Exception e) {
-			new ReflectorException(e);
-		}
+		event.addListenerToWidget(widget, listener);
 	}
+
 }

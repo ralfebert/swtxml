@@ -10,8 +10,16 @@
  *******************************************************************************/
 package com.swtxml.events.registry;
 
+import java.lang.reflect.Method;
+
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
+import org.eclipse.swt.widgets.Widget;
+
+import com.swtxml.util.reflector.Reflector;
+import com.swtxml.util.reflector.ReflectorException;
+import com.swtxml.util.reflector.Subclasses;
+import com.swtxml.util.reflector.Visibility;
 
 public class WidgetEvent {
 
@@ -30,6 +38,16 @@ public class WidgetEvent {
 
 	public Class<?> getEventParamType() {
 		return eventParamType;
+	}
+
+	public void addListenerToWidget(Widget widget, Object listener) {
+		Method addMethod = Reflector.findMethods(Visibility.PUBLIC, Subclasses.INCLUDE)
+				.nameStartsWith("add").parameters(listenerType).exactOne(widget.getClass());
+		try {
+			addMethod.invoke(widget, listener);
+		} catch (Exception e) {
+			new ReflectorException(e);
+		}
 	}
 
 	@Override

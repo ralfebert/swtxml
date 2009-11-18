@@ -48,10 +48,10 @@ public class CreateEventListenersTest {
 		CreateEventListeners visitor = new CreateEventListeners(view);
 		Shell shell = new Shell();
 		Button btn = new Button(shell, SWT.NONE);
-		visitor.wireViewMethodListener("testKeyPressed", btn, "keyPressed");
-		visitor.wireViewMethodListener("testFocusGained", btn, "focusGained");
-		visitor.wireViewMethodListener("testMouseScrolled", btn, "mouseScrolled");
-		visitor.wireViewMethodListener("testWidgetSelected", btn, "widgetSelected");
+		visitor.setupListener(btn, "keyPressed", "testKeyPressed");
+		visitor.setupListener(btn, "focusGained", "testFocusGained");
+		visitor.setupListener(btn, "mouseScrolled", "testMouseScrolled");
+		visitor.setupListener(btn, "widgetSelected", "testWidgetSelected");
 
 		view.testKeyPressed();
 		view.testFocusGained((FocusEvent) anyObject());
@@ -75,7 +75,7 @@ public class CreateEventListenersTest {
 		CreateEventListeners processor = new CreateEventListeners(view);
 		Shell shell = new Shell();
 		Button btn = new Button(shell, SWT.NONE);
-		processor.wireViewMethodListener("testKeyPressed", btn, "keyPressed");
+		processor.setupListener(btn, "keyPressed", "testKeyPressed");
 
 		view.testKeyPressed();
 		expectLastCall().andThrow(new NullPointerException());
@@ -98,7 +98,7 @@ public class CreateEventListenersTest {
 		Shell shell = new Shell();
 		Button btn = new Button(shell, SWT.NONE);
 		try {
-			processor.wireViewMethodListener("doesntExist", btn, "keyPressed");
+			processor.setupListener(btn, "keyPressed", "doesntExist");
 			fail("expected exception");
 		} catch (ReflectorException e) {
 			assertTrue("exception contains classname", e.getMessage().contains(
