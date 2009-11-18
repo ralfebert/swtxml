@@ -54,7 +54,7 @@ public class CreateEventListeners implements ITagVisitor {
 
 		for (IAttributeDefinition event : tag.getAttributes(Events.NAMESPACE)) {
 			wireViewMethodListener(tag.getAttribute(Events.NAMESPACE, event), tag
-					.adaptTo(widgetClass), event.getName());
+					.getAdapter(widgetClass), event.getName());
 		}
 	}
 

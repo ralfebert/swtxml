@@ -184,7 +184,7 @@ public class SwtXmlContentAssistProcessor extends XMLContentAssistProcessor {
 			Context.addAdapter(new IAdaptable() {
 
 				@SuppressWarnings("unchecked")
-				public <T> T adaptTo(Class<T> adapterClass) {
+				public <T> T getAdapter(Class<T> adapterClass) {
 					if (adapterClass == Layout.class) {
 						Node layoutNode = contentAssistRequest.getNode().getParentNode()
 								.getAttributes().getNamedItem("layout");

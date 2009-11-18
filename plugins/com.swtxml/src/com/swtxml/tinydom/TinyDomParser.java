@@ -33,7 +33,7 @@ public class TinyDomParser implements IAdaptable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <A> A adaptTo(Class<A> adapterClass) {
+	public <A> A getAdapter(Class<A> adapterClass) {
 		if (IDocumentResource.class.isAssignableFrom(adapterClass)) {
 			return (A) document;
 		}

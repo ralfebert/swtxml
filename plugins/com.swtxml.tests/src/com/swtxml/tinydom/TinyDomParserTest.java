@@ -106,10 +106,10 @@ public class TinyDomParserTest {
 		String str1 = "xxx";
 		no1.makeAdaptable(str1);
 
-		assertEquals(null, no4.adaptTo(String.class));
-		assertEquals(null, no3.adaptTo(String.class));
-		assertEquals(str2, no2.adaptTo(String.class));
-		assertEquals(str1, no1.adaptTo(String.class));
+		assertEquals(null, no4.getAdapter(String.class));
+		assertEquals(null, no3.getAdapter(String.class));
+		assertEquals(str2, no2.getAdapter(String.class));
+		assertEquals(str1, no1.getAdapter(String.class));
 
 		assertEquals(0, no4.adaptChildren(String.class).size());
 		assertEquals(0, no3.adaptChildren(String.class).size());

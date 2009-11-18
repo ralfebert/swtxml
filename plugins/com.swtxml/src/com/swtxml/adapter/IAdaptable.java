@@ -11,14 +11,14 @@
 package com.swtxml.adapter;
 
 /**
- * Classes implementing this interface can adapt themselves to a required class
- * or interface. Same as {@link org.eclipse.core.runtime.IAdaptable} with
- * generic types.
+ * com.swtxml.adapter.IAdaptable is identical to
+ * {@link org.eclipse.core.runtime.IAdaptable} except that it has a generic type
+ * signature.
  * 
  * @author Ralf Ebert <info@ralfebert.de>
  */
 public interface IAdaptable {
 
-	public <T> T adaptTo(Class<T> adapterClass);
+	public <T> T getAdapter(Class<T> adapterClass);
 
 }

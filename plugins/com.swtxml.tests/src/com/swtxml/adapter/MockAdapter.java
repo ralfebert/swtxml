@@ -19,7 +19,7 @@ public class MockAdapter implements IAdaptable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T adaptTo(Class<T> adapterClass) {
+	public <T> T getAdapter(Class<T> adapterClass) {
 		if (adapterClass.isAssignableFrom(obj.getClass())) {
 			return (T) obj;
 		}

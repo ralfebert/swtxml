@@ -139,7 +139,7 @@ public final class Tag implements IAdaptable {
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T adaptTo(Class<T> type) {
+	public <T> T getAdapter(Class<T> type) {
 		for (Object adapterObject : adapterObjects) {
 			if (type.isAssignableFrom(adapterObject.getClass())) {
 				return (T) adapterObject;
@@ -149,7 +149,7 @@ public final class Tag implements IAdaptable {
 	}
 
 	public final <T> T parentAdaptTo(Class<T> type) {
-		return (parent != null) ? parent.adaptTo(type) : null;
+		return (parent != null) ? parent.getAdapter(type) : null;
 	}
 
 	public final <T> T parentRecursiveAdaptTo(Class<T> type) {
@@ -176,7 +176,7 @@ public final class Tag implements IAdaptable {
 	public <T> List<T> adaptChildren(Class<T> type) {
 		List<T> results = new ArrayList<T>();
 		for (Tag tag : getChildren()) {
-			T adapted = tag.adaptTo(type);
+			T adapted = tag.getAdapter(type);
 			if (adapted != null) {
 				results.add(adapted);
 			}

@@ -31,11 +31,11 @@ public class CollectIds implements ITagVisitor, IIdResolver, IAdaptable {
 
 	public <T> T getById(String id, Class<T> clazz) {
 		Tag node = tagsById.get(id);
-		return (node != null) ? node.adaptTo(clazz) : null;
+		return (node != null) ? node.getAdapter(clazz) : null;
 	}
 
 	@SuppressWarnings("unchecked")
-	public <T> T adaptTo(Class<T> type) {
+	public <T> T getAdapter(Class<T> type) {
 		if (type.isAssignableFrom(IIdResolver.class)) {
 			return (T) this;
 		}

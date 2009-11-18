@@ -25,7 +25,7 @@ public class ContextTest {
 		Context.addAdapter(new IAdaptable() {
 
 			@SuppressWarnings("unchecked")
-			public <T> T adaptTo(Class<T> adapter) {
+			public <T> T getAdapter(Class<T> adapter) {
 				if (adapter.isAssignableFrom(String.class)) {
 					return (T) "test";
 				}

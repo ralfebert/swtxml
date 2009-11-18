@@ -52,7 +52,7 @@ public class Context {
 			return null;
 		}
 		for (IAdaptable adapter : ctx.adapters) {
-			Object obj = adapter.adaptTo(clazz);
+			Object obj = adapter.getAdapter(clazz);
 			if (obj != null) {
 				return (A) obj;
 			}

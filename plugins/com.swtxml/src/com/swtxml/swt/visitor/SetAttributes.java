@@ -27,7 +27,7 @@ import com.swtxml.util.parser.ParseException;
 public class SetAttributes implements ITagVisitor {
 
 	public void visit(Tag tag) {
-		Widget widget = tag.adaptTo(Widget.class);
+		Widget widget = tag.getAdapter(Widget.class);
 		if (widget == null) {
 			return;
 		}

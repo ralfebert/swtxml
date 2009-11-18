@@ -61,8 +61,8 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <A> A adaptTo(Class<A> adapterClass) {
-		Object result = super.adaptTo(adapterClass);
+	public <A> A getAdapter(Class<A> adapterClass) {
+		Object result = super.getAdapter(adapterClass);
 		if (result != null) {
 			return (A) result;
 		}

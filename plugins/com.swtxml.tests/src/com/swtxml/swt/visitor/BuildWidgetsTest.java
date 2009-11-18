@@ -44,7 +44,7 @@ public class BuildWidgetsTest {
 		BuildWidgets builder = new BuildWidgets(shell);
 		root.visitDepthFirst(builder);
 
-		assertEquals(shell, root.adaptTo(Control.class));
-		assertTrue(btn.adaptTo(Control.class) instanceof Button);
+		assertEquals(shell, root.getAdapter(Control.class));
+		assertTrue(btn.getAdapter(Control.class) instanceof Button);
 	}
 }
