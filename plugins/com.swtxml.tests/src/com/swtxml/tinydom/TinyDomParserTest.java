@@ -101,10 +101,10 @@ public class TinyDomParserTest {
 		Tag no4 = no3.getChildren().get(0);
 
 		String str2 = "Hallo";
-		no2.makeAdaptable(str2);
+		no2.addAdapter(str2);
 
 		String str1 = "xxx";
-		no1.makeAdaptable(str1);
+		no1.addAdapter(str1);
 
 		assertEquals(null, no4.getAdapter(String.class));
 		assertEquals(null, no3.getAdapter(String.class));

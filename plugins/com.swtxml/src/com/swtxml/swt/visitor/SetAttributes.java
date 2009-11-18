@@ -36,7 +36,7 @@ public class SetAttributes implements ITagVisitor {
 			Composite parent = ((Control) widget).getParent();
 			if (parent != null && parent.getLayout() != null) {
 				// TODO: try not to store an extra reference
-				tag.makeAdaptable(parent.getLayout());
+				tag.addAdapter(parent.getLayout());
 			}
 		}
 

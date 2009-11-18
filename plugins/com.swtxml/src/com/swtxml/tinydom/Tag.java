@@ -163,7 +163,7 @@ public final class Tag implements IAdaptable {
 		return null;
 	}
 
-	public void makeAdaptable(Object adapterObject) {
+	public void addAdapter(Object adapterObject) {
 		ContractProof.notNull(adapterObject, "adapterObject");
 		// TODO: check for conflicts
 		this.adapterObjects.add(adapterObject);

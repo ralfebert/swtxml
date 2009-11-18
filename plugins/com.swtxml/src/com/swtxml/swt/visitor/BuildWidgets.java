@@ -41,7 +41,7 @@ public class BuildWidgets implements ITagVisitor {
 				throw new ParseException("Invalid root tag " + tag.getName() + ", expected <"
 						+ Composite.class.getSimpleName() + ">");
 			}
-			tag.makeAdaptable(parent);
+			tag.addAdapter(parent);
 			return;
 		}
 
@@ -57,7 +57,7 @@ public class BuildWidgets implements ITagVisitor {
 		Integer style = SwtInfo.SWT.getIntValue(tag.getAttribute("style"));
 
 		Widget widget = build(constructor, parent, style == null ? SWT.NONE : style);
-		tag.makeAdaptable(widget);
+		tag.addAdapter(widget);
 	}
 
 	public Widget build(Constructor<?> constructor, Object parent, int style) {
