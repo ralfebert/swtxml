@@ -51,7 +51,8 @@ public class CreateEventListeners implements ITagVisitor {
 					"Tag %s has event attributes %s, but is not a Widget!", tag.getName(), events));
 
 			for (IAttributeDefinition eventAttribute : events) {
-				String responderMethodName = tag.getAttributeValue(Events.NAMESPACE, eventAttribute);
+				String responderMethodName = tag
+						.getAttributeValue(Events.NAMESPACE, eventAttribute);
 				setupListener(widget, eventAttribute.getName(), responderMethodName);
 			}
 
@@ -59,12 +60,12 @@ public class CreateEventListeners implements ITagVisitor {
 	}
 
 	/**
-	 * setupListener finds a suitable event handling method named
+	 * setupListener resolves the event handling method named
 	 * responderMethodName in the responder class. It then creates a SWT
 	 * listener proxy object that delegates to this responder method whenever
 	 * listener.<eventName> is called. This listener is added to the widget.
 	 */
-	public void setupListener(Widget widget, final String eventName, String responderMethodName) {
+	void setupListener(Widget widget, final String eventName, String responderMethodName) {
 
 		WidgetEvent event = Events.EVENTS.getWidgetEvent(widget.getClass(), eventName);
 		Assert.isNotNull(event, String.format("No event %s in %s found!", eventName, widget
