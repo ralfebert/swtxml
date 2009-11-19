@@ -14,7 +14,7 @@ import java.lang.reflect.Modifier;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.definition.impl.NamespaceDefinition;
+import com.swtxml.definition.internal.NamespaceDefinition;
 import com.swtxml.swt.SwtInfo;
 
 public class SwtNamespace extends NamespaceDefinition {

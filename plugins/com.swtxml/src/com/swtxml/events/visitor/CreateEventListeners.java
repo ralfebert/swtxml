@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
-import com.swtxml.events.impl.Events;
+import com.swtxml.events.internal.Events;
 import com.swtxml.events.registry.WidgetEvent;
 import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;

@@ -18,7 +18,7 @@ import org.junit.Test;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.ITagScope;
-import com.swtxml.events.impl.Events;
+import com.swtxml.events.internal.Events;
 import com.swtxml.swt.SwtInfo;
 
 public class EventNamespaceDefinitionTest {

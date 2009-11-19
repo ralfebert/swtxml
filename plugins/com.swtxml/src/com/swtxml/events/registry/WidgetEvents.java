@@ -36,11 +36,11 @@ class WidgetEvents {
 				Subclasses.INCLUDE).parameters(EventListener.class).nameMatches("add.+Listener")
 				.all(widgetClass);
 
-		for (Method listenerMethod : listenerMethods) {
-			Class<?> listenerType = listenerMethod.getParameterTypes()[0];
-			for (Method eventMethod : listenerType.getMethods()) {
-				String eventName = getEventName(listenerMethod, eventMethod, listenerType);
-				Class<?> eventParamType = eventMethod.getParameterTypes()[0];
+		for (Method listenerAddMethod : listenerMethods) {
+			Class<?> listenerType = listenerAddMethod.getParameterTypes()[0];
+			for (Method listenerMethod : listenerType.getMethods()) {
+				String eventName = getEventName(listenerAddMethod, listenerMethod, listenerType);
+				Class<?> eventParamType = listenerMethod.getParameterTypes()[0];
 				WidgetEvent widgetEvent = new WidgetEvent(listenerType, eventParamType);
 				WidgetEvent oldValue = events.put(eventName, widgetEvent);
 				if (oldValue != null) {

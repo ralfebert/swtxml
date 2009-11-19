@@ -8,9 +8,9 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.events.impl;
+package com.swtxml.events.internal;
 
-import com.swtxml.definition.impl.NamespaceDefinition;
+import com.swtxml.definition.internal.NamespaceDefinition;
 
 public class EventNamespaceDefinition extends NamespaceDefinition {
 

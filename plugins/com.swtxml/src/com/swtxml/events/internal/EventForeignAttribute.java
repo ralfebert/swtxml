@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.events.impl;
+package com.swtxml.events.internal;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.ITagDefinition;

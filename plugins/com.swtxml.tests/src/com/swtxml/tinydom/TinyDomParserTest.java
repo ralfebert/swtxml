@@ -25,10 +25,10 @@ import org.junit.Test;
 
 import com.swtxml.definition.INamespaceResolver;
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.definition.impl.AttributeDefinition;
-import com.swtxml.definition.impl.ForeignAttributeDefinition;
-import com.swtxml.definition.impl.NamespaceDefinition;
-import com.swtxml.definition.impl.TagDefinition;
+import com.swtxml.definition.internal.AttributeDefinition;
+import com.swtxml.definition.internal.ForeignAttributeDefinition;
+import com.swtxml.definition.internal.NamespaceDefinition;
+import com.swtxml.definition.internal.TagDefinition;
 import com.swtxml.resources.ClassResource;
 import com.swtxml.util.parser.ParseException;
 import com.swtxml.util.types.SimpleTypes;

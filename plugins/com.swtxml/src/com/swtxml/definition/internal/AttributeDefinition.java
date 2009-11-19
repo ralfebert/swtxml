@@ -8,7 +8,7 @@
  * Contributors:
  *     Ralf Ebert - initial API and implementation
  *******************************************************************************/
-package com.swtxml.definition.impl;
+package com.swtxml.definition.internal;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.util.types.IType;

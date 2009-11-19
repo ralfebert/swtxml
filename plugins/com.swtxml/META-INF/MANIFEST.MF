@@ -10,7 +10,6 @@ Require-Bundle: org.eclipse.core.runtime,
  org.apache.commons.lang;bundle-version="2.3.0"
 Export-Package: com.swtxml.adapter,
  com.swtxml.definition,
- com.swtxml.definition.impl,
  com.swtxml.events,
  com.swtxml.extensions,
  com.swtxml.resources,

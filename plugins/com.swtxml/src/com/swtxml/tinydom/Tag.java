@@ -22,7 +22,7 @@ import com.swtxml.adapter.IAdaptable;
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.ITagDefinition;
-import com.swtxml.definition.impl.NamespaceDefinition;
+import com.swtxml.definition.internal.NamespaceDefinition;
 import com.swtxml.util.parser.ParseException;
 
 public final class Tag implements IAdaptable {

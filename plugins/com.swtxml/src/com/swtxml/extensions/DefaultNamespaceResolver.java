@@ -12,8 +12,8 @@ package com.swtxml.extensions;
 
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.INamespaceResolver;
-import com.swtxml.events.impl.EventNamespaceDefinition;
-import com.swtxml.events.impl.Events;
+import com.swtxml.events.internal.EventNamespaceDefinition;
+import com.swtxml.events.internal.Events;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.metadata.SwtNamespace;
 

@@ -18,9 +18,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
 import com.swtxml.definition.INamespaceResolver;
-import com.swtxml.definition.impl.ForeignAttributeDefinition;
-import com.swtxml.definition.impl.NamespaceDefinition;
-import com.swtxml.definition.impl.TagDefinition;
+import com.swtxml.definition.internal.ForeignAttributeDefinition;
+import com.swtxml.definition.internal.NamespaceDefinition;
+import com.swtxml.definition.internal.TagDefinition;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.SwtXmlParser;
 import com.swtxml.swt.metadata.SwtNamespace;
