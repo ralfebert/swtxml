@@ -49,7 +49,7 @@ public class TinyDomParserTest {
 	}
 
 	private INamespaceResolver sampleNamespace() {
-		NamespaceDefinition testNamespace = new NamespaceDefinition();
+		NamespaceDefinition testNamespace = new NamespaceDefinition("test");
 		TagDefinition tag = new TagDefinition("test", ITagDefinition.ROOT).allowNested();
 		testNamespace.defineTag(tag);
 		tag.defineAttribute(new AttributeDefinition("no", SimpleTypes.STRING));
@@ -193,7 +193,7 @@ public class TinyDomParserTest {
 
 	@Test
 	public void testInvalidScope() {
-		NamespaceDefinition testNamespace = new NamespaceDefinition();
+		NamespaceDefinition testNamespace = new NamespaceDefinition("test");
 		TagDefinition test = new TagDefinition("test", ITagDefinition.ROOT);
 		testNamespace.defineTag(test);
 		testNamespace.defineTag(new TagDefinition("yes", test));
@@ -212,12 +212,12 @@ public class TinyDomParserTest {
 
 	@Test
 	public void testForeignAttribute() {
-		NamespaceDefinition testNamespace = new NamespaceDefinition();
+		NamespaceDefinition testNamespace = new NamespaceDefinition("test");
 		TagDefinition test = new TagDefinition("test", ITagDefinition.ROOT);
 		test.defineAttribute(new AttributeDefinition("hallo", SimpleTypes.STRING));
 		testNamespace.defineTag(test);
 
-		NamespaceDefinition attrSpace = new NamespaceDefinition();
+		NamespaceDefinition attrSpace = new NamespaceDefinition("test");
 
 		attrSpace.defineForeignAttribute(new ForeignAttributeDefinition("hallo",
 				SimpleTypes.STRING, test));
@@ -238,12 +238,12 @@ public class TinyDomParserTest {
 
 	@Test
 	public void testInvalidForeignAttribute() {
-		NamespaceDefinition testNamespace = new NamespaceDefinition();
+		NamespaceDefinition testNamespace = new NamespaceDefinition("test");
 		TagDefinition test = new TagDefinition("test", ITagDefinition.ROOT);
 		test.defineAttribute(new AttributeDefinition("hallo", SimpleTypes.STRING));
 		testNamespace.defineTag(test);
 
-		NamespaceDefinition attrSpace = new NamespaceDefinition();
+		NamespaceDefinition attrSpace = new NamespaceDefinition("test");
 
 		INamespaceResolver namespaceResolver = createMock(INamespaceResolver.class);
 		expect(namespaceResolver.resolveNamespace("test")).andReturn(testNamespace);
@@ -265,14 +265,14 @@ public class TinyDomParserTest {
 
 	@Test
 	public void testInvalidScopedForeignAttribute() {
-		NamespaceDefinition testNamespace = new NamespaceDefinition();
+		NamespaceDefinition testNamespace = new NamespaceDefinition("test");
 		TagDefinition test = new TagDefinition("test", ITagDefinition.ROOT);
 		test.defineAttribute(new AttributeDefinition("hallo", SimpleTypes.STRING));
 		testNamespace.defineTag(test);
 		TagDefinition yes = new TagDefinition("yes", test);
 		testNamespace.defineTag(yes);
 
-		NamespaceDefinition attrSpace = new NamespaceDefinition();
+		NamespaceDefinition attrSpace = new NamespaceDefinition("test");
 		attrSpace.defineForeignAttribute(new ForeignAttributeDefinition("hallo",
 				SimpleTypes.STRING, yes));
 

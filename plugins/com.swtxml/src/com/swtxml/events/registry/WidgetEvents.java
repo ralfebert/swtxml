@@ -26,7 +26,7 @@ class WidgetEvents {
 
 	private Map<String, WidgetEventListenerMethod> events = new HashMap<String, WidgetEventListenerMethod>();
 
-	public WidgetEvents(Class<? extends Widget> widgetClass) {
+	WidgetEvents(Class<? extends Widget> widgetClass) {
 
 		Collection<Method> listenerMethods = Reflector.findMethods(Visibility.PUBLIC,
 				Subclasses.INCLUDE).parameters(EventListener.class).nameMatches("add.+Listener")
@@ -35,7 +35,8 @@ class WidgetEvents {
 		for (Method listenerAddMethod : listenerMethods) {
 			Class<?> listenerType = listenerAddMethod.getParameterTypes()[0];
 			for (Method listenerMethod : listenerType.getMethods()) {
-				WidgetEventListenerMethod event = new WidgetEventListenerMethod(listenerAddMethod, listenerMethod);
+				WidgetEventListenerMethod event = new WidgetEventListenerMethod(listenerAddMethod,
+						listenerMethod);
 				WidgetEventListenerMethod oldValue = events.put(event.getName(), event);
 				if (oldValue != null) {
 					String msg = String.format(
@@ -47,11 +48,11 @@ class WidgetEvents {
 		}
 	}
 
-	public Collection<String> getEventNames() {
+	Collection<String> getEventNames() {
 		return events.keySet();
 	}
 
-	public WidgetEventListenerMethod getEvent(String eventName) {
+	WidgetEventListenerMethod getEvent(String eventName) {
 		return events.get(eventName);
 	}
 

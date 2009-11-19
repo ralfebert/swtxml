@@ -14,14 +14,20 @@ import java.lang.reflect.Modifier;
 
 import org.eclipse.swt.widgets.Widget;
 
+import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.internal.NamespaceDefinition;
 import com.swtxml.swt.SwtInfo;
 
 public class SwtNamespace extends NamespaceDefinition {
 
-	public static final String URI = "http://www.swtxml.com/swt";
+	private static final SwtNamespace namespace = new SwtNamespace();
+
+	public static INamespaceDefinition getNamespace() {
+		return namespace;
+	}
 
 	public SwtNamespace() {
+		super("http://www.swtxml.com/swt");
 		for (String className : SwtInfo.WIDGETS.getWidgetClassNames()) {
 			Class<? extends Widget> widgetClass = SwtInfo.WIDGETS.getWidgetClass(className);
 			if (Modifier.isAbstract(widgetClass.getModifiers())) {

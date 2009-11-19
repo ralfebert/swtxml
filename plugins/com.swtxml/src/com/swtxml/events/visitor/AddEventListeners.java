@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
-import com.swtxml.events.internal.Events;
+import com.swtxml.events.internal.SwtEvents;
 import com.swtxml.events.registry.WidgetEventListenerMethod;
 import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
@@ -30,20 +30,23 @@ import com.swtxml.util.reflector.Visibility;
 /**
  * CreateEventListeners processes on:eventName="responderMethod" attribute
  * values by adding a listener to the widget that delegates the event to a
- * method "responder"."responderMethod"().
+ * method "responder"."responderMethod"(). It only applies to attributes in the
+ * given namespace and a given event registry.
  * 
  * @author Ralf Ebert <info@ralfebert.de>
  */
-public class CreateEventListeners implements ITagVisitor {
+public class AddEventListeners implements ITagVisitor {
 
 	private Object responder;
+	private SwtEvents namespace;
 
-	public CreateEventListeners(Object responder) {
+	public AddEventListeners(Object responder, SwtEvents namespace) {
 		this.responder = responder;
+		this.namespace = namespace;
 	}
 
 	public void visit(Tag tag) {
-		Collection<IAttributeDefinition> events = tag.getAttributes(Events.NAMESPACE);
+		Collection<IAttributeDefinition> events = tag.getAttributes(namespace);
 		if (!events.isEmpty()) {
 
 			Widget widget = tag.getAdapter(Widget.class);
@@ -51,8 +54,7 @@ public class CreateEventListeners implements ITagVisitor {
 					"Tag %s has event attributes %s, but is not a Widget!", tag.getName(), events));
 
 			for (IAttributeDefinition eventAttribute : events) {
-				String responderMethodName = tag
-						.getAttributeValue(Events.NAMESPACE, eventAttribute);
+				String responderMethodName = tag.getAttributeValue(namespace, eventAttribute);
 				setupListener(widget, eventAttribute.getName(), responderMethodName);
 			}
 
@@ -67,8 +69,8 @@ public class CreateEventListeners implements ITagVisitor {
 	 */
 	void setupListener(Widget widget, final String eventName, String responderMethodName) {
 
-		WidgetEventListenerMethod event = Events.EVENTS
-				.getWidgetEvent(widget.getClass(), eventName);
+		WidgetEventListenerMethod event = namespace.getEvents().getWidgetEvent(widget.getClass(),
+				eventName);
 		Assert.isNotNull(event, String.format("No event %s in %s found!", eventName, widget
 				.getClass()));
 

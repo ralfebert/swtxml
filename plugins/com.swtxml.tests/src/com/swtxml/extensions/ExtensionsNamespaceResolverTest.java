@@ -22,6 +22,6 @@ public class ExtensionsNamespaceResolverTest {
 	@Test
 	public void testResolveNamespace() {
 		assertEquals(SwtInfo.NAMESPACE, new ExtensionsNamespaceResolver()
-				.resolveNamespace(SwtNamespace.URI));
+				.resolveNamespace(SwtNamespace.getNamespace().getUri()));
 	}
 }

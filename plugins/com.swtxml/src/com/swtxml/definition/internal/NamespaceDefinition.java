@@ -24,6 +24,15 @@ public class NamespaceDefinition implements INamespaceDefinition {
 
 	private Map<String, ITagDefinition> tagsByName = new HashMap<String, ITagDefinition>();
 	private Map<String, IAttributeDefinition> foreignAttributes = new HashMap<String, IAttributeDefinition>();
+	private String uri;
+
+	public NamespaceDefinition(String uri) {
+		this.uri = uri;
+	}
+
+	public String getUri() {
+		return uri;
+	}
 
 	public ITagDefinition getTag(String name) {
 		return tagsByName.get(name);

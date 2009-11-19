@@ -18,20 +18,21 @@ import org.junit.Test;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.definition.ITagScope;
-import com.swtxml.events.internal.Events;
+import com.swtxml.events.internal.SwtEvents;
 import com.swtxml.swt.SwtInfo;
 
 public class EventNamespaceDefinitionTest {
 
 	@Test
 	public void testDefinitionPlausible() {
-		IAttributeDefinition widgetSelected = Events.NAMESPACE
-				.getForeignAttribute("widgetSelected");
+		IAttributeDefinition widgetSelected = SwtEvents.getNamespace().getForeignAttribute(
+				"widgetSelected");
 		assertNotNull(widgetSelected);
 		assertTrue(((ITagScope) widgetSelected).isAllowedIn(SwtInfo.NAMESPACE.getTag("Button")));
 		assertFalse(((ITagScope) widgetSelected).isAllowedIn(SwtInfo.NAMESPACE.getTag("Control")));
 
-		IAttributeDefinition focusGained = Events.NAMESPACE.getForeignAttribute("focusGained");
+		IAttributeDefinition focusGained = SwtEvents.getNamespace().getForeignAttribute(
+				"focusGained");
 		assertNotNull(focusGained);
 		assertTrue(((ITagScope) focusGained).isAllowedIn(SwtInfo.NAMESPACE.getTag("Button")));
 		assertFalse(((ITagScope) focusGained).isAllowedIn(SwtInfo.NAMESPACE.getTag("Control")));

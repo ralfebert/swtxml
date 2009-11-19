@@ -11,14 +11,29 @@
 package com.swtxml.events.internal;
 
 import com.swtxml.definition.internal.NamespaceDefinition;
+import com.swtxml.events.registry.EventsRegistry;
+import com.swtxml.swt.SwtInfo;
 
-public class EventNamespaceDefinition extends NamespaceDefinition {
+public class SwtEvents extends NamespaceDefinition {
 
-	public static final String URI = "http://www.swtxml.com/events";
+	private static final SwtEvents namespace = new SwtEvents();
 
-	public EventNamespaceDefinition() {
-		for (String eventName : Events.EVENTS.getAllEventNames()) {
-			defineForeignAttribute(new EventForeignAttribute(eventName));
+	public static SwtEvents getNamespace() {
+		return namespace;
+	}
+
+	private final EventsRegistry events = EventsRegistry.scanWidgets(SwtInfo.WIDGETS);
+
+	private SwtEvents() {
+		super("http://www.swtxml.com/events");
+		for (String eventName : events.getAllEventNames()) {
+			this.defineForeignAttribute(new EventForeignAttribute(eventName));
 		}
 	}
+
+	@Deprecated
+	public EventsRegistry getEvents() {
+		return events;
+	}
+
 }

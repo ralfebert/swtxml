@@ -12,8 +12,7 @@ package com.swtxml.extensions;
 
 import com.swtxml.definition.INamespaceDefinition;
 import com.swtxml.definition.INamespaceResolver;
-import com.swtxml.events.internal.EventNamespaceDefinition;
-import com.swtxml.events.internal.Events;
+import com.swtxml.events.internal.SwtEvents;
 import com.swtxml.swt.SwtInfo;
 import com.swtxml.swt.metadata.SwtNamespace;
 
@@ -23,11 +22,12 @@ import com.swtxml.swt.metadata.SwtNamespace;
 public class DefaultNamespaceResolver implements INamespaceResolver {
 
 	public INamespaceDefinition resolveNamespace(String uri) {
-		if (SwtNamespace.URI.equals(uri)) {
+		// TODO: keep in map
+		if (SwtNamespace.getNamespace().getUri().equals(uri)) {
 			return SwtInfo.NAMESPACE;
 		}
-		if (EventNamespaceDefinition.URI.equals(uri)) {
-			return Events.NAMESPACE;
+		if (SwtEvents.getNamespace().getUri().equals(uri)) {
+			return SwtEvents.getNamespace();
 		}
 		return null;
 	}

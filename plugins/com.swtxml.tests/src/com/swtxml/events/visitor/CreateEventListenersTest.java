@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Shell;
 import org.junit.Test;
 
+import com.swtxml.events.internal.SwtEvents;
 import com.swtxml.util.reflector.ReflectorException;
 
 public class CreateEventListenersTest {
@@ -45,7 +46,7 @@ public class CreateEventListenersTest {
 	@Test
 	public void testWireViewMethodListener() {
 		ISomeView view = createStrictMock(ISomeView.class);
-		CreateEventListeners visitor = new CreateEventListeners(view);
+		AddEventListeners visitor = new AddEventListeners(view, SwtEvents.getNamespace());
 		Shell shell = new Shell();
 		Button btn = new Button(shell, SWT.NONE);
 		visitor.setupListener(btn, "keyPressed", "testKeyPressed");
@@ -72,7 +73,7 @@ public class CreateEventListenersTest {
 	@Test
 	public void testViewExceptionMethod() {
 		ISomeView view = createStrictMock(ISomeView.class);
-		CreateEventListeners processor = new CreateEventListeners(view);
+		AddEventListeners processor = new AddEventListeners(view, SwtEvents.getNamespace());
 		Shell shell = new Shell();
 		Button btn = new Button(shell, SWT.NONE);
 		processor.setupListener(btn, "keyPressed", "testKeyPressed");
@@ -94,7 +95,7 @@ public class CreateEventListenersTest {
 	@Test
 	public void testException() {
 		ISomeView view = createStrictMock(ISomeView.class);
-		CreateEventListeners processor = new CreateEventListeners(view);
+		AddEventListeners processor = new AddEventListeners(view, SwtEvents.getNamespace());
 		Shell shell = new Shell();
 		Button btn = new Button(shell, SWT.NONE);
 		try {

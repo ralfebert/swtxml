@@ -22,4 +22,6 @@ public interface INamespaceDefinition {
 
 	public IAttributeDefinition getForeignAttribute(String name);
 
+	public String getUri();
+
 }

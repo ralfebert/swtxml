@@ -16,7 +16,8 @@ import org.eclipse.swt.widgets.Composite;
 
 import com.swtxml.adapter.IAdaptable;
 import com.swtxml.definition.INamespaceResolver;
-import com.swtxml.events.visitor.CreateEventListeners;
+import com.swtxml.events.internal.SwtEvents;
+import com.swtxml.events.visitor.AddEventListeners;
 import com.swtxml.extensions.DefaultNamespaceResolver;
 import com.swtxml.extensions.ExtensionsNamespaceResolver;
 import com.swtxml.i18n.ILabelTranslator;
@@ -103,7 +104,7 @@ public class SwtXmlParser extends TinyDomParser implements IAdaptable {
 		});
 
 		if (view != null) {
-			root.visitDepthFirst(new CreateEventListeners(view));
+			root.visitDepthFirst(new AddEventListeners(view, SwtEvents.getNamespace()));
 			new ByIdInjector().inject(view, ids);
 		}
 	}

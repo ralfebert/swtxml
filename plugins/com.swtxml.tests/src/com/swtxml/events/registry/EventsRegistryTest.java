@@ -25,39 +25,47 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
+import org.junit.Before;
 import org.junit.Test;
 
-import com.swtxml.events.internal.Events;
+import com.swtxml.swt.SwtInfo;
 
 public class EventsRegistryTest {
 
+	private EventsRegistry eventRegistry;
+
+	@Before
+	public void createEventRegistry() {
+		eventRegistry = EventsRegistry.scanWidgets(SwtInfo.WIDGETS);
+	}
+
 	@Test
 	public void getAllEventNames() {
-		assertTrue(Events.EVENTS.getAllEventNames().contains("widgetSelected"));
-		assertTrue(Events.EVENTS.getAllEventNames().contains("focusGained"));
+		assertTrue(eventRegistry.getAllEventNames().contains("widgetSelected"));
+		assertTrue(eventRegistry.getAllEventNames().contains("focusGained"));
 	}
 
 	@Test
 	public void isEventAvailableFor() {
-		assertNotNull(Events.EVENTS.getWidgetEvent(Button.class, "widgetSelected"));
-		assertNull(Events.EVENTS.getWidgetEvent(Control.class, "widgetSelected"));
-		assertNotNull(Events.EVENTS.getWidgetEvent(Button.class, "focusGained"));
-		assertNotNull(Events.EVENTS.getWidgetEvent(Control.class, "focusGained"));
+		assertNotNull(eventRegistry.getWidgetEvent(Button.class, "widgetSelected"));
+		assertNull(eventRegistry.getWidgetEvent(Control.class, "widgetSelected"));
+		assertNotNull(eventRegistry.getWidgetEvent(Button.class, "focusGained"));
+		assertNotNull(eventRegistry.getWidgetEvent(Control.class, "focusGained"));
 	}
 
 	@Test
 	public void testGetEventInterface() {
-		assertEquals(SelectionListener.class, Events.EVENTS.getWidgetEvent(Button.class,
+		assertEquals(SelectionListener.class, eventRegistry.getWidgetEvent(Button.class,
 				"widgetSelected").getListenerInterfaceClass());
-		assertEquals(FocusListener.class, Events.EVENTS.getWidgetEvent(Button.class, "focusGained")
+		assertEquals(FocusListener.class, eventRegistry.getWidgetEvent(Button.class, "focusGained")
 				.getListenerInterfaceClass());
-		assertEquals(ModifyListener.class, Events.EVENTS.getWidgetEvent(Text.class, "modifyText")
+		assertEquals(ModifyListener.class, eventRegistry.getWidgetEvent(Text.class, "modifyText")
 				.getListenerInterfaceClass());
-		assertEquals(ModifyListener.class, Events.EVENTS.getWidgetEvent(StyledText.class,
+		assertEquals(ModifyListener.class, eventRegistry.getWidgetEvent(StyledText.class,
 				"modifyText").getListenerInterfaceClass());
-		assertEquals(ExtendedModifyListener.class, Events.EVENTS.getWidgetEvent(StyledText.class,
+		assertEquals(ExtendedModifyListener.class, eventRegistry.getWidgetEvent(StyledText.class,
 				"extendedModifyText").getListenerInterfaceClass());
-		assertEquals(VisibilityWindowListener.class, Events.EVENTS.getWidgetEvent(Browser.class,
+		assertEquals(VisibilityWindowListener.class, eventRegistry.getWidgetEvent(Browser.class,
 				"visibilityWindowHide").getListenerInterfaceClass());
 	}
 

@@ -39,7 +39,8 @@ public class EventForeignAttribute implements IAttributeDefinition, ITagScope {
 			return false;
 		}
 
-		return Events.EVENTS.getWidgetEvent(((WidgetTag) tagDefinition).getWidgetClass(), name) != null;
+		return SwtEvents.getNamespace().getEvents().getWidgetEvent(
+				((WidgetTag) tagDefinition).getWidgetClass(), name) != null;
 	}
 
 	@Override

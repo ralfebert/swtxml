@@ -33,14 +33,15 @@ public class ProcessingTest {
 		Shell shell = new Shell();
 		SwtNamespace swt = SwtInfo.NAMESPACE;
 
-		NamespaceDefinition testNsDef = new NamespaceDefinition();
+		NamespaceDefinition testNsDef = new NamespaceDefinition("hallo");
 		TagDefinition halloTagDef = new TagDefinition("hallo", swt.getTag("Composite"));
 		testNsDef.defineTag(halloTagDef);
 		testNsDef.defineForeignAttribute(new ForeignAttributeDefinition("hallo",
 				SimpleTypes.STRING, swt.getTag("Button")));
 
 		INamespaceResolver namespaceResolver = createMock(INamespaceResolver.class);
-		expect(namespaceResolver.resolveNamespace(SwtNamespace.URI)).andReturn(swt);
+		expect(namespaceResolver.resolveNamespace(SwtNamespace.getNamespace().getUri())).andReturn(
+				swt);
 		expect(namespaceResolver.resolveNamespace("test")).andReturn(testNsDef);
 		EasyMock.replay(namespaceResolver);
 

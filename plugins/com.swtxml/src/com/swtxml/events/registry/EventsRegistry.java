@@ -19,24 +19,30 @@ import java.util.Set;
 
 import org.eclipse.swt.widgets.Widget;
 
-import com.swtxml.swt.SwtInfo;
+import com.swtxml.swt.metadata.WidgetRegistry;
 
+//TODO: make internal
 public class EventsRegistry {
 
 	private final Set<String> allEventNames;
 	private final Map<Class<?>, WidgetEvents> widgetClasses;
 
-	public EventsRegistry() {
+	private EventsRegistry(Map<Class<?>, WidgetEvents> widgetClasses, Set<String> allEventNames) {
+		this.widgetClasses = widgetClasses;
+		this.allEventNames = allEventNames;
+	}
+
+	public static EventsRegistry scanWidgets(WidgetRegistry widgets) {
 		Set<String> bAllEventNames = new HashSet<String>();
 		Map<Class<?>, WidgetEvents> bWidgetClasses = new HashMap<Class<?>, WidgetEvents>();
-		for (String widgetClassName : SwtInfo.WIDGETS.getWidgetClassNames()) {
-			Class<? extends Widget> widgetClass = SwtInfo.WIDGETS.getWidgetClass(widgetClassName);
+		for (String widgetClassName : widgets.getWidgetClassNames()) {
+			Class<? extends Widget> widgetClass = widgets.getWidgetClass(widgetClassName);
 			WidgetEvents events = new WidgetEvents(widgetClass);
 			bWidgetClasses.put(widgetClass, events);
 			bAllEventNames.addAll(events.getEventNames());
 		}
-		widgetClasses = Collections.unmodifiableMap(bWidgetClasses);
-		allEventNames = Collections.unmodifiableSet(bAllEventNames);
+		return new EventsRegistry(Collections.unmodifiableMap(bWidgetClasses), Collections
+				.unmodifiableSet(bAllEventNames));
 	}
 
 	public Collection<String> getAllEventNames() {
