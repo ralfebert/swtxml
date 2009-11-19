@@ -48,17 +48,17 @@ public class EventsRegistryTest {
 	@Test
 	public void testGetEventInterface() {
 		assertEquals(SelectionListener.class, Events.EVENTS.getWidgetEvent(Button.class,
-				"widgetSelected").getListenerType());
+				"widgetSelected").getListenerInterfaceClass());
 		assertEquals(FocusListener.class, Events.EVENTS.getWidgetEvent(Button.class, "focusGained")
-				.getListenerType());
+				.getListenerInterfaceClass());
 		assertEquals(ModifyListener.class, Events.EVENTS.getWidgetEvent(Text.class, "modifyText")
-				.getListenerType());
+				.getListenerInterfaceClass());
 		assertEquals(ModifyListener.class, Events.EVENTS.getWidgetEvent(StyledText.class,
-				"modifyText").getListenerType());
+				"modifyText").getListenerInterfaceClass());
 		assertEquals(ExtendedModifyListener.class, Events.EVENTS.getWidgetEvent(StyledText.class,
-				"extendedModifyText").getListenerType());
+				"extendedModifyText").getListenerInterfaceClass());
 		assertEquals(VisibilityWindowListener.class, Events.EVENTS.getWidgetEvent(Browser.class,
-				"visibilityWindowHide").getListenerType());
+				"visibilityWindowHide").getListenerInterfaceClass());
 	}
 
 }

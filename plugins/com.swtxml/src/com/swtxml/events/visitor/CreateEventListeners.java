@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.definition.IAttributeDefinition;
 import com.swtxml.events.internal.Events;
-import com.swtxml.events.registry.WidgetEvent;
+import com.swtxml.events.registry.WidgetEventListenerMethod;
 import com.swtxml.tinydom.ITagVisitor;
 import com.swtxml.tinydom.Tag;
 import com.swtxml.util.reflector.Reflector;
@@ -67,20 +67,20 @@ public class CreateEventListeners implements ITagVisitor {
 	 */
 	void setupListener(Widget widget, final String eventName, String responderMethodName) {
 
-		WidgetEvent event = Events.EVENTS.getWidgetEvent(widget.getClass(), eventName);
+		WidgetEventListenerMethod event = Events.EVENTS
+				.getWidgetEvent(widget.getClass(), eventName);
 		Assert.isNotNull(event, String.format("No event %s in %s found!", eventName, widget
 				.getClass()));
 
 		Method responderMethod = Reflector.findMethods(Visibility.PRIVATE, Subclasses.INCLUDE)
-				.name(responderMethodName.trim()).optionalParameter(event.getEventParamType())
+				.name(responderMethodName.trim()).optionalParameter(event.getEventClass())
 				.exactOne(responder.getClass());
 
 		InvocationHandler handler = new ListenerDelegatingInvocationHandler(eventName, responder,
 				responderMethod);
 
-		Class<?> listenerType = event.getListenerType();
 		Object listener = Proxy.newProxyInstance(responder.getClass().getClassLoader(),
-				new Class[] { listenerType }, handler);
+				new Class[] { event.getListenerInterfaceClass() }, handler);
 
 		event.addListenerToWidget(widget, listener);
 	}

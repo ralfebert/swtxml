@@ -16,10 +16,6 @@ import java.util.EventListener;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang.StringUtils;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.custom.ExtendedModifyListener;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Widget;
 
 import com.swtxml.util.reflector.Reflector;
@@ -28,7 +24,7 @@ import com.swtxml.util.reflector.Visibility;
 
 class WidgetEvents {
 
-	private Map<String, WidgetEvent> events = new HashMap<String, WidgetEvent>();
+	private Map<String, WidgetEventListenerMethod> events = new HashMap<String, WidgetEventListenerMethod>();
 
 	public WidgetEvents(Class<? extends Widget> widgetClass) {
 
@@ -39,38 +35,23 @@ class WidgetEvents {
 		for (Method listenerAddMethod : listenerMethods) {
 			Class<?> listenerType = listenerAddMethod.getParameterTypes()[0];
 			for (Method listenerMethod : listenerType.getMethods()) {
-				String eventName = getEventName(listenerAddMethod, listenerMethod, listenerType);
-				Class<?> eventParamType = listenerMethod.getParameterTypes()[0];
-				WidgetEvent widgetEvent = new WidgetEvent(listenerType, eventParamType);
-				WidgetEvent oldValue = events.put(eventName, widgetEvent);
+				WidgetEventListenerMethod event = new WidgetEventListenerMethod(listenerAddMethod, listenerMethod);
+				WidgetEventListenerMethod oldValue = events.put(event.getName(), event);
 				if (oldValue != null) {
 					String msg = String.format(
 							"Event %s from %s causes conflicting event attributes for widget %s!",
-							eventName, listenerType, widgetClass.getName());
+							event.getName(), listenerType, widgetClass.getName());
 					throw new IllegalStateException(msg);
 				}
 			}
 		}
 	}
 
-	private String getEventName(Method listenerMethod, Method eventMethod, Class<?> listenerType) {
-		if (StyledText.class == listenerMethod.getDeclaringClass()
-				&& ExtendedModifyListener.class == listenerType) {
-			return "extendedModifyText";
-		}
-		if (Browser.class == listenerMethod.getDeclaringClass()) {
-			return StringUtils.uncapitalize(StringUtils.replace(listenerType.getSimpleName(),
-					"Listener", ""))
-					+ StringUtils.capitalize(eventMethod.getName());
-		}
-		return eventMethod.getName();
-	}
-
 	public Collection<String> getEventNames() {
 		return events.keySet();
 	}
 
-	public WidgetEvent getEvent(String eventName) {
+	public WidgetEventListenerMethod getEvent(String eventName) {
 		return events.get(eventName);
 	}
 

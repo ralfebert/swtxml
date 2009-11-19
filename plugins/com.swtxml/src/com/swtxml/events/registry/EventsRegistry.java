@@ -43,7 +43,7 @@ public class EventsRegistry {
 		return allEventNames;
 	}
 
-	public WidgetEvent getWidgetEvent(Class<?> widgetClass, String eventName) {
+	public WidgetEventListenerMethod getWidgetEvent(Class<?> widgetClass, String eventName) {
 		WidgetEvents widgetEvents = widgetClasses.get(widgetClass);
 		return (widgetEvents != null) ? widgetEvents.getEvent(eventName) : null;
 	}
